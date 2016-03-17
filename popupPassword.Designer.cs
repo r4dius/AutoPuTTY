@@ -106,7 +106,7 @@ namespace AutoPuTTY
             this.tTitle.TabIndex = 0;
             this.tTitle.Text = "AutoPuTTY";
             // 
-            // passwordPopup
+            // popupPassword
             // 
             this.AcceptButton = this.bOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -122,7 +122,7 @@ namespace AutoPuTTY
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "passwordPopup";
+            this.Name = "popupPassword";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AutoPuTTY";
             this.Closing += new System.ComponentModel.CancelEventHandler(this.bQuit_Click);

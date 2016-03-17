@@ -29,7 +29,6 @@ namespace AutoPuTTY
         public const int MF_SEPARATOR = 0x800;
         public const int WM_SYSCOMMAND = 0x112;
         public const int SW_RESTORE = 9;
-
         private const int tbfilterw = 145;
         private bool indexchanged;
         private bool filter;
@@ -185,7 +184,6 @@ namespace AutoPuTTY
             {
                 miRestore_Click(new object(), new EventArgs());
             }
-
             base.WndProc(ref m);
         }
 
@@ -234,6 +232,7 @@ namespace AutoPuTTY
                     i++;
                 }
             }
+            str = str.Replace("*", "%2A");
             return str;
         }
 
@@ -608,20 +607,22 @@ namespace AutoPuTTY
                     string _user = Decrypt(server[2].ToString());
                     string _pass = Decrypt(server[3].ToString());
                     string _type = type == "-1" ? cbType.Items[Convert.ToInt16(server[4])].ToString() : type;
-                    string[] f = {"\\", "/", ":", "*", "?", "\"", "<", ">", "|"};
-                    string[] ps = {"/", "\\\\"};
-                    string[] pr = {"\\", "\\"};
+                    string[] f = { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
+                    string[] ps = { "/", "\\\\" };
+                    string[] pr = { "\\", "\\" };
 
                     switch (_type)
                     {
                         case "Remote Desktop": //RDP
                             string[] rdpextractpath = ExtractFilePath(Settings.Default.rdpath);
-                            string rdpath = Environment.ExpandEnvironmentVariables(rdpextractpath[0]);
+                            string rdpath = rdpextractpath[0];
                             string rdpargs = rdpextractpath[1];
 
                             if (File.Exists(rdpath))
                             {
-                                string rdppass = cryptDPAPI.Encrypt(_pass);
+                                Mstscpw mstscpw = new Mstscpw();
+                                string rdppass = mstscpw.encryptpw(_pass);
+
                                 ArrayList arraylist = new ArrayList();
                                 string[] size = Settings.Default.rdsize.Split('x');
 
@@ -687,7 +688,7 @@ namespace AutoPuTTY
                             break;
                         case "VNC": //VNC
                             string[] vncextractpath = ExtractFilePath(Settings.Default.vncpath);
-                            string vncpath = Environment.ExpandEnvironmentVariables(vncextractpath[0]);
+                            string vncpath = vncextractpath[0];
                             string vncargs = vncextractpath[1];
 
                             if (File.Exists(vncpath))
@@ -766,7 +767,7 @@ namespace AutoPuTTY
                             break;
                         case "WinSCP (SFTP)": //WinSCP (SFTP)
                             string[] winscpextractpath = ExtractFilePath(Settings.Default.winscppath);
-                            string winscppath = Environment.ExpandEnvironmentVariables(winscpextractpath[0]);
+                            string winscppath = winscpextractpath[0];
                             string winscpargs = winscpextractpath[1];
 
                             if (File.Exists(winscppath))
@@ -792,7 +793,7 @@ namespace AutoPuTTY
                                 myProc.StartInfo.Arguments = winscpprot;
                                 if (_user != "")
                                 {
-                                    string[] s = {"%", " ", "+", "/", "@", "\""};
+                                    string[] s = {"%", " ", "+", "/", "@", "\"", ":", ";"};
                                     _user = ReplaceU(s, _user);
                                     _pass = ReplaceU(s, _pass);
                                     myProc.StartInfo.Arguments += _user;
@@ -802,6 +803,7 @@ namespace AutoPuTTY
                                 if (host != "") myProc.StartInfo.Arguments += HttpUtility.UrlEncode(host);
                                 if (port != "") myProc.StartInfo.Arguments += ":" + port;
                                 if (Settings.Default.winscpkey && Settings.Default.winscpkeyfile != "") myProc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfile + "\"";
+                                //MessageBox.Show(this, myProc.StartInfo.Arguments);
                                 if (winscpargs != "") myProc.StartInfo.Arguments += " " + winscpargs;
                                 try
                                 {
@@ -820,10 +822,15 @@ namespace AutoPuTTY
                         case "WinSCP (SCP)": //WinSCP (SCP)
                             winscpprot = "scp://";
                             goto case "WinSCP (SFTP)";
+                        case "WinSCP (FTP)": //WinSCP (FTP)
+                            winscpprot = "ftp://";
+                            goto case "WinSCP (SFTP)";
                         default: //PuTTY
                             string[] puttyextractpath = ExtractFilePath(Settings.Default.puttypath);
-                            string puttypath = Environment.ExpandEnvironmentVariables(puttyextractpath[0]);
+                            string puttypath = puttyextractpath[0];
                             string puttyargs = puttyextractpath[1];
+                            string[] passs = { "\\", "\"" };
+                            string[] passr = { "\\\\", "\\\"" };
 
                             if (File.Exists(puttypath))
                             {
@@ -849,10 +856,11 @@ namespace AutoPuTTY
                                 if (_user != "") myProc.StartInfo.Arguments += _user + "@";
                                 if (host != "") myProc.StartInfo.Arguments += host;
                                 if (port != "") myProc.StartInfo.Arguments += " " + port;
-                                if (_user != "" && _pass != "") myProc.StartInfo.Arguments += " -pw \"" + _pass + "\"";
+                                if (_user != "" && _pass != "") myProc.StartInfo.Arguments += " -pw \"" + ReplaceA(passs, passr, _pass) + "\"";
                                 if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") myProc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
                                 if (Settings.Default.puttykey && Settings.Default.puttykeyfile != "") myProc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfile + "\"";
                                 if (Settings.Default.puttyforward) myProc.StartInfo.Arguments += " -X";
+                                //MessageBox.Show(this, myProc.StartInfo.Arguments);
                                 if (puttyargs != "") myProc.StartInfo.Arguments += " " + puttyargs;
                                 try
                                 {
@@ -1323,12 +1331,18 @@ namespace AutoPuTTY
             optionsform.ShowDialog(this);
         }
 
+        // toggle "search" form
         private void FindSwitch(bool status)
         {
+            // reset the search input text
             if (status && !filtervisible) tbFilter.Text = "";
-            tlLeft.RowStyles[1].Height = status ? 24 : 0;
+            // show the "search" form
+            tlLeft.RowStyles[1].Height = status ? 25 : 0;
             filtervisible = status;
+            // focus the filter input
             tbFilter.Focus();
+            // pressed ctrl + F twice, select the search input text so we can search again over last one
+            if (status && filtervisible && tbFilter.Text != "") tbFilter.SelectAll();
         }
 
         private void bClose_Click(object sender, EventArgs e)
@@ -1339,24 +1353,47 @@ namespace AutoPuTTY
             if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
         }
 
+        // "search" form change close button image on mouse hover
         private void bClose_MouseHover(object sender, EventArgs e)
         {
             bClose.Image = Resources.closeh;
         }
 
+        // "search" form change close button image on mouse leave
         private void bClose_MouseLeave(object sender, EventArgs e)
         {
             bClose.Image = Resources.close;
         }
 
+        // "search" form change close button image on mouse down
         private void bClose_MouseDown(object sender, MouseEventArgs e)
         {
             bClose.Image = Resources.closed;
         }
 
+        // update "search"
         private void tbFilter_Changed(object sender, EventArgs e)
         {
             if (filtervisible) lbList_Filter(tbFilter.Text);
+        }
+
+        // close "search" form when pressing ESC
+        private void tbFilter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)27)
+            {
+                e.Handled = true;
+                bClose_Click(sender, e);
+            }
+        }
+
+        // prevent the beep sound when pressing ctrl + F in the search input
+        private void tbFilter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F && e.Control)
+            {
+                e.SuppressKeyPress = true;
+            }
         }
 
         private void cbCase_CheckedChanged(object sender, EventArgs e)

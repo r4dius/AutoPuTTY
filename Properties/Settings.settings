@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">0.24.3</Value>
+      <Value Profile="(Default)">0.25</Value>
     </Setting>
     <Setting Name="multicolumnwidth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
@@ -30,7 +30,7 @@
       <Value Profile="(Default)">putty.exe</Value>
     </Setting>
     <Setting Name="rdpath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">%WINDIR%\system32\mstsc.exe</Value>
+      <Value Profile="(Default)">mstsc.exe</Value>
     </Setting>
     <Setting Name="vncpath" Type="System.String" Scope="User">
       <Value Profile="(Default)">vncviewer.exe</Value>

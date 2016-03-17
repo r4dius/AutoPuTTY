@@ -21,7 +21,7 @@ namespace AutoPuTTY
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static readonly Mutex mutex = new Mutex(true, "Global\\AutoPuTTY");
+        static readonly Mutex mutex = new Mutex(true, "Local\\AutoPuTTY");
         [STAThread]
         static void Main()
         {

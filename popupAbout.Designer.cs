@@ -84,6 +84,8 @@ namespace AutoPuTTY
             // 
             // piAbout
             // 
+            this.piAbout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.piAbout.Image = global::AutoPuTTY.Properties.Resources.about;
             this.piAbout.InitialImage = null;
             this.piAbout.Location = new System.Drawing.Point(0, 0);
@@ -92,7 +94,7 @@ namespace AutoPuTTY
             this.piAbout.TabIndex = 5;
             this.piAbout.TabStop = false;
             // 
-            // aboutPopup
+            // popupAbout
             // 
             this.AcceptButton = this.bOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -108,7 +110,7 @@ namespace AutoPuTTY
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "aboutPopup";
+            this.Name = "popupAbout";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";

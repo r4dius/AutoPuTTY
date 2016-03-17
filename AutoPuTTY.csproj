@@ -86,6 +86,9 @@
     <Compile Include="popupAbout.Designer.cs">
       <DependentUpon>popupAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\FusionTrackBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="popupRecrypt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,9 +122,6 @@
     </Compile>
     <Compile Include="app.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\FusionTrackBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <EmbeddedResource Include="popupAbout.resx">
       <DependentUpon>popupAbout.cs</DependentUpon>
       <SubType>Designer</SubType>
