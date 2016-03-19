@@ -50,7 +50,6 @@ namespace AutoPuTTY
             this.bModify = new System.Windows.Forms.Button();
             this.lPass = new System.Windows.Forms.Label();
             this.lUser = new System.Windows.Forms.Label();
-            this.liOptions = new System.Windows.Forms.LinkLabel();
             this.lName = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmSystray = new System.Windows.Forms.ContextMenu();
@@ -118,7 +117,6 @@ namespace AutoPuTTY
             this.pConfig.Controls.Add(this.bModify);
             this.pConfig.Controls.Add(this.lPass);
             this.pConfig.Controls.Add(this.lUser);
-            this.pConfig.Controls.Add(this.liOptions);
             this.pConfig.Controls.Add(this.lName);
             this.pConfig.Location = new System.Drawing.Point(131, 0);
             this.pConfig.Margin = new System.Windows.Forms.Padding(0);
@@ -134,7 +132,7 @@ namespace AutoPuTTY
             this.lSep5.Location = new System.Drawing.Point(2, 173);
             this.lSep5.Margin = new System.Windows.Forms.Padding(0);
             this.lSep5.Name = "lSep5";
-            this.lSep5.Size = new System.Drawing.Size(126, 1);
+            this.lSep5.Size = new System.Drawing.Size(126, 2);
             this.lSep5.TabIndex = 15;
             // 
             // lSep4
@@ -155,7 +153,7 @@ namespace AutoPuTTY
             this.lSep3.Location = new System.Drawing.Point(2, 95);
             this.lSep3.Margin = new System.Windows.Forms.Padding(0);
             this.lSep3.Name = "lSep3";
-            this.lSep3.Size = new System.Drawing.Size(126, 1);
+            this.lSep3.Size = new System.Drawing.Size(126, 2);
             this.lSep3.TabIndex = 8;
             // 
             // lSep2
@@ -166,7 +164,7 @@ namespace AutoPuTTY
             this.lSep2.Location = new System.Drawing.Point(2, 56);
             this.lSep2.Margin = new System.Windows.Forms.Padding(0);
             this.lSep2.Name = "lSep2";
-            this.lSep2.Size = new System.Drawing.Size(126, 1);
+            this.lSep2.Size = new System.Drawing.Size(126, 2);
             this.lSep2.TabIndex = 5;
             // 
             // lSep1
@@ -177,7 +175,7 @@ namespace AutoPuTTY
             this.lSep1.Location = new System.Drawing.Point(2, 17);
             this.lSep1.Margin = new System.Windows.Forms.Padding(0);
             this.lSep1.Name = "lSep1";
-            this.lSep1.Size = new System.Drawing.Size(126, 1);
+            this.lSep1.Size = new System.Drawing.Size(126, 2);
             this.lSep1.TabIndex = 2;
             // 
             // bOptions
@@ -187,7 +185,7 @@ namespace AutoPuTTY
             this.bOptions.Location = new System.Drawing.Point(97, 198);
             this.bOptions.Margin = new System.Windows.Forms.Padding(0);
             this.bOptions.Name = "bOptions";
-            this.bOptions.Padding = new System.Windows.Forms.Padding(0, 0, 0, 1);
+            this.bOptions.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
             this.bOptions.Size = new System.Drawing.Size(32, 30);
             this.bOptions.TabIndex = 20;
             this.bOptions.UseCompatibleTextRendering = true;
@@ -316,21 +314,6 @@ namespace AutoPuTTY
             this.lUser.TabIndex = 7;
             this.lUser.Text = "Username";
             // 
-            // liOptions
-            // 
-            this.liOptions.ActiveLinkColor = System.Drawing.Color.Black;
-            this.liOptions.AutoSize = true;
-            this.liOptions.ForeColor = System.Drawing.Color.White;
-            this.liOptions.LinkColor = System.Drawing.Color.Blue;
-            this.liOptions.Location = new System.Drawing.Point(84, 3);
-            this.liOptions.Name = "liOptions";
-            this.liOptions.Size = new System.Drawing.Size(43, 13);
-            this.liOptions.TabIndex = 1;
-            this.liOptions.TabStop = true;
-            this.liOptions.Text = "Options";
-            this.liOptions.Visible = false;
-            this.liOptions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liOptions_LinkClicked);
-            // 
             // lName
             // 
             this.lName.AutoSize = true;
@@ -443,9 +426,10 @@ namespace AutoPuTTY
             // 
             this.bClose.BackColor = System.Drawing.Color.Transparent;
             this.bClose.Image = global::AutoPuTTY.Properties.Resources.close;
-            this.bClose.Location = new System.Drawing.Point(4, 5);
+            this.bClose.Location = new System.Drawing.Point(2, 3);
+            this.bClose.Margin = new System.Windows.Forms.Padding(0);
             this.bClose.Name = "bClose";
-            this.bClose.Size = new System.Drawing.Size(16, 16);
+            this.bClose.Size = new System.Drawing.Size(20, 20);
             this.bClose.TabIndex = 6;
             this.bClose.TabStop = false;
             this.bClose.Click += new System.EventHandler(this.bClose_Click);
@@ -487,6 +471,8 @@ namespace AutoPuTTY
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lbList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lbList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbList.IntegralHeight = false;
             this.lbList.Location = new System.Drawing.Point(0, 0);
             this.lbList.Margin = new System.Windows.Forms.Padding(0);
@@ -495,6 +481,7 @@ namespace AutoPuTTY
             this.lbList.Size = new System.Drawing.Size(130, 204);
             this.lbList.Sorted = true;
             this.lbList.TabIndex = 0;
+            this.lbList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbList_DrawItem);
             this.lbList.SelectedIndexChanged += new System.EventHandler(this.lbList_IndexChanged);
             this.lbList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbList_KeyDown);
             this.lbList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lbList_KeyPress);
@@ -542,7 +529,6 @@ namespace AutoPuTTY
         private System.Windows.Forms.LinkLabel liShow;
         private System.Windows.Forms.Label lUser;
         private System.Windows.Forms.Label lPass;
-        private System.Windows.Forms.LinkLabel liOptions;
         public System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenu cmSystray;
         private System.Windows.Forms.MenuItem miRestore;

@@ -89,7 +89,7 @@ namespace AutoPuTTY
             this.lSep1.TabIndex = 3;
             this.lSep1.Text = "2";
             // 
-            // recryptPopup
+            // popupRecrypt
             // 
             this.AcceptButton = this.bOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -105,7 +105,7 @@ namespace AutoPuTTY
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "recryptPopup";
+            this.Name = "popupRecrypt";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = " password, please wait...";

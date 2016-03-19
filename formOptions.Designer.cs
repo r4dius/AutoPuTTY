@@ -97,7 +97,6 @@ namespace AutoPuTTY
             this.lGImport = new System.Windows.Forms.Label();
             this.bGImport = new System.Windows.Forms.Button();
             this.lSep4 = new System.Windows.Forms.Label();
-            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.cbGMulti = new System.Windows.Forms.CheckBox();
             this.tpGPass = new System.Windows.Forms.TableLayoutPanel();
             this.pGApply = new System.Windows.Forms.Panel();
@@ -117,6 +116,7 @@ namespace AutoPuTTY
             this.tabWSCP = new System.Windows.Forms.TabPage();
             this.bwProgress = new System.ComponentModel.BackgroundWorker();
             this.bOK = new System.Windows.Forms.Button();
+            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.pOPuTTY.SuspendLayout();
             this.pORD.SuspendLayout();
             this.pOVNC.SuspendLayout();
@@ -124,7 +124,6 @@ namespace AutoPuTTY
             this.tabs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pOGeneral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.tpGPass.SuspendLayout();
             this.pGApply.SuspendLayout();
             this.pGPassword.SuspendLayout();
@@ -133,6 +132,7 @@ namespace AutoPuTTY
             this.tabRD.SuspendLayout();
             this.tabVNC.SuspendLayout();
             this.tabWSCP.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.SuspendLayout();
             // 
             // pOPuTTY
@@ -158,7 +158,7 @@ namespace AutoPuTTY
             this.pOPuTTY.Controls.Add(this.tbPuTTYPath);
             this.pOPuTTY.Location = new System.Drawing.Point(4, 4);
             this.pOPuTTY.Name = "pOPuTTY";
-            this.pOPuTTY.Size = new System.Drawing.Size(286, 187);
+            this.pOPuTTY.Size = new System.Drawing.Size(286, 185);
             this.pOPuTTY.TabIndex = 0;
             // 
             // label2
@@ -168,7 +168,7 @@ namespace AutoPuTTY
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label2.Location = new System.Drawing.Point(2, 134);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(282, 2);
+            this.label2.Size = new System.Drawing.Size(283, 2);
             this.label2.TabIndex = 14;
             // 
             // label1
@@ -212,7 +212,7 @@ namespace AutoPuTTY
             this.lSep8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep8.Location = new System.Drawing.Point(2, 56);
             this.lSep8.Name = "lSep8";
-            this.lSep8.Size = new System.Drawing.Size(282, 2);
+            this.lSep8.Size = new System.Drawing.Size(283, 2);
             this.lSep8.TabIndex = 5;
             // 
             // cbPuTTYExecute
@@ -244,7 +244,7 @@ namespace AutoPuTTY
             this.lSep9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep9.Location = new System.Drawing.Point(2, 95);
             this.lSep9.Name = "lSep9";
-            this.lSep9.Size = new System.Drawing.Size(282, 2);
+            this.lSep9.Size = new System.Drawing.Size(283, 2);
             this.lSep9.TabIndex = 9;
             // 
             // cbPuTTYKey
@@ -265,7 +265,7 @@ namespace AutoPuTTY
             this.lSep7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep7.Location = new System.Drawing.Point(2, 17);
             this.lSep7.Name = "lSep7";
-            this.lSep7.Size = new System.Drawing.Size(282, 2);
+            this.lSep7.Size = new System.Drawing.Size(283, 2);
             this.lSep7.TabIndex = 1;
             // 
             // bPuTTYKey
@@ -350,7 +350,7 @@ namespace AutoPuTTY
             this.pORD.Controls.Add(this.bRDPath);
             this.pORD.Location = new System.Drawing.Point(4, 4);
             this.pORD.Name = "pORD";
-            this.pORD.Size = new System.Drawing.Size(286, 187);
+            this.pORD.Size = new System.Drawing.Size(286, 185);
             this.pORD.TabIndex = 0;
             // 
             // cbRDSpan
@@ -393,7 +393,7 @@ namespace AutoPuTTY
             this.lSep13.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep13.Location = new System.Drawing.Point(2, 135);
             this.lSep13.Name = "lSep13";
-            this.lSep13.Size = new System.Drawing.Size(282, 2);
+            this.lSep13.Size = new System.Drawing.Size(283, 2);
             this.lSep13.TabIndex = 12;
             // 
             // lRDOther
@@ -412,7 +412,7 @@ namespace AutoPuTTY
             this.lSep12.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep12.Location = new System.Drawing.Point(2, 95);
             this.lSep12.Name = "lSep12";
-            this.lSep12.Size = new System.Drawing.Size(282, 2);
+            this.lSep12.Size = new System.Drawing.Size(283, 2);
             this.lSep12.TabIndex = 9;
             // 
             // lRDSize
@@ -490,7 +490,7 @@ namespace AutoPuTTY
             this.lSep11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep11.Location = new System.Drawing.Point(2, 56);
             this.lSep11.Name = "lSep11";
-            this.lSep11.Size = new System.Drawing.Size(282, 2);
+            this.lSep11.Size = new System.Drawing.Size(283, 2);
             this.lSep11.TabIndex = 5;
             // 
             // lSep10
@@ -500,7 +500,7 @@ namespace AutoPuTTY
             this.lSep10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep10.Location = new System.Drawing.Point(2, 17);
             this.lSep10.Name = "lSep10";
-            this.lSep10.Size = new System.Drawing.Size(282, 2);
+            this.lSep10.Size = new System.Drawing.Size(283, 2);
             this.lSep10.TabIndex = 1;
             // 
             // tbRDPath
@@ -554,7 +554,7 @@ namespace AutoPuTTY
             this.pOVNC.Controls.Add(this.bVNCPath);
             this.pOVNC.Location = new System.Drawing.Point(4, 4);
             this.pOVNC.Name = "pOVNC";
-            this.pOVNC.Size = new System.Drawing.Size(286, 187);
+            this.pOVNC.Size = new System.Drawing.Size(286, 185);
             this.pOVNC.TabIndex = 0;
             // 
             // lVNCOther
@@ -573,7 +573,7 @@ namespace AutoPuTTY
             this.lSep16.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep16.Location = new System.Drawing.Point(2, 95);
             this.lSep16.Name = "lSep16";
-            this.lSep16.Size = new System.Drawing.Size(282, 2);
+            this.lSep16.Size = new System.Drawing.Size(283, 2);
             this.lSep16.TabIndex = 9;
             // 
             // lVNCFiles
@@ -615,7 +615,7 @@ namespace AutoPuTTY
             this.lSep15.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep15.Location = new System.Drawing.Point(2, 56);
             this.lSep15.Name = "lSep15";
-            this.lSep15.Size = new System.Drawing.Size(282, 2);
+            this.lSep15.Size = new System.Drawing.Size(283, 2);
             this.lSep15.TabIndex = 5;
             // 
             // cbVNCViewonly
@@ -645,7 +645,7 @@ namespace AutoPuTTY
             this.lSep14.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep14.Location = new System.Drawing.Point(2, 17);
             this.lSep14.Name = "lSep14";
-            this.lSep14.Size = new System.Drawing.Size(282, 2);
+            this.lSep14.Size = new System.Drawing.Size(283, 2);
             this.lSep14.TabIndex = 1;
             // 
             // tbVNCPath
@@ -695,7 +695,7 @@ namespace AutoPuTTY
             this.pOWinSCP.Controls.Add(this.tbWSCPPath);
             this.pOWinSCP.Location = new System.Drawing.Point(4, 4);
             this.pOWinSCP.Name = "pOWinSCP";
-            this.pOWinSCP.Size = new System.Drawing.Size(286, 187);
+            this.pOWinSCP.Size = new System.Drawing.Size(286, 185);
             this.pOWinSCP.TabIndex = 0;
             // 
             // lSep18
@@ -705,7 +705,7 @@ namespace AutoPuTTY
             this.lSep18.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep18.Location = new System.Drawing.Point(2, 56);
             this.lSep18.Name = "lSep18";
-            this.lSep18.Size = new System.Drawing.Size(282, 2);
+            this.lSep18.Size = new System.Drawing.Size(283, 2);
             this.lSep18.TabIndex = 5;
             // 
             // cbWSCPKey
@@ -725,7 +725,7 @@ namespace AutoPuTTY
             this.lSep17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep17.Location = new System.Drawing.Point(2, 17);
             this.lSep17.Name = "lSep17";
-            this.lSep17.Size = new System.Drawing.Size(282, 2);
+            this.lSep17.Size = new System.Drawing.Size(283, 2);
             this.lSep17.TabIndex = 1;
             // 
             // bWSCPKey
@@ -800,17 +800,15 @@ namespace AutoPuTTY
             this.tabs.Location = new System.Drawing.Point(2, 2);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(302, 220);
+            this.tabs.Size = new System.Drawing.Size(302, 218);
             this.tabs.TabIndex = 0;
             // 
             // tabGeneral
             // 
-            this.tabGeneral.BackColor = System.Drawing.Color.Transparent;
             this.tabGeneral.Controls.Add(this.pOGeneral);
             this.tabGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGeneral.Size = new System.Drawing.Size(294, 194);
+            this.tabGeneral.Size = new System.Drawing.Size(294, 192);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
@@ -836,7 +834,7 @@ namespace AutoPuTTY
             this.pOGeneral.Controls.Add(this.tpGPass);
             this.pOGeneral.Location = new System.Drawing.Point(4, 4);
             this.pOGeneral.Name = "pOGeneral";
-            this.pOGeneral.Size = new System.Drawing.Size(286, 187);
+            this.pOGeneral.Size = new System.Drawing.Size(286, 185);
             this.pOGeneral.TabIndex = 0;
             // 
             // lSep6
@@ -844,15 +842,15 @@ namespace AutoPuTTY
             this.lSep6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep6.Location = new System.Drawing.Point(2, 135);
+            this.lSep6.Location = new System.Drawing.Point(2, 140);
             this.lSep6.Name = "lSep6";
-            this.lSep6.Size = new System.Drawing.Size(282, 2);
+            this.lSep6.Size = new System.Drawing.Size(283, 2);
             this.lSep6.TabIndex = 11;
             // 
             // lGOther
             // 
             this.lGOther.AutoSize = true;
-            this.lGOther.Location = new System.Drawing.Point(3, 121);
+            this.lGOther.Location = new System.Drawing.Point(3, 126);
             this.lGOther.Name = "lGOther";
             this.lGOther.Size = new System.Drawing.Size(33, 13);
             this.lGOther.TabIndex = 10;
@@ -863,7 +861,7 @@ namespace AutoPuTTY
             this.cbGMinimize.AutoSize = true;
             this.cbGMinimize.Checked = true;
             this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGMinimize.Location = new System.Drawing.Point(2, 137);
+            this.cbGMinimize.Location = new System.Drawing.Point(2, 142);
             this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
             this.cbGMinimize.Name = "cbGMinimize";
             this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
@@ -877,7 +875,7 @@ namespace AutoPuTTY
             this.liGImport.AutoSize = true;
             this.liGImport.ForeColor = System.Drawing.Color.White;
             this.liGImport.LinkColor = System.Drawing.Color.Blue;
-            this.liGImport.Location = new System.Drawing.Point(49, 74);
+            this.liGImport.Location = new System.Drawing.Point(49, 79);
             this.liGImport.Margin = new System.Windows.Forms.Padding(0);
             this.liGImport.Name = "liGImport";
             this.liGImport.Size = new System.Drawing.Size(19, 13);
@@ -889,7 +887,7 @@ namespace AutoPuTTY
             // cbGSkip
             // 
             this.cbGSkip.AutoSize = true;
-            this.cbGSkip.Location = new System.Drawing.Point(2, 105);
+            this.cbGSkip.Location = new System.Drawing.Point(2, 110);
             this.cbGSkip.Name = "cbGSkip";
             this.cbGSkip.Size = new System.Drawing.Size(98, 17);
             this.cbGSkip.TabIndex = 8;
@@ -899,7 +897,7 @@ namespace AutoPuTTY
             // cbGReplace
             // 
             this.cbGReplace.AutoSize = true;
-            this.cbGReplace.Location = new System.Drawing.Point(2, 90);
+            this.cbGReplace.Location = new System.Drawing.Point(2, 95);
             this.cbGReplace.Name = "cbGReplace";
             this.cbGReplace.Size = new System.Drawing.Size(117, 17);
             this.cbGReplace.TabIndex = 7;
@@ -911,15 +909,15 @@ namespace AutoPuTTY
             this.lSep5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep5.Location = new System.Drawing.Point(2, 88);
+            this.lSep5.Location = new System.Drawing.Point(2, 93);
             this.lSep5.Name = "lSep5";
-            this.lSep5.Size = new System.Drawing.Size(282, 2);
+            this.lSep5.Size = new System.Drawing.Size(283, 2);
             this.lSep5.TabIndex = 6;
             // 
             // lGImport
             // 
             this.lGImport.AutoSize = true;
-            this.lGImport.Location = new System.Drawing.Point(3, 74);
+            this.lGImport.Location = new System.Drawing.Point(3, 79);
             this.lGImport.Name = "lGImport";
             this.lGImport.Size = new System.Drawing.Size(51, 13);
             this.lGImport.TabIndex = 4;
@@ -928,7 +926,7 @@ namespace AutoPuTTY
             // bGImport
             // 
             this.bGImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bGImport.Location = new System.Drawing.Point(235, 90);
+            this.bGImport.Location = new System.Drawing.Point(235, 95);
             this.bGImport.Margin = new System.Windows.Forms.Padding(0);
             this.bGImport.Name = "bGImport";
             this.bGImport.Size = new System.Drawing.Size(50, 22);
@@ -945,25 +943,8 @@ namespace AutoPuTTY
             this.lSep4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep4.Location = new System.Drawing.Point(2, 56);
             this.lSep4.Name = "lSep4";
-            this.lSep4.Size = new System.Drawing.Size(282, 2);
+            this.lSep4.Size = new System.Drawing.Size(283, 2);
             this.lSep4.TabIndex = 2;
-            // 
-            // slGMulti
-            // 
-            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.slGMulti.AutoSize = false;
-            this.slGMulti.Enabled = false;
-            this.slGMulti.Location = new System.Drawing.Point(0, 59);
-            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
-            this.slGMulti.Maximum = 40;
-            this.slGMulti.Minimum = 10;
-            this.slGMulti.Name = "slGMulti";
-            this.slGMulti.Size = new System.Drawing.Size(286, 18);
-            this.slGMulti.TabIndex = 3;
-            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.slGMulti.Value = 15;
-            this.slGMulti.Scroll += new System.EventHandler(this.slMulti_Scroll);
             // 
             // cbGMulti
             // 
@@ -1027,7 +1008,7 @@ namespace AutoPuTTY
             this.lSep3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep3.Location = new System.Drawing.Point(-2, 15);
             this.lSep3.Name = "lSep3";
-            this.lSep3.Size = new System.Drawing.Size(52, 2);
+            this.lSep3.Size = new System.Drawing.Size(53, 2);
             this.lSep3.TabIndex = 0;
             // 
             // pGPassword
@@ -1127,41 +1108,37 @@ namespace AutoPuTTY
             this.tabPuTTY.Controls.Add(this.pOPuTTY);
             this.tabPuTTY.Location = new System.Drawing.Point(4, 22);
             this.tabPuTTY.Name = "tabPuTTY";
-            this.tabPuTTY.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPuTTY.Size = new System.Drawing.Size(294, 194);
+            this.tabPuTTY.Size = new System.Drawing.Size(294, 192);
             this.tabPuTTY.TabIndex = 1;
             this.tabPuTTY.Text = "PuTTY";
             this.tabPuTTY.UseVisualStyleBackColor = true;
             // 
             // tabRD
             // 
-            this.tabRD.BackColor = System.Drawing.Color.Transparent;
             this.tabRD.Controls.Add(this.pORD);
             this.tabRD.Location = new System.Drawing.Point(4, 22);
             this.tabRD.Name = "tabRD";
-            this.tabRD.Size = new System.Drawing.Size(294, 194);
+            this.tabRD.Size = new System.Drawing.Size(294, 192);
             this.tabRD.TabIndex = 2;
             this.tabRD.Text = "Remote Desktop";
             this.tabRD.UseVisualStyleBackColor = true;
             // 
             // tabVNC
             // 
-            this.tabVNC.BackColor = System.Drawing.Color.Transparent;
             this.tabVNC.Controls.Add(this.pOVNC);
             this.tabVNC.Location = new System.Drawing.Point(4, 22);
             this.tabVNC.Name = "tabVNC";
-            this.tabVNC.Size = new System.Drawing.Size(294, 194);
+            this.tabVNC.Size = new System.Drawing.Size(294, 192);
             this.tabVNC.TabIndex = 3;
             this.tabVNC.Text = "VNC";
             this.tabVNC.UseVisualStyleBackColor = true;
             // 
             // tabWSCP
             // 
-            this.tabWSCP.BackColor = System.Drawing.Color.Transparent;
             this.tabWSCP.Controls.Add(this.pOWinSCP);
             this.tabWSCP.Location = new System.Drawing.Point(4, 22);
             this.tabWSCP.Name = "tabWSCP";
-            this.tabWSCP.Size = new System.Drawing.Size(294, 194);
+            this.tabWSCP.Size = new System.Drawing.Size(294, 192);
             this.tabWSCP.TabIndex = 4;
             this.tabWSCP.Text = "WinSCP";
             this.tabWSCP.UseVisualStyleBackColor = true;
@@ -1178,18 +1155,35 @@ namespace AutoPuTTY
             // 
             this.bOK.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.bOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bOK.Location = new System.Drawing.Point(117, 227);
+            this.bOK.Location = new System.Drawing.Point(117, 226);
             this.bOK.Name = "bOK";
             this.bOK.Size = new System.Drawing.Size(70, 24);
             this.bOK.TabIndex = 1;
             this.bOK.Text = "OK";
             this.bOK.UseVisualStyleBackColor = true;
             // 
+            // slGMulti
+            // 
+            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.slGMulti.AutoSize = false;
+            this.slGMulti.Enabled = false;
+            this.slGMulti.Location = new System.Drawing.Point(-3, 59);
+            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
+            this.slGMulti.Maximum = 40;
+            this.slGMulti.Minimum = 10;
+            this.slGMulti.Name = "slGMulti";
+            this.slGMulti.Size = new System.Drawing.Size(292, 20);
+            this.slGMulti.TabIndex = 3;
+            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.slGMulti.Value = 15;
+            this.slGMulti.Scroll += new System.EventHandler(this.slMulti_Scroll);
+            // 
             // formOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(304, 258);
+            this.ClientSize = new System.Drawing.Size(304, 257);
             this.Controls.Add(this.bOK);
             this.Controls.Add(this.tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1212,7 +1206,6 @@ namespace AutoPuTTY
             this.tabGeneral.ResumeLayout(false);
             this.pOGeneral.ResumeLayout(false);
             this.pOGeneral.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.tpGPass.ResumeLayout(false);
             this.tpGPass.PerformLayout();
             this.pGApply.ResumeLayout(false);
@@ -1224,6 +1217,7 @@ namespace AutoPuTTY
             this.tabRD.ResumeLayout(false);
             this.tabVNC.ResumeLayout(false);
             this.tabWSCP.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.ResumeLayout(false);
 
         }

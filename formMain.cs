@@ -482,6 +482,27 @@ namespace AutoPuTTY
             return ret;
         }
 
+        private void lbList_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+            // Draw the background of the ListBox control for each item.
+            e.DrawBackground();
+            // Define the default color of the brush as black.
+            Brush myBrush = Brushes.Black;
+
+            // Draw the current item text based on the current Font 
+            // and the custom brush settings.
+            Rectangle bounds = e.Bounds;
+            if (bounds.X < 1) bounds.X = 1;
+            //MessageBox.Show(this, bounds.Top.ToString());
+
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected) myBrush = Brushes.White;
+            e.Graphics.DrawString(lbList.Items[e.Index].ToString(), e.Font, myBrush, bounds, StringFormat.GenericDefault);
+
+            // If the ListBox has focus, draw a focus rectangle around the selected item.
+            e.DrawFocusRectangle();
+        }
+
         public void lbList_IndexChanged(object sender, EventArgs e)
         {
             if (filter || selectall) return;
