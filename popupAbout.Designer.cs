@@ -29,24 +29,13 @@ namespace AutoPuTTY
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(popupAbout));
-            this.tText = new System.Windows.Forms.Label();
             this.tTitle = new System.Windows.Forms.Label();
             this.tVersion = new System.Windows.Forms.Label();
             this.bOK = new System.Windows.Forms.Button();
             this.piAbout = new System.Windows.Forms.PictureBox();
+            this.liWebsite = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.piAbout)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tText
-            // 
-            this.tText.AutoSize = true;
-            this.tText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.tText.ForeColor = System.Drawing.Color.White;
-            this.tText.Location = new System.Drawing.Point(65, 34);
-            this.tText.Name = "tText";
-            this.tText.Size = new System.Drawing.Size(59, 13);
-            this.tText.TabIndex = 2;
-            this.tText.Text = "radius litrux";
             // 
             // tTitle
             // 
@@ -94,6 +83,23 @@ namespace AutoPuTTY
             this.piAbout.TabIndex = 5;
             this.piAbout.TabStop = false;
             // 
+            // liWebsite
+            // 
+            this.liWebsite.ActiveLinkColor = System.Drawing.Color.White;
+            this.liWebsite.AutoSize = true;
+            this.liWebsite.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.liWebsite.DisabledLinkColor = System.Drawing.Color.Transparent;
+            this.liWebsite.ForeColor = System.Drawing.Color.White;
+            this.liWebsite.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.liWebsite.LinkColor = System.Drawing.Color.White;
+            this.liWebsite.Location = new System.Drawing.Point(65, 34);
+            this.liWebsite.Name = "liWebsite";
+            this.liWebsite.Size = new System.Drawing.Size(118, 13);
+            this.liWebsite.TabIndex = 12;
+            this.liWebsite.TabStop = true;
+            this.liWebsite.Text = "http://r4di.us/autoputty";
+            this.liWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liWebsite_LinkClicked);
+            // 
             // popupAbout
             // 
             this.AcceptButton = this.bOK;
@@ -101,10 +107,10 @@ namespace AutoPuTTY
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.bOK;
             this.ClientSize = new System.Drawing.Size(244, 96);
+            this.Controls.Add(this.liWebsite);
             this.Controls.Add(this.bOK);
             this.Controls.Add(this.tVersion);
             this.Controls.Add(this.tTitle);
-            this.Controls.Add(this.tText);
             this.Controls.Add(this.piAbout);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -122,10 +128,10 @@ namespace AutoPuTTY
 
         #endregion
 
-        private System.Windows.Forms.Label tText;
         private System.Windows.Forms.PictureBox piAbout;
         private System.Windows.Forms.Label tTitle;
         private System.Windows.Forms.Label tVersion;
         private System.Windows.Forms.Button bOK;
+        private System.Windows.Forms.LinkLabel liWebsite;
     }
 }

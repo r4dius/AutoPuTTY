@@ -29,6 +29,8 @@ namespace AutoPuTTY
         public const int MF_SEPARATOR = 0x800;
         public const int WM_SYSCOMMAND = 0x112;
         public const int SW_RESTORE = 9;
+        public string[] types = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SFTP)", "WinSCP (SCP)", "WinSCP (FTP)" };
+        public string[] _types;
         private const int tbfilterw = 145;
         private bool indexchanged;
         private bool filter;
@@ -45,6 +47,9 @@ namespace AutoPuTTY
 #if DEBUG
             DateTime time = DateTime.Now;
 #endif
+            //clone types array to have a sorted version
+            _types = (string[])types.Clone();
+            Array.Sort(_types);
             string cfgpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace("file:\\", "");
             string userpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
@@ -79,6 +84,10 @@ namespace AutoPuTTY
             InitializeComponent();
 
             FindSwitch(false);
+            foreach (string type in _types)
+            {
+                cbType.Items.Add(type);
+            }
             cbType.SelectedIndex = 0;
             if (XmlConfigGet("password") != "") Settings.Default.password = XmlConfigGet("password");
             if (XmlConfigGet("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlConfigGet("multicolumnwidth"));
@@ -127,13 +136,13 @@ namespace AutoPuTTY
             sepmenu1.Text = "-";
             cmList.MenuItems.Add(sepmenu1);
             i++;
-            foreach (string type in cbType.Items)
+            foreach (string type in _types)
             {
-                int j = i;
                 MenuItem listmenu = new MenuItem();
                 listmenu.Index = i;
                 listmenu.Text = type;
-                listmenu.Click += delegate { Connect(listmenu.Text); };
+                string _type = Array.IndexOf(types, type).ToString();
+                listmenu.Click += delegate { Connect(_type); }; 
                 cmList.MenuItems.Add(listmenu);
                 i++;
             }
@@ -154,9 +163,7 @@ namespace AutoPuTTY
 
             AutoSize = false;
             MinimumSize = Size;
-#if DEBUG
-            MessageBox.Show("StartUp Time :" + (DateTime.Now - time));
-#endif
+            Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
         }
 
         [DllImport("user32.dll")]
@@ -519,7 +526,7 @@ namespace AutoPuTTY
             tbHost.Text = Decrypt((string) server[1]);
             tbUser.Text = Decrypt((string) server[2]);
             tbPass.Text = Decrypt((string) server[3]);
-            cbType.SelectedIndex = Convert.ToInt32(server[4]);
+            cbType.SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server[4])]);
             lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
 
             if (bAdd.Enabled) bAdd.Enabled = false;
@@ -606,6 +613,8 @@ namespace AutoPuTTY
 
         public void Connect(string type)
         {
+            Debug.WriteLine("Connect : type - " + type + " " + (type != "-1" ? types[Convert.ToInt16(type)] : ""));
+
             // browsing files with OpenFileDialog() fucks with CurrentDirectory, lets fix it
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -627,14 +636,14 @@ namespace AutoPuTTY
                     string _host = Decrypt(server[1].ToString());
                     string _user = Decrypt(server[2].ToString());
                     string _pass = Decrypt(server[3].ToString());
-                    string _type = type == "-1" ? cbType.Items[Convert.ToInt16(server[4])].ToString() : type;
+                    string _type = type == "-1" ? server[4].ToString() : type;
                     string[] f = { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
                     string[] ps = { "/", "\\\\" };
                     string[] pr = { "\\", "\\" };
 
                     switch (_type)
                     {
-                        case "Remote Desktop": //RDP
+                        case "1": //RDP
                             string[] rdpextractpath = ExtractFilePath(Settings.Default.rdpath);
                             string rdpath = rdpextractpath[0];
                             string rdpargs = rdpextractpath[1];
@@ -707,7 +716,7 @@ namespace AutoPuTTY
                                 if (MessageBox.Show(this, "Could not find file \"" + rdpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bRDPath_Click(type);
                             }
                             break;
-                        case "VNC": //VNC
+                        case "2": //VNC
                             string[] vncextractpath = ExtractFilePath(Settings.Default.vncpath);
                             string vncpath = vncextractpath[0];
                             string vncargs = vncextractpath[1];
@@ -786,7 +795,7 @@ namespace AutoPuTTY
                                 if (MessageBox.Show(this, "Could not find file \"" + vncpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bVNCPath_Click(type);
                             }
                             break;
-                        case "WinSCP (SFTP)": //WinSCP (SFTP)
+                        case "3": //WinSCP (SFTP)
                             string[] winscpextractpath = ExtractFilePath(Settings.Default.winscppath);
                             string winscppath = winscpextractpath[0];
                             string winscpargs = winscpextractpath[1];
@@ -840,12 +849,12 @@ namespace AutoPuTTY
                                 if (MessageBox.Show(this, "Could not find file \"" + winscppath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bWSCPPath_Click(type);
                             }
                             break;
-                        case "WinSCP (SCP)": //WinSCP (SCP)
+                        case "4": //WinSCP (SCP)
                             winscpprot = "scp://";
-                            goto case "WinSCP (SFTP)";
-                        case "WinSCP (FTP)": //WinSCP (FTP)
+                            goto case "3";
+                        case "5": //WinSCP (FTP)
                             winscpprot = "ftp://";
-                            goto case "WinSCP (SFTP)";
+                            goto case "3";
                         default: //PuTTY
                             string[] puttyextractpath = ExtractFilePath(Settings.Default.puttypath);
                             string puttypath = puttyextractpath[0];
@@ -1033,7 +1042,7 @@ namespace AutoPuTTY
             if (cbType.SelectedIndex > 0)
             {
                 XmlElement type = xmldoc.CreateElement("Type");
-                type.InnerText = cbType.SelectedIndex.ToString();
+                type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
                 newserver.AppendChild(type);
             }
 
@@ -1100,7 +1109,7 @@ namespace AutoPuTTY
                 if (cbType.SelectedIndex > 0)
                 {
                     XmlElement type = xmldoc.CreateElement("Type");
-                    type.InnerText = cbType.SelectedIndex.ToString();
+                    type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
                     newserver.AppendChild(type);
                 }
 

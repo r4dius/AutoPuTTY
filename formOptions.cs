@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -548,9 +549,7 @@ namespace AutoPuTTY
             }
 
             xmldoc.Save(file);
-#if DEBUG
-            MessageBox.Show(Convert.ToString(DateTime.Now - time));
-#endif
+            Debug.WriteLine("Encryption duration :" + (DateTime.Now - time));
         }
 
         private void ImportList(string f)
@@ -680,10 +679,8 @@ namespace AutoPuTTY
                 args = new string[] { "import", c_total + " / " + lines.Count, c_add.ToString(), c_replace.ToString(), c_skip.ToString() };
                 bwProgress.ReportProgress(((int)((double)c_total / (double)lines.Count * 100)), args);
             }
-#if DEBUG
-            MessageBox.Show(Convert.ToString(DateTime.Now - time));
-#endif
             xmldoc.Save(file);
+            Debug.WriteLine("Import duration :" + (DateTime.Now - time));
             if (!importcancel && (c_add + c_replace + c_skip) < 1) importempty = true;
         }
 
