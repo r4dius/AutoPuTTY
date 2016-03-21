@@ -29,7 +29,7 @@ namespace AutoPuTTY
         public const int MF_SEPARATOR = 0x800;
         public const int WM_SYSCOMMAND = 0x112;
         public const int SW_RESTORE = 9;
-        public string[] types = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SFTP)", "WinSCP (SCP)", "WinSCP (FTP)" };
+        public string[] types = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SCP)", "WinSCP (SFTP)", "WinSCP (FTP)" };
         public string[] _types;
         private const int tbfilterw = 145;
         private bool indexchanged;
