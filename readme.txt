@@ -4,7 +4,7 @@
 
 ---------------------------------------------
 
- Site : http://www.r4dius.net/autoputty/
+ Site : http://r4di.us/autoputty/
  Source : https://github.com/r4dius/AutoPuTTY
 
 ---------------------------------------------
@@ -53,11 +53,11 @@
 
  Source includes :
 
- - Icons from Mark James "Silk" icon set : http://www.famfamfam.com/lab/icons/silk/
  - a modified DPAPI crypto class (http://www.obviex.com/samples/dpapi.aspx) from Chip Forster : http://www.remkoweijnen.nl/blog/2007/10/18/how-rdp-passwords-are-encrypted/#comment-562
  - a VNC crypto class from VncSharp : http://cdot.senecac.on.ca/projects/vncsharp/
  - the FusionTrackBar class from FusionToolkit : http://transparenttrackbar.codeplex.com/
+ - code to set image opacity : http://www.geekpedia.com/code110_Set-Image-Opacity-Using-Csharp.html
 
 ---------------------------------------------
 
- Please report bugs or lost money to autoputty@r4dius.net
+ Please report bugs or lost money to autoputty@r4di.us

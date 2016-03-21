@@ -1338,12 +1338,12 @@ namespace AutoPuTTY
         {
             if (state)
             {
-                bEye.Image = Resources.iconeyeshow;
+                bEye.Image = ImageOpacity.Set(Resources.iconeyeshow, (float)0.50);
                 tbPass.UseSystemPasswordChar = true;
             }
             else
             {
-                bEye.Image = Resources.iconeyehide;
+                bEye.Image = ImageOpacity.Set(Resources.iconeyehide, (float)0.50);
                 tbPass.UseSystemPasswordChar = false;
             }
         }
@@ -1351,6 +1351,16 @@ namespace AutoPuTTY
         private void bEye_Click(object sender, EventArgs e)
         {
             TooglePassword(!tbPass.UseSystemPasswordChar);
+        }
+
+        private void bEye_MouseEnter(object sender, EventArgs e)
+        {
+            bEye.Image = ImageOpacity.Set(bEye.Image, (float)0.50);
+        }
+
+        private void bEye_MouseLeave(object sender, EventArgs e)
+        {
+            bEye.Image = (tbPass.UseSystemPasswordChar ? Resources.iconeyeshow : Resources.iconeyehide);
         }
 
         private void liOptions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1387,7 +1397,7 @@ namespace AutoPuTTY
         }
 
         // "search" form change close button image on mouse hover
-        private void bClose_MouseHover(object sender, EventArgs e)
+        private void bClose_MouseEnter(object sender, EventArgs e)
         {
             bClose.Image = Resources.closeh;
         }
