@@ -76,6 +76,9 @@ namespace AutoPuTTY
             this.lVNCPath = new System.Windows.Forms.Label();
             this.bVNCPath = new System.Windows.Forms.Button();
             this.pOWinSCP = new System.Windows.Forms.Panel();
+            this.lSep19 = new System.Windows.Forms.Label();
+            this.lWSCPOther = new System.Windows.Forms.Label();
+            this.cbWSCPPassive = new System.Windows.Forms.CheckBox();
             this.lSep18 = new System.Windows.Forms.Label();
             this.cbWSCPKey = new System.Windows.Forms.CheckBox();
             this.lSep17 = new System.Windows.Forms.Label();
@@ -96,7 +99,6 @@ namespace AutoPuTTY
             this.lGImport = new System.Windows.Forms.Label();
             this.bGImport = new System.Windows.Forms.Button();
             this.lSep4 = new System.Windows.Forms.Label();
-            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.cbGMulti = new System.Windows.Forms.CheckBox();
             this.tpGPass = new System.Windows.Forms.TableLayoutPanel();
             this.pGApply = new System.Windows.Forms.Panel();
@@ -117,9 +119,7 @@ namespace AutoPuTTY
             this.tabWSCP = new System.Windows.Forms.TabPage();
             this.bwProgress = new System.ComponentModel.BackgroundWorker();
             this.bOK = new System.Windows.Forms.Button();
-            this.lSep19 = new System.Windows.Forms.Label();
-            this.lWSCPOther = new System.Windows.Forms.Label();
-            this.cbWSCPPassive = new System.Windows.Forms.CheckBox();
+            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.pOPuTTY.SuspendLayout();
             this.pORD.SuspendLayout();
             this.pOVNC.SuspendLayout();
@@ -127,7 +127,6 @@ namespace AutoPuTTY
             this.tabs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pOGeneral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.tpGPass.SuspendLayout();
             this.pGApply.SuspendLayout();
             this.pGPassword.SuspendLayout();
@@ -136,6 +135,7 @@ namespace AutoPuTTY
             this.tabRD.SuspendLayout();
             this.tabVNC.SuspendLayout();
             this.tabWSCP.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.SuspendLayout();
             // 
             // pOPuTTY
@@ -457,7 +457,7 @@ namespace AutoPuTTY
             // lRDKeep
             // 
             this.lRDKeep.AutoSize = true;
-            this.lRDKeep.Location = new System.Drawing.Point(2, 42);
+            this.lRDKeep.Location = new System.Drawing.Point(3, 42);
             this.lRDKeep.Name = "lRDKeep";
             this.lRDKeep.Size = new System.Drawing.Size(237, 13);
             this.lRDKeep.TabIndex = 4;
@@ -563,7 +563,7 @@ namespace AutoPuTTY
             // lVNCOther
             // 
             this.lVNCOther.AutoSize = true;
-            this.lVNCOther.Location = new System.Drawing.Point(2, 81);
+            this.lVNCOther.Location = new System.Drawing.Point(3, 81);
             this.lVNCOther.Name = "lVNCOther";
             this.lVNCOther.Size = new System.Drawing.Size(33, 13);
             this.lVNCOther.TabIndex = 8;
@@ -582,7 +582,7 @@ namespace AutoPuTTY
             // lVNCFiles
             // 
             this.lVNCFiles.AutoSize = true;
-            this.lVNCFiles.Location = new System.Drawing.Point(2, 42);
+            this.lVNCFiles.Location = new System.Drawing.Point(3, 42);
             this.lVNCFiles.Name = "lVNCFiles";
             this.lVNCFiles.Size = new System.Drawing.Size(240, 13);
             this.lVNCFiles.TabIndex = 4;
@@ -703,6 +703,36 @@ namespace AutoPuTTY
             this.pOWinSCP.Name = "pOWinSCP";
             this.pOWinSCP.Size = new System.Drawing.Size(286, 185);
             this.pOWinSCP.TabIndex = 0;
+            // 
+            // lSep19
+            // 
+            this.lSep19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep19.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lSep19.Location = new System.Drawing.Point(2, 95);
+            this.lSep19.Name = "lSep19";
+            this.lSep19.Size = new System.Drawing.Size(283, 2);
+            this.lSep19.TabIndex = 17;
+            // 
+            // lWSCPOther
+            // 
+            this.lWSCPOther.AutoSize = true;
+            this.lWSCPOther.Location = new System.Drawing.Point(3, 81);
+            this.lWSCPOther.Name = "lWSCPOther";
+            this.lWSCPOther.Size = new System.Drawing.Size(33, 13);
+            this.lWSCPOther.TabIndex = 16;
+            this.lWSCPOther.Text = "Other";
+            // 
+            // cbWSCPPassive
+            // 
+            this.cbWSCPPassive.AutoSize = true;
+            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 97);
+            this.cbWSCPPassive.Name = "cbWSCPPassive";
+            this.cbWSCPPassive.Size = new System.Drawing.Size(143, 17);
+            this.cbWSCPPassive.TabIndex = 15;
+            this.cbWSCPPassive.Text = "Passive mode (FTP only)";
+            this.cbWSCPPassive.UseVisualStyleBackColor = true;
+            this.cbWSCPPassive.CheckedChanged += new System.EventHandler(this.cbWSCPPassive_CheckedChanged);
             // 
             // lSep18
             // 
@@ -937,23 +967,6 @@ namespace AutoPuTTY
             this.lSep4.Size = new System.Drawing.Size(283, 2);
             this.lSep4.TabIndex = 2;
             // 
-            // slGMulti
-            // 
-            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.slGMulti.AutoSize = false;
-            this.slGMulti.Enabled = false;
-            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
-            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
-            this.slGMulti.Maximum = 40;
-            this.slGMulti.Minimum = 10;
-            this.slGMulti.Name = "slGMulti";
-            this.slGMulti.Size = new System.Drawing.Size(292, 20);
-            this.slGMulti.TabIndex = 3;
-            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.slGMulti.Value = 15;
-            this.slGMulti.Scroll += new System.EventHandler(this.slMulti_Scroll);
-            // 
             // cbGMulti
             // 
             this.cbGMulti.AutoSize = true;
@@ -1185,35 +1198,22 @@ namespace AutoPuTTY
             this.bOK.Text = "OK";
             this.bOK.UseVisualStyleBackColor = true;
             // 
-            // lSep19
+            // slGMulti
             // 
-            this.lSep19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep19.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep19.Location = new System.Drawing.Point(2, 95);
-            this.lSep19.Name = "lSep19";
-            this.lSep19.Size = new System.Drawing.Size(283, 2);
-            this.lSep19.TabIndex = 17;
-            // 
-            // lWSCPOther
-            // 
-            this.lWSCPOther.AutoSize = true;
-            this.lWSCPOther.Location = new System.Drawing.Point(3, 81);
-            this.lWSCPOther.Name = "lWSCPOther";
-            this.lWSCPOther.Size = new System.Drawing.Size(33, 13);
-            this.lWSCPOther.TabIndex = 16;
-            this.lWSCPOther.Text = "Other";
-            // 
-            // cbWSCPPassive
-            // 
-            this.cbWSCPPassive.AutoSize = true;
-            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 97);
-            this.cbWSCPPassive.Name = "cbWSCPPassive";
-            this.cbWSCPPassive.Size = new System.Drawing.Size(143, 17);
-            this.cbWSCPPassive.TabIndex = 15;
-            this.cbWSCPPassive.Text = "Passive mode (FTP only)";
-            this.cbWSCPPassive.UseVisualStyleBackColor = true;
-            this.cbWSCPPassive.CheckedChanged += new System.EventHandler(this.cbWSCPPassive_CheckedChanged);
+            this.slGMulti.AutoSize = false;
+            this.slGMulti.Enabled = false;
+            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
+            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
+            this.slGMulti.Maximum = 40;
+            this.slGMulti.Minimum = 10;
+            this.slGMulti.Name = "slGMulti";
+            this.slGMulti.Size = new System.Drawing.Size(292, 20);
+            this.slGMulti.TabIndex = 3;
+            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.slGMulti.Value = 15;
+            this.slGMulti.Scroll += new System.EventHandler(this.slMulti_Scroll);
             // 
             // formOptions
             // 
@@ -1242,7 +1242,6 @@ namespace AutoPuTTY
             this.tabGeneral.ResumeLayout(false);
             this.pOGeneral.ResumeLayout(false);
             this.pOGeneral.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.tpGPass.ResumeLayout(false);
             this.tpGPass.PerformLayout();
             this.pGApply.ResumeLayout(false);
@@ -1254,6 +1253,7 @@ namespace AutoPuTTY
             this.tabRD.ResumeLayout(false);
             this.tabVNC.ResumeLayout(false);
             this.tabWSCP.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.ResumeLayout(false);
 
         }

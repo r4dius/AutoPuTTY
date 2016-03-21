@@ -102,6 +102,20 @@ namespace AutoPuTTY.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap iconeyehide {
+            get {
+                object obj = ResourceManager.GetObject("iconeyehide", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap iconeyeshow {
+            get {
+                object obj = ResourceManager.GetObject("iconeyeshow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap iconmodify {
             get {
                 object obj = ResourceManager.GetObject("iconmodify", resourceCulture);

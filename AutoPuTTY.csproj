@@ -194,6 +194,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\autoputty.ico" />
+    <Content Include="Resources\iconeyehide.png" />
+    <Content Include="Resources\iconeyeshow.png" />
     <None Include="Resources\close.png" />
     <None Include="Resources\closeh.png" />
     <None Include="Resources\closed.png" />

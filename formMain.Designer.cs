@@ -31,23 +31,18 @@ namespace AutoPuTTY
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formMain));
             this.tbPass = new System.Windows.Forms.TextBox();
-            this.liShow = new System.Windows.Forms.LinkLabel();
             this.pConfig = new System.Windows.Forms.Panel();
             this.lSep5 = new System.Windows.Forms.Label();
             this.lSep4 = new System.Windows.Forms.Label();
             this.lSep3 = new System.Windows.Forms.Label();
             this.lSep2 = new System.Windows.Forms.Label();
             this.lSep1 = new System.Windows.Forms.Label();
-            this.bOptions = new System.Windows.Forms.Button();
             this.lHost = new System.Windows.Forms.Label();
             this.cbType = new System.Windows.Forms.ComboBox();
             this.tbUser = new System.Windows.Forms.TextBox();
             this.tbHost = new System.Windows.Forms.TextBox();
             this.tbName = new System.Windows.Forms.TextBox();
             this.lType = new System.Windows.Forms.Label();
-            this.bDelete = new System.Windows.Forms.Button();
-            this.bAdd = new System.Windows.Forms.Button();
-            this.bModify = new System.Windows.Forms.Button();
             this.lPass = new System.Windows.Forms.Label();
             this.lUser = new System.Windows.Forms.Label();
             this.lName = new System.Windows.Forms.Label();
@@ -61,16 +56,22 @@ namespace AutoPuTTY
             this.pFind = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.cbCase = new System.Windows.Forms.CheckBox();
-            this.bClose = new System.Windows.Forms.PictureBox();
             this.tbFilter = new System.Windows.Forms.TextBox();
             this.lbListSep = new System.Windows.Forms.TableLayoutPanel();
             this.lbList = new System.Windows.Forms.ListBox();
+            this.bClose = new System.Windows.Forms.PictureBox();
+            this.bEye = new System.Windows.Forms.PictureBox();
+            this.bOptions = new System.Windows.Forms.Button();
+            this.bDelete = new System.Windows.Forms.Button();
+            this.bAdd = new System.Windows.Forms.Button();
+            this.bModify = new System.Windows.Forms.Button();
             this.pConfig.SuspendLayout();
             this.tlMain.SuspendLayout();
             this.tlLeft.SuspendLayout();
             this.pFind.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bClose)).BeginInit();
             this.lbListSep.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bClose)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bEye)).BeginInit();
             this.SuspendLayout();
             // 
             // tbPass
@@ -82,29 +83,16 @@ namespace AutoPuTTY
             this.tbPass.UseSystemPasswordChar = true;
             this.tbPass.TextChanged += new System.EventHandler(this.tbPass_TextChanged);
             // 
-            // liShow
-            // 
-            this.liShow.ActiveLinkColor = System.Drawing.Color.Black;
-            this.liShow.AutoSize = true;
-            this.liShow.ForeColor = System.Drawing.Color.White;
-            this.liShow.Location = new System.Drawing.Point(93, 120);
-            this.liShow.Name = "liShow";
-            this.liShow.Size = new System.Drawing.Size(34, 13);
-            this.liShow.TabIndex = 11;
-            this.liShow.TabStop = true;
-            this.liShow.Text = "Show";
-            this.liShow.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liShow_LinkClicked);
-            // 
             // pConfig
             // 
             this.pConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pConfig.Controls.Add(this.bEye);
             this.pConfig.Controls.Add(this.lSep5);
             this.pConfig.Controls.Add(this.lSep4);
             this.pConfig.Controls.Add(this.lSep3);
             this.pConfig.Controls.Add(this.lSep2);
             this.pConfig.Controls.Add(this.lSep1);
             this.pConfig.Controls.Add(this.bOptions);
-            this.pConfig.Controls.Add(this.liShow);
             this.pConfig.Controls.Add(this.lHost);
             this.pConfig.Controls.Add(this.cbType);
             this.pConfig.Controls.Add(this.tbPass);
@@ -178,20 +166,6 @@ namespace AutoPuTTY
             this.lSep1.Size = new System.Drawing.Size(126, 2);
             this.lSep1.TabIndex = 2;
             // 
-            // bOptions
-            // 
-            this.bOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bOptions.Image = global::AutoPuTTY.Properties.Resources.iconoptions;
-            this.bOptions.Location = new System.Drawing.Point(97, 198);
-            this.bOptions.Margin = new System.Windows.Forms.Padding(0);
-            this.bOptions.Name = "bOptions";
-            this.bOptions.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bOptions.Size = new System.Drawing.Size(32, 30);
-            this.bOptions.TabIndex = 20;
-            this.bOptions.UseCompatibleTextRendering = true;
-            this.bOptions.UseVisualStyleBackColor = true;
-            this.bOptions.Click += new System.EventHandler(this.bOptions_Click);
-            // 
             // lHost
             // 
             this.lHost.AutoSize = true;
@@ -243,51 +217,6 @@ namespace AutoPuTTY
             this.lType.Size = new System.Drawing.Size(31, 13);
             this.lType.TabIndex = 14;
             this.lType.Text = "Type";
-            // 
-            // bDelete
-            // 
-            this.bDelete.Enabled = false;
-            this.bDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bDelete.Image = global::AutoPuTTY.Properties.Resources.icondelete;
-            this.bDelete.Location = new System.Drawing.Point(65, 198);
-            this.bDelete.Margin = new System.Windows.Forms.Padding(0);
-            this.bDelete.Name = "bDelete";
-            this.bDelete.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bDelete.Size = new System.Drawing.Size(32, 30);
-            this.bDelete.TabIndex = 19;
-            this.bDelete.UseCompatibleTextRendering = true;
-            this.bDelete.UseVisualStyleBackColor = true;
-            this.bDelete.Click += new System.EventHandler(this.bDelete_Click);
-            // 
-            // bAdd
-            // 
-            this.bAdd.Enabled = false;
-            this.bAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bAdd.Image = global::AutoPuTTY.Properties.Resources.iconadd;
-            this.bAdd.Location = new System.Drawing.Point(33, 198);
-            this.bAdd.Margin = new System.Windows.Forms.Padding(0);
-            this.bAdd.Name = "bAdd";
-            this.bAdd.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bAdd.Size = new System.Drawing.Size(32, 30);
-            this.bAdd.TabIndex = 18;
-            this.bAdd.UseCompatibleTextRendering = true;
-            this.bAdd.UseVisualStyleBackColor = true;
-            this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
-            // 
-            // bModify
-            // 
-            this.bModify.Enabled = false;
-            this.bModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bModify.Image = global::AutoPuTTY.Properties.Resources.iconmodify;
-            this.bModify.Location = new System.Drawing.Point(1, 198);
-            this.bModify.Margin = new System.Windows.Forms.Padding(0);
-            this.bModify.Name = "bModify";
-            this.bModify.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bModify.Size = new System.Drawing.Size(32, 30);
-            this.bModify.TabIndex = 17;
-            this.bModify.UseCompatibleTextRendering = true;
-            this.bModify.UseVisualStyleBackColor = true;
-            this.bModify.Click += new System.EventHandler(this.bModify_Click);
             // 
             // lPass
             // 
@@ -415,21 +344,6 @@ namespace AutoPuTTY
             this.cbCase.UseVisualStyleBackColor = true;
             this.cbCase.CheckedChanged += new System.EventHandler(this.cbCase_CheckedChanged);
             // 
-            // bClose
-            // 
-            this.bClose.BackColor = System.Drawing.Color.Transparent;
-            this.bClose.Image = global::AutoPuTTY.Properties.Resources.close;
-            this.bClose.Location = new System.Drawing.Point(2, 3);
-            this.bClose.Margin = new System.Windows.Forms.Padding(0);
-            this.bClose.Name = "bClose";
-            this.bClose.Size = new System.Drawing.Size(20, 20);
-            this.bClose.TabIndex = 6;
-            this.bClose.TabStop = false;
-            this.bClose.Click += new System.EventHandler(this.bClose_Click);
-            this.bClose.MouseDown += new System.Windows.Forms.MouseEventHandler(this.bClose_MouseDown);
-            this.bClose.MouseLeave += new System.EventHandler(this.bClose_MouseLeave);
-            this.bClose.MouseHover += new System.EventHandler(this.bClose_MouseHover);
-            // 
             // tbFilter
             // 
             this.tbFilter.Location = new System.Drawing.Point(24, 3);
@@ -481,6 +395,92 @@ namespace AutoPuTTY
             this.lbList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbList_DoubleClick);
             this.lbList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbList_MouseClick);
             // 
+            // bClose
+            // 
+            this.bClose.BackColor = System.Drawing.Color.Transparent;
+            this.bClose.Image = global::AutoPuTTY.Properties.Resources.close;
+            this.bClose.Location = new System.Drawing.Point(2, 3);
+            this.bClose.Margin = new System.Windows.Forms.Padding(0);
+            this.bClose.Name = "bClose";
+            this.bClose.Size = new System.Drawing.Size(20, 20);
+            this.bClose.TabIndex = 6;
+            this.bClose.TabStop = false;
+            this.bClose.Click += new System.EventHandler(this.bClose_Click);
+            this.bClose.MouseDown += new System.Windows.Forms.MouseEventHandler(this.bClose_MouseDown);
+            this.bClose.MouseLeave += new System.EventHandler(this.bClose_MouseLeave);
+            this.bClose.MouseHover += new System.EventHandler(this.bClose_MouseHover);
+            // 
+            // bEye
+            // 
+            this.bEye.BackColor = System.Drawing.Color.Transparent;
+            this.bEye.Image = global::AutoPuTTY.Properties.Resources.iconeyeshow;
+            this.bEye.Location = new System.Drawing.Point(106, 119);
+            this.bEye.Margin = new System.Windows.Forms.Padding(0);
+            this.bEye.Name = "bEye";
+            this.bEye.Size = new System.Drawing.Size(22, 15);
+            this.bEye.TabIndex = 21;
+            this.bEye.TabStop = false;
+            this.bEye.Click += new System.EventHandler(this.bEye_Click);
+            // 
+            // bOptions
+            // 
+            this.bOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bOptions.Image = global::AutoPuTTY.Properties.Resources.iconoptions;
+            this.bOptions.Location = new System.Drawing.Point(97, 198);
+            this.bOptions.Margin = new System.Windows.Forms.Padding(0);
+            this.bOptions.Name = "bOptions";
+            this.bOptions.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bOptions.Size = new System.Drawing.Size(32, 30);
+            this.bOptions.TabIndex = 20;
+            this.bOptions.UseCompatibleTextRendering = true;
+            this.bOptions.UseVisualStyleBackColor = true;
+            this.bOptions.Click += new System.EventHandler(this.bOptions_Click);
+            // 
+            // bDelete
+            // 
+            this.bDelete.Enabled = false;
+            this.bDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bDelete.Image = global::AutoPuTTY.Properties.Resources.icondelete;
+            this.bDelete.Location = new System.Drawing.Point(65, 198);
+            this.bDelete.Margin = new System.Windows.Forms.Padding(0);
+            this.bDelete.Name = "bDelete";
+            this.bDelete.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bDelete.Size = new System.Drawing.Size(32, 30);
+            this.bDelete.TabIndex = 19;
+            this.bDelete.UseCompatibleTextRendering = true;
+            this.bDelete.UseVisualStyleBackColor = true;
+            this.bDelete.Click += new System.EventHandler(this.bDelete_Click);
+            // 
+            // bAdd
+            // 
+            this.bAdd.Enabled = false;
+            this.bAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bAdd.Image = global::AutoPuTTY.Properties.Resources.iconadd;
+            this.bAdd.Location = new System.Drawing.Point(33, 198);
+            this.bAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.bAdd.Name = "bAdd";
+            this.bAdd.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bAdd.Size = new System.Drawing.Size(32, 30);
+            this.bAdd.TabIndex = 18;
+            this.bAdd.UseCompatibleTextRendering = true;
+            this.bAdd.UseVisualStyleBackColor = true;
+            this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
+            // 
+            // bModify
+            // 
+            this.bModify.Enabled = false;
+            this.bModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bModify.Image = global::AutoPuTTY.Properties.Resources.iconmodify;
+            this.bModify.Location = new System.Drawing.Point(1, 198);
+            this.bModify.Margin = new System.Windows.Forms.Padding(0);
+            this.bModify.Name = "bModify";
+            this.bModify.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bModify.Size = new System.Drawing.Size(32, 30);
+            this.bModify.TabIndex = 17;
+            this.bModify.UseCompatibleTextRendering = true;
+            this.bModify.UseVisualStyleBackColor = true;
+            this.bModify.Click += new System.EventHandler(this.bModify_Click);
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -502,8 +502,9 @@ namespace AutoPuTTY
             this.tlLeft.ResumeLayout(false);
             this.pFind.ResumeLayout(false);
             this.pFind.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bClose)).EndInit();
             this.lbListSep.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bClose)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bEye)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -519,7 +520,6 @@ namespace AutoPuTTY
         private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.TextBox tbHost;
         private System.Windows.Forms.TextBox tbUser;
-        private System.Windows.Forms.LinkLabel liShow;
         private System.Windows.Forms.Label lUser;
         private System.Windows.Forms.Label lPass;
         public System.Windows.Forms.NotifyIcon notifyIcon;
@@ -545,6 +545,7 @@ namespace AutoPuTTY
         private System.Windows.Forms.TableLayoutPanel lbListSep;
         public System.Windows.Forms.ListBox lbList;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox bEye;
     }
 }
 

@@ -1338,18 +1338,17 @@ namespace AutoPuTTY
         {
             if (state)
             {
-                liShow.Text = "Show";
+                bEye.Image = Resources.iconeyeshow;
                 tbPass.UseSystemPasswordChar = true;
             }
             else
             {
-                liShow.Text = "Hide";
+                bEye.Image = Resources.iconeyehide;
                 tbPass.UseSystemPasswordChar = false;
             }
-            liShow.Location = new Point(pConfig.Width - liShow.Width - 3, liShow.Location.Y);
         }
 
-        private void liShow_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void bEye_Click(object sender, EventArgs e)
         {
             TooglePassword(!tbPass.UseSystemPasswordChar);
         }
