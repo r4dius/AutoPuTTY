@@ -112,6 +112,7 @@ namespace AutoPuTTY
             if (XmlConfigGet("winscp") != "") Settings.Default.winscppath = XmlConfigGet("winscp");
             if (XmlConfigGet("winscpkey").ToLower() == "true") Settings.Default.winscpkey = true;
             if (XmlConfigGet("winscpkeyfile") != "") Settings.Default.winscpkeyfile = XmlConfigGet("winscpkeyfile");
+            if (XmlConfigGet("winscppassive").ToLower() == "false") Settings.Default.winscppassive = false;
 
             optionsform = new formOptions(this);
 
@@ -834,8 +835,9 @@ namespace AutoPuTTY
                                 }
                                 if (host != "") myProc.StartInfo.Arguments += HttpUtility.UrlEncode(host);
                                 if (port != "") myProc.StartInfo.Arguments += ":" + port;
+                                if (winscpprot == "ftp://") myProc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
                                 if (Settings.Default.winscpkey && Settings.Default.winscpkeyfile != "") myProc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfile + "\"";
-                                //MessageBox.Show(this, myProc.StartInfo.Arguments);
+                                Debug.WriteLine(myProc.StartInfo.Arguments);
                                 if (winscpargs != "") myProc.StartInfo.Arguments += " " + winscpargs;
                                 try
                                 {

@@ -53,6 +53,7 @@ namespace AutoPuTTY
                 tbWSCPPath.Text = Settings.Default.winscppath;
                 cbWSCPKey.Checked = Settings.Default.winscpkey;
                 tbWSCPKey.Text = Settings.Default.winscpkeyfile;
+                cbWSCPPassive.Checked = Settings.Default.winscppassive;
 
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
                 cbGMulti.Checked = Settings.Default.multicolumn;
@@ -379,6 +380,12 @@ namespace AutoPuTTY
             }
         }
 
+        private void cbWSCPPassive_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.winscppassive = cbWSCPPassive.Checked;
+            if (!firstread) mainform.XmlConfigSet("winscppassive", Settings.Default.winscppassive.ToString());
+        }
+
         private void cbMulti_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.multicolumn = cbGMulti.Checked;
@@ -549,7 +556,9 @@ namespace AutoPuTTY
             }
 
             xmldoc.Save(file);
+#if DEBUG
             Debug.WriteLine("Encryption duration :" + (DateTime.Now - time));
+#endif
         }
 
         private void ImportList(string f)
@@ -680,7 +689,9 @@ namespace AutoPuTTY
                 bwProgress.ReportProgress(((int)((double)c_total / (double)lines.Count * 100)), args);
             }
             xmldoc.Save(file);
+#if DEBUG
             Debug.WriteLine("Import duration :" + (DateTime.Now - time));
+#endif
             if (!importcancel && (c_add + c_replace + c_skip) < 1) importempty = true;
         }
 

@@ -364,5 +364,17 @@ namespace AutoPuTTY.Properties {
                 this["rdspan"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool winscppassive {
+            get {
+                return ((bool)(this["winscppassive"]));
+            }
+            set {
+                this["winscppassive"] = value;
+            }
+        }
     }
 }
