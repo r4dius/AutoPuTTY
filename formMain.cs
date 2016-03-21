@@ -163,7 +163,9 @@ namespace AutoPuTTY
 
             AutoSize = false;
             MinimumSize = Size;
+#if DEBUG
             Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
+#endif
         }
 
         [DllImport("user32.dll")]
