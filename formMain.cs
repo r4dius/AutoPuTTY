@@ -863,8 +863,10 @@ namespace AutoPuTTY
                             string[] puttyextractpath = ExtractFilePath(Settings.Default.puttypath);
                             string puttypath = puttyextractpath[0];
                             string puttyargs = puttyextractpath[1];
-                            string[] passs = { "\\", "\"" };
-                            string[] passr = { "\\\\", "\\\"" };
+                            // for some reason you only have escape \ if it's followed by "
+                            // will "fix" up to 3 \ in a password like \\\", then screw you with your maniac passwords
+                            string[] passs = { "\"", "\\\\\"", "\\\\\\\\\"", "\\\\\\\\\\\\\"", };
+                            string[] passr = { "\\\"", "\\\\\\\"", "\\\\\\\\\\\"", "\\\\\\\\\\\\\\\"", };
 
                             if (File.Exists(puttypath))
                             {
