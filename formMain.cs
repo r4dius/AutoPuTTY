@@ -798,7 +798,10 @@ namespace AutoPuTTY
                                 if (MessageBox.Show(this, "Could not find file \"" + vncpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bVNCPath_Click(type);
                             }
                             break;
-                        case "3": //WinSCP (SFTP)
+                        case "3": //WinSCP (SCP)
+                            winscpprot = "scp://";
+                            goto case "4";
+                        case "4": //WinSCP (SFTP)
                             string[] winscpextractpath = ExtractFilePath(Settings.Default.winscppath);
                             string winscppath = winscpextractpath[0];
                             string winscpargs = winscpextractpath[1];
@@ -826,7 +829,7 @@ namespace AutoPuTTY
                                 myProc.StartInfo.Arguments = winscpprot;
                                 if (_user != "")
                                 {
-                                    string[] s = {"%", " ", "+", "/", "@", "\"", ":", ";"};
+                                    string[] s = { "%", " ", "+", "/", "@", "\"", ":", ";" };
                                     _user = ReplaceU(s, _user);
                                     _pass = ReplaceU(s, _pass);
                                     myProc.StartInfo.Arguments += _user;
@@ -853,12 +856,9 @@ namespace AutoPuTTY
                                 if (MessageBox.Show(this, "Could not find file \"" + winscppath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bWSCPPath_Click(type);
                             }
                             break;
-                        case "4": //WinSCP (SCP)
-                            winscpprot = "scp://";
-                            goto case "3";
                         case "5": //WinSCP (FTP)
                             winscpprot = "ftp://";
-                            goto case "3";
+                            goto case "4";
                         default: //PuTTY
                             string[] puttyextractpath = ExtractFilePath(Settings.Default.puttypath);
                             string puttypath = puttyextractpath[0];
