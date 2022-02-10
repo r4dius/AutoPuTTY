@@ -31,8 +31,9 @@
  - Name is unique
  - Don't forget the connection "Type", default is PuTTY
  - You can import server lists from the Options / General menu ("wheel" button)
- - SSH jump can be used by adding proxy syntax at beggining of the username as : proxy_username@proxy_host_or_ip:proxy_port#username
-   proxy_port is optional, will use port 22 as default
+ - SSH jump can be used by adding proxy syntax at beggining of the username as :
+     proxy_username@proxy_host_or_ip:proxy_port#username
+   ":proxy_port" is optional, will use port 22 as default
 
  Connect to a server :
  - Double clicking a server will connect using the associated "Type"
