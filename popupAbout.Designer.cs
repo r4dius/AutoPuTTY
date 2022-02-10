@@ -73,8 +73,8 @@ namespace AutoPuTTY
             // 
             // piAbout
             // 
-            this.piAbout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.piAbout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.piAbout.Image = global::AutoPuTTY.Properties.Resources.about;
             this.piAbout.InitialImage = null;
             this.piAbout.Location = new System.Drawing.Point(0, 0);

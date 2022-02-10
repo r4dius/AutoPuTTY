@@ -90,15 +90,18 @@ namespace AutoPuTTY
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.pOGeneral = new System.Windows.Forms.Panel();
+            this.cbGMinimize = new System.Windows.Forms.CheckBox();
+            this.cbGPosition = new System.Windows.Forms.CheckBox();
+            this.cbGSize = new System.Windows.Forms.CheckBox();
             this.lSep6 = new System.Windows.Forms.Label();
             this.lGOther = new System.Windows.Forms.Label();
-            this.cbGMinimize = new System.Windows.Forms.CheckBox();
             this.cbGSkip = new System.Windows.Forms.CheckBox();
             this.cbGReplace = new System.Windows.Forms.CheckBox();
             this.lSep5 = new System.Windows.Forms.Label();
             this.lGImport = new System.Windows.Forms.Label();
             this.bGImport = new System.Windows.Forms.Button();
             this.lSep4 = new System.Windows.Forms.Label();
+            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.cbGMulti = new System.Windows.Forms.CheckBox();
             this.tpGPass = new System.Windows.Forms.TableLayoutPanel();
             this.pGApply = new System.Windows.Forms.Panel();
@@ -119,7 +122,6 @@ namespace AutoPuTTY
             this.tabWSCP = new System.Windows.Forms.TabPage();
             this.bwProgress = new System.ComponentModel.BackgroundWorker();
             this.bOK = new System.Windows.Forms.Button();
-            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.pOPuTTY.SuspendLayout();
             this.pORD.SuspendLayout();
             this.pOVNC.SuspendLayout();
@@ -127,6 +129,7 @@ namespace AutoPuTTY
             this.tabs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pOGeneral.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.tpGPass.SuspendLayout();
             this.pGApply.SuspendLayout();
             this.pGPassword.SuspendLayout();
@@ -135,14 +138,13 @@ namespace AutoPuTTY
             this.tabRD.SuspendLayout();
             this.tabVNC.SuspendLayout();
             this.tabWSCP.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.SuspendLayout();
             // 
             // pOPuTTY
             // 
-            this.pOPuTTY.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pOPuTTY.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pOPuTTY.BackColor = System.Drawing.Color.Transparent;
             this.pOPuTTY.Controls.Add(this.label2);
             this.pOPuTTY.Controls.Add(this.label1);
@@ -161,13 +163,13 @@ namespace AutoPuTTY
             this.pOPuTTY.Controls.Add(this.tbPuTTYPath);
             this.pOPuTTY.Location = new System.Drawing.Point(4, 4);
             this.pOPuTTY.Name = "pOPuTTY";
-            this.pOPuTTY.Size = new System.Drawing.Size(286, 185);
+            this.pOPuTTY.Size = new System.Drawing.Size(286, 186);
             this.pOPuTTY.TabIndex = 0;
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label2.Location = new System.Drawing.Point(2, 134);
             this.label2.Name = "label2";
@@ -210,8 +212,8 @@ namespace AutoPuTTY
             // 
             // lSep8
             // 
-            this.lSep8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep8.Location = new System.Drawing.Point(2, 56);
             this.lSep8.Name = "lSep8";
@@ -230,8 +232,8 @@ namespace AutoPuTTY
             // 
             // tbPuTTYExecute
             // 
-            this.tbPuTTYExecute.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPuTTYExecute.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPuTTYExecute.Enabled = false;
             this.tbPuTTYExecute.Location = new System.Drawing.Point(2, 59);
             this.tbPuTTYExecute.Name = "tbPuTTYExecute";
@@ -242,8 +244,8 @@ namespace AutoPuTTY
             // 
             // lSep9
             // 
-            this.lSep9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep9.Location = new System.Drawing.Point(2, 95);
             this.lSep9.Name = "lSep9";
@@ -263,8 +265,8 @@ namespace AutoPuTTY
             // 
             // lSep7
             // 
-            this.lSep7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep7.Location = new System.Drawing.Point(2, 17);
             this.lSep7.Name = "lSep7";
@@ -296,8 +298,8 @@ namespace AutoPuTTY
             // 
             // tbPuTTYKey
             // 
-            this.tbPuTTYKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPuTTYKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPuTTYKey.Enabled = false;
             this.tbPuTTYKey.Location = new System.Drawing.Point(2, 98);
             this.tbPuTTYKey.Name = "tbPuTTYKey";
@@ -321,8 +323,8 @@ namespace AutoPuTTY
             // 
             // tbPuTTYPath
             // 
-            this.tbPuTTYPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPuTTYPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPuTTYPath.Location = new System.Drawing.Point(2, 20);
             this.tbPuTTYPath.Name = "tbPuTTYPath";
             this.tbPuTTYPath.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -332,9 +334,9 @@ namespace AutoPuTTY
             // 
             // pORD
             // 
-            this.pORD.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pORD.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pORD.Controls.Add(this.cbRDSpan);
             this.pORD.Controls.Add(this.cbRDDrives);
             this.pORD.Controls.Add(this.cbRDAdmin);
@@ -391,8 +393,8 @@ namespace AutoPuTTY
             // 
             // lSep13
             // 
-            this.lSep13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep13.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep13.Location = new System.Drawing.Point(2, 135);
             this.lSep13.Name = "lSep13";
@@ -410,8 +412,8 @@ namespace AutoPuTTY
             // 
             // lSep12
             // 
-            this.lSep12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep12.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep12.Location = new System.Drawing.Point(2, 95);
             this.lSep12.Name = "lSep12";
@@ -429,8 +431,8 @@ namespace AutoPuTTY
             // 
             // cbRDSize
             // 
-            this.cbRDSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbRDSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbRDSize.FormattingEnabled = true;
             this.cbRDSize.Items.AddRange(new object[] {
             "",
@@ -465,8 +467,8 @@ namespace AutoPuTTY
             // 
             // tbRDKeep
             // 
-            this.tbRDKeep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbRDKeep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbRDKeep.Location = new System.Drawing.Point(2, 59);
             this.tbRDKeep.Name = "tbRDKeep";
             this.tbRDKeep.Size = new System.Drawing.Size(232, 20);
@@ -488,8 +490,8 @@ namespace AutoPuTTY
             // 
             // lSep11
             // 
-            this.lSep11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep11.Location = new System.Drawing.Point(2, 56);
             this.lSep11.Name = "lSep11";
@@ -498,8 +500,8 @@ namespace AutoPuTTY
             // 
             // lSep10
             // 
-            this.lSep10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep10.Location = new System.Drawing.Point(2, 17);
             this.lSep10.Name = "lSep10";
@@ -508,8 +510,8 @@ namespace AutoPuTTY
             // 
             // tbRDPath
             // 
-            this.tbRDPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbRDPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbRDPath.Location = new System.Drawing.Point(2, 20);
             this.tbRDPath.Name = "tbRDPath";
             this.tbRDPath.Size = new System.Drawing.Size(232, 20);
@@ -540,9 +542,9 @@ namespace AutoPuTTY
             // 
             // pOVNC
             // 
-            this.pOVNC.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pOVNC.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pOVNC.Controls.Add(this.lVNCOther);
             this.pOVNC.Controls.Add(this.lSep16);
             this.pOVNC.Controls.Add(this.lVNCFiles);
@@ -571,8 +573,8 @@ namespace AutoPuTTY
             // 
             // lSep16
             // 
-            this.lSep16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep16.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep16.Location = new System.Drawing.Point(2, 95);
             this.lSep16.Name = "lSep16";
@@ -590,8 +592,8 @@ namespace AutoPuTTY
             // 
             // tbVNCKeep
             // 
-            this.tbVNCKeep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbVNCKeep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbVNCKeep.Location = new System.Drawing.Point(2, 59);
             this.tbVNCKeep.Name = "tbVNCKeep";
             this.tbVNCKeep.Size = new System.Drawing.Size(232, 20);
@@ -613,8 +615,8 @@ namespace AutoPuTTY
             // 
             // lSep15
             // 
-            this.lSep15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep15.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep15.Location = new System.Drawing.Point(2, 56);
             this.lSep15.Name = "lSep15";
@@ -643,8 +645,8 @@ namespace AutoPuTTY
             // 
             // lSep14
             // 
-            this.lSep14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep14.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep14.Location = new System.Drawing.Point(2, 17);
             this.lSep14.Name = "lSep14";
@@ -653,8 +655,8 @@ namespace AutoPuTTY
             // 
             // tbVNCPath
             // 
-            this.tbVNCPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbVNCPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbVNCPath.Location = new System.Drawing.Point(2, 20);
             this.tbVNCPath.Name = "tbVNCPath";
             this.tbVNCPath.Size = new System.Drawing.Size(232, 20);
@@ -685,9 +687,9 @@ namespace AutoPuTTY
             // 
             // pOWinSCP
             // 
-            this.pOWinSCP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pOWinSCP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pOWinSCP.Controls.Add(this.lSep19);
             this.pOWinSCP.Controls.Add(this.lWSCPOther);
             this.pOWinSCP.Controls.Add(this.cbWSCPPassive);
@@ -706,8 +708,8 @@ namespace AutoPuTTY
             // 
             // lSep19
             // 
-            this.lSep19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep19.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep19.Location = new System.Drawing.Point(2, 95);
             this.lSep19.Name = "lSep19";
@@ -736,8 +738,8 @@ namespace AutoPuTTY
             // 
             // lSep18
             // 
-            this.lSep18.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep18.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep18.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep18.Location = new System.Drawing.Point(2, 56);
             this.lSep18.Name = "lSep18";
@@ -756,8 +758,8 @@ namespace AutoPuTTY
             // 
             // lSep17
             // 
-            this.lSep17.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep17.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep17.Location = new System.Drawing.Point(2, 17);
             this.lSep17.Name = "lSep17";
@@ -789,8 +791,8 @@ namespace AutoPuTTY
             // 
             // tbWSCPKey
             // 
-            this.tbWSCPKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbWSCPKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbWSCPKey.Enabled = false;
             this.tbWSCPKey.Location = new System.Drawing.Point(2, 59);
             this.tbWSCPKey.Name = "tbWSCPKey";
@@ -814,8 +816,8 @@ namespace AutoPuTTY
             // 
             // tbWSCPPath
             // 
-            this.tbWSCPPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbWSCPPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbWSCPPath.Location = new System.Drawing.Point(2, 20);
             this.tbWSCPPath.Name = "tbWSCPPath";
             this.tbWSCPPath.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -825,9 +827,9 @@ namespace AutoPuTTY
             // 
             // tabs
             // 
-            this.tabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabs.Controls.Add(this.tabGeneral);
             this.tabs.Controls.Add(this.tabPuTTY);
             this.tabs.Controls.Add(this.tabRD);
@@ -836,7 +838,7 @@ namespace AutoPuTTY
             this.tabs.Location = new System.Drawing.Point(2, 2);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(302, 218);
+            this.tabs.Size = new System.Drawing.Size(302, 222);
             this.tabs.TabIndex = 0;
             // 
             // tabGeneral
@@ -844,20 +846,22 @@ namespace AutoPuTTY
             this.tabGeneral.Controls.Add(this.pOGeneral);
             this.tabGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(294, 192);
+            this.tabGeneral.Size = new System.Drawing.Size(294, 196);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
             // 
             // pOGeneral
             // 
-            this.pOGeneral.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pOGeneral.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pOGeneral.BackColor = System.Drawing.Color.Transparent;
+            this.pOGeneral.Controls.Add(this.cbGMinimize);
+            this.pOGeneral.Controls.Add(this.cbGPosition);
+            this.pOGeneral.Controls.Add(this.cbGSize);
             this.pOGeneral.Controls.Add(this.lSep6);
             this.pOGeneral.Controls.Add(this.lGOther);
-            this.pOGeneral.Controls.Add(this.cbGMinimize);
             this.pOGeneral.Controls.Add(this.cbGSkip);
             this.pOGeneral.Controls.Add(this.cbGReplace);
             this.pOGeneral.Controls.Add(this.lSep5);
@@ -870,13 +874,52 @@ namespace AutoPuTTY
             this.pOGeneral.Controls.Add(this.liGImport);
             this.pOGeneral.Location = new System.Drawing.Point(4, 4);
             this.pOGeneral.Name = "pOGeneral";
-            this.pOGeneral.Size = new System.Drawing.Size(286, 185);
+            this.pOGeneral.Size = new System.Drawing.Size(286, 189);
             this.pOGeneral.TabIndex = 0;
+            // 
+            // cbGMinimize
+            // 
+            this.cbGMinimize.AutoSize = true;
+            this.cbGMinimize.Checked = true;
+            this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGMinimize.Location = new System.Drawing.Point(2, 174);
+            this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGMinimize.Name = "cbGMinimize";
+            this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
+            this.cbGMinimize.TabIndex = 12;
+            this.cbGMinimize.Text = "Minimize to system tray";
+            this.cbGMinimize.CheckedChanged += new System.EventHandler(this.cbGMinimize_CheckedChanged);
+            // 
+            // cbGPosition
+            // 
+            this.cbGPosition.AutoSize = true;
+            this.cbGPosition.Checked = true;
+            this.cbGPosition.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGPosition.Location = new System.Drawing.Point(2, 159);
+            this.cbGPosition.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGPosition.Name = "cbGPosition";
+            this.cbGPosition.Size = new System.Drawing.Size(129, 17);
+            this.cbGPosition.TabIndex = 14;
+            this.cbGPosition.Text = "Save window position";
+            this.cbGPosition.CheckedChanged += new System.EventHandler(this.cbGPosition_CheckedChanged);
+            // 
+            // cbGSize
+            // 
+            this.cbGSize.AutoSize = true;
+            this.cbGSize.Checked = true;
+            this.cbGSize.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGSize.Location = new System.Drawing.Point(2, 144);
+            this.cbGSize.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGSize.Name = "cbGSize";
+            this.cbGSize.Size = new System.Drawing.Size(111, 17);
+            this.cbGSize.TabIndex = 13;
+            this.cbGSize.Text = "Save window size";
+            this.cbGSize.CheckedChanged += new System.EventHandler(this.cbGSize_CheckedChanged);
             // 
             // lSep6
             // 
-            this.lSep6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep6.Location = new System.Drawing.Point(2, 142);
             this.lSep6.Name = "lSep6";
@@ -891,19 +934,6 @@ namespace AutoPuTTY
             this.lGOther.Size = new System.Drawing.Size(33, 13);
             this.lGOther.TabIndex = 10;
             this.lGOther.Text = "Other";
-            // 
-            // cbGMinimize
-            // 
-            this.cbGMinimize.AutoSize = true;
-            this.cbGMinimize.Checked = true;
-            this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGMinimize.Location = new System.Drawing.Point(2, 144);
-            this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
-            this.cbGMinimize.Name = "cbGMinimize";
-            this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
-            this.cbGMinimize.TabIndex = 12;
-            this.cbGMinimize.Text = "Minimize to system tray";
-            this.cbGMinimize.CheckedChanged += new System.EventHandler(this.cbGMinimize_CheckedChanged);
             // 
             // cbGSkip
             // 
@@ -927,8 +957,8 @@ namespace AutoPuTTY
             // 
             // lSep5
             // 
-            this.lSep5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep5.Location = new System.Drawing.Point(2, 95);
             this.lSep5.Name = "lSep5";
@@ -959,13 +989,30 @@ namespace AutoPuTTY
             // 
             // lSep4
             // 
-            this.lSep4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep4.Location = new System.Drawing.Point(2, 56);
             this.lSep4.Name = "lSep4";
             this.lSep4.Size = new System.Drawing.Size(283, 2);
             this.lSep4.TabIndex = 2;
+            // 
+            // slGMulti
+            // 
+            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.slGMulti.AutoSize = false;
+            this.slGMulti.Enabled = false;
+            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
+            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
+            this.slGMulti.Maximum = 40;
+            this.slGMulti.Minimum = 10;
+            this.slGMulti.Name = "slGMulti";
+            this.slGMulti.Size = new System.Drawing.Size(292, 20);
+            this.slGMulti.TabIndex = 3;
+            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.slGMulti.Value = 15;
+            this.slGMulti.Scroll += new System.EventHandler(this.slMulti_Scroll);
             // 
             // cbGMulti
             // 
@@ -979,8 +1026,8 @@ namespace AutoPuTTY
             // 
             // tpGPass
             // 
-            this.tpGPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tpGPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tpGPass.ColumnCount = 3;
             this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -1024,8 +1071,8 @@ namespace AutoPuTTY
             // 
             // lSep3
             // 
-            this.lSep3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep3.Location = new System.Drawing.Point(-2, 15);
             this.lSep3.Name = "lSep3";
@@ -1046,8 +1093,8 @@ namespace AutoPuTTY
             // 
             // lSep1
             // 
-            this.lSep1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep1.Location = new System.Drawing.Point(2, 15);
             this.lSep1.Name = "lSep1";
@@ -1067,8 +1114,8 @@ namespace AutoPuTTY
             // 
             // tbGPassword
             // 
-            this.tbGPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbGPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbGPassword.Enabled = false;
             this.tbGPassword.Location = new System.Drawing.Point(2, 18);
             this.tbGPassword.Name = "tbGPassword";
@@ -1093,8 +1140,8 @@ namespace AutoPuTTY
             // 
             // tbGConfirm
             // 
-            this.tbGConfirm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbGConfirm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbGConfirm.Enabled = false;
             this.tbGConfirm.Location = new System.Drawing.Point(2, 18);
             this.tbGConfirm.Name = "tbGConfirm";
@@ -1107,8 +1154,8 @@ namespace AutoPuTTY
             // 
             // lSep2
             // 
-            this.lSep2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lSep2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSep2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lSep2.Location = new System.Drawing.Point(2, 15);
             this.lSep2.Name = "lSep2";
@@ -1144,7 +1191,7 @@ namespace AutoPuTTY
             this.tabPuTTY.Controls.Add(this.pOPuTTY);
             this.tabPuTTY.Location = new System.Drawing.Point(4, 22);
             this.tabPuTTY.Name = "tabPuTTY";
-            this.tabPuTTY.Size = new System.Drawing.Size(294, 192);
+            this.tabPuTTY.Size = new System.Drawing.Size(294, 196);
             this.tabPuTTY.TabIndex = 1;
             this.tabPuTTY.Text = "PuTTY";
             this.tabPuTTY.UseVisualStyleBackColor = true;
@@ -1154,7 +1201,7 @@ namespace AutoPuTTY
             this.tabRD.Controls.Add(this.pORD);
             this.tabRD.Location = new System.Drawing.Point(4, 22);
             this.tabRD.Name = "tabRD";
-            this.tabRD.Size = new System.Drawing.Size(294, 192);
+            this.tabRD.Size = new System.Drawing.Size(294, 196);
             this.tabRD.TabIndex = 2;
             this.tabRD.Text = "Remote Desktop";
             this.tabRD.UseVisualStyleBackColor = true;
@@ -1164,7 +1211,7 @@ namespace AutoPuTTY
             this.tabVNC.Controls.Add(this.pOVNC);
             this.tabVNC.Location = new System.Drawing.Point(4, 22);
             this.tabVNC.Name = "tabVNC";
-            this.tabVNC.Size = new System.Drawing.Size(294, 192);
+            this.tabVNC.Size = new System.Drawing.Size(294, 196);
             this.tabVNC.TabIndex = 3;
             this.tabVNC.Text = "VNC";
             this.tabVNC.UseVisualStyleBackColor = true;
@@ -1174,7 +1221,7 @@ namespace AutoPuTTY
             this.tabWSCP.Controls.Add(this.pOWinSCP);
             this.tabWSCP.Location = new System.Drawing.Point(4, 22);
             this.tabWSCP.Name = "tabWSCP";
-            this.tabWSCP.Size = new System.Drawing.Size(294, 192);
+            this.tabWSCP.Size = new System.Drawing.Size(294, 196);
             this.tabWSCP.TabIndex = 4;
             this.tabWSCP.Text = "WinSCP";
             this.tabWSCP.UseVisualStyleBackColor = true;
@@ -1191,35 +1238,18 @@ namespace AutoPuTTY
             // 
             this.bOK.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.bOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bOK.Location = new System.Drawing.Point(118, 226);
+            this.bOK.Location = new System.Drawing.Point(117, 230);
             this.bOK.Name = "bOK";
             this.bOK.Size = new System.Drawing.Size(70, 24);
             this.bOK.TabIndex = 1;
             this.bOK.Text = "OK";
             this.bOK.UseVisualStyleBackColor = true;
             // 
-            // slGMulti
-            // 
-            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.slGMulti.AutoSize = false;
-            this.slGMulti.Enabled = false;
-            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
-            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
-            this.slGMulti.Maximum = 40;
-            this.slGMulti.Minimum = 10;
-            this.slGMulti.Name = "slGMulti";
-            this.slGMulti.Size = new System.Drawing.Size(292, 20);
-            this.slGMulti.TabIndex = 3;
-            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.slGMulti.Value = 15;
-            this.slGMulti.Scroll += new System.EventHandler(this.slMulti_Scroll);
-            // 
             // formOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(304, 257);
+            this.ClientSize = new System.Drawing.Size(304, 261);
             this.Controls.Add(this.bOK);
             this.Controls.Add(this.tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1242,6 +1272,7 @@ namespace AutoPuTTY
             this.tabGeneral.ResumeLayout(false);
             this.pOGeneral.ResumeLayout(false);
             this.pOGeneral.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.tpGPass.ResumeLayout(false);
             this.tpGPass.PerformLayout();
             this.pGApply.ResumeLayout(false);
@@ -1253,7 +1284,6 @@ namespace AutoPuTTY
             this.tabRD.ResumeLayout(false);
             this.tabVNC.ResumeLayout(false);
             this.tabWSCP.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1351,6 +1381,8 @@ namespace AutoPuTTY
         private System.Windows.Forms.Label lSep19;
         private System.Windows.Forms.Label lWSCPOther;
         public System.Windows.Forms.CheckBox cbWSCPPassive;
+        public System.Windows.Forms.CheckBox cbGPosition;
+        public System.Windows.Forms.CheckBox cbGSize;
     }
 }
 

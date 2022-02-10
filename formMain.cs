@@ -89,22 +89,24 @@ namespace AutoPuTTY
                 cbType.Items.Add(type);
             }
             cbType.SelectedIndex = 0;
-            if (XmlConfigGet("password") != "") Settings.Default.password = XmlConfigGet("password");
-            if (XmlConfigGet("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlConfigGet("multicolumnwidth"));
-            if (XmlConfigGet("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
             if (XmlConfigGet("minimize").ToLower() == "false") Settings.Default.minimize = false;
+            if (XmlConfigGet("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
+            if (XmlConfigGet("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlConfigGet("multicolumnwidth"));
+            if (XmlConfigGet("password") != "") Settings.Default.password = XmlConfigGet("password");
+            if (XmlConfigGet("position") != "") Settings.Default.position = XmlConfigGet("position");
             if (XmlConfigGet("putty") != "") Settings.Default.puttypath = XmlConfigGet("putty");
-            if (XmlConfigGet("puttyexecute").ToLower() == "true") Settings.Default.puttyexecute = true;
             if (XmlConfigGet("puttycommand") != "") Settings.Default.puttycommand = XmlConfigGet("puttycommand");
+            if (XmlConfigGet("puttyexecute").ToLower() == "true") Settings.Default.puttyexecute = true;
+            if (XmlConfigGet("puttyforward").ToLower() == "true") Settings.Default.puttyforward = true;
             if (XmlConfigGet("puttykey").ToLower() == "true") Settings.Default.puttykey = true;
             if (XmlConfigGet("puttykeyfile") != "") Settings.Default.puttykeyfile = XmlConfigGet("puttykeyfile");
-            if (XmlConfigGet("puttyforward").ToLower() == "true") Settings.Default.puttyforward = true;
-            if (XmlConfigGet("remotedesktop") != "") Settings.Default.rdpath = XmlConfigGet("remotedesktop");
-            if (XmlConfigGet("rdfilespath") != "") Settings.Default.rdfilespath = XmlConfigGet("rdfilespath");
             if (XmlConfigGet("rdadmin").ToLower() == "true") Settings.Default.rdadmin = true;
             if (XmlConfigGet("rddrives").ToLower() == "true") Settings.Default.rddrives = true;
-            if (XmlConfigGet("rdspan").ToLower() == "true") Settings.Default.rdspan = true;
+            if (XmlConfigGet("rdfilespath") != "") Settings.Default.rdfilespath = XmlConfigGet("rdfilespath");
             if (XmlConfigGet("rdsize") != "") Settings.Default.rdsize = XmlConfigGet("rdsize");
+            if (XmlConfigGet("rdspan").ToLower() == "true") Settings.Default.rdspan = true;
+            if (XmlConfigGet("remotedesktop") != "") Settings.Default.rdpath = XmlConfigGet("remotedesktop");
+            if (XmlConfigGet("size") != "") Settings.Default.size = XmlConfigGet("size");
             if (XmlConfigGet("vnc") != "") Settings.Default.vncpath = XmlConfigGet("vnc");
             if (XmlConfigGet("vncfilespath") != "") Settings.Default.vncfilespath = XmlConfigGet("vncfilespath");
             if (XmlConfigGet("vncfullscreen").ToLower() == "true") Settings.Default.vncfullscreen = true;
@@ -112,7 +114,6 @@ namespace AutoPuTTY
             if (XmlConfigGet("winscp") != "") Settings.Default.winscppath = XmlConfigGet("winscp");
             if (XmlConfigGet("winscpkey").ToLower() == "true") Settings.Default.winscpkey = true;
             if (XmlConfigGet("winscpkeyfile") != "") Settings.Default.winscpkeyfile = XmlConfigGet("winscpkeyfile");
-            if (XmlConfigGet("winscppassive").ToLower() == "false") Settings.Default.winscppassive = false;
 
             optionsform = new formOptions(this);
 
@@ -164,6 +165,29 @@ namespace AutoPuTTY
 
             AutoSize = false;
             MinimumSize = Size;
+
+            if (Settings.Default.position == "")
+            {
+                Rectangle screen = Screen.FromControl(this).Bounds;
+
+                int width = Size.Width;
+                int height = Size.Height;
+
+                if (Settings.Default.size != "")
+                {
+                    string[] _size = Settings.Default.size.Split('x');
+                    if (_size.Length == 2)
+                    {
+                        width = Convert.ToInt32(_size[0]);
+                        height = Convert.ToInt32(_size[1]);
+                    }
+                }
+
+                Left = screen.Width / 2 - width / 2;
+                Top = screen.Height / 2 - height / 2;
+            }
+
+            SetWindowSize(Settings.Default.size, Settings.Default.position);
 #if DEBUG
             Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
 #endif
@@ -197,7 +221,29 @@ namespace AutoPuTTY
             base.WndProc(ref m);
         }
 
-        private static bool CheckWriteAccess (string path)
+        private void SetWindowSize(string size, string position)
+        {
+            string[] _size = size.Split('x');
+            string[] _position = position.Split('x');
+            
+            if(_size.Length == 2)
+            {
+                int size_w = Convert.ToInt32(_size[0]);
+                int size_h = Convert.ToInt32(_size[1]);
+
+                if(size_w > 0 && size_h > 0) Size = new Size(size_w, size_h);
+            }
+
+            if (_position.Length == 2)
+            {
+                int position_x = Convert.ToInt32(_position[0]);
+                int position_y = Convert.ToInt32(_position[1]);
+
+                if (position_x >= 0 && position_y >= 0) Location = new Point(position_x, position_y);
+            }
+        }
+
+        private static bool CheckWriteAccess(string path)
         {
             bool writeAllow = false;
             bool writeDeny = false;
@@ -259,6 +305,18 @@ namespace AutoPuTTY
             }
 
             tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterw ? tlLeft.Width - tbFilter.Left : tbfilterw;
+
+            if (optionsform.cbGSize.Checked)
+            {
+                Settings.Default.size = Width + "x" + Height;
+                XmlConfigSet("size", Settings.Default.size.ToString());
+            }
+
+            if (optionsform.cbGPosition.Checked)
+            {
+                Settings.Default.position = Left + "x" + Top;
+                XmlConfigSet("position", Settings.Default.position.ToString());
+            }
         }
 
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -863,7 +921,7 @@ namespace AutoPuTTY
                             string[] puttyextractpath = ExtractFilePath(Settings.Default.puttypath);
                             string puttypath = puttyextractpath[0];
                             string puttyargs = puttyextractpath[1];
-                            // for some reason you only have escape \ if it's followed by "
+                            // for some reason you only have to escape \ if it's followed by "
                             // will "fix" up to 3 \ in a password like \\\", then screw you with your maniac passwords
                             string[] passs = { "\"", "\\\\\"", "\\\\\\\\\"", "\\\\\\\\\\\\\"", };
                             string[] passr = { "\\\"", "\\\\\\\"", "\\\\\\\\\\\"", "\\\\\\\\\\\\\\\"", };
@@ -872,6 +930,11 @@ namespace AutoPuTTY
                             {
                                 string host;
                                 string port;
+                                string proxy;
+                                string[] _proxy;
+                                string proxyuser;
+                                string proxyhost;
+                                string proxyport = "";
                                 string[] hostport = _host.Split(':');
                                 int split = hostport.Length;
 
@@ -888,7 +951,28 @@ namespace AutoPuTTY
 
                                 Process myProc = new Process();
                                 myProc.StartInfo.FileName = Settings.Default.puttypath;
-                                myProc.StartInfo.Arguments = "-ssh ";
+                                myProc.StartInfo.Arguments = "";
+                                if (_user != "")
+                                {
+                                    //SSH Jump
+                                    if (_user.Contains("@") && _user.Contains("#"))
+                                    {
+                                        _proxy = _user.Split('#');
+                                        proxy = _proxy[0];
+                                        proxyuser = proxy.Split('@')[0];
+                                        if(proxy.Split(':').Length > 1) proxyport = proxy.Split(':')[1];
+                                        proxyhost = proxy.Split('@')[1].Split(':')[0];
+                                        myProc.StartInfo.Arguments += " -J " + proxyuser + "@" + proxyhost + ":" + (proxyport != "" ? proxyport : "22");
+
+                                        Debug.WriteLine("proxy : " + proxy);
+                                        Debug.WriteLine("proxyuser : " + proxyuser);
+                                        Debug.WriteLine("proxyhost : " + proxyhost);
+                                        Debug.WriteLine("proxyport : " + proxyport);
+
+                                        _user = _proxy[1];
+                                    }
+                                }
+                                myProc.StartInfo.Arguments += " -ssh ";
                                 if (_user != "") myProc.StartInfo.Arguments += _user + "@";
                                 if (host != "") myProc.StartInfo.Arguments += host;
                                 if (port != "") myProc.StartInfo.Arguments += " " + port;
@@ -896,8 +980,8 @@ namespace AutoPuTTY
                                 if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") myProc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
                                 if (Settings.Default.puttykey && Settings.Default.puttykeyfile != "") myProc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfile + "\"";
                                 if (Settings.Default.puttyforward) myProc.StartInfo.Arguments += " -X";
-                                //MessageBox.Show(this, myProc.StartInfo.Arguments);
                                 if (puttyargs != "") myProc.StartInfo.Arguments += " " + puttyargs;
+                                Debug.WriteLine(myProc.StartInfo.Arguments);
                                 try
                                 {
                                     myProc.Start();
@@ -1446,10 +1530,20 @@ namespace AutoPuTTY
             if (tbFilter.Text != "") tbFilter_Changed(sender, e);
         }
 
+        private void mainForm_Move(object sender, EventArgs e)
+        {
+            if (optionsform.cbGPosition.Checked)
+            {
+                Settings.Default.position = Left + "x" + Top;
+                XmlConfigSet("position", Settings.Default.position.ToString());
+            }
+        }
+
         #region Nested type: InvokeDelegate
 
         private delegate bool InvokeDelegate();
 
         #endregion
+
     }
 }

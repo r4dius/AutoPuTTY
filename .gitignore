@@ -1,0 +1,8 @@
+
+_todo_.txt
+AutoPuTTY.4.1.resharper.user
+.vs/*
+bin/*
+obj/*
+putty/Release/*
+putty/x64/*

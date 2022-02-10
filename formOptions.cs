@@ -27,6 +27,9 @@ namespace AutoPuTTY
             importpopup = new popupImport(this);
             recryptpopup = new popupRecrypt(this);
 
+            string[] _size = Settings.Default.size.Split('x');
+            string[] _position = Settings.Default.position.Split('x');
+
             Settings.Default.ocryptkey = Settings.Default.cryptkey;
 
             if (File.Exists(Settings.Default.cfgpath))
@@ -57,6 +60,8 @@ namespace AutoPuTTY
 
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
                 cbGMulti.Checked = Settings.Default.multicolumn;
+                cbGSize.Checked = (_size.Length == 2 ? true : false);
+                cbGPosition.Checked = (_position.Length == 2 ? true : false);
                 cbGMinimize.Checked = Settings.Default.minimize;
                 if (Settings.Default.password.Trim() != "")
                 {
@@ -767,6 +772,20 @@ namespace AutoPuTTY
         private void liGImport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             MessageBox.Show("List format:\r\n\r\nName     Hostname[:port]     [[Domain\\]username]     [Password]     [Type]\r\n\r\n- One server per line.\r\n- Use a tab as separator.\r\n- Only \"Name\" and \"Hostname\" are required.\r\n- \"Type\" is a numerical value, use the following correspondence:\r\n    0 = PuTTY\r\n    1 = Remote Desktop\r\n    2 = VNC\r\n    3 = WinSCP (SCP)\r\n    4 = WinSCP (SFTP)\r\n    5 = WinSCP (FTP)\r\n- If no \"Type\" is given it'll be set as \"PuTTY\" by default.", "Import list");
+        }
+
+        private void cbGSize_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbGSize.Checked) Settings.Default.size = mainform.Size.Width + "x" + mainform.Size.Height;
+            else Settings.Default.size = "";
+            if (!firstread) mainform.XmlConfigSet("size", Settings.Default.size.ToString());
+        }
+
+        private void cbGPosition_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbGPosition.Checked) Settings.Default.position = mainform.Left + "x" + mainform.Top;
+            else Settings.Default.position = "";
+            if (!firstread) mainform.XmlConfigSet("position", Settings.Default.position.ToString());
         }
 
         private void cbGMinimize_CheckedChanged(object sender, EventArgs e)
