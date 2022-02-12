@@ -3,6 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -928,11 +929,12 @@ namespace AutoPuTTY
 
                             if (File.Exists(puttypath))
                             {
+                                string[] _proxy;
                                 string host;
                                 string port;
                                 string proxy;
-                                string[] _proxy;
                                 string proxyuser;
+                                string proxypass = "";
                                 string proxyhost;
                                 string proxyport = "";
                                 string[] hostport = _host.Split(':');
@@ -955,21 +957,36 @@ namespace AutoPuTTY
                                 if (_user != "")
                                 {
                                     //SSH Jump
-                                    if (_user.Contains("@") && _user.Contains("#"))
+                                    if (_user.Contains("#"))
                                     {
                                         _proxy = _user.Split('#');
-                                        proxy = _proxy[0];
+                                        _user = _proxy[_proxy.Length - 1];
+                                        Array.Resize(ref _proxy, _proxy.Length - 1);
+                                        proxy = String.Join("", _proxy);
+
+
+
+
                                         proxyuser = proxy.Split('@')[0];
-                                        if(proxy.Split(':').Length > 1) proxyport = proxy.Split(':')[1];
-                                        proxyhost = proxy.Split('@')[1].Split(':')[0];
-                                        myProc.StartInfo.Arguments += " -J " + proxyuser + "@" + proxyhost + ":" + (proxyport != "" ? proxyport : "22");
+                                        if (proxyuser.Split(':').Length > 1)
+                                        {
+                                            proxypass = proxyuser.Split(':')[1];
+                                            proxyuser = proxyuser.Split(':')[0];
+                                        }
+                                        proxyhost = proxy.Split('@')[1];
+                                        if (proxyhost.Split(':').Length > 1)
+                                        {
+                                            proxyport = proxyhost.Split(':')[1];
+                                            proxyhost = proxyhost.Split(':')[0];
+                                        }
+                                        myProc.StartInfo.Arguments += " -J " + proxyuser + "@" + proxyhost + ":" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " -jw " + proxypass : "");
 
                                         Debug.WriteLine("proxy : " + proxy);
                                         Debug.WriteLine("proxyuser : " + proxyuser);
+                                        Debug.WriteLine("proxypass : " + proxypass);
                                         Debug.WriteLine("proxyhost : " + proxyhost);
                                         Debug.WriteLine("proxyport : " + proxyport);
-
-                                        _user = _proxy[1];
+                                        Debug.WriteLine("user : " + _user);
                                     }
                                 }
                                 myProc.StartInfo.Arguments += " -ssh ";
