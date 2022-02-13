@@ -378,7 +378,7 @@ namespace AutoPuTTY
             this.cbRDDrives.Size = new System.Drawing.Size(112, 17);
             this.cbRDDrives.TabIndex = 14;
             this.cbRDDrives.Text = "Mount local drives";
-            this.cbRDDrives.CheckedChanged += new System.EventHandler(this.cbDrives_CheckedChanged);
+            this.cbRDDrives.CheckedChanged += new System.EventHandler(this.cbRDDrives_CheckedChanged);
             // 
             // cbRDAdmin
             // 
@@ -1012,7 +1012,7 @@ namespace AutoPuTTY
             this.slGMulti.TabIndex = 3;
             this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
             this.slGMulti.Value = 15;
-            this.slGMulti.Scroll += new System.EventHandler(this.slMulti_Scroll);
+            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
             // 
             // cbGMulti
             // 
@@ -1022,7 +1022,7 @@ namespace AutoPuTTY
             this.cbGMulti.Size = new System.Drawing.Size(100, 17);
             this.cbGMulti.TabIndex = 1;
             this.cbGMulti.Text = "Multi column list";
-            this.cbGMulti.CheckedChanged += new System.EventHandler(this.cbMulti_CheckedChanged);
+            this.cbGMulti.CheckedChanged += new System.EventHandler(this.cbGMulti_CheckedChanged);
             // 
             // tpGPass
             // 
@@ -1067,7 +1067,7 @@ namespace AutoPuTTY
             this.bGPassword.Text = "Apply";
             this.bGPassword.UseCompatibleTextRendering = true;
             this.bGPassword.UseVisualStyleBackColor = true;
-            this.bGPassword.Click += new System.EventHandler(this.bPassword_Click);
+            this.bGPassword.Click += new System.EventHandler(this.bGPassword_Click);
             // 
             // lSep3
             // 
@@ -1122,9 +1122,9 @@ namespace AutoPuTTY
             this.tbGPassword.Size = new System.Drawing.Size(115, 20);
             this.tbGPassword.TabIndex = 2;
             this.tbGPassword.UseSystemPasswordChar = true;
-            this.tbGPassword.TextChanged += new System.EventHandler(this.tbPassword_TextChanged);
-            this.tbGPassword.GotFocus += new System.EventHandler(this.tbPassword_GotFocus);
-            this.tbGPassword.LostFocus += new System.EventHandler(this.tbPassword_LostFocus);
+            this.tbGPassword.TextChanged += new System.EventHandler(this.tbGPassword_TextChanged);
+            this.tbGPassword.GotFocus += new System.EventHandler(this.tbGPassword_GotFocus);
+            this.tbGPassword.LostFocus += new System.EventHandler(this.tbGPassword_LostFocus);
             // 
             // pGConfirm
             // 
@@ -1148,9 +1148,9 @@ namespace AutoPuTTY
             this.tbGConfirm.Size = new System.Drawing.Size(115, 20);
             this.tbGConfirm.TabIndex = 2;
             this.tbGConfirm.UseSystemPasswordChar = true;
-            this.tbGConfirm.TextChanged += new System.EventHandler(this.tbConfirm_TextChanged);
-            this.tbGConfirm.GotFocus += new System.EventHandler(this.tbConfirm_GotFocus);
-            this.tbGConfirm.LostFocus += new System.EventHandler(this.tbConfirm_LostFocus);
+            this.tbGConfirm.TextChanged += new System.EventHandler(this.tbGConfirm_TextChanged);
+            this.tbGConfirm.GotFocus += new System.EventHandler(this.tbGConfirm_GotFocus);
+            this.tbGConfirm.LostFocus += new System.EventHandler(this.tbGConfirm_LostFocus);
             // 
             // lSep2
             // 

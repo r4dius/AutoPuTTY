@@ -416,7 +416,7 @@ namespace AutoPuTTY
             this.cbCase.TabIndex = 7;
             this.cbCase.Text = "Match case";
             this.cbCase.UseVisualStyleBackColor = true;
-            this.cbCase.CheckedChanged += new System.EventHandler(this.cbCase_CheckedChanged);
+            this.cbCase.CheckedChanged += new System.EventHandler(this.cbSearchCase_CheckedChanged);
             // 
             // bClose
             // 
@@ -428,10 +428,10 @@ namespace AutoPuTTY
             this.bClose.Size = new System.Drawing.Size(20, 20);
             this.bClose.TabIndex = 6;
             this.bClose.TabStop = false;
-            this.bClose.Click += new System.EventHandler(this.bClose_Click);
-            this.bClose.MouseDown += new System.Windows.Forms.MouseEventHandler(this.bClose_MouseDown);
-            this.bClose.MouseEnter += new System.EventHandler(this.bClose_MouseEnter);
-            this.bClose.MouseLeave += new System.EventHandler(this.bClose_MouseLeave);
+            this.bClose.Click += new System.EventHandler(this.bSearchClose_Click);
+            this.bClose.MouseDown += new System.Windows.Forms.MouseEventHandler(this.bSearchClose_MouseDown);
+            this.bClose.MouseEnter += new System.EventHandler(this.bSearchClose_MouseEnter);
+            this.bClose.MouseLeave += new System.EventHandler(this.bSearchClose_MouseLeave);
             // 
             // tbFilter
             // 
@@ -439,9 +439,9 @@ namespace AutoPuTTY
             this.tbFilter.Name = "tbFilter";
             this.tbFilter.Size = new System.Drawing.Size(107, 20);
             this.tbFilter.TabIndex = 4;
-            this.tbFilter.TextChanged += new System.EventHandler(this.tbFilter_Changed);
-            this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbFilter_KeyDown);
-            this.tbFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbFilter_KeyPress);
+            this.tbFilter.TextChanged += new System.EventHandler(this.tbSearch_Changed);
+            this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
+            this.tbFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbSearch_KeyPress);
             // 
             // lbListSep
             // 

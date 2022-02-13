@@ -222,28 +222,6 @@ namespace AutoPuTTY
             base.WndProc(ref m);
         }
 
-        private void SetWindowSize(string size, string position)
-        {
-            string[] _size = size.Split('x');
-            string[] _position = position.Split('x');
-            
-            if(_size.Length == 2)
-            {
-                int size_w = Convert.ToInt32(_size[0]);
-                int size_h = Convert.ToInt32(_size[1]);
-
-                if(size_w > 0 && size_h > 0) Size = new Size(size_w, size_h);
-            }
-
-            if (_position.Length == 2)
-            {
-                int position_x = Convert.ToInt32(_position[0]);
-                int position_y = Convert.ToInt32(_position[1]);
-
-                if (position_x >= 0 && position_y >= 0) Location = new Point(position_x, position_y);
-            }
-        }
-
         private static bool CheckWriteAccess(string path)
         {
             bool writeAllow = false;
@@ -262,415 +240,6 @@ namespace AutoPuTTY
             }
 
             return writeAllow && !writeDeny;
-        }
-
-        private static string ReplaceA(string[] s, string[] r, string str)
-        {
-            int i = 0;
-            if (s.Length > 0 && r.Length > 0 && s.Length == r.Length)
-            {
-                while (i < s.Length)
-                {
-                    str = str.Replace(s[i], r[i]);
-                    i++;
-                }
-            }
-            return str;
-        }
-
-        private static string ReplaceU(string[] s, string str)
-        {
-            int i = 0;
-            if (s.Length > 0)
-            {
-                while (i < s.Length)
-                {
-                    str = str.Replace(s[i], Uri.EscapeDataString(s[i]).ToUpper());
-                    i++;
-                }
-            }
-            str = str.Replace("*", "%2A");
-            return str;
-        }
-
-        private void mainForm_Resize(object sender, EventArgs e)
-        {
-            if (Settings.Default.minimize && FormWindowState.Minimized == WindowState)
-            {
-                Hide();
-                miRestore.Enabled = true;
-            }
-            else
-            {
-                laststate = WindowState.ToString();
-            }
-
-            tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterw ? tlLeft.Width - tbFilter.Left : tbfilterw;
-
-            if (optionsform.cbGSize.Checked)
-            {
-                Settings.Default.size = Width + "x" + Height;
-                XmlConfigSet("size", Settings.Default.size.ToString());
-            }
-
-            if (optionsform.cbGPosition.Checked)
-            {
-                Settings.Default.position = Left + "x" + Top;
-                XmlConfigSet("position", Settings.Default.position.ToString());
-            }
-        }
-
-        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            miRestore_Click(this, e);
-        }
-
-        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                notifyIcon_MouseDoubleClick(this, e);
-            }
-        }
-
-        private static string[] ExtractFilePath(string path)
-        {
-            //extract file path and arguments
-            if (path.IndexOf("\"") == 0)
-            {
-                int s = path.Substring(1).IndexOf("\"");
-                if (s > 0) return new string[] { path.Substring(1, s), path.Substring(s + 2).Trim() };
-                return new string[] { path.Substring(1), "" };
-            }
-            else
-            {
-                int s = path.Substring(1).IndexOf(" ");
-                if (s > 0) return new string[] { path.Substring(0, s + 1), path.Substring(s + 2).Trim() };
-                return new string[] { path.Substring(0), "" };
-            }
-        }
-
-        public static void XmlCreate()
-        {
-            const string xmlcontent = "<?xml version=\"1.0\"?>\r\n<List>\r\n</List>";
-            TextWriter newfile = new StreamWriter(Settings.Default.cfgpath);
-            newfile.Write(xmlcontent);
-            newfile.Close();
-        }
-
-        public void XmlConfigSet(string id, string val)
-        {
-            string file = Settings.Default.cfgpath;
-            XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(file);
-
-            XmlElement newpath = xmldoc.CreateElement("Config");
-            XmlAttribute name = xmldoc.CreateAttribute("ID");
-            name.Value = id;
-            newpath.SetAttributeNode(name);
-            newpath.InnerText = val;
-
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@ID=" + ParseXpathString(id) + "]");
-            if (xmlnode != null)
-            {
-                if (xmldoc.DocumentElement != null)
-                {
-                    if (xmlnode.Count > 0) {
-                        xmldoc.DocumentElement.ReplaceChild(newpath, xmlnode[0]);
-                    }
-                    else
-                    {
-                        xmldoc.DocumentElement.InsertBefore(newpath, xmldoc.DocumentElement.FirstChild);
-                    }
-                }
-            }
-
-            try
-            {
-                xmldoc.Save(file);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            }
-        }
-
-        public string XmlConfigGet(string id)
-        {
-            string file = Settings.Default.cfgpath;
-            XmlDocument xmldoc = new XmlDocument();
-            try
-            {
-                xmldoc.Load(file);
-            }
-            catch
-            {
-                Error("\"" + Settings.Default.cfgpath + "\" file is corrupt, delete it and try again.");
-                Environment.Exit(-1);
-            }
-
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@ID=" + ParseXpathString(id) + "]");
-            if (xmlnode != null)
-            {
-                if (xmlnode.Count > 0) return xmlnode[0].InnerText;
-            }
-            return "";
-        }
-
-        public void XmlDropNode(string node)
-        {
-            string file = Settings.Default.cfgpath;
-            XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(file);
-
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@" + node + "]");
-            if (xmldoc.DocumentElement != null)
-            {
-                if (xmlnode != null) xmldoc.DocumentElement.RemoveChild(xmlnode[0]);
-            }
-
-            try
-            {
-                xmldoc.Save(file);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            }
-        }
-
-        public void XmlDropNode(ArrayList node)
-        {
-            string file = Settings.Default.cfgpath;
-            XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(file);
-
-            foreach (string item in node)
-            {
-                XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@" + item + "]");
-                if (xmldoc.DocumentElement != null)
-                {
-                    if (xmlnode != null) xmldoc.DocumentElement.RemoveChild(xmlnode[0]);
-                }
-            }
-
-            try
-            {
-                xmldoc.Save(file);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            }
-        }
-
-        internal void XmlToList()
-        {
-            lbList.Items.Clear();
-
-            if (File.Exists(Settings.Default.cfgpath))
-            {
-                string file = Settings.Default.cfgpath;
-                XmlDocument xmldoc = new XmlDocument();
-                xmldoc.Load(file);
-
-                XmlNodeList xmlnode = xmldoc.GetElementsByTagName("Server");
-                for (int i = 0; i < xmlnode.Count; i++) if (!lbList.Items.Contains(xmlnode[i].Attributes[0].Value)) lbList.Items.Add(xmlnode[i].Attributes[0].Value);
-            }
-            else
-            {
-                Error("\"" + Settings.Default.cfgpath + "\" file not found.");
-            }
-        }
-
-        public static ArrayList XmlGetServer(string name)
-        {
-            if (!File.Exists(Settings.Default.cfgpath))
-            {
-                return new ArrayList();
-            }
-
-            ArrayList server = new ArrayList();
-            string host = "";
-            string user = "";
-            string pass = "";
-            int type = 0;
-
-            string file = Settings.Default.cfgpath;
-            XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(file);
-
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@Name=" + ParseXpathString(name) + "]");
-            if (xmlnode != null)
-            {
-                if (xmlnode.Count > 0)
-                {
-                    foreach (XmlElement childnode in xmlnode[0].ChildNodes)
-                    {
-                        switch (childnode.Name)
-                        {
-                            case "Host":
-                                host = childnode.InnerText;
-                                break;
-                            case "User":
-                                user = childnode.InnerText;
-                                break;
-                            case "Password":
-                                pass = childnode.InnerText;
-                                break;
-                            case "Type":
-                                Int32.TryParse(childnode.InnerText, out type);
-                                break;
-                        }
-                    }
-                }
-                else return new ArrayList();
-            }
-
-            server.AddRange(new string[] {name, host, user, pass, type.ToString()});
-            return server;
-        }
-
-        public static string ParseXpathString(string input)
-        {
-            string ret = "";
-            if (input.Contains("'"))
-            {
-                string[] inputstrs = input.Split('\'');
-                foreach (string inputstr in inputstrs)
-                {
-                    if (ret != "") ret += ",\"'\",";
-                    ret += "'" + inputstr + "'";
-                }
-                ret = "concat(" + ret + ")";
-            }
-            else
-            {
-                ret = "'" + input + "'";
-            }
-            return ret;
-        }
-
-        private void lbList_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
-        {
-            if (e.Index < 0) return;
-            // Draw the background of the ListBox control for each item.
-            e.DrawBackground();
-            // Define the default color of the brush as black.
-            Brush myBrush = Brushes.Black;
-
-            // Draw the current item text based on the current Font 
-            // and the custom brush settings.
-            Rectangle bounds = e.Bounds;
-            if (bounds.X < 1) bounds.X = 1;
-            //MessageBox.Show(this, bounds.Top.ToString());
-
-            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected) myBrush = Brushes.White;
-            e.Graphics.DrawString(lbList.Items[e.Index].ToString(), e.Font, myBrush, bounds, StringFormat.GenericDefault);
-
-            // If the ListBox has focus, draw a focus rectangle around the selected item.
-            e.DrawFocusRectangle();
-        }
-
-        public void lbList_IndexChanged(object sender, EventArgs e)
-        {
-            if (filter || selectall) return;
-            if (remove || lbList.SelectedItem == null)
-            {
-                if (bDelete.Enabled) bDelete.Enabled = false;
-                return;
-            }
-            indexchanged = true;
-
-            ArrayList server = XmlGetServer(lbList.SelectedItem.ToString());
-
-            tbName.Text = (string) server[0];
-            tbHost.Text = Decrypt((string) server[1]);
-            tbUser.Text = Decrypt((string) server[2]);
-            tbPass.Text = Decrypt((string) server[3]);
-            cbType.SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server[4])]);
-            lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
-
-            if (bAdd.Enabled) bAdd.Enabled = false;
-            if (bModify.Enabled) bModify.Enabled = false;
-            if (!bDelete.Enabled) bDelete.Enabled = true;
-
-            indexchanged = false;
-        }
-
-        private void lbList_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Right) return;
-            lbList_ContextMenu();
-        }
-
-        private void lbList_ContextMenu_Enable(bool status)
-        {
-            for (int i = 0; i < cmList.MenuItems.Count; i++)
-            {
-                cmList.MenuItems[i].Enabled = status;
-            }
-        }
-
-        private void lbList_ContextMenu()
-        {
-            lbList_ContextMenu(false);
-        }
-
-        private void lbList_ContextMenu(bool keyboard)
-        {
-            if (lbList.Items.Count > 0)
-            {
-                if (keyboard && lbList.SelectedItems.Count > 0)
-                {
-                    lbList_ContextMenu_Enable(true);
-                }
-                else
-                {
-                    int rightindex = lbList.IndexFromPoint(lbList.PointToClient(MousePosition));
-                    if (rightindex >= 0)
-                    {
-                        lbList_ContextMenu_Enable(true);
-                        if (lbList.GetSelected(rightindex))
-                        {
-                            lbList.SelectedIndex = rightindex;
-                        }
-                        else
-                        {
-                            lbList.SelectedIndex = -1;
-                            lbList.SelectedIndex = rightindex;
-                        }
-                    }
-                    else
-                    {
-                        lbList_ContextMenu_Enable(false);
-                    }
-                }
-            }
-            else lbList_ContextMenu_Enable(false);
-            
-            IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
-            ShowWindowAsync(hWnd, 5); // SW_SHOW
-
-            int loop = 0;
-            while (!Visible)
-            {
-                loop++;
-                Thread.Sleep(100);
-                Show();
-                if (loop > 10)
-                {
-                    //let's crash
-                    MessageBox.Show("Something bad happened");
-                    break;
-                }
-            }
-            cmList.Show(this, PointToClient(MousePosition));
-        }
-
-        private void lbList_DoubleClick(object sender, EventArgs e)
-        {
-            Connect("-1");
         }
 
         public void Connect(string type)
@@ -933,9 +502,9 @@ namespace AutoPuTTY
                                 string host;
                                 string port;
                                 string proxy;
-                                string proxyuser;
+                                string proxyuser = "";
                                 string proxypass = "";
-                                string proxyhost;
+                                string proxyhost = "";
                                 string proxyport = "";
                                 string[] hostport = _host.Split(':');
                                 int split = hostport.Length;
@@ -964,29 +533,44 @@ namespace AutoPuTTY
                                         Array.Resize(ref _proxy, _proxy.Length - 1);
                                         proxy = String.Join("", _proxy);
 
-
-
-
-                                        proxyuser = proxy.Split('@')[0];
-                                        if (proxyuser.Split(':').Length > 1)
+                                        if (proxy.Contains("@"))
                                         {
-                                            proxypass = proxyuser.Split(':')[1];
-                                            proxyuser = proxyuser.Split(':')[0];
+                                            _proxy = proxy.Split('@');
+                                            proxyhost = _proxy[_proxy.Length - 1];
+                                            Array.Resize(ref _proxy, _proxy.Length - 1);
+                                            proxy = String.Join("@", _proxy);
+
+                                            if (proxy.Contains(":"))
+                                            {
+                                                _proxy = proxy.Split(':');
+                                                proxyuser = _proxy[0];
+                                                _proxy = _proxy.Skip(1).ToArray();
+                                                proxypass = String.Join(":", _proxy);
+                                            }
+                                            else
+                                            {
+                                                // no proxy pass
+                                                proxyuser = proxy;
+                                            }
                                         }
-                                        proxyhost = proxy.Split('@')[1];
+                                        else
+                                        {
+                                            // no proxy username
+                                            proxyhost = proxy;
+                                        }
+
                                         if (proxyhost.Split(':').Length > 1)
                                         {
                                             proxyport = proxyhost.Split(':')[1];
                                             proxyhost = proxyhost.Split(':')[0];
                                         }
-                                        myProc.StartInfo.Arguments += " -J " + proxyuser + "@" + proxyhost + ":" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " -jw " + proxypass : "");
+                                        myProc.StartInfo.Arguments += " -J " + (proxyuser != "" ? proxyuser + "@" : "") + proxyhost + ":" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " -jw \"" + ReplaceA(passs, passr, proxypass) + "\"" : "");
 
-                                        Debug.WriteLine("proxy : " + proxy);
-                                        Debug.WriteLine("proxyuser : " + proxyuser);
-                                        Debug.WriteLine("proxypass : " + proxypass);
-                                        Debug.WriteLine("proxyhost : " + proxyhost);
-                                        Debug.WriteLine("proxyport : " + proxyport);
-                                        Debug.WriteLine("user : " + _user);
+                                        Debug.WriteLine("Connect proxy : " + proxy);
+                                        Debug.WriteLine("Connect proxyuser : " + proxyuser);
+                                        Debug.WriteLine("Connect proxypass : " + proxypass + " -> " + ReplaceA(passs, passr, proxypass));
+                                        Debug.WriteLine("Connect proxyhost : " + proxyhost);
+                                        Debug.WriteLine("Connect proxyport : " + proxyport);
                                     }
                                 }
                                 myProc.StartInfo.Arguments += " -ssh ";
@@ -998,7 +582,12 @@ namespace AutoPuTTY
                                 if (Settings.Default.puttykey && Settings.Default.puttykeyfile != "") myProc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfile + "\"";
                                 if (Settings.Default.puttyforward) myProc.StartInfo.Arguments += " -X";
                                 if (puttyargs != "") myProc.StartInfo.Arguments += " " + puttyargs;
-                                Debug.WriteLine(myProc.StartInfo.Arguments);
+
+                                Debug.WriteLine("Connect user : " + _user);
+                                Debug.WriteLine("Connect pass : " + _pass + " -> " + ReplaceA(passs, passr, _pass));
+                                Debug.WriteLine("Connect host : " + host);
+                                Debug.WriteLine("Connect args : " + myProc.StartInfo.Arguments.Trim());
+
                                 try
                                 {
                                     myProc.Start();
@@ -1018,145 +607,260 @@ namespace AutoPuTTY
             }
         }
 
-        private void mainForm_KeyDown(object sender, KeyEventArgs e)
+        public string Decrypt(string toDecrypt)
         {
-            if (e.KeyCode == Keys.F && e.Control)
+            if (toDecrypt == "") return "";
+
+            byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
+            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
+            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptkey));
+
+            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
+            tdes.Key = keyArray;
+            tdes.Mode = CipherMode.ECB;
+            tdes.Padding = PaddingMode.PKCS7;
+
+            ICryptoTransform cTransform = tdes.CreateDecryptor();
+            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+
+            hashmd5.Clear();
+            tdes.Clear();
+
+            return Encoding.UTF8.GetString(resultArray);
+        }
+
+        public string Decrypt(string toDecrypt, string key)
+        {
+            if (toDecrypt == "") return "";
+
+            byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
+            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
+            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
+
+            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
+            tdes.Key = keyArray;
+            tdes.Mode = CipherMode.ECB;
+            tdes.Padding = PaddingMode.PKCS7;
+
+            ICryptoTransform cTransform = tdes.CreateDecryptor();
+            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+
+            hashmd5.Clear();
+            tdes.Clear();
+
+            return Encoding.UTF8.GetString(resultArray);
+        }
+
+        public string Encrypt(string toEncrypt)
+        {
+            byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
+            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
+            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptkey));
+
+            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
+            tdes.Key = keyArray;
+            tdes.Mode = CipherMode.ECB;
+            tdes.Padding = PaddingMode.PKCS7;
+
+            ICryptoTransform cTransform = tdes.CreateEncryptor();
+            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+
+            hashmd5.Clear();
+            tdes.Clear();
+
+            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+        }
+
+        public string Encrypt(string toEncrypt, string key)
+        {
+            if (toEncrypt == "") return "";
+
+            byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
+            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
+            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
+
+            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
+            tdes.Key = keyArray;
+            tdes.Mode = CipherMode.ECB;
+            tdes.Padding = PaddingMode.PKCS7;
+
+            ICryptoTransform cTransform = tdes.CreateEncryptor();
+            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+
+            hashmd5.Clear();
+            tdes.Clear();
+
+            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+        }
+
+        private void Error(string message)
+        {
+            MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
+        private static string[] ExtractFilePath(string path)
+        {
+            //extract file path and arguments
+            if (path.IndexOf("\"") == 0)
             {
-                FindSwitch(true);
+                int s = path.Substring(1).IndexOf("\"");
+                if (s > 0) return new string[] { path.Substring(1, s), path.Substring(s + 2).Trim() };
+                return new string[] { path.Substring(1), "" };
             }
-            else if (e.KeyCode == Keys.O && e.Control)
+            else
             {
-                bOptions_Click(sender, e);
+                int s = path.Substring(1).IndexOf(" ");
+                if (s > 0) return new string[] { path.Substring(0, s + 1), path.Substring(s + 2).Trim() };
+                return new string[] { path.Substring(0), "" };
             }
         }
 
-        protected void lbList_KeyDown(object sender, KeyEventArgs e)
+        // toggle "search" form
+        private void FindSwitch(bool status)
         {
-            if (e.KeyCode == Keys.Apps) lbList_ContextMenu(true);
-            if (e.KeyCode == Keys.Delete) mDelete_Click(sender, e);
-            if (e.KeyCode == Keys.A && e.Control)
+            // reset the search input text
+            if (status && !filtervisible) tbFilter.Text = "";
+            // show the "search" form
+            tlLeft.RowStyles[1].Height = status ? 25 : 0;
+            filtervisible = status;
+            // focus the filter input
+            tbFilter.Focus();
+            // pressed ctrl + F twice, select the search input text so we can search again over last one
+            if (status && filtervisible && tbFilter.Text != "") tbFilter.SelectAll();
+        }
+
+        public static string ParseXpathString(string input)
+        {
+            string ret = "";
+            if (input.Contains("'"))
             {
-                for (int i = 0; i < lbList.Items.Count; i++)
+                string[] inputstrs = input.Split('\'');
+                foreach (string inputstr in inputstrs)
                 {
-                    //change index for the first item only
-                    if (i > 0) selectall = true;
-                    lbList.SetSelected(i, true);
+                    if (ret != "") ret += ",\"'\",";
+                    ret += "'" + inputstr + "'";
                 }
-                selectall = false;
+                ret = "concat(" + ret + ")";
+            }
+            else
+            {
+                ret = "'" + input + "'";
+            }
+            return ret;
+        }
+
+        private static string ReplaceA(string[] s, string[] r, string str)
+        {
+            int i = 0;
+            if (s.Length > 0 && r.Length > 0 && s.Length == r.Length)
+            {
+                while (i < s.Length)
+                {
+                    str = str.Replace(s[i], r[i]);
+                    i++;
+                }
+            }
+            return str;
+        }
+
+        private static string ReplaceU(string[] s, string str)
+        {
+            int i = 0;
+            if (s.Length > 0)
+            {
+                while (i < s.Length)
+                {
+                    str = str.Replace(s[i], Uri.EscapeDataString(s[i]).ToUpper());
+                    i++;
+                }
+            }
+            str = str.Replace("*", "%2A");
+            return str;
+        }
+
+        private void SetWindowSize(string size, string position)
+        {
+            string[] _size = size.Split('x');
+            string[] _position = position.Split('x');
+            
+            if (_size.Length == 2)
+            {
+                int size_w = Convert.ToInt32(_size[0]);
+                int size_h = Convert.ToInt32(_size[1]);
+
+                if (size_w > 0 && size_h > 0) Size = new Size(size_w, size_h);
+            }
+
+            if (_position.Length == 2)
+            {
+                int position_x = Convert.ToInt32(_position[0]);
+                int position_y = Convert.ToInt32(_position[1]);
+
+                if (position_x >= 0 && position_y >= 0) Location = new Point(position_x, position_y);
             }
         }
 
-        protected void lbList_KeyPress(object sender, KeyPressEventArgs e)
+        private void TooglePassword(bool state)
         {
-            e.Handled = true;
-
-            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
-            unixtime = Convert.ToInt64(ts.TotalMilliseconds);
-
-            string key = e.KeyChar.ToString();
-
-            if (e.KeyChar == (char) Keys.Return) Connect("-1");
-            else if (key.Length == 1)
+            if (state)
             {
-                if (unixtime - oldunixtime < 1000)
-                {
-                    keysearch = keysearch + e.KeyChar;
-                }
-                else
-                {
-                    keysearch = e.KeyChar.ToString();
-                }
-                if (lbList.FindString(keysearch) >= 0)
-                {
-                    lbList.SelectedIndex = -1;
-                    lbList.SelectedIndex = lbList.FindString(keysearch);
-                }
-                else
-                {
-                    keysearch = e.KeyChar.ToString();
-                    if (lbList.FindString(keysearch) >= 0)
-                    {
-                        lbList.SelectedIndex = -1;
-                        lbList.SelectedIndex = lbList.FindString(keysearch);
-                    }
-                }
+                bEye.Image = ImageOpacity.Set(Resources.iconeyeshow, (float)0.50);
+                tbPass.UseSystemPasswordChar = true;
             }
-
-            oldunixtime = unixtime;
+            else
+            {
+                bEye.Image = ImageOpacity.Set(Resources.iconeyehide, (float)0.50);
+                tbPass.UseSystemPasswordChar = false;
+            }
         }
 
-        public void lbList_Filter(string s)
+        public string XmlConfigGet(string id)
         {
-            filter = true;
-            XmlToList();
-            ListBox.ObjectCollection itemslist = new ListBox.ObjectCollection(lbList);
-            itemslist.AddRange(lbList.Items);
-            lbList.Items.Clear();
-
-            foreach ( string item in itemslist )
+            string file = Settings.Default.cfgpath;
+            XmlDocument xmldoc = new XmlDocument();
+            try
             {
-                string _item = item;
-                if (!cbCase.Checked)
-                {
-                    s = s.ToLower();
-                    _item = _item.ToLower();
-                }
-
-                /*if (!filterpopup.cbWhole.Checked)
-                {*/
-                    if (_item.IndexOf(s) >= 0 || s == "") lbList.Items.Add(item);
-                /*}
-                else
-                {
-                    if (_item == s || s == "") lbList.Items.Add(item);
-                }*/
+                xmldoc.Load(file);
+            }
+            catch
+            {
+                Error("\"" + Settings.Default.cfgpath + "\" file is corrupt, delete it and try again.");
+                Environment.Exit(-1);
             }
 
-            filter = false;
-            lbList.SelectedIndex = lbList.Items.Count > 0 ? 0 : -1;
-            if (lbList.Items.Count < 1) lbList_IndexChanged(new object(), new EventArgs());
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@ID=" + ParseXpathString(id) + "]");
+            if (xmlnode != null)
+            {
+                if (xmlnode.Count > 0) return xmlnode[0].InnerText;
+            }
+            return "";
         }
 
-        private void bModify_Click(object sender, EventArgs e)
+        public void XmlConfigSet(string id, string val)
         {
             string file = Settings.Default.cfgpath;
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(file);
 
-            XmlElement newserver = xmldoc.CreateElement("Server");
-            XmlAttribute name = xmldoc.CreateAttribute("Name");
-            name.Value = tbName.Text.Trim();
-            newserver.SetAttributeNode(name);
+            XmlElement newpath = xmldoc.CreateElement("Config");
+            XmlAttribute name = xmldoc.CreateAttribute("ID");
+            name.Value = id;
+            newpath.SetAttributeNode(name);
+            newpath.InnerText = val;
 
-            if (tbHost.Text.Trim() != "")
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@ID=" + ParseXpathString(id) + "]");
+            if (xmlnode != null)
             {
-                XmlElement host = xmldoc.CreateElement("Host");
-                host.InnerText = Encrypt(tbHost.Text.Trim());
-                newserver.AppendChild(host);
-            }
-            if (tbUser.Text != "")
-            {
-                XmlElement user = xmldoc.CreateElement("User");
-                user.InnerText = Encrypt(tbUser.Text);
-                newserver.AppendChild(user);
-            }
-            if (tbPass.Text != "")
-            {
-                XmlElement pass = xmldoc.CreateElement("Password");
-                pass.InnerText = Encrypt(tbPass.Text);
-                newserver.AppendChild(pass);
-            }
-            if (cbType.SelectedIndex > 0)
-            {
-                XmlElement type = xmldoc.CreateElement("Type");
-                type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
-                newserver.AppendChild(type);
-            }
-
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@Name=" + ParseXpathString(lbList.SelectedItem.ToString()) + "]");
-            if (xmldoc.DocumentElement != null)
-            {
-                if (xmlnode != null) xmldoc.DocumentElement.ReplaceChild(newserver, xmlnode[0]);
+                if (xmldoc.DocumentElement != null)
+                {
+                    if (xmlnode.Count > 0) {
+                        xmldoc.DocumentElement.ReplaceChild(newpath, xmlnode[0]);
+                    }
+                    else
+                    {
+                        xmldoc.DocumentElement.InsertBefore(newpath, xmldoc.DocumentElement.FirstChild);
+                    }
+                }
             }
 
             try
@@ -1167,19 +871,128 @@ namespace AutoPuTTY
             {
                 Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
             }
+        }
 
-            remove = true;
-            lbList.Items.RemoveAt(lbList.Items.IndexOf(lbList.SelectedItem));
-            remove = false;
-            tbName.Text = tbName.Text.Trim();
-            lbList.Items.Add(tbName.Text);
-            lbList.SelectedItems.Clear();
-            lbList.SelectedItem = tbName.Text;
-            bModify.Enabled = false;
-            bAdd.Enabled = false;
-            BeginInvoke(new InvokeDelegate(lbList.Focus));
+        public static void XmlCreate()
+        {
+            const string xmlcontent = "<?xml version=\"1.0\"?>\r\n<List>\r\n</List>";
+            TextWriter newfile = new StreamWriter(Settings.Default.cfgpath);
+            newfile.Write(xmlcontent);
+            newfile.Close();
+        }
 
-            if (filtervisible) tbFilter_Changed(new object(), new EventArgs());
+        public void XmlDropNode(string node)
+        {
+            string file = Settings.Default.cfgpath;
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(file);
+
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@" + node + "]");
+            if (xmldoc.DocumentElement != null)
+            {
+                if (xmlnode != null) xmldoc.DocumentElement.RemoveChild(xmlnode[0]);
+            }
+
+            try
+            {
+                xmldoc.Save(file);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+            }
+        }
+
+        public void XmlDropNode(ArrayList node)
+        {
+            string file = Settings.Default.cfgpath;
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(file);
+
+            foreach (string item in node)
+            {
+                XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@" + item + "]");
+                if (xmldoc.DocumentElement != null)
+                {
+                    if (xmlnode != null) xmldoc.DocumentElement.RemoveChild(xmlnode[0]);
+                }
+            }
+
+            try
+            {
+                xmldoc.Save(file);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+            }
+        }
+
+        public static ArrayList XmlGetServer(string name)
+        {
+            if (!File.Exists(Settings.Default.cfgpath))
+            {
+                return new ArrayList();
+            }
+
+            ArrayList server = new ArrayList();
+            string host = "";
+            string user = "";
+            string pass = "";
+            int type = 0;
+
+            string file = Settings.Default.cfgpath;
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(file);
+
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@Name=" + ParseXpathString(name) + "]");
+            if (xmlnode != null)
+            {
+                if (xmlnode.Count > 0)
+                {
+                    foreach (XmlElement childnode in xmlnode[0].ChildNodes)
+                    {
+                        switch (childnode.Name)
+                        {
+                            case "Host":
+                                host = childnode.InnerText;
+                                break;
+                            case "User":
+                                user = childnode.InnerText;
+                                break;
+                            case "Password":
+                                pass = childnode.InnerText;
+                                break;
+                            case "Type":
+                                Int32.TryParse(childnode.InnerText, out type);
+                                break;
+                        }
+                    }
+                }
+                else return new ArrayList();
+            }
+
+            server.AddRange(new string[] {name, host, user, pass, type.ToString()});
+            return server;
+        }
+
+        internal void XmlToList()
+        {
+            lbList.Items.Clear();
+
+            if (File.Exists(Settings.Default.cfgpath))
+            {
+                string file = Settings.Default.cfgpath;
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(file);
+
+                XmlNodeList xmlnode = xmldoc.GetElementsByTagName("Server");
+                for (int i = 0; i < xmlnode.Count; i++) if (!lbList.Items.Contains(xmlnode[i].Attributes[0].Value)) lbList.Items.Add(xmlnode[i].Attributes[0].Value);
+            }
+            else
+            {
+                Error("\"" + Settings.Default.cfgpath + "\" file not found.");
+            }
         }
 
         private void bAdd_Click(object sender, EventArgs e)
@@ -1245,9 +1058,146 @@ namespace AutoPuTTY
                 Error("No name ?\nNo hostname ??\nTry again ...");
             }
 
-            if (filtervisible) tbFilter_Changed(new object(), new EventArgs());
+            if (filtervisible) tbSearch_Changed(new object(), new EventArgs());
         }
 
+        private void bEye_Click(object sender, EventArgs e)
+        {
+            TooglePassword(!tbPass.UseSystemPasswordChar);
+        }
+
+        private void bEye_MouseEnter(object sender, EventArgs e)
+        {
+            bEye.Image = ImageOpacity.Set(bEye.Image, (float)0.50);
+        }
+
+        private void bEye_MouseLeave(object sender, EventArgs e)
+        {
+            bEye.Image = (tbPass.UseSystemPasswordChar ? Resources.iconeyeshow : Resources.iconeyehide);
+        }
+
+        private void bModify_Click(object sender, EventArgs e)
+        {
+            string file = Settings.Default.cfgpath;
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(file);
+
+            XmlElement newserver = xmldoc.CreateElement("Server");
+            XmlAttribute name = xmldoc.CreateAttribute("Name");
+            name.Value = tbName.Text.Trim();
+            newserver.SetAttributeNode(name);
+
+            if (tbHost.Text.Trim() != "")
+            {
+                XmlElement host = xmldoc.CreateElement("Host");
+                host.InnerText = Encrypt(tbHost.Text.Trim());
+                newserver.AppendChild(host);
+            }
+            if (tbUser.Text != "")
+            {
+                XmlElement user = xmldoc.CreateElement("User");
+                user.InnerText = Encrypt(tbUser.Text);
+                newserver.AppendChild(user);
+            }
+            if (tbPass.Text != "")
+            {
+                XmlElement pass = xmldoc.CreateElement("Password");
+                pass.InnerText = Encrypt(tbPass.Text);
+                newserver.AppendChild(pass);
+            }
+            if (cbType.SelectedIndex > 0)
+            {
+                XmlElement type = xmldoc.CreateElement("Type");
+                type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
+                newserver.AppendChild(type);
+            }
+
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@Name=" + ParseXpathString(lbList.SelectedItem.ToString()) + "]");
+            if (xmldoc.DocumentElement != null)
+            {
+                if (xmlnode != null) xmldoc.DocumentElement.ReplaceChild(newserver, xmlnode[0]);
+            }
+
+            try
+            {
+                xmldoc.Save(file);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+            }
+
+            remove = true;
+            lbList.Items.RemoveAt(lbList.Items.IndexOf(lbList.SelectedItem));
+            remove = false;
+            tbName.Text = tbName.Text.Trim();
+            lbList.Items.Add(tbName.Text);
+            lbList.SelectedItems.Clear();
+            lbList.SelectedItem = tbName.Text;
+            bModify.Enabled = false;
+            bAdd.Enabled = false;
+            BeginInvoke(new InvokeDelegate(lbList.Focus));
+
+            if (filtervisible) tbSearch_Changed(new object(), new EventArgs());
+        }
+
+        private void bDelete_Click(object sender, EventArgs e)
+        {
+            if (lbList.SelectedItems.Count > 0)
+            {
+                XmlDropNode("Name=" + ParseXpathString(lbList.SelectedItems[0].ToString()));
+                remove = true;
+                lbList.Items.Remove(lbList.SelectedItems[0].ToString());
+                remove = false;
+                lbList.SelectedItems.Clear();
+                tbName_TextChanged(this, e);
+            }
+        }
+
+        private void bOptions_Click(object sender, EventArgs e)
+        {
+            if (filtervisible) bSearchClose_Click(sender, e);
+            optionsform.ShowDialog(this);
+        }
+        private void bSearchClose_Click(object sender, EventArgs e)
+        {
+            FindSwitch(false);
+            if (tbFilter.Text == "") return;
+            XmlToList();
+            if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
+        }
+
+        // "search" form change close button image on mouse down
+        private void bSearchClose_MouseDown(object sender, MouseEventArgs e)
+        {
+            bClose.Image = Resources.closed;
+        }
+
+        // "search" form change close button image on mouse hover
+        private void bSearchClose_MouseEnter(object sender, EventArgs e)
+        {
+            bClose.Image = Resources.closeh;
+        }
+
+        // "search" form change close button image on mouse leave
+        private void bSearchClose_MouseLeave(object sender, EventArgs e)
+        {
+            bClose.Image = Resources.close;
+        }
+
+        // check "search" case censitive box
+        private void cbSearchCase_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tbFilter.Text != "") tbSearch_Changed(sender, e);
+        }
+
+        private void cbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
+            tbName_TextChanged(this, e);
+        }
+
+        // delete multiple confirmation menu
         private void mDelete_Click(object sender, EventArgs e)
         {
             if (lbList.SelectedItems.Count > 0)
@@ -1270,17 +1220,296 @@ namespace AutoPuTTY
             }
         }
 
-        private void bDelete_Click(object sender, EventArgs e)
+        private void lbList_ContextMenu()
         {
-            if (lbList.SelectedItems.Count > 0)
+            lbList_ContextMenu(false);
+        }
+
+        private void lbList_ContextMenu(bool keyboard)
+        {
+            if (lbList.Items.Count > 0)
             {
-                XmlDropNode("Name=" + ParseXpathString(lbList.SelectedItems[0].ToString()));
-                remove = true;
-                lbList.Items.Remove(lbList.SelectedItems[0].ToString());
-                remove = false;
-                lbList.SelectedItems.Clear();
-                tbName_TextChanged(this, e);
+                if (keyboard && lbList.SelectedItems.Count > 0)
+                {
+                    lbList_ContextMenu_Enable(true);
+                }
+                else
+                {
+                    int rightindex = lbList.IndexFromPoint(lbList.PointToClient(MousePosition));
+                    if (rightindex >= 0)
+                    {
+                        lbList_ContextMenu_Enable(true);
+                        if (lbList.GetSelected(rightindex))
+                        {
+                            lbList.SelectedIndex = rightindex;
+                        }
+                        else
+                        {
+                            lbList.SelectedIndex = -1;
+                            lbList.SelectedIndex = rightindex;
+                        }
+                    }
+                    else
+                    {
+                        lbList_ContextMenu_Enable(false);
+                    }
+                }
             }
+            else lbList_ContextMenu_Enable(false);
+            
+            IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
+            ShowWindowAsync(hWnd, 5); // SW_SHOW
+
+            int loop = 0;
+            while (!Visible)
+            {
+                loop++;
+                Thread.Sleep(100);
+                Show();
+                if (loop > 10)
+                {
+                    //let's crash
+                    MessageBox.Show("Something bad happened");
+                    break;
+                }
+            }
+            cmList.Show(this, PointToClient(MousePosition));
+        }
+
+        private void lbList_ContextMenu_Enable(bool status)
+        {
+            for (int i = 0; i < cmList.MenuItems.Count; i++)
+            {
+                cmList.MenuItems[i].Enabled = status;
+            }
+        }
+
+        private void lbList_DoubleClick(object sender, EventArgs e)
+        {
+            Connect("-1");
+        }
+
+        private void lbList_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+            // Draw the background of the ListBox control for each item.
+            e.DrawBackground();
+            // Define the default color of the brush as black.
+            Brush myBrush = Brushes.Black;
+
+            // Draw the current item text based on the current Font 
+            // and the custom brush settings.
+            Rectangle bounds = e.Bounds;
+            if (bounds.X < 1) bounds.X = 1;
+            //MessageBox.Show(this, bounds.Top.ToString());
+
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected) myBrush = Brushes.White;
+            e.Graphics.DrawString(lbList.Items[e.Index].ToString(), e.Font, myBrush, bounds, StringFormat.GenericDefault);
+
+            // If the ListBox has focus, draw a focus rectangle around the selected item.
+            e.DrawFocusRectangle();
+        }
+
+        public void lbList_Filter(string s)
+        {
+            filter = true;
+            XmlToList();
+            ListBox.ObjectCollection itemslist = new ListBox.ObjectCollection(lbList);
+            itemslist.AddRange(lbList.Items);
+            lbList.Items.Clear();
+
+            foreach ( string item in itemslist )
+            {
+                string _item = item;
+                if (!cbCase.Checked)
+                {
+                    s = s.ToLower();
+                    _item = _item.ToLower();
+                }
+
+                /*if (!filterpopup.cbWhole.Checked)
+                {*/
+                    if (_item.IndexOf(s) >= 0 || s == "") lbList.Items.Add(item);
+                /*}
+                else
+                {
+                    if (_item == s || s == "") lbList.Items.Add(item);
+                }*/
+            }
+
+            filter = false;
+            lbList.SelectedIndex = lbList.Items.Count > 0 ? 0 : -1;
+            if (lbList.Items.Count < 1) lbList_IndexChanged(new object(), new EventArgs());
+        }
+
+        public void lbList_IndexChanged(object sender, EventArgs e)
+        {
+            if (filter || selectall) return;
+            if (remove || lbList.SelectedItem == null)
+            {
+                if (bDelete.Enabled) bDelete.Enabled = false;
+                return;
+            }
+            indexchanged = true;
+
+            ArrayList server = XmlGetServer(lbList.SelectedItem.ToString());
+
+            tbName.Text = (string) server[0];
+            tbHost.Text = Decrypt((string) server[1]);
+            tbUser.Text = Decrypt((string) server[2]);
+            tbPass.Text = Decrypt((string) server[3]);
+            cbType.SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server[4])]);
+            lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
+
+            if (bAdd.Enabled) bAdd.Enabled = false;
+            if (bModify.Enabled) bModify.Enabled = false;
+            if (!bDelete.Enabled) bDelete.Enabled = true;
+
+            indexchanged = false;
+        }
+
+        protected void lbList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Apps) lbList_ContextMenu(true);
+            if (e.KeyCode == Keys.Delete) mDelete_Click(sender, e);
+            if (e.KeyCode == Keys.A && e.Control)
+            {
+                for (int i = 0; i < lbList.Items.Count; i++)
+                {
+                    //change index for the first item only
+                    if (i > 0) selectall = true;
+                    lbList.SetSelected(i, true);
+                }
+                selectall = false;
+            }
+        }
+
+        protected void lbList_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+
+            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
+            unixtime = Convert.ToInt64(ts.TotalMilliseconds);
+
+            string key = e.KeyChar.ToString();
+
+            if (e.KeyChar == (char) Keys.Return) Connect("-1");
+            else if (key.Length == 1)
+            {
+                if (unixtime - oldunixtime < 1000)
+                {
+                    keysearch = keysearch + e.KeyChar;
+                }
+                else
+                {
+                    keysearch = e.KeyChar.ToString();
+                }
+                if (lbList.FindString(keysearch) >= 0)
+                {
+                    lbList.SelectedIndex = -1;
+                    lbList.SelectedIndex = lbList.FindString(keysearch);
+                }
+                else
+                {
+                    keysearch = e.KeyChar.ToString();
+                    if (lbList.FindString(keysearch) >= 0)
+                    {
+                        lbList.SelectedIndex = -1;
+                        lbList.SelectedIndex = lbList.FindString(keysearch);
+                    }
+                }
+            }
+
+            oldunixtime = unixtime;
+        }
+
+        private void lbList_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right) return;
+            lbList_ContextMenu();
+        }
+
+        private void mainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F && e.Control)
+            {
+                FindSwitch(true);
+            }
+            else if (e.KeyCode == Keys.O && e.Control)
+            {
+                bOptions_Click(sender, e);
+            }
+        }
+
+        private void mainForm_Move(object sender, EventArgs e)
+        {
+            if (optionsform.cbGPosition.Checked)
+            {
+                Settings.Default.position = Left + "x" + Top;
+                XmlConfigSet("position", Settings.Default.position.ToString());
+            }
+        }
+
+        private void mainForm_Resize(object sender, EventArgs e)
+        {
+            if (Settings.Default.minimize && FormWindowState.Minimized == WindowState)
+            {
+                Hide();
+                miRestore.Enabled = true;
+            }
+            else
+            {
+                laststate = WindowState.ToString();
+            }
+
+            tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterw ? tlLeft.Width - tbFilter.Left : tbfilterw;
+
+            if (optionsform.cbGSize.Checked)
+            {
+                Settings.Default.size = Width + "x" + Height;
+                XmlConfigSet("size", Settings.Default.size.ToString());
+            }
+
+            if (optionsform.cbGPosition.Checked)
+            {
+                Settings.Default.position = Left + "x" + Top;
+                XmlConfigSet("position", Settings.Default.position.ToString());
+            }
+        }
+
+        // systray close click
+        private void miClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        // systray restore click
+        private void miRestore_Click(object sender, EventArgs e)
+        {
+            Show();
+            WindowState = laststate == "Maximized" ? FormWindowState.Maximized : FormWindowState.Normal;
+            Activate();
+            miRestore.Enabled = false;
+        }
+
+        // systray icon left double click
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            miRestore_Click(this, e);
+        }
+
+        // systray icon left click
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                notifyIcon_MouseDoubleClick(this, e);
+            }
+        }
+
+        private void tbHost_TextChanged(object sender, EventArgs e)
+        {
+            tbName_TextChanged(this, e);
         }
 
         private void tbName_TextChanged(object sender, EventArgs e)
@@ -1312,7 +1541,7 @@ namespace AutoPuTTY
             }
         }
 
-        private void tbHost_TextChanged(object sender, EventArgs e)
+        private void tbPass_TextChanged(object sender, EventArgs e)
         {
             tbName_TextChanged(this, e);
         }
@@ -1322,219 +1551,14 @@ namespace AutoPuTTY
             tbName_TextChanged(this, e);
         }
 
-        private void tbPass_TextChanged(object sender, EventArgs e)
-        {
-            tbName_TextChanged(this, e);
-        }
-
-        private void cbType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
-            tbName_TextChanged(this, e);
-        }
-
-        private void miRestore_Click(object sender, EventArgs e)
-        {
-            Show();
-            WindowState = laststate == "Maximized" ? FormWindowState.Maximized : FormWindowState.Normal;
-            Activate();
-            miRestore.Enabled = false;
-        }
-
-        private void miClose_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void Error(string message)
-        {
-            MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
-
-        public string Encrypt(string toEncrypt)
-        {
-            byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
-            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptkey));
-
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
-            tdes.Key = keyArray;
-            tdes.Mode = CipherMode.ECB;
-            tdes.Padding = PaddingMode.PKCS7;
-
-            ICryptoTransform cTransform = tdes.CreateEncryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            hashmd5.Clear();
-            tdes.Clear();
-
-            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
-        }
-
-        public string Encrypt(string toEncrypt, string key)
-        {
-            if (toEncrypt == "") return "";
-
-            byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
-            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
-
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
-            tdes.Key = keyArray;
-            tdes.Mode = CipherMode.ECB;
-            tdes.Padding = PaddingMode.PKCS7;
-
-            ICryptoTransform cTransform = tdes.CreateEncryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            hashmd5.Clear();
-            tdes.Clear();
-
-            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
-        }
-
-        public string Decrypt(string toDecrypt)
-        {
-            if (toDecrypt == "") return "";
-
-            byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
-            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptkey));
-
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
-            tdes.Key = keyArray;
-            tdes.Mode = CipherMode.ECB;
-            tdes.Padding = PaddingMode.PKCS7;
-
-            ICryptoTransform cTransform = tdes.CreateDecryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            hashmd5.Clear();
-            tdes.Clear();
-
-            return Encoding.UTF8.GetString(resultArray);
-        }
-
-        public string Decrypt(string toDecrypt, string key)
-        {
-            if (toDecrypt == "") return "";
-
-            byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
-            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
-
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
-            tdes.Key = keyArray;
-            tdes.Mode = CipherMode.ECB;
-            tdes.Padding = PaddingMode.PKCS7;
-
-            ICryptoTransform cTransform = tdes.CreateDecryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            hashmd5.Clear();
-            tdes.Clear();
-
-            return Encoding.UTF8.GetString(resultArray);
-        }
-
-        private void TooglePassword(bool state)
-        {
-            if (state)
-            {
-                bEye.Image = ImageOpacity.Set(Resources.iconeyeshow, (float)0.50);
-                tbPass.UseSystemPasswordChar = true;
-            }
-            else
-            {
-                bEye.Image = ImageOpacity.Set(Resources.iconeyehide, (float)0.50);
-                tbPass.UseSystemPasswordChar = false;
-            }
-        }
-
-        private void bEye_Click(object sender, EventArgs e)
-        {
-            TooglePassword(!tbPass.UseSystemPasswordChar);
-        }
-
-        private void bEye_MouseEnter(object sender, EventArgs e)
-        {
-            bEye.Image = ImageOpacity.Set(bEye.Image, (float)0.50);
-        }
-
-        private void bEye_MouseLeave(object sender, EventArgs e)
-        {
-            bEye.Image = (tbPass.UseSystemPasswordChar ? Resources.iconeyeshow : Resources.iconeyehide);
-        }
-
-        private void liOptions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            optionsform.ShowDialog(this);
-        }
-
-        private void bOptions_Click(object sender, EventArgs e)
-        {
-            if (filtervisible) bClose_Click(sender, e);
-            optionsform.ShowDialog(this);
-        }
-
-        // toggle "search" form
-        private void FindSwitch(bool status)
-        {
-            // reset the search input text
-            if (status && !filtervisible) tbFilter.Text = "";
-            // show the "search" form
-            tlLeft.RowStyles[1].Height = status ? 25 : 0;
-            filtervisible = status;
-            // focus the filter input
-            tbFilter.Focus();
-            // pressed ctrl + F twice, select the search input text so we can search again over last one
-            if (status && filtervisible && tbFilter.Text != "") tbFilter.SelectAll();
-        }
-
-        private void bClose_Click(object sender, EventArgs e)
-        {
-            FindSwitch(false);
-            if (tbFilter.Text == "") return;
-            XmlToList();
-            if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
-        }
-
-        // "search" form change close button image on mouse hover
-        private void bClose_MouseEnter(object sender, EventArgs e)
-        {
-            bClose.Image = Resources.closeh;
-        }
-
-        // "search" form change close button image on mouse leave
-        private void bClose_MouseLeave(object sender, EventArgs e)
-        {
-            bClose.Image = Resources.close;
-        }
-
-        // "search" form change close button image on mouse down
-        private void bClose_MouseDown(object sender, MouseEventArgs e)
-        {
-            bClose.Image = Resources.closed;
-        }
-
         // update "search"
-        private void tbFilter_Changed(object sender, EventArgs e)
+        private void tbSearch_Changed(object sender, EventArgs e)
         {
             if (filtervisible) lbList_Filter(tbFilter.Text);
         }
 
-        // close "search" form when pressing ESC
-        private void tbFilter_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)27)
-            {
-                e.Handled = true;
-                bClose_Click(sender, e);
-            }
-        }
-
         // prevent the beep sound when pressing ctrl + F in the search input
-        private void tbFilter_KeyDown(object sender, KeyEventArgs e)
+        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F && e.Control)
             {
@@ -1542,17 +1566,13 @@ namespace AutoPuTTY
             }
         }
 
-        private void cbCase_CheckedChanged(object sender, EventArgs e)
+        // close "search" form when pressing ESC
+        private void tbSearch_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (tbFilter.Text != "") tbFilter_Changed(sender, e);
-        }
-
-        private void mainForm_Move(object sender, EventArgs e)
-        {
-            if (optionsform.cbGPosition.Checked)
+            if (e.KeyChar == (char)27)
             {
-                Settings.Default.position = Left + "x" + Top;
-                XmlConfigSet("position", Settings.Default.position.ToString());
+                e.Handled = true;
+                bSearchClose_Click(sender, e);
             }
         }
 
