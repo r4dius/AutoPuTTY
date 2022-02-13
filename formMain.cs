@@ -262,15 +262,57 @@ namespace AutoPuTTY
                 {
                     ArrayList server = XmlGetServer(item.ToString());
 
+                    string[] f = { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
+                    string[] ps = { "/", "\\\\" };
+                    string[] pr = { "\\", "\\" };
+                    string[] _temp;
                     string winscpprot = "sftp://";
-
                     string _host = Decrypt(server[1].ToString());
                     string _user = Decrypt(server[2].ToString());
                     string _pass = Decrypt(server[3].ToString());
                     string _type = type == "-1" ? server[4].ToString() : type;
-                    string[] f = { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
-                    string[] ps = { "/", "\\\\" };
-                    string[] pr = { "\\", "\\" };
+                    string proxy = "";
+                    string proxyuser = "";
+                    string proxypass = "";
+                    string proxyhost = "";
+                    string proxyport = "";
+                    string _userfromproxy = "";
+
+                    //SSH Jump
+                    if (_user.Contains("#"))
+                    {
+                        _temp = _user.Split('#');
+                        _userfromproxy = _temp[_temp.Length - 1];
+                        Array.Resize(ref _temp, _temp.Length - 1);
+                        proxy = String.Join("", _temp);
+
+                        if (proxy.Contains("@"))
+                        {
+                            _temp = proxy.Split('@');
+                            proxyhost = _temp[_temp.Length - 1];
+                            Array.Resize(ref _temp, _temp.Length - 1);
+                            proxyuser = String.Join("@", _temp);
+
+                            if (proxyuser.Contains(":"))
+                            {
+                                _temp = proxyuser.Split(':');
+                                proxyuser = _temp[0];
+                                _temp = _temp.Skip(1).ToArray();
+                                proxypass = String.Join(":", _temp);
+                            }
+                        }
+                        else
+                        {
+                            // no proxy username
+                            proxyhost = proxy;
+                        }
+
+                        if (proxyhost.Split(':').Length > 1)
+                        {
+                            proxyport = proxyhost.Split(':')[1];
+                            proxyhost = proxyhost.Split(':')[0];
+                        }
+                    }
 
                     switch (_type)
                     {
@@ -332,7 +374,9 @@ namespace AutoPuTTY
                                 myProc.StartInfo.FileName = rdpath;
                                 myProc.StartInfo.Arguments = "\"" + rdpout + ReplaceU(f, server[0].ToString()) + ".rdp\"";
                                 if (rdpargs != "") myProc.StartInfo.Arguments += " " + rdpargs;
-                                //MessageBox.Show(myProc.StartInfo.FileName + myProc.StartInfo.FileName.IndexOf('"').ToString() + File.Exists(myProc.StartInfo.FileName).ToString());
+
+                                Debug.WriteLine(myProc.StartInfo.FileName + myProc.StartInfo.FileName.IndexOf('"').ToString() + File.Exists(myProc.StartInfo.FileName).ToString());
+
                                 try
                                 {
                                     myProc.Start();
@@ -433,6 +477,7 @@ namespace AutoPuTTY
                             string[] winscpextractpath = ExtractFilePath(Settings.Default.winscppath);
                             string winscppath = winscpextractpath[0];
                             string winscpargs = winscpextractpath[1];
+                            string[] s = { "%", " ", "+", "/", "@", "\"", ":", ";" };
 
                             if (File.Exists(winscppath))
                             {
@@ -454,10 +499,12 @@ namespace AutoPuTTY
 
                                 Process myProc = new Process();
                                 myProc.StartInfo.FileName = Settings.Default.winscppath;
-                                myProc.StartInfo.Arguments = winscpprot;
+                                myProc.StartInfo.Arguments = "";
+
+                                myProc.StartInfo.Arguments += winscpprot;
                                 if (_user != "")
                                 {
-                                    string[] s = { "%", " ", "+", "/", "@", "\"", ":", ";" };
+                                    if (proxyhost != "") _user = _userfromproxy;
                                     _user = ReplaceU(s, _user);
                                     _pass = ReplaceU(s, _pass);
                                     myProc.StartInfo.Arguments += _user;
@@ -468,7 +515,22 @@ namespace AutoPuTTY
                                 if (port != "") myProc.StartInfo.Arguments += ":" + port;
                                 if (winscpprot == "ftp://") myProc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
                                 if (Settings.Default.winscpkey && Settings.Default.winscpkeyfile != "") myProc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfile + "\"";
+
+                                //SSH Jump
+                                if (proxyhost != "")
+                                {
+                                    _user = _userfromproxy;
+                                    myProc.StartInfo.Arguments += " /rawsettings Tunnel=1 TunnelHostName=" + proxyhost + (proxyuser != "" ? " TunnelUserName=" + proxyuser : "") + " TunnelPortNumber=" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " TunnelPasswordPlain=\"" + ReplaceU(s, proxypass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfile != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfile + "\"" : "");
+
+                                    Debug.WriteLine("Connect proxy : " + proxy);
+                                    Debug.WriteLine("Connect proxyuser : " + proxyuser);
+                                    Debug.WriteLine("Connect proxypass : " + proxypass + " -> " + ReplaceU(s, proxypass));
+                                    Debug.WriteLine("Connect proxyhost : " + proxyhost);
+                                    Debug.WriteLine("Connect proxyport : " + proxyport);
+                                }
+
                                 Debug.WriteLine(myProc.StartInfo.Arguments);
+
                                 if (winscpargs != "") myProc.StartInfo.Arguments += " " + winscpargs;
                                 try
                                 {
@@ -498,14 +560,8 @@ namespace AutoPuTTY
 
                             if (File.Exists(puttypath))
                             {
-                                string[] _proxy;
                                 string host;
                                 string port;
-                                string proxy;
-                                string proxyuser = "";
-                                string proxypass = "";
-                                string proxyhost = "";
-                                string proxyport = "";
                                 string[] hostport = _host.Split(':');
                                 int split = hostport.Length;
 
@@ -523,56 +579,20 @@ namespace AutoPuTTY
                                 Process myProc = new Process();
                                 myProc.StartInfo.FileName = Settings.Default.puttypath;
                                 myProc.StartInfo.Arguments = "";
-                                if (_user != "")
+
+                                //SSH Jump
+                                if (proxyhost != "")
                                 {
-                                    //SSH Jump
-                                    if (_user.Contains("#"))
-                                    {
-                                        _proxy = _user.Split('#');
-                                        _user = _proxy[_proxy.Length - 1];
-                                        Array.Resize(ref _proxy, _proxy.Length - 1);
-                                        proxy = String.Join("", _proxy);
+                                    _user = _userfromproxy;
+                                    myProc.StartInfo.Arguments += " -J " + (proxyuser != "" ? proxyuser + "@" : "") + proxyhost + ":" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " -jw \"" + ReplaceA(passs, passr, proxypass) + "\"" : "");
 
-                                        if (proxy.Contains("@"))
-                                        {
-                                            _proxy = proxy.Split('@');
-                                            proxyhost = _proxy[_proxy.Length - 1];
-                                            Array.Resize(ref _proxy, _proxy.Length - 1);
-                                            proxy = String.Join("@", _proxy);
-
-                                            if (proxy.Contains(":"))
-                                            {
-                                                _proxy = proxy.Split(':');
-                                                proxyuser = _proxy[0];
-                                                _proxy = _proxy.Skip(1).ToArray();
-                                                proxypass = String.Join(":", _proxy);
-                                            }
-                                            else
-                                            {
-                                                // no proxy pass
-                                                proxyuser = proxy;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // no proxy username
-                                            proxyhost = proxy;
-                                        }
-
-                                        if (proxyhost.Split(':').Length > 1)
-                                        {
-                                            proxyport = proxyhost.Split(':')[1];
-                                            proxyhost = proxyhost.Split(':')[0];
-                                        }
-                                        myProc.StartInfo.Arguments += " -J " + (proxyuser != "" ? proxyuser + "@" : "") + proxyhost + ":" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " -jw \"" + ReplaceA(passs, passr, proxypass) + "\"" : "");
-
-                                        Debug.WriteLine("Connect proxy : " + proxy);
-                                        Debug.WriteLine("Connect proxyuser : " + proxyuser);
-                                        Debug.WriteLine("Connect proxypass : " + proxypass + " -> " + ReplaceA(passs, passr, proxypass));
-                                        Debug.WriteLine("Connect proxyhost : " + proxyhost);
-                                        Debug.WriteLine("Connect proxyport : " + proxyport);
-                                    }
+                                    Debug.WriteLine("Connect proxy : " + proxy);
+                                    Debug.WriteLine("Connect proxyuser : " + proxyuser);
+                                    Debug.WriteLine("Connect proxypass : " + proxypass + " -> " + ReplaceA(passs, passr, proxypass));
+                                    Debug.WriteLine("Connect proxyhost : " + proxyhost);
+                                    Debug.WriteLine("Connect proxyport : " + proxyport);
                                 }
+
                                 myProc.StartInfo.Arguments += " -ssh ";
                                 if (_user != "") myProc.StartInfo.Arguments += _user + "@";
                                 if (host != "") myProc.StartInfo.Arguments += host;
@@ -1301,7 +1321,7 @@ namespace AutoPuTTY
             // and the custom brush settings.
             Rectangle bounds = e.Bounds;
             if (bounds.X < 1) bounds.X = 1;
-            //MessageBox.Show(this, bounds.Top.ToString());
+            //Debug.WriteLine(bounds.Top.ToString());
 
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected) myBrush = Brushes.White;
             e.Graphics.DrawString(lbList.Items[e.Index].ToString(), e.Font, myBrush, bounds, StringFormat.GenericDefault);
