@@ -6,3 +6,4 @@ bin/*
 obj/*
 putty/Release/*
 putty/x64/*
+.project
