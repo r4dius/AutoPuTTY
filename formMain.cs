@@ -1484,13 +1484,13 @@ namespace AutoPuTTY
 
             tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterw ? tlLeft.Width - tbFilter.Left : tbfilterw;
 
-            if (optionsform.cbGSize.Checked)
+            if (optionsform != null && optionsform.cbGSize.Checked)
             {
                 Settings.Default.size = Width + "x" + Height;
                 XmlConfigSet("size", Settings.Default.size.ToString());
             }
 
-            if (optionsform.cbGPosition.Checked)
+            if (optionsform != null && optionsform.cbGPosition.Checked)
             {
                 Settings.Default.position = Left + "x" + Top;
                 XmlConfigSet("position", Settings.Default.position.ToString());
