@@ -112,15 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="notifyIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="notifyIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>93, 2</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="notifyIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAMAEBAQAAEABAAoAQAANgAAABAQAAABAAgAaAUAAF4BAAAQEAAAAQAgAGgEAADGBgAAKAAAABAA
@@ -173,13 +173,32 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAOAHAAD4HwAA
 </value>
   </data>
-  <metadata name="cmSystray.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="cmSystray.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>3, 2</value>
   </metadata>
-  <metadata name="cmList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="cmList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>182, 2</value>
   </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="piAbout.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EQAACxEBf2RfkQAAAu5JREFUaEPtmFlOKlEQht3FXY/EEBND4AmCEFCiARy2wAwGBKL4zBCN8nQZnQDd
+        gXsqOceuexuqgJ5ESfpPKoEfu8/3HaAlvQUAGz1suUlDC2vyZzqR6aSUEY9FZzqElxTmogb/O50PZcRj
+        S0QILymMhQW/uLgAMfhcec2UCOElhb6w4Pl8Hh4fH+Hp6Qmen5/lFItFS0QILym0ZSH4YDCA4XA4I/Dy
+        8gKvr68wGo3g8vLSlAjhJcXysOC5XA76/f5SeBQYj8cwmUygXC4bEiG8pODDgmezWej1enJWCajh397e
+        5Ly/v0OlUtElQnhJMRsWPJPJQLfblaMVfpEAjlYRwkuKrywE73Q6chDezO5zs0qE8JLiPzwLjvB6dh/h
+        UYADnx9GREoQXlKo4OfB1QIIjwJqeKO7z41KREoQXlJ8vWUfXq8XOIF17L562u021Go1lEgRXlKoBHw+
+        nxwU0QNvdvcfHh7g6uoKrq+vzQv4/X7Y398Hcb0X8Hp3Xw/8/f29/NhUq1XrBQKBAASDQSgUCivh9Qrc
+        3d1BqVSS/+C+XSAUCkE4HJa/b8zu/u3trfzBJ861doHDw0OIRCJyUb1f3FarJT+S4t38cYGjoyM4Pj6W
+        i67a/WazKS8K4mfIrxOIRqMQi8XkovO732g0IJVKQTqd/v0C8XgcTk5O4ObmBur1OiQSCUgmk5sncHp6
+        KuFtAVvAFrAFbAFbwBawBWwB4wLn5+e6BP7dVtne3v5xgbOzM4TXfFuF3NhyOBxrFxDH4voKi+YbWyLs
+        rcWdnZ1vFxDH4nrK2oJBwk+H8pJiNqyI0+m0XEAci+dX1poBxxBeUvBhRXZ3d00LiGPxfMq5WXAM4SXF
+        8rAie3t7ugWEOB6vnGspOIbwkkJbWBGXy7VS4ODgwBA4hvCSQl9YEbfbTQTEdwZfV/5WFziG8JLCWFgR
+        j8cjr1j4XHnNEDiG8JLCXFgR5bEpcAzhJYU1UYtYAo4hvPPFpg1bbs7A1idy/zmFlkZ6dwAAAABJRU5E
+        rkJggg==
+</value>
+  </data>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
-using AutoPuTTY.Properties;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -10,7 +9,7 @@ using AutoPuTTY.Properties;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Litrux")]
 [assembly: AssemblyProduct("AutoPuTTY")]
-[assembly: AssemblyCopyright("Copyright © Litrux 2008")]
+[assembly: AssemblyCopyright("Copyright © Litrux 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +28,5 @@ using AutoPuTTY.Properties;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.24.3")]
-[assembly: AssemblyFileVersion("0.24.3")]
+[assembly: AssemblyVersion("0.31")]
+[assembly: AssemblyFileVersion("0.31")]

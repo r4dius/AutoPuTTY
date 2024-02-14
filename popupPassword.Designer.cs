@@ -35,7 +35,9 @@ namespace AutoPuTTY
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.tTitle = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // bOK
@@ -68,7 +70,7 @@ namespace AutoPuTTY
             this.tText.AutoSize = true;
             this.tText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
             this.tText.ForeColor = System.Drawing.Color.White;
-            this.tText.Location = new System.Drawing.Point(65, 34);
+            this.tText.Location = new System.Drawing.Point(63, 34);
             this.tText.Name = "tText";
             this.tText.Size = new System.Drawing.Size(143, 13);
             this.tText.TabIndex = 1;
@@ -76,8 +78,8 @@ namespace AutoPuTTY
             // 
             // tbPassword
             // 
-            this.tbPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPassword.Location = new System.Drawing.Point(8, 66);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.Size = new System.Drawing.Size(228, 20);
@@ -86,12 +88,12 @@ namespace AutoPuTTY
             // 
             // pictureBox
             // 
-            this.pictureBox.Image = global::AutoPuTTY.Properties.Resources.about;
+            this.pictureBox.BackgroundImage = global::AutoPuTTY.Properties.Resources.about;
             this.pictureBox.InitialImage = null;
-            this.pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox.Location = new System.Drawing.Point(12, 4);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(262, 58);
-            this.pictureBox.TabIndex = 5;
+            this.pictureBox.Size = new System.Drawing.Size(48, 48);
+            this.pictureBox.TabIndex = 2;
             this.pictureBox.TabStop = false;
             // 
             // tTitle
@@ -100,11 +102,23 @@ namespace AutoPuTTY
             this.tTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
             this.tTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tTitle.ForeColor = System.Drawing.Color.White;
-            this.tTitle.Location = new System.Drawing.Point(64, 9);
+            this.tTitle.Location = new System.Drawing.Point(62, 9);
             this.tTitle.Name = "tTitle";
             this.tTitle.Size = new System.Drawing.Size(116, 23);
             this.tTitle.TabIndex = 0;
             this.tTitle.Text = "AutoPuTTY";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.panel1.Controls.Add(this.tTitle);
+            this.panel1.Controls.Add(this.pictureBox);
+            this.panel1.Controls.Add(this.tText);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(244, 58);
+            this.panel1.TabIndex = 5;
             // 
             // popupPassword
             // 
@@ -113,9 +127,7 @@ namespace AutoPuTTY
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.bQuit;
             this.ClientSize = new System.Drawing.Size(244, 124);
-            this.Controls.Add(this.tTitle);
-            this.Controls.Add(this.tText);
-            this.Controls.Add(this.pictureBox);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.bQuit);
             this.Controls.Add(this.bOK);
@@ -127,6 +139,8 @@ namespace AutoPuTTY
             this.Text = "AutoPuTTY";
             this.Closing += new System.ComponentModel.CancelEventHandler(this.bQuit_Click);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,5 +154,6 @@ namespace AutoPuTTY
         public System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Label tTitle;
+        private System.Windows.Forms.Panel panel1;
     }
 }

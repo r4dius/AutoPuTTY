@@ -41,9 +41,12 @@ namespace AutoPuTTY
                     tbGConfirm.Text = Settings.Default.password;
                     Settings.Default.cryptkey = Settings.Default.password;
                     cbGPassword.Checked = true;
-                }
+                } else cbGPassword.Checked = false;
+                Console.WriteLine(Settings.Default.multicolumn);
+                Console.WriteLine(Settings.Default.multicolumnwidth);
                 cbGMulti.Checked = Settings.Default.multicolumn;
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
+                Console.WriteLine(Settings.Default.multicolumnwidth);
                 cbGSize.Checked = (_size.Length == 2 ? true : false);
                 cbGPosition.Checked = (_position.Length == 2 ? true : false);
                 cbGMinimize.Checked = Settings.Default.minimize;
@@ -369,18 +372,8 @@ namespace AutoPuTTY
             Settings.Default.multicolumn = cbGMulti.Checked;
             if (!firstread) mainform.XmlConfigSet("multicolumn", Settings.Default.multicolumn.ToString());
 
-            if (Settings.Default.multicolumn)
-            {
-                mainform.lbList.MultiColumn = true;
-                slGMulti.Enabled = true;
-                slGMulti_Scroll(this, e);
-            }
-            else
-            {
-                mainform.lbList.MultiColumn = false;
-                slGMulti.Enabled = false;
-            }
-
+            mainform.lbList.MultiColumn = Settings.Default.multicolumn;
+            slGMulti.Enabled = Settings.Default.multicolumn;
         }
 
         private void cbGPassword_CheckedChanged(object sender, EventArgs e)
@@ -394,15 +387,25 @@ namespace AutoPuTTY
             {
                 if (Settings.Default.password != "")
                 {
-                    string[] bwArgs = {"recrypt", Settings.Default.ocryptkey};
-                    bwProgress.RunWorkerAsync(bwArgs);
-                    recryptpopup = new popupRecrypt(this);
-                    recryptpopup.Text = "Removing" + recryptpopup.Text;
-                    recryptpopup.ShowDialog(this);
+                    DialogResult remove = MessageBox.Show("This will remove password protection", "Remove password ?", MessageBoxButtons.OKCancel);
 
-                    mainform.XmlDropNode("ID='password'");
-                    Settings.Default.password = "";
-                    Settings.Default.cryptkey = Settings.Default.ocryptkey;
+                    if (remove == DialogResult.OK)
+                    {
+                        string[] bwArgs = { "recrypt", Settings.Default.ocryptkey };
+                        bwProgress.RunWorkerAsync(bwArgs);
+                        recryptpopup = new popupRecrypt(this);
+                        recryptpopup.Text = "Removing" + recryptpopup.Text;
+                        recryptpopup.ShowDialog(this);
+
+                        mainform.XmlDropNode("ID='password'");
+                        Settings.Default.password = "";
+                        Settings.Default.cryptkey = Settings.Default.ocryptkey;
+                    }
+                    else
+                    {
+                        cbGPassword.Checked = true;
+                        return;
+                    }
                 }
 
                 tbGPassword.Enabled = false;

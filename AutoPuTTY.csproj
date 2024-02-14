@@ -84,12 +84,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="popupAbout.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="popupAbout.Designer.cs">
-      <DependentUpon>popupAbout.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utils\FusionTrackBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -127,10 +121,6 @@
     <Compile Include="app.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ImageOpacity.cs" />
-    <EmbeddedResource Include="popupAbout.resx">
-      <DependentUpon>popupAbout.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="popupRecrypt.resx">
       <DependentUpon>popupRecrypt.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -178,7 +168,6 @@
     <None Include="Resources\iconoptions.png" />
     <None Include="Resources\icondelete.png" />
     <None Include="Resources\iconadd.png" />
-    <None Include="Resources\about.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -198,6 +187,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\about.png" />
     <Content Include="Resources\autoputty.ico" />
     <Content Include="Resources\iconeyehide.png" />
     <Content Include="Resources\iconeyeshow.png" />
@@ -210,22 +200,22 @@
   <ItemGroup>
     <PublishFile Include="autoputty.pdb">
       <Visible>False</Visible>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Resources\autoputty.ico">
       <Visible>False</Visible>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>

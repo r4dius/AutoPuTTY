@@ -28,6 +28,7 @@ namespace AutoPuTTY
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formOptions));
             this.pOPuTTY = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -101,7 +102,6 @@ namespace AutoPuTTY
             this.lGImport = new System.Windows.Forms.Label();
             this.bGImport = new System.Windows.Forms.Button();
             this.lSep4 = new System.Windows.Forms.Label();
-            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.cbGMulti = new System.Windows.Forms.CheckBox();
             this.tpGPass = new System.Windows.Forms.TableLayoutPanel();
             this.pGApply = new System.Windows.Forms.Panel();
@@ -122,6 +122,8 @@ namespace AutoPuTTY
             this.tabWSCP = new System.Windows.Forms.TabPage();
             this.bwProgress = new System.ComponentModel.BackgroundWorker();
             this.bOK = new System.Windows.Forms.Button();
+            this.toolTipOptions = new System.Windows.Forms.ToolTip(this.components);
+            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.pOPuTTY.SuspendLayout();
             this.pORD.SuspendLayout();
             this.pOVNC.SuspendLayout();
@@ -129,7 +131,6 @@ namespace AutoPuTTY
             this.tabs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pOGeneral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.tpGPass.SuspendLayout();
             this.pGApply.SuspendLayout();
             this.pGPassword.SuspendLayout();
@@ -138,6 +139,7 @@ namespace AutoPuTTY
             this.tabRD.SuspendLayout();
             this.tabVNC.SuspendLayout();
             this.tabWSCP.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.SuspendLayout();
             // 
             // pOPuTTY
@@ -997,23 +999,6 @@ namespace AutoPuTTY
             this.lSep4.Size = new System.Drawing.Size(283, 2);
             this.lSep4.TabIndex = 2;
             // 
-            // slGMulti
-            // 
-            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.slGMulti.AutoSize = false;
-            this.slGMulti.Enabled = false;
-            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
-            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
-            this.slGMulti.Maximum = 40;
-            this.slGMulti.Minimum = 10;
-            this.slGMulti.Name = "slGMulti";
-            this.slGMulti.Size = new System.Drawing.Size(292, 20);
-            this.slGMulti.TabIndex = 3;
-            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.slGMulti.Value = 15;
-            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
-            // 
             // cbGMulti
             // 
             this.cbGMulti.AutoSize = true;
@@ -1109,6 +1094,7 @@ namespace AutoPuTTY
             this.cbGPassword.Size = new System.Drawing.Size(72, 17);
             this.cbGPassword.TabIndex = 0;
             this.cbGPassword.Text = "Password";
+            this.toolTipOptions.SetToolTip(this.cbGPassword, "Ask for a password on startup and crypt your login list with it");
             this.cbGPassword.UseVisualStyleBackColor = true;
             this.cbGPassword.CheckedChanged += new System.EventHandler(this.cbGPassword_CheckedChanged);
             // 
@@ -1237,13 +1223,30 @@ namespace AutoPuTTY
             // bOK
             // 
             this.bOK.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.bOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.bOK.Location = new System.Drawing.Point(117, 230);
             this.bOK.Name = "bOK";
             this.bOK.Size = new System.Drawing.Size(70, 24);
             this.bOK.TabIndex = 1;
             this.bOK.Text = "OK";
             this.bOK.UseVisualStyleBackColor = true;
+            // 
+            // slGMulti
+            // 
+            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.slGMulti.AutoSize = false;
+            this.slGMulti.Enabled = false;
+            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
+            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
+            this.slGMulti.Maximum = 40;
+            this.slGMulti.Minimum = 10;
+            this.slGMulti.Name = "slGMulti";
+            this.slGMulti.Size = new System.Drawing.Size(292, 20);
+            this.slGMulti.TabIndex = 3;
+            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.slGMulti.Value = 15;
+            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
             // 
             // formOptions
             // 
@@ -1272,7 +1275,6 @@ namespace AutoPuTTY
             this.tabGeneral.ResumeLayout(false);
             this.pOGeneral.ResumeLayout(false);
             this.pOGeneral.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.tpGPass.ResumeLayout(false);
             this.tpGPass.PerformLayout();
             this.pGApply.ResumeLayout(false);
@@ -1284,6 +1286,7 @@ namespace AutoPuTTY
             this.tabRD.ResumeLayout(false);
             this.tabVNC.ResumeLayout(false);
             this.tabWSCP.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1383,6 +1386,7 @@ namespace AutoPuTTY
         public System.Windows.Forms.CheckBox cbWSCPPassive;
         public System.Windows.Forms.CheckBox cbGPosition;
         public System.Windows.Forms.CheckBox cbGSize;
+        private System.Windows.Forms.ToolTip toolTipOptions;
     }
 }
 

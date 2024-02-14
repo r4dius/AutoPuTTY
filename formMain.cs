@@ -23,7 +23,6 @@ namespace AutoPuTTY
 {
     public partial class formMain : Form
     {
-        public formOptions optionsform;
         public const int IDM_ABOUT = 1000;
         public const int IDM_OPTIONS = 900;
         public const int MF_BYPOSITION = 0x400;
@@ -48,9 +47,8 @@ namespace AutoPuTTY
 #if DEBUG
             DateTime time = DateTime.Now;
 #endif
-            //clone types array to have a sorted version
-            _types = (string[])types.Clone();
-            Array.Sort(_types);
+            Console.WriteLine("formMain" +  full);
+
             string cfgpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace("file:\\", "");
             string userpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
@@ -84,11 +82,18 @@ namespace AutoPuTTY
             if (!full) return;
             InitializeComponent();
 
-            FindSwitch(false);
+            tVersion.Text = Properties.Settings.Default.version;
+
+            //clone types array to have a sorted version
+            _types = (string[])types.Clone();
+            Array.Sort(_types);
+
+            SearchSwitch(false);
             foreach (string type in _types)
             {
                 cbType.Items.Add(type);
             }
+
             cbType.SelectedIndex = 0;
             if (XmlConfigGet("minimize").ToLower() == "false") Settings.Default.minimize = false;
             if (XmlConfigGet("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
@@ -116,7 +121,12 @@ namespace AutoPuTTY
             if (XmlConfigGet("winscpkey").ToLower() == "true") Settings.Default.winscpkey = true;
             if (XmlConfigGet("winscpkeyfile") != "") Settings.Default.winscpkeyfile = XmlConfigGet("winscpkeyfile");
 
-            optionsform = new formOptions(this);
+            if (XmlConfigGet("minimize").ToLower() == "false") Settings.Default.minimize = false;
+            if (Settings.Default.password.Trim() != "")
+            {
+                Settings.Default.password = Decrypt(Settings.Default.password, Settings.Default.pcryptkey);
+                Settings.Default.cryptkey = Settings.Default.password;
+            }
 
             IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
             //It would be better to find the position at run time of the 'Close' item, but...
@@ -127,6 +137,9 @@ namespace AutoPuTTY
             notifyIcon.Visible = Settings.Default.minimize;
             notifyIcon.ContextMenu = cmSystray;
 
+            lbList.MultiColumn = Settings.Default.multicolumn;
+            lbList.ColumnWidth = Settings.Default.multicolumnwidth * 10;
+
             int i = 0;
             MenuItem connectmenu = new MenuItem();
             connectmenu.Index = i;
@@ -134,10 +147,10 @@ namespace AutoPuTTY
             connectmenu.Click += lbList_DoubleClick;
             cmList.MenuItems.Add(connectmenu);
             i++;
-            MenuItem sepmenu1 = new MenuItem();
-            sepmenu1.Index = i;
-            sepmenu1.Text = "-";
-            cmList.MenuItems.Add(sepmenu1);
+            MenuItem sepmenu = new MenuItem();
+            sepmenu.Text = "-";
+            sepmenu.Index = i;
+            cmList.MenuItems.Add(sepmenu);
             i++;
             foreach (string type in _types)
             {
@@ -149,16 +162,27 @@ namespace AutoPuTTY
                 cmList.MenuItems.Add(listmenu);
                 i++;
             }
-            MenuItem sepmenu2 = new MenuItem();
-            sepmenu2.Index = i;
-            sepmenu2.Text = "-";
-            cmList.MenuItems.Add(sepmenu2);
+            sepmenu = new MenuItem();
+            sepmenu.Text = "-";
+            sepmenu.Index = i;
+            cmList.MenuItems.Add(sepmenu.CloneMenu());
             i++;
             MenuItem deletemenu = new MenuItem();
             deletemenu.Index = i;
             deletemenu.Text = "Delete";
             deletemenu.Click += mDelete_Click;
             cmList.MenuItems.Add(deletemenu);
+            i++;
+            sepmenu = new MenuItem();
+            sepmenu.Text = "-";
+            sepmenu.Index = i;
+            cmList.MenuItems.Add(sepmenu.CloneMenu());
+            i++;
+            MenuItem searchmenu = new MenuItem();
+            searchmenu.Index = i;
+            searchmenu.Text = "Search...";
+            searchmenu.Click += SearchSwitchShow;
+            cmList.MenuItems.Add(searchmenu);
 
             XmlToList();
             if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
@@ -208,8 +232,9 @@ namespace AutoPuTTY
                 switch (m.WParam.ToInt32())
                 {
                     case IDM_ABOUT:
-                        popupAbout aboutpopup = new popupAbout();
-                        aboutpopup.ShowDialog(this);
+                        tableLayoutAbout.Visible = true;
+                        tableLayoutAbout.BringToFront();
+                        bOK.Focus();
                         return;
                     default:
                         break;
@@ -388,7 +413,13 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBox.Show(this, "Could not find file \"" + rdpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bRDPath_Click(type);
+                                if (MessageBox.Show(this, "Could not find file \"" + rdpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                {
+                                    using (formOptions optionsform = new formOptions(this))
+                                    {
+                                        optionsform.bRDPath_Click(type);
+                                    }
+                                }
                             }
                             break;
                         case "2": //VNC
@@ -467,7 +498,13 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBox.Show(this, "Could not find file \"" + vncpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bVNCPath_Click(type);
+                                if (MessageBox.Show(this, "Could not find file \"" + vncpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                {
+                                    using (formOptions optionsform = new formOptions(this))
+                                    {
+                                        optionsform.bVNCPath_Click(type);
+                                    }
+                                }
                             }
                             break;
                         case "3": //WinSCP (SCP)
@@ -543,7 +580,13 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBox.Show(this, "Could not find file \"" + winscppath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bWSCPPath_Click(type);
+                                if (MessageBox.Show(this, "Could not find file \"" + winscppath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                {
+                                    using (formOptions optionsform = new formOptions(this))
+                                    {
+                                        optionsform.bWSCPPath_Click(type);
+                                    }
+                                }
                             }
                             break;
                         case "5": //WinSCP (FTP)
@@ -619,7 +662,13 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBox.Show(this, "Could not find file \"" + puttypath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK) optionsform.bPuTTYPath_Click(type);
+                                if (MessageBox.Show(this, "Could not find file \"" + puttypath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                {
+                                    using (formOptions optionsform = new formOptions(this))
+                                    {
+                                        optionsform.bPuTTYPath_Click(type);
+                                    }
+                                }
                             }
                             break;
                     }
@@ -736,7 +785,7 @@ namespace AutoPuTTY
         }
 
         // toggle "search" form
-        private void FindSwitch(bool status)
+        private void SearchSwitch(bool status)
         {
             // reset the search input text
             if (status && !filtervisible) tbFilter.Text = "";
@@ -747,6 +796,11 @@ namespace AutoPuTTY
             tbFilter.Focus();
             // pressed ctrl + F twice, select the search input text so we can search again over last one
             if (status && filtervisible && tbFilter.Text != "") tbFilter.SelectAll();
+        }
+
+        private void SearchSwitchShow(object sender, EventArgs e)
+        {
+            SearchSwitch(true);
         }
 
         public static string ParseXpathString(string input)
@@ -1064,6 +1118,13 @@ namespace AutoPuTTY
                     Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
                 }
 
+                //reset colors
+                tbName.BackColor = SystemColors.Window;
+                tbHost.BackColor = SystemColors.Window;
+                tbUser.BackColor = SystemColors.Window;
+                tbPass.BackColor = SystemColors.Window;
+                cbType.BackColor = SystemColors.Window;
+
                 tbName.Text = tbName.Text.Trim();
                 lbList.Items.Add(tbName.Text);
                 lbList.SelectedItems.Clear();
@@ -1176,12 +1237,16 @@ namespace AutoPuTTY
 
         private void bOptions_Click(object sender, EventArgs e)
         {
-            if (filtervisible) bSearchClose_Click(sender, e);
-            optionsform.ShowDialog(this);
+            //if (filtervisible) bSearchClose_Click(sender, e);
+            using (formOptions optionsform = new formOptions(this))
+            {
+                optionsform.ShowDialog(this);
+            }
         }
+
         private void bSearchClose_Click(object sender, EventArgs e)
         {
-            FindSwitch(false);
+            SearchSwitch(false);
             if (tbFilter.Text == "") return;
             XmlToList();
             if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
@@ -1215,6 +1280,18 @@ namespace AutoPuTTY
         {
             lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
             tbName_TextChanged(this, e);
+        }
+
+        private void cbType_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            int index = e.Index >= 0 ? e.Index : -1;
+            Brush brush = ((e.State & DrawItemState.Selected) > 0) ? SystemBrushes.HighlightText : new SolidBrush(((System.Windows.Forms.ComboBox)sender).ForeColor);
+            e.DrawBackground();
+            if (index != -1)
+            {
+                e.Graphics.DrawString(((System.Windows.Forms.ComboBox)sender).Items[index].ToString(), e.Font, brush, e.Bounds, StringFormat.GenericDefault);
+            }
+            e.DrawFocusRectangle();
         }
 
         // delete multiple confirmation menu
@@ -1372,6 +1449,13 @@ namespace AutoPuTTY
             }
             indexchanged = true;
 
+            //reset colors
+            tbName.BackColor = SystemColors.Window;
+            tbHost.BackColor = SystemColors.Window;
+            tbUser.BackColor = SystemColors.Window;
+            tbPass.BackColor = SystemColors.Window;
+            cbType.BackColor = SystemColors.Window;
+
             ArrayList server = XmlGetServer(lbList.SelectedItem.ToString());
 
             tbName.Text = (string) server[0];
@@ -1453,17 +1537,22 @@ namespace AutoPuTTY
         {
             if (e.KeyCode == Keys.F && e.Control)
             {
-                FindSwitch(true);
+                SearchSwitch(true);
             }
             else if (e.KeyCode == Keys.O && e.Control)
             {
                 bOptions_Click(sender, e);
             }
+            if (e.KeyCode == Keys.Escape)
+            {
+                if (tableLayoutAbout.Visible) bOK_Click_1(sender, e);
+                else bSearchClose_Click(sender, e);
+            }
         }
 
         private void mainForm_Move(object sender, EventArgs e)
         {
-            if (optionsform.cbGPosition.Checked)
+            if (Settings.Default.position != "")
             {
                 Settings.Default.position = Left + "x" + Top;
                 XmlConfigSet("position", Settings.Default.position.ToString());
@@ -1484,13 +1573,13 @@ namespace AutoPuTTY
 
             tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterw ? tlLeft.Width - tbFilter.Left : tbfilterw;
 
-            if (optionsform.cbGSize.Checked)
+            if (Settings.Default.size != "")
             {
                 Settings.Default.size = Width + "x" + Height;
                 XmlConfigSet("size", Settings.Default.size.ToString());
             }
 
-            if (optionsform.cbGPosition.Checked)
+            if (Settings.Default.position != "")
             {
                 Settings.Default.position = Left + "x" + Top;
                 XmlConfigSet("position", Settings.Default.position.ToString());
@@ -1534,6 +1623,35 @@ namespace AutoPuTTY
 
         private void tbName_TextChanged(object sender, EventArgs e)
         {
+            ArrayList server;
+            string tbNameVal = "", tbHostVar = "", tbUserVal = "", tbPassVal = "", cbTypeVal = "0";
+            Color normal = SystemColors.Window, changed_ok = Color.FromArgb(235, 255, 225), changed_error = Color.FromArgb(255, 235, 225);
+
+            if (lbList.SelectedItem != null)
+            {
+                server = XmlGetServer(lbList.SelectedItem.ToString());
+                tbNameVal = (string)server[0];
+                tbHostVar = Decrypt((string)server[1]);
+                tbUserVal = Decrypt((string)server[2]);
+                tbPassVal = Decrypt((string)server[3]);
+                cbTypeVal = (string)server[4];
+            }
+
+            if (tbName.Text != tbNameVal)
+            {
+                if (XmlGetServer(tbName.Text.Trim()).Count > 0) tbName.BackColor = changed_error;
+                else tbName.BackColor = changed_ok;
+            }
+            else tbName.BackColor = normal;
+            if (tbHost.Text != tbHostVar) tbHost.BackColor = changed_ok;
+            else tbHost.BackColor = normal;
+            if (tbUser.Text != tbUserVal) tbUser.BackColor = changed_ok;
+            else tbUser.BackColor = normal;
+            if (tbPass.Text != tbPassVal) tbPass.BackColor = changed_ok;
+            else tbPass.BackColor = normal;
+            if (cbType.SelectedIndex.ToString() != cbTypeVal) cbType.BackColor = changed_ok;
+            else cbType.BackColor = normal;
+
             if (indexchanged) return;
             //modify an existing item
             if (lbList.SelectedItem != null && tbName.Text.Trim() != "" && tbHost.Text.Trim() != "")
@@ -1596,11 +1714,20 @@ namespace AutoPuTTY
             }
         }
 
+        private void liWebsite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(liWebsite.Text);
+        }
+
+        private void bOK_Click_1(object sender, EventArgs e)
+        {
+            tableLayoutAbout.Visible = false;
+        }
+
         #region Nested type: InvokeDelegate
 
         private delegate bool InvokeDelegate();
 
         #endregion
-
     }
 }

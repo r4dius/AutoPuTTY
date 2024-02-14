@@ -65,6 +65,13 @@ namespace AutoPuTTY
             this.tbFilter = new System.Windows.Forms.TextBox();
             this.lbListSep = new System.Windows.Forms.TableLayoutPanel();
             this.lbList = new System.Windows.Forms.ListBox();
+            this.tableLayoutAbout = new System.Windows.Forms.TableLayoutPanel();
+            this.panelAbout = new System.Windows.Forms.Panel();
+            this.bOK = new System.Windows.Forms.Button();
+            this.piAbout = new System.Windows.Forms.PictureBox();
+            this.liWebsite = new System.Windows.Forms.LinkLabel();
+            this.tVersion = new System.Windows.Forms.Label();
+            this.tTitle = new System.Windows.Forms.Label();
             this.pConfig.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).BeginInit();
             this.tlMain.SuspendLayout();
@@ -72,6 +79,9 @@ namespace AutoPuTTY
             this.pFind.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bClose)).BeginInit();
             this.lbListSep.SuspendLayout();
+            this.tableLayoutAbout.SuspendLayout();
+            this.panelAbout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.piAbout)).BeginInit();
             this.SuspendLayout();
             // 
             // tbPass
@@ -206,6 +216,7 @@ namespace AutoPuTTY
             // 
             // cbType
             // 
+            this.cbType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbType.FormattingEnabled = true;
             this.cbType.Location = new System.Drawing.Point(2, 176);
@@ -213,6 +224,7 @@ namespace AutoPuTTY
             this.cbType.Size = new System.Drawing.Size(126, 21);
             this.cbType.TabIndex = 16;
             this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
+            this.cbType.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbType_DrawItem);            
             // 
             // tbUser
             // 
@@ -483,6 +495,112 @@ namespace AutoPuTTY
             this.lbList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbList_DoubleClick);
             this.lbList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbList_MouseClick);
             // 
+            // tableLayoutAbout
+            // 
+            this.tableLayoutAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutAbout.ColumnCount = 1;
+            this.tableLayoutAbout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutAbout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutAbout.Controls.Add(this.panelAbout, 0, 0);
+            this.tableLayoutAbout.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutAbout.Name = "tableLayoutAbout";
+            this.tableLayoutAbout.RowCount = 1;
+            this.tableLayoutAbout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.64192F));
+            this.tableLayoutAbout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.35808F));
+            this.tableLayoutAbout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 229F));
+            this.tableLayoutAbout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 229F));
+            this.tableLayoutAbout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 229F));
+            this.tableLayoutAbout.Size = new System.Drawing.Size(261, 229);
+            this.tableLayoutAbout.TabIndex = 1;
+            this.tableLayoutAbout.Visible = false;
+            // 
+            // panelAbout
+            // 
+            this.panelAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.panelAbout.Controls.Add(this.bOK);
+            this.panelAbout.Controls.Add(this.piAbout);
+            this.panelAbout.Controls.Add(this.liWebsite);
+            this.panelAbout.Controls.Add(this.tVersion);
+            this.panelAbout.Controls.Add(this.tTitle);
+            this.panelAbout.Location = new System.Drawing.Point(0, 0);
+            this.panelAbout.Margin = new System.Windows.Forms.Padding(0);
+            this.panelAbout.Name = "panelAbout";
+            this.panelAbout.Size = new System.Drawing.Size(261, 229);
+            this.panelAbout.TabIndex = 0;
+            // 
+            // bOK
+            // 
+            this.bOK.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.bOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.bOK.Location = new System.Drawing.Point(96, 155);
+            this.bOK.Name = "bOK";
+            this.bOK.Size = new System.Drawing.Size(69, 22);
+            this.bOK.TabIndex = 23;
+            this.bOK.Text = "OK";
+            this.bOK.UseVisualStyleBackColor = true;
+            this.bOK.Click += new System.EventHandler(this.bOK_Click_1);
+            // 
+            // piAbout
+            // 
+            this.piAbout.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.piAbout.Image = ((System.Drawing.Image)(resources.GetObject("piAbout.Image")));
+            this.piAbout.InitialImage = null;
+            this.piAbout.Location = new System.Drawing.Point(0, 50);
+            this.piAbout.Name = "piAbout";
+            this.piAbout.Size = new System.Drawing.Size(261, 48);
+            this.piAbout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.piAbout.TabIndex = 21;
+            this.piAbout.TabStop = false;
+            // 
+            // liWebsite
+            // 
+            this.liWebsite.ActiveLinkColor = System.Drawing.Color.White;
+            this.liWebsite.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.liWebsite.AutoSize = true;
+            this.liWebsite.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.liWebsite.DisabledLinkColor = System.Drawing.Color.Transparent;
+            this.liWebsite.ForeColor = System.Drawing.Color.White;
+            this.liWebsite.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.liWebsite.LinkColor = System.Drawing.Color.White;
+            this.liWebsite.Location = new System.Drawing.Point(72, 131);
+            this.liWebsite.Name = "liWebsite";
+            this.liWebsite.Size = new System.Drawing.Size(118, 13);
+            this.liWebsite.TabIndex = 22;
+            this.liWebsite.TabStop = true;
+            this.liWebsite.Text = "http://r4di.us/autoputty";
+            this.liWebsite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.liWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liWebsite_LinkClicked);
+            // 
+            // tVersion
+            // 
+            this.tVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tVersion.AutoSize = true;
+            this.tVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.tVersion.ForeColor = System.Drawing.Color.White;
+            this.tVersion.Location = new System.Drawing.Point(174, 113);
+            this.tVersion.Name = "tVersion";
+            this.tVersion.Size = new System.Drawing.Size(41, 13);
+            this.tVersion.TabIndex = 20;
+            this.tVersion.Text = "version";
+            // 
+            // tTitle
+            // 
+            this.tTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tTitle.AutoSize = true;
+            this.tTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.tTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tTitle.ForeColor = System.Drawing.Color.White;
+            this.tTitle.Location = new System.Drawing.Point(61, 105);
+            this.tTitle.Name = "tTitle";
+            this.tTitle.Size = new System.Drawing.Size(116, 23);
+            this.tTitle.TabIndex = 19;
+            this.tTitle.Text = "AutoPuTTY";
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -490,6 +608,7 @@ namespace AutoPuTTY
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(261, 229);
             this.Controls.Add(this.tlMain);
+            this.Controls.Add(this.tableLayoutAbout);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "formMain";
@@ -508,6 +627,10 @@ namespace AutoPuTTY
             this.pFind.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bClose)).EndInit();
             this.lbListSep.ResumeLayout(false);
+            this.tableLayoutAbout.ResumeLayout(false);
+            this.panelAbout.ResumeLayout(false);
+            this.panelAbout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.piAbout)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -549,6 +672,13 @@ namespace AutoPuTTY
         public System.Windows.Forms.ListBox lbList;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox bEye;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutAbout;
+        private System.Windows.Forms.Panel panelAbout;
+        private System.Windows.Forms.PictureBox piAbout;
+        private System.Windows.Forms.LinkLabel liWebsite;
+        private System.Windows.Forms.Label tVersion;
+        private System.Windows.Forms.Label tTitle;
+        private System.Windows.Forms.Button bOK;
     }
 }
 
