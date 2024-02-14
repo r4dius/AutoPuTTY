@@ -6,10 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
-using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -23,6 +21,7 @@ namespace AutoPuTTY
 {
     public partial class formMain : Form
     {
+        public bool auth;
         public const int IDM_ABOUT = 1000;
         public const int IDM_OPTIONS = 900;
         public const int MF_BYPOSITION = 0x400;
@@ -39,15 +38,15 @@ namespace AutoPuTTY
         private bool filtervisible;
         private double unixtime;
         private double oldunixtime;
+        private int tries;
         private string laststate = "normal";
         private string keysearch = "";
 
-        public formMain(bool full)
+        public formMain()
         {
 #if DEBUG
             DateTime time = DateTime.Now;
 #endif
-            Console.WriteLine("formMain" +  full);
 
             string cfgpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace("file:\\", "");
             string userpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -79,10 +78,19 @@ namespace AutoPuTTY
                 }
             }
 
-            if (!full) return;
             InitializeComponent();
 
             tVersion.Text = Properties.Settings.Default.version;
+            tPassVersion.Text = Properties.Settings.Default.version;
+
+            string password = XmlConfigGet("password");
+
+            if (password.Trim() != "")
+            {
+                tableLayoutPassword.BringToFront();
+                tableLayoutPassword.Visible = true;
+                if (!auth) return;
+            }
 
             //clone types array to have a sorted version
             _types = (string[])types.Clone();
@@ -93,6 +101,9 @@ namespace AutoPuTTY
             {
                 cbType.Items.Add(type);
             }
+
+            //tableLayoutPassword.BringToFront();
+            //tableLayoutPassword.Visible = true;
 
             cbType.SelectedIndex = 0;
             if (XmlConfigGet("minimize").ToLower() == "false") Settings.Default.minimize = false;
@@ -121,7 +132,7 @@ namespace AutoPuTTY
             if (XmlConfigGet("winscpkey").ToLower() == "true") Settings.Default.winscpkey = true;
             if (XmlConfigGet("winscpkeyfile") != "") Settings.Default.winscpkeyfile = XmlConfigGet("winscpkeyfile");
 
-            if (XmlConfigGet("minimize").ToLower() == "false") Settings.Default.minimize = false;
+            Settings.Default.ocryptkey = Settings.Default.cryptkey;
             if (Settings.Default.password.Trim() != "")
             {
                 Settings.Default.password = Decrypt(Settings.Default.password, Settings.Default.pcryptkey);
@@ -1589,7 +1600,7 @@ namespace AutoPuTTY
         // systray close click
         private void miClose_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            System.Windows.Forms.Application.Exit();
         }
 
         // systray restore click
@@ -1722,6 +1733,67 @@ namespace AutoPuTTY
         private void bOK_Click_1(object sender, EventArgs e)
         {
             tableLayoutAbout.Visible = false;
+        }
+
+        private void tbPassword_Enter(object sender, EventArgs e)
+        {
+            tbPassword.UseSystemPasswordChar = true;
+            if (tbPassword.Text == "Password" && tbPassword.ForeColor == System.Drawing.Color.Gray)
+            {
+                tbPassword.Text = "";
+                tbPassword.ForeColor = System.Drawing.Color.Black;
+            }
+        }
+
+        private void tbPassword_Leave(object sender, EventArgs e)
+        {
+            if (tbPassword.Text == "" && tbPassword.ForeColor == System.Drawing.Color.Black)
+            {
+                tbPassword.Text = "Password";
+                tbPassword.ForeColor = System.Drawing.Color.Gray;
+                tbPassword.UseSystemPasswordChar = false;
+            }
+        }
+
+        private void tbPassword_TextChanged(object sender, EventArgs e)
+        {
+            /*
+            if (e.KeyCode.Equals(Keys.Enter))
+            {
+                SendKeys.Send("{TAB}");
+                e.SuppressKeyPress = true;
+            }
+            */
+        }
+
+        private void bPassOK_Click(object sender, EventArgs e)
+        {
+            if (Encrypt(tbPassword.Text, Settings.Default.pcryptkey) == Settings.Default.password)
+            {
+                auth = true;
+                Close();
+            }
+            else
+            {
+                tbPassword.Text = "";
+                switch (tries)
+                {
+                    case 0:
+                    case 4:
+                        lPassMessage.Text = "You failed, try again...";
+                        break;
+                    case 1:
+                        lPassMessage.Text = "You failed again, looks like you lost it...";
+                        break;
+                    case 2:
+                        lPassMessage.Text = "You'll have to restart from scratch...";
+                        break;
+                    case 3:
+                        lPassMessage.Text = "Ahahahah :)";
+                        break;
+                }
+                tries++;
+            }
         }
 
         #region Nested type: InvokeDelegate

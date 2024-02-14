@@ -1,4 +1,4 @@
-namespace AutoPuTTY
+﻿namespace AutoPuTTY
 {
     partial class formMain
     {
@@ -72,6 +72,14 @@ namespace AutoPuTTY
             this.liWebsite = new System.Windows.Forms.LinkLabel();
             this.tVersion = new System.Windows.Forms.Label();
             this.tTitle = new System.Windows.Forms.Label();
+            this.tableLayoutPassword = new System.Windows.Forms.TableLayoutPanel();
+            this.panelPassword = new System.Windows.Forms.Panel();
+            this.lPassMessage = new System.Windows.Forms.Label();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.bPassOK = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tPassVersion = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.pConfig.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).BeginInit();
             this.tlMain.SuspendLayout();
@@ -82,6 +90,9 @@ namespace AutoPuTTY
             this.tableLayoutAbout.SuspendLayout();
             this.panelAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piAbout)).BeginInit();
+            this.tableLayoutPassword.SuspendLayout();
+            this.panelPassword.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tbPass
@@ -223,8 +234,8 @@ namespace AutoPuTTY
             this.cbType.Name = "cbType";
             this.cbType.Size = new System.Drawing.Size(126, 21);
             this.cbType.TabIndex = 16;
+            this.cbType.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbType_DrawItem);
             this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
-            this.cbType.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbType_DrawItem);            
             // 
             // tbUser
             // 
@@ -537,9 +548,9 @@ namespace AutoPuTTY
             // 
             this.bOK.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.bOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.bOK.Location = new System.Drawing.Point(96, 155);
+            this.bOK.Location = new System.Drawing.Point(96, 152);
             this.bOK.Name = "bOK";
-            this.bOK.Size = new System.Drawing.Size(69, 22);
+            this.bOK.Size = new System.Drawing.Size(69, 30);
             this.bOK.TabIndex = 23;
             this.bOK.Text = "OK";
             this.bOK.UseVisualStyleBackColor = true;
@@ -550,7 +561,7 @@ namespace AutoPuTTY
             this.piAbout.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.piAbout.Image = ((System.Drawing.Image)(resources.GetObject("piAbout.Image")));
             this.piAbout.InitialImage = null;
-            this.piAbout.Location = new System.Drawing.Point(0, 50);
+            this.piAbout.Location = new System.Drawing.Point(0, 47);
             this.piAbout.Name = "piAbout";
             this.piAbout.Size = new System.Drawing.Size(261, 48);
             this.piAbout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -567,7 +578,7 @@ namespace AutoPuTTY
             this.liWebsite.ForeColor = System.Drawing.Color.White;
             this.liWebsite.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.liWebsite.LinkColor = System.Drawing.Color.White;
-            this.liWebsite.Location = new System.Drawing.Point(72, 131);
+            this.liWebsite.Location = new System.Drawing.Point(72, 128);
             this.liWebsite.Name = "liWebsite";
             this.liWebsite.Size = new System.Drawing.Size(118, 13);
             this.liWebsite.TabIndex = 22;
@@ -582,7 +593,7 @@ namespace AutoPuTTY
             this.tVersion.AutoSize = true;
             this.tVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
             this.tVersion.ForeColor = System.Drawing.Color.White;
-            this.tVersion.Location = new System.Drawing.Point(174, 113);
+            this.tVersion.Location = new System.Drawing.Point(174, 110);
             this.tVersion.Name = "tVersion";
             this.tVersion.Size = new System.Drawing.Size(41, 13);
             this.tVersion.TabIndex = 20;
@@ -595,11 +606,124 @@ namespace AutoPuTTY
             this.tTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
             this.tTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tTitle.ForeColor = System.Drawing.Color.White;
-            this.tTitle.Location = new System.Drawing.Point(61, 105);
+            this.tTitle.Location = new System.Drawing.Point(61, 102);
             this.tTitle.Name = "tTitle";
             this.tTitle.Size = new System.Drawing.Size(116, 23);
             this.tTitle.TabIndex = 19;
             this.tTitle.Text = "AutoPuTTY";
+            // 
+            // tableLayoutPassword
+            // 
+            this.tableLayoutPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPassword.ColumnCount = 1;
+            this.tableLayoutPassword.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPassword.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPassword.Controls.Add(this.panelPassword, 0, 0);
+            this.tableLayoutPassword.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPassword.Name = "tableLayoutPassword";
+            this.tableLayoutPassword.RowCount = 1;
+            this.tableLayoutPassword.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.64192F));
+            this.tableLayoutPassword.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.35808F));
+            this.tableLayoutPassword.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 229F));
+            this.tableLayoutPassword.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 229F));
+            this.tableLayoutPassword.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 229F));
+            this.tableLayoutPassword.Size = new System.Drawing.Size(261, 229);
+            this.tableLayoutPassword.TabIndex = 3;
+            // 
+            // panelPassword
+            // 
+            this.panelPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.panelPassword.Controls.Add(this.lPassMessage);
+            this.panelPassword.Controls.Add(this.tbPassword);
+            this.panelPassword.Controls.Add(this.bPassOK);
+            this.panelPassword.Controls.Add(this.pictureBox1);
+            this.panelPassword.Controls.Add(this.tPassVersion);
+            this.panelPassword.Controls.Add(this.label3);
+            this.panelPassword.Location = new System.Drawing.Point(0, 0);
+            this.panelPassword.Margin = new System.Windows.Forms.Padding(0);
+            this.panelPassword.Name = "panelPassword";
+            this.panelPassword.Size = new System.Drawing.Size(261, 229);
+            this.panelPassword.TabIndex = 0;
+            // 
+            // lPassMessage
+            // 
+            this.lPassMessage.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lPassMessage.ForeColor = System.Drawing.Color.White;
+            this.lPassMessage.Location = new System.Drawing.Point(0, 128);
+            this.lPassMessage.Name = "lPassMessage";
+            this.lPassMessage.Size = new System.Drawing.Size(261, 21);
+            this.lPassMessage.TabIndex = 25;
+            this.lPassMessage.Text = "Enter valid password or die :)";
+            this.lPassMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbPassword
+            // 
+            this.tbPassword.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tbPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbPassword.ForeColor = System.Drawing.Color.Gray;
+            this.tbPassword.Location = new System.Drawing.Point(44, 153);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Size = new System.Drawing.Size(139, 26);
+            this.tbPassword.TabIndex = 24;
+            this.tbPassword.Text = "Password";
+            this.tbPassword.WordWrap = false;
+            this.tbPassword.TextChanged += new System.EventHandler(this.tbPassword_TextChanged);
+            this.tbPassword.Enter += new System.EventHandler(this.tbPassword_Enter);
+            this.tbPassword.Leave += new System.EventHandler(this.tbPassword_Leave);
+            // 
+            // bPassOK
+            // 
+            this.bPassOK.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.bPassOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.bPassOK.Location = new System.Drawing.Point(189, 152);
+            this.bPassOK.Name = "bPassOK";
+            this.bPassOK.Size = new System.Drawing.Size(32, 27);
+            this.bPassOK.TabIndex = 23;
+            this.bPassOK.Text = "OK";
+            this.bPassOK.UseVisualStyleBackColor = true;
+            this.bPassOK.Click += new System.EventHandler(this.bPassOK_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.InitialImage = null;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 47);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(261, 48);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 21;
+            this.pictureBox1.TabStop = false;
+            // 
+            // tPassVersion
+            // 
+            this.tPassVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tPassVersion.AutoSize = true;
+            this.tPassVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.tPassVersion.ForeColor = System.Drawing.Color.White;
+            this.tPassVersion.Location = new System.Drawing.Point(174, 110);
+            this.tPassVersion.Name = "tPassVersion";
+            this.tPassVersion.Size = new System.Drawing.Size(41, 13);
+            this.tPassVersion.TabIndex = 20;
+            this.tPassVersion.Text = "version";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(61, 102);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(116, 23);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "AutoPuTTY";
             // 
             // formMain
             // 
@@ -609,6 +733,7 @@ namespace AutoPuTTY
             this.ClientSize = new System.Drawing.Size(261, 229);
             this.Controls.Add(this.tlMain);
             this.Controls.Add(this.tableLayoutAbout);
+            this.Controls.Add(this.tableLayoutPassword);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "formMain";
@@ -631,6 +756,10 @@ namespace AutoPuTTY
             this.panelAbout.ResumeLayout(false);
             this.panelAbout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piAbout)).EndInit();
+            this.tableLayoutPassword.ResumeLayout(false);
+            this.panelPassword.ResumeLayout(false);
+            this.panelPassword.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -679,6 +808,14 @@ namespace AutoPuTTY
         private System.Windows.Forms.Label tVersion;
         private System.Windows.Forms.Label tTitle;
         private System.Windows.Forms.Button bOK;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPassword;
+        private System.Windows.Forms.Panel panelPassword;
+        private System.Windows.Forms.TextBox tbPassword;
+        private System.Windows.Forms.Button bPassOK;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label tPassVersion;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lPassMessage;
     }
 }
 

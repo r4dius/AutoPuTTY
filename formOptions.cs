@@ -30,23 +30,17 @@ namespace AutoPuTTY
             string[] _position = Settings.Default.position.Split('x');
             string[] _size = Settings.Default.size.Split('x');
 
-            Settings.Default.ocryptkey = Settings.Default.cryptkey;
-
             if (File.Exists(Settings.Default.cfgpath))
             {
                 if (Settings.Default.password.Trim() != "")
                 {
-                    Settings.Default.password = mainform.Decrypt(Settings.Default.password, Settings.Default.pcryptkey);
                     tbGPassword.Text = Settings.Default.password;
                     tbGConfirm.Text = Settings.Default.password;
-                    Settings.Default.cryptkey = Settings.Default.password;
                     cbGPassword.Checked = true;
                 } else cbGPassword.Checked = false;
-                Console.WriteLine(Settings.Default.multicolumn);
-                Console.WriteLine(Settings.Default.multicolumnwidth);
+                Console.WriteLine("3");
                 cbGMulti.Checked = Settings.Default.multicolumn;
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
-                Console.WriteLine(Settings.Default.multicolumnwidth);
                 cbGSize.Checked = (_size.Length == 2 ? true : false);
                 cbGPosition.Checked = (_position.Length == 2 ? true : false);
                 cbGMinimize.Checked = Settings.Default.minimize;
@@ -348,11 +342,14 @@ namespace AutoPuTTY
                     Settings.Default.password = tbGPassword.Text;
                     mainform.XmlConfigSet("password", mainform.Encrypt(Settings.Default.password, Settings.Default.pcryptkey));
 
-                    string[] bwArgs = {"recrypt", Settings.Default.password};
-                    bwProgress.RunWorkerAsync(bwArgs);
-                    recryptpopup = new popupRecrypt(this);
-                    recryptpopup.Text = "Applying" + recryptpopup.Text;
-                    recryptpopup.ShowDialog(this);
+                    if (mainform.lbList.Items.Count > 0)
+                    {
+                        string[] bwArgs = { "recrypt", Settings.Default.password };
+                        bwProgress.RunWorkerAsync(bwArgs);
+                        recryptpopup = new popupRecrypt(this);
+                        recryptpopup.Text = "Applying" + recryptpopup.Text;
+                        recryptpopup.ShowDialog(this);
+                    }
 
                     Settings.Default.cryptkey = Settings.Default.password;
                 }

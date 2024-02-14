@@ -30,17 +30,7 @@ namespace AutoPuTTY
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                formMain mainform = new formMain(false);
-                string password = mainform.XmlConfigGet("password");
-
-                if (password.Trim() != "")
-                {
-                    popupPassword passwordopup = new popupPassword(password);
-                    Application.Run(passwordopup);
-                    if (!passwordopup.auth) return;
-                }
-
-                Application.Run(new formMain(true));
+                Application.Run(new formMain());
             }
             else
             {

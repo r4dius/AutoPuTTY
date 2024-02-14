@@ -10,7 +10,7 @@ namespace AutoPuTTY
         private readonly string password = "";
         private int i;
 
-        readonly formMain mainform = new formMain(false);
+        readonly formMain mainform = new formMain();
 
         public popupPassword(string xmlpassword)
         {
