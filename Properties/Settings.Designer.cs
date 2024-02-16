@@ -12,7 +12,7 @@ namespace AutoPuTTY.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -59,12 +59,12 @@ namespace AutoPuTTY.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ocryptkey {
+        public string cryptokeyoriginal {
             get {
-                return ((string)(this["ocryptkey"]));
+                return ((string)(this["cryptokeyoriginal"]));
             }
             set {
-                this["ocryptkey"] = value;
+                this["cryptokeyoriginal"] = value;
             }
         }
         
@@ -92,24 +92,15 @@ namespace AutoPuTTY.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(";Sk/#µ^éD}=@|")]
-        public string pcryptkey {
-            get {
-                return ((string)(this["pcryptkey"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("12ùMkldQ%kS2A")]
-        public string cryptkey {
+        public string cryptokey {
             get {
-                return ((string)(this["cryptkey"]));
+                return ((string)(this["cryptokey"]));
             }
             set {
-                this["cryptkey"] = value;
+                this["cryptokey"] = value;
             }
         }
         
@@ -224,12 +215,12 @@ namespace AutoPuTTY.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string puttykeyfile {
+        public string puttykeyfilepath {
             get {
-                return ((string)(this["puttykeyfile"]));
+                return ((string)(this["puttykeyfilepath"]));
             }
             set {
-                this["puttykeyfile"] = value;
+                this["puttykeyfilepath"] = value;
             }
         }
         
@@ -320,12 +311,12 @@ namespace AutoPuTTY.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string winscpkeyfile {
+        public string winscpkeyfilepath {
             get {
-                return ((string)(this["winscpkeyfile"]));
+                return ((string)(this["winscpkeyfilepath"]));
             }
             set {
-                this["winscpkeyfile"] = value;
+                this["winscpkeyfilepath"] = value;
             }
         }
         
@@ -398,6 +389,18 @@ namespace AutoPuTTY.Properties {
             }
             set {
                 this["position"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(";Sk/#µ^éD}=@|")]
+        public string cryptopasswordkey {
+            get {
+                return ((string)(this["cryptopasswordkey"]));
+            }
+            set {
+                this["cryptopasswordkey"] = value;
             }
         }
     }

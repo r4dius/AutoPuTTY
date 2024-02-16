@@ -11,7 +11,7 @@
     <Setting Name="multicolumn" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ocryptkey" Type="System.String" Scope="User">
+    <Setting Name="cryptokeyoriginal" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="cfgpath" Type="System.String" Scope="User">
@@ -20,10 +20,7 @@
     <Setting Name="cfgfilepath" Type="System.String" Scope="User">
       <Value Profile="(Default)">autoputty.xml</Value>
     </Setting>
-    <Setting Name="pcryptkey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">;Sk/#µ^éD}=@|</Value>
-    </Setting>
-    <Setting Name="cryptkey" Type="System.String" Scope="User">
+    <Setting Name="cryptokey" Type="System.String" Scope="User">
       <Value Profile="(Default)">12ùMkldQ%kS2A</Value>
     </Setting>
     <Setting Name="puttypath" Type="System.String" Scope="User">
@@ -53,7 +50,7 @@
     <Setting Name="puttykey" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="puttykeyfile" Type="System.String" Scope="User">
+    <Setting Name="puttykeyfilepath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="rdfilespath" Type="System.String" Scope="User">
@@ -77,7 +74,7 @@
     <Setting Name="winscpkey" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="winscpkeyfile" Type="System.String" Scope="User">
+    <Setting Name="winscpkeyfilepath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="rdadmin" Type="System.Boolean" Scope="User">
@@ -97,6 +94,9 @@
     </Setting>
     <Setting Name="position" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="cryptopasswordkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">;Sk/#µ^éD}=@|</Value>
     </Setting>
   </Settings>
 </SettingsFile>

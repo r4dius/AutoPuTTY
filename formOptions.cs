@@ -49,7 +49,7 @@ namespace AutoPuTTY
                 cbPuTTYExecute.Checked = Settings.Default.puttyexecute;
                 tbPuTTYExecute.Text = Settings.Default.puttycommand;
                 cbPuTTYKey.Checked = Settings.Default.puttykey;
-                tbPuTTYKey.Text = Settings.Default.puttykeyfile;
+                tbPuTTYKey.Text = Settings.Default.puttykeyfilepath;
                 cbPuTTYForward.Checked = Settings.Default.puttyforward;
 
                 tbRDPath.Text = Settings.Default.rdpath;
@@ -66,7 +66,7 @@ namespace AutoPuTTY
 
                 tbWSCPPath.Text = Settings.Default.winscppath;
                 cbWSCPKey.Checked = Settings.Default.winscpkey;
-                tbWSCPKey.Text = Settings.Default.winscpkeyfile;
+                tbWSCPKey.Text = Settings.Default.winscpkeyfilepath;
                 cbWSCPPassive.Checked = Settings.Default.winscppassive;
             }
 
@@ -340,7 +340,7 @@ namespace AutoPuTTY
                 if (Settings.Default.password != tbGPassword.Text)
                 {
                     Settings.Default.password = tbGPassword.Text;
-                    mainform.XmlConfigSet("password", mainform.Encrypt(Settings.Default.password, Settings.Default.pcryptkey));
+                    mainform.XmlConfigSet("password", mainform.Encrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
 
                     if (mainform.lbList.Items.Count > 0)
                     {
@@ -351,7 +351,7 @@ namespace AutoPuTTY
                         recryptpopup.ShowDialog(this);
                     }
 
-                    Settings.Default.cryptkey = Settings.Default.password;
+                    Settings.Default.cryptokey = Settings.Default.password;
                 }
                 bGPassword.Enabled = false;
             }
@@ -388,7 +388,7 @@ namespace AutoPuTTY
 
                     if (remove == DialogResult.OK)
                     {
-                        string[] bwArgs = { "recrypt", Settings.Default.ocryptkey };
+                        string[] bwArgs = { "recrypt", Settings.Default.cryptokeyoriginal };
                         bwProgress.RunWorkerAsync(bwArgs);
                         recryptpopup = new popupRecrypt(this);
                         recryptpopup.Text = "Removing" + recryptpopup.Text;
@@ -396,7 +396,7 @@ namespace AutoPuTTY
 
                         mainform.XmlDropNode("ID='password'");
                         Settings.Default.password = "";
-                        Settings.Default.cryptkey = Settings.Default.ocryptkey;
+                        Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
                     }
                     else
                     {
@@ -581,8 +581,8 @@ namespace AutoPuTTY
 
         private void tbPuTTYKey_TextChanged(object sender, EventArgs e)
         {
-            Settings.Default.puttykeyfile = tbPuTTYKey.Text;
-            if (!firstread) mainform.XmlConfigSet("puttykeyfile", Settings.Default.puttykeyfile);
+            Settings.Default.puttykeyfilepath = tbPuTTYKey.Text;
+            if (!firstread) mainform.XmlConfigSet("puttykeyfile", Settings.Default.puttykeyfilepath);
         }
 
         private void bRDKeep_Click(object sender, EventArgs e)
@@ -785,8 +785,8 @@ namespace AutoPuTTY
 
         private void tbWSCPKey_TextChanged(object sender, EventArgs e)
         {
-            Settings.Default.winscpkeyfile = tbWSCPKey.Text;
-            if (!firstread) mainform.XmlConfigSet("winscpkeyfile", Settings.Default.winscpkeyfile);
+            Settings.Default.winscpkeyfilepath = tbWSCPKey.Text;
+            if (!firstread) mainform.XmlConfigSet("winscpkeyfile", Settings.Default.winscpkeyfilepath);
         }
 
         private void tbWSCPPath_TextChanged(object sender, EventArgs e)

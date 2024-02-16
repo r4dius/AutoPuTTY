@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
@@ -41,6 +41,7 @@ namespace AutoPuTTY
         private int tries;
         private string laststate = "normal";
         private string keysearch = "";
+        private ManualResetEvent waitforpassword = new ManualResetEvent(false);
 
         public formMain()
         {
@@ -83,15 +84,6 @@ namespace AutoPuTTY
             tVersion.Text = Properties.Settings.Default.version;
             tPassVersion.Text = Properties.Settings.Default.version;
 
-            string password = XmlConfigGet("password");
-
-            if (password.Trim() != "")
-            {
-                tableLayoutPassword.BringToFront();
-                tableLayoutPassword.Visible = true;
-                if (!auth) return;
-            }
-
             //clone types array to have a sorted version
             _types = (string[])types.Clone();
             Array.Sort(_types);
@@ -101,9 +93,6 @@ namespace AutoPuTTY
             {
                 cbType.Items.Add(type);
             }
-
-            //tableLayoutPassword.BringToFront();
-            //tableLayoutPassword.Visible = true;
 
             cbType.SelectedIndex = 0;
             if (XmlConfigGet("minimize").ToLower() == "false") Settings.Default.minimize = false;
@@ -116,7 +105,7 @@ namespace AutoPuTTY
             if (XmlConfigGet("puttyexecute").ToLower() == "true") Settings.Default.puttyexecute = true;
             if (XmlConfigGet("puttyforward").ToLower() == "true") Settings.Default.puttyforward = true;
             if (XmlConfigGet("puttykey").ToLower() == "true") Settings.Default.puttykey = true;
-            if (XmlConfigGet("puttykeyfile") != "") Settings.Default.puttykeyfile = XmlConfigGet("puttykeyfile");
+            if (XmlConfigGet("puttykeyfile") != "") Settings.Default.puttykeyfilepath = XmlConfigGet("puttykeyfile");
             if (XmlConfigGet("rdadmin").ToLower() == "true") Settings.Default.rdadmin = true;
             if (XmlConfigGet("rddrives").ToLower() == "true") Settings.Default.rddrives = true;
             if (XmlConfigGet("rdfilespath") != "") Settings.Default.rdfilespath = XmlConfigGet("rdfilespath");
@@ -130,14 +119,7 @@ namespace AutoPuTTY
             if (XmlConfigGet("vncviewonly").ToLower() == "true") Settings.Default.vncviewonly = true;
             if (XmlConfigGet("winscp") != "") Settings.Default.winscppath = XmlConfigGet("winscp");
             if (XmlConfigGet("winscpkey").ToLower() == "true") Settings.Default.winscpkey = true;
-            if (XmlConfigGet("winscpkeyfile") != "") Settings.Default.winscpkeyfile = XmlConfigGet("winscpkeyfile");
-
-            Settings.Default.ocryptkey = Settings.Default.cryptkey;
-            if (Settings.Default.password.Trim() != "")
-            {
-                Settings.Default.password = Decrypt(Settings.Default.password, Settings.Default.pcryptkey);
-                Settings.Default.cryptkey = Settings.Default.password;
-            }
+            if (XmlConfigGet("winscpkeyfile") != "") Settings.Default.winscpkeyfilepath = XmlConfigGet("winscpkeyfile");
 
             IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
             //It would be better to find the position at run time of the 'Close' item, but...
@@ -195,10 +177,6 @@ namespace AutoPuTTY
             searchmenu.Click += SearchSwitchShow;
             cmList.MenuItems.Add(searchmenu);
 
-            XmlToList();
-            if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
-            BeginInvoke(new InvokeDelegate(lbList.Focus));
-
             AutoSize = false;
             MinimumSize = Size;
 
@@ -224,6 +202,17 @@ namespace AutoPuTTY
             }
 
             SetWindowSize(Settings.Default.size, Settings.Default.position);
+            Console.WriteLine("test");
+
+            if (XmlConfigGet("password").Trim() != "")
+            {
+                tableLayoutPassword.BringToFront();
+                tableLayoutPassword.Visible = true;
+            }
+            else
+            {
+                Startup();
+            }
 #if DEBUG
             Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
 #endif
@@ -236,6 +225,13 @@ namespace AutoPuTTY
         [DllImport("user32.dll")]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
         
+        private void Startup ()
+        {
+            XmlToList();
+            if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
+            BeginInvoke(new InvokeDelegate(lbList.Focus));
+        }
+
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == WM_SYSCOMMAND)
@@ -562,13 +558,13 @@ namespace AutoPuTTY
                                 if (host != "") myProc.StartInfo.Arguments += HttpUtility.UrlEncode(host);
                                 if (port != "") myProc.StartInfo.Arguments += ":" + port;
                                 if (winscpprot == "ftp://") myProc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
-                                if (Settings.Default.winscpkey && Settings.Default.winscpkeyfile != "") myProc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfile + "\"";
+                                if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") myProc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
 
                                 //SSH Jump
                                 if (proxyhost != "")
                                 {
                                     _user = _userfromproxy;
-                                    myProc.StartInfo.Arguments += " /rawsettings Tunnel=1 TunnelHostName=" + proxyhost + (proxyuser != "" ? " TunnelUserName=" + proxyuser : "") + " TunnelPortNumber=" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " TunnelPasswordPlain=\"" + ReplaceU(s, proxypass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfile != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfile + "\"" : "");
+                                    myProc.StartInfo.Arguments += " /rawsettings Tunnel=1 TunnelHostName=" + proxyhost + (proxyuser != "" ? " TunnelUserName=" + proxyuser : "") + " TunnelPortNumber=" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " TunnelPasswordPlain=\"" + ReplaceU(s, proxypass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
 
                                     Debug.WriteLine("Connect proxy : " + proxy);
                                     Debug.WriteLine("Connect proxyuser : " + proxyuser);
@@ -653,7 +649,7 @@ namespace AutoPuTTY
                                 if (port != "") myProc.StartInfo.Arguments += " " + port;
                                 if (_user != "" && _pass != "") myProc.StartInfo.Arguments += " -pw \"" + ReplaceA(passs, passr, _pass) + "\"";
                                 if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") myProc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
-                                if (Settings.Default.puttykey && Settings.Default.puttykeyfile != "") myProc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfile + "\"";
+                                if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") myProc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
                                 if (Settings.Default.puttyforward) myProc.StartInfo.Arguments += " -X";
                                 if (puttyargs != "") myProc.StartInfo.Arguments += " " + puttyargs;
 
@@ -693,7 +689,7 @@ namespace AutoPuTTY
 
             byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
             MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptkey));
+            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptokey));
 
             TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
             tdes.Key = keyArray;
@@ -735,7 +731,7 @@ namespace AutoPuTTY
         {
             byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
             MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptkey));
+            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptokey));
 
             TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
             tdes.Key = keyArray;
@@ -1768,18 +1764,33 @@ namespace AutoPuTTY
 
         private void bPassOK_Click(object sender, EventArgs e)
         {
-            if (Encrypt(tbPassword.Text, Settings.Default.pcryptkey) == Settings.Default.password)
+            if (tbPassword.Text == "Password" && tbPassword.ForeColor == System.Drawing.Color.Gray)
             {
+                lPassMessage.Text = "Try to fill a password...";
+                return;
+            }
+
+            if (Encrypt(tbPassword.Text, Settings.Default.cryptopasswordkey) == Settings.Default.password)
+            {
+                //userpassword = tbPassword.Text;
                 auth = true;
-                Close();
+                tableLayoutPassword.SendToBack();
+                tableLayoutPassword.Visible = false;
+
+                Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
+                Settings.Default.cryptokey = tbPassword.Text;
+
+                Startup();
             }
             else
             {
-                tbPassword.Text = "";
+                tbPassword.Text = "Password";
+                tbPassword.ForeColor = System.Drawing.Color.Gray;
+                tbPassword.UseSystemPasswordChar = false;
+
                 switch (tries)
                 {
                     case 0:
-                    case 4:
                         lPassMessage.Text = "You failed, try again...";
                         break;
                     case 1:
@@ -1790,6 +1801,18 @@ namespace AutoPuTTY
                         break;
                     case 3:
                         lPassMessage.Text = "Ahahahah :)";
+                        break;
+                    case 4:
+                        lPassMessage.Text = "You're screwed :/";
+                        break;
+                    case 5:
+                        lPassMessage.Text = "Still not good...";
+                        break;
+                    case 6:
+                        lPassMessage.Text = "You should close...";
+                        break;
+                    default:
+                        lPassMessage.Text = "You failed, try again...";
                         break;
                 }
                 tries++;
