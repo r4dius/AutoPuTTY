@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 
 namespace AutoPuTTY
 {
-	class ImageOpacity
+    class ImageOpacity
     {
         public static Image Set(Image image, float opacity)
         {

@@ -1,11 +1,10 @@
+using AutoPuTTY.Properties;
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using AutoPuTTY.Properties;
 
 namespace AutoPuTTY
 {
@@ -37,7 +36,8 @@ namespace AutoPuTTY
                     tbGPassword.Text = Settings.Default.passwordmd5;
                     tbGConfirm.Text = Settings.Default.passwordmd5;
                     cbGPassword.Checked = true;
-                } else cbGPassword.Checked = false;
+                }
+                else cbGPassword.Checked = false;
                 cbGMulti.Checked = Settings.Default.multicolumn;
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
                 cbGSize.Checked = (_size.Length == 2 ? true : false);
@@ -531,7 +531,7 @@ namespace AutoPuTTY
         {
             Settings.Default.puttyexecute = cbPuTTYExecute.Checked;
             if (!firstread) mainform.XmlConfigSet("puttyexecute", Settings.Default.puttyexecute.ToString());
-            
+
             if (Settings.Default.puttyexecute)
             {
                 tbPuTTYExecute.Enabled = true;
@@ -560,7 +560,7 @@ namespace AutoPuTTY
                 bPuTTYKey.Enabled = false;
             }
         }
- 
+
         private void cbPuTTYXforward_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.puttyforward = cbPuTTYForward.Checked;

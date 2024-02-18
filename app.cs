@@ -35,7 +35,7 @@ namespace AutoPuTTY
             {
                 // send our Win32 message to make the currently running instance
                 // jump on top of all the other windows
-                NativeMethods.PostMessage((IntPtr) NativeMethods.HWND_BROADCAST, NativeMethods.WM_SHOWME, IntPtr.Zero, IntPtr.Zero);
+                NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_SHOWME, IntPtr.Zero, IntPtr.Zero);
             }
         }
     }

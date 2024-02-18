@@ -1,6 +1,6 @@
 using System;
-using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace AutoPuTTY
@@ -15,7 +15,7 @@ namespace AutoPuTTY
         CharSet = CharSet.Auto)]
         private static extern bool CryptProtectData(
         ref DATA_BLOB pPlainText,
-        [MarshalAs(UnmanagedType.LPWStr)]string szDescription,
+        [MarshalAs(UnmanagedType.LPWStr)] string szDescription,
         IntPtr pEntroy,
         IntPtr pReserved,
         IntPtr pPrompt,

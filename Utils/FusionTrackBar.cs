@@ -61,12 +61,12 @@ namespace Fusionbird.FusionToolkit
                 base.WndProc(ref m);
                 if (m.Msg == 0x204e)
                 {
-                    NativeMethods.NMHDR structure = (NativeMethods.NMHDR) Marshal.PtrToStructure(m.LParam, typeof (NativeMethods.NMHDR));
+                    NativeMethods.NMHDR structure = (NativeMethods.NMHDR)Marshal.PtrToStructure(m.LParam, typeof(NativeMethods.NMHDR));
                     if (structure.code == -12)
                     {
                         IntPtr ptr;
                         Marshal.StructureToPtr(structure, m.LParam, false);
-                        NativeMethods.NMCUSTOMDRAW nmcustomdraw = (NativeMethods.NMCUSTOMDRAW) Marshal.PtrToStructure(m.LParam, typeof (NativeMethods.NMCUSTOMDRAW));
+                        NativeMethods.NMCUSTOMDRAW nmcustomdraw = (NativeMethods.NMCUSTOMDRAW)Marshal.PtrToStructure(m.LParam, typeof(NativeMethods.NMCUSTOMDRAW));
                         if (nmcustomdraw.dwDrawStage == NativeMethods.CustomDrawDrawStage.CDDS_PREPAINT)
                         {
                             Graphics graphics = Graphics.FromHdc(nmcustomdraw.hdc);
@@ -140,11 +140,11 @@ namespace Fusionbird.FusionToolkit
         private void DrawHorizontalTicks(Graphics g, Color color)
         {
             RectangleF innerTickRect;
-            int numofTicks = (Maximum/TickFrequency) - 1;
+            int numofTicks = (Maximum / TickFrequency) - 1;
             Pen tickPen = new Pen(color);
-            RectangleF endTickRRect = new RectangleF((ChannelBounds.Left + (ThumbBounds.Width/2)), (ThumbBounds.Top - 5), 0f, 3f);
-            RectangleF endTickLRect = new RectangleF(((ChannelBounds.Right - (ThumbBounds.Width/2)) - 1), (ThumbBounds.Top - 5), 0f, 3f);
-            float tickPitch = (endTickLRect.Right - endTickRRect.Left)/((numofTicks + 1));
+            RectangleF endTickRRect = new RectangleF((ChannelBounds.Left + (ThumbBounds.Width / 2)), (ThumbBounds.Top - 5), 0f, 3f);
+            RectangleF endTickLRect = new RectangleF(((ChannelBounds.Right - (ThumbBounds.Width / 2)) - 1), (ThumbBounds.Top - 5), 0f, 3f);
+            float tickPitch = (endTickLRect.Right - endTickRRect.Left) / ((numofTicks + 1));
             // Draw upper (top) ticks
             if (TickStyle != TickStyle.BottomRight)
             {
@@ -194,11 +194,11 @@ namespace Fusionbird.FusionToolkit
         private void DrawVerticalTicks(Graphics g, Color color)
         {
             RectangleF innerTickRect;
-            int numOfTicks = (Maximum/TickFrequency) - 1;
+            int numOfTicks = (Maximum / TickFrequency) - 1;
             Pen tickPen = new Pen(color);
-            RectangleF endTickBottomRect = new RectangleF((ThumbBounds.Left - 5), ((ChannelBounds.Bottom - (ThumbBounds.Height/2)) - 1), 3f, 0f);
-            RectangleF endTickTopRect = new RectangleF((ThumbBounds.Left - 5), (ChannelBounds.Top + (ThumbBounds.Height/2)), 3f, 0f);
-            float y = (endTickTopRect.Bottom - endTickBottomRect.Top)/((numOfTicks + 1));
+            RectangleF endTickBottomRect = new RectangleF((ThumbBounds.Left - 5), ((ChannelBounds.Bottom - (ThumbBounds.Height / 2)) - 1), 3f, 0f);
+            RectangleF endTickTopRect = new RectangleF((ThumbBounds.Left - 5), (ChannelBounds.Top + (ThumbBounds.Height / 2)), 3f, 0f);
+            float y = (endTickTopRect.Bottom - endTickBottomRect.Top) / ((numOfTicks + 1));
             // Draw left-hand ticks
             if (TickStyle != TickStyle.BottomRight)
             {
@@ -270,10 +270,10 @@ namespace Fusionbird.FusionToolkit
             region.Dispose();
             path.Dispose();
             // Draw light shadow
-            Point[] shadowPoints = new Point[] {points[0], points[1], points[2], points[3]};
+            Point[] shadowPoints = new Point[] { points[0], points[1], points[2], points[3] };
             g.DrawLines(SystemPens.ControlLightLight, shadowPoints);
             // Draw dark shadow
-            shadowPoints = new Point[] {points[3], points[4], points[5]};
+            shadowPoints = new Point[] { points[3], points[4], points[5] };
             g.DrawLines(SystemPens.ControlDarkDark, shadowPoints);
             points[0].Offset(0, -1);
             points[1].Offset(1, 0);
@@ -281,9 +281,9 @@ namespace Fusionbird.FusionToolkit
             points[3].Offset(-1, 1);
             points[4].Offset(-1, 0);
             points[5] = points[0];
-            shadowPoints = new Point[] {points[0], points[1], points[2], points[3]};
+            shadowPoints = new Point[] { points[0], points[1], points[2], points[3] };
             g.DrawLines(SystemPens.ControlLight, shadowPoints);
-            shadowPoints = new Point[] {points[3], points[4], points[5]};
+            shadowPoints = new Point[] { points[3], points[4], points[5] };
             g.DrawLines(SystemPens.ControlDark, shadowPoints);
         }
 
@@ -318,10 +318,10 @@ namespace Fusionbird.FusionToolkit
             region.Dispose();
             path.Dispose();
             // Draw light shadow
-            Point[] shadowPoints = new Point[] {points[0], points[1], points[2]};
+            Point[] shadowPoints = new Point[] { points[0], points[1], points[2] };
             g.DrawLines(SystemPens.ControlLightLight, shadowPoints);
             // Draw dark shadow
-            shadowPoints = new Point[] {points[2], points[3], points[4], points[5]};
+            shadowPoints = new Point[] { points[2], points[3], points[4], points[5] };
             g.DrawLines(SystemPens.ControlDarkDark, shadowPoints);
             points[0].Offset(1, 0);
             points[1].Offset(0, 1);
@@ -329,9 +329,9 @@ namespace Fusionbird.FusionToolkit
             points[3].Offset(-1, -1);
             points[4].Offset(0, -1);
             points[5] = points[0];
-            shadowPoints = new Point[] {points[0], points[1], points[2]};
+            shadowPoints = new Point[] { points[0], points[1], points[2] };
             g.DrawLines(SystemPens.ControlLight, shadowPoints);
-            shadowPoints = new Point[] {points[2], points[3], points[4], points[5]};
+            shadowPoints = new Point[] { points[2], points[3], points[4], points[5] };
             g.DrawLines(SystemPens.ControlDark, shadowPoints);
         }
 
@@ -366,10 +366,10 @@ namespace Fusionbird.FusionToolkit
             region.Dispose();
             path.Dispose();
             // Draw light shadow
-            Point[] shadowPoints = new Point[] {points[0], points[1], points[2], points[3]};
+            Point[] shadowPoints = new Point[] { points[0], points[1], points[2], points[3] };
             g.DrawLines(SystemPens.ControlLightLight, shadowPoints);
             // Draw dark shadow
-            shadowPoints = new Point[] {points[3], points[4], points[5]};
+            shadowPoints = new Point[] { points[3], points[4], points[5] };
             g.DrawLines(SystemPens.ControlDarkDark, shadowPoints);
             points[0].Offset(1, -1);
             points[1].Offset(1, 1);
@@ -377,9 +377,9 @@ namespace Fusionbird.FusionToolkit
             points[3].Offset(-1, 0);
             points[4].Offset(0, -1);
             points[5] = points[0];
-            shadowPoints = new Point[] {points[0], points[1], points[2], points[3]};
+            shadowPoints = new Point[] { points[0], points[1], points[2], points[3] };
             g.DrawLines(SystemPens.ControlLight, shadowPoints);
-            shadowPoints = new Point[] {points[3], points[4], points[5]};
+            shadowPoints = new Point[] { points[3], points[4], points[5] };
             g.DrawLines(SystemPens.ControlDark, shadowPoints);
         }
 
@@ -414,10 +414,10 @@ namespace Fusionbird.FusionToolkit
             region.Dispose();
             path.Dispose();
             // Draw light shadow
-            Point[] shadowPoints = new Point[] {points[0], points[1], points[2]};
+            Point[] shadowPoints = new Point[] { points[0], points[1], points[2] };
             g.DrawLines(SystemPens.ControlLightLight, shadowPoints);
             // Draw dark shadow
-            shadowPoints = new Point[] {points[2], points[3], points[4], points[5]};
+            shadowPoints = new Point[] { points[2], points[3], points[4], points[5] };
             g.DrawLines(SystemPens.ControlDarkDark, shadowPoints);
             points[0].Offset(1, -1);
             points[1].Offset(1, 0);
@@ -425,9 +425,9 @@ namespace Fusionbird.FusionToolkit
             points[3].Offset(-1, 0);
             points[4].Offset(-1, -1);
             points[5] = points[0];
-            shadowPoints = new Point[] {points[0], points[1], points[2]};
+            shadowPoints = new Point[] { points[0], points[1], points[2] };
             g.DrawLines(SystemPens.ControlLight, shadowPoints);
-            shadowPoints = new Point[] {points[2], points[3], points[4], points[5]};
+            shadowPoints = new Point[] { points[2], points[3], points[4], points[5] };
             g.DrawLines(SystemPens.ControlDark, shadowPoints);
         }
 
@@ -444,7 +444,7 @@ namespace Fusionbird.FusionToolkit
             Graphics graphics = Graphics.FromHdc(hdc);
             if (((OwnerDrawParts & TrackBarOwnerDrawParts.Ticks) == TrackBarOwnerDrawParts.Ticks) && !DesignMode)
             {
-                TrackBarDrawItemEventArgs e = new TrackBarDrawItemEventArgs(graphics, ClientRectangle, (TrackBarItemState) ThumbState);
+                TrackBarDrawItemEventArgs e = new TrackBarDrawItemEventArgs(graphics, ClientRectangle, (TrackBarItemState)ThumbState);
                 if (DrawTicks != null)
                 {
                     DrawTicks(this, e);
@@ -463,7 +463,7 @@ namespace Fusionbird.FusionToolkit
                 Color black = Color.Black;
                 if (VisualStyleRenderer.IsSupported)
                 {
-                    VisualStyleRenderer vsr = new VisualStyleRenderer("TRACKBAR", (int) NativeMethods.TrackBarParts.TKP_TICS, ThumbState);
+                    VisualStyleRenderer vsr = new VisualStyleRenderer("TRACKBAR", (int)NativeMethods.TrackBarParts.TKP_TICS, ThumbState);
                     black = vsr.GetColor(ColorProperty.TextColor);
                 }
                 if (Orientation == Orientation.Horizontal)
@@ -488,7 +488,7 @@ namespace Fusionbird.FusionToolkit
             graphics.Clip = new Region(ThumbBounds);
             if (((OwnerDrawParts & TrackBarOwnerDrawParts.Thumb) == TrackBarOwnerDrawParts.Thumb) && !DesignMode)
             {
-                TrackBarDrawItemEventArgs e = new TrackBarDrawItemEventArgs(graphics, ThumbBounds, (TrackBarItemState) ThumbState);
+                TrackBarDrawItemEventArgs e = new TrackBarDrawItemEventArgs(graphics, ThumbBounds, (TrackBarItemState)ThumbState);
                 if (DrawThumb != null)
                 {
                     DrawThumb(this, e);
@@ -519,7 +519,7 @@ namespace Fusionbird.FusionToolkit
                 // Perform drawing
                 if (VisualStyleRenderer.IsSupported)
                 {
-                    VisualStyleRenderer vsr = new VisualStyleRenderer("TRACKBAR", (int) part, ThumbState);
+                    VisualStyleRenderer vsr = new VisualStyleRenderer("TRACKBAR", (int)part, ThumbState);
                     vsr.DrawBackground(graphics, ThumbBounds);
                     graphics.ResetClip();
                     graphics.Dispose();
@@ -569,7 +569,7 @@ namespace Fusionbird.FusionToolkit
             Graphics graphics = Graphics.FromHdc(hdc);
             if (((OwnerDrawParts & TrackBarOwnerDrawParts.Channel) == TrackBarOwnerDrawParts.Channel) && !DesignMode)
             {
-                TrackBarDrawItemEventArgs e = new TrackBarDrawItemEventArgs(graphics, ChannelBounds, (TrackBarItemState) ThumbState);
+                TrackBarDrawItemEventArgs e = new TrackBarDrawItemEventArgs(graphics, ChannelBounds, (TrackBarItemState)ThumbState);
                 if (DrawChannel != null)
                 {
                     DrawChannel(this, e);
@@ -583,7 +583,7 @@ namespace Fusionbird.FusionToolkit
                 }
                 if (VisualStyleRenderer.IsSupported)
                 {
-                    VisualStyleRenderer vsr = new VisualStyleRenderer("TRACKBAR", (int) NativeMethods.TrackBarParts.TKP_TRACK, (int) TrackBarItemState.Normal);
+                    VisualStyleRenderer vsr = new VisualStyleRenderer("TRACKBAR", (int)NativeMethods.TrackBarParts.TKP_TRACK, (int)TrackBarItemState.Normal);
                     vsr.DrawBackground(graphics, ChannelBounds);
                     graphics.ResetClip();
                     graphics.Dispose();
@@ -601,10 +601,10 @@ namespace Fusionbird.FusionToolkit
         /// <summary>
         /// Gets or sets which parts of the trackbar will be owner drawn
         /// </summary>
-        [DefaultValue(typeof (TrackBarOwnerDrawParts), "None")]
+        [DefaultValue(typeof(TrackBarOwnerDrawParts), "None")]
         [Description("Gets/sets the trackbar parts that will be OwnerDrawn.")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        [Editor(typeof (TrackDrawModeEditor), typeof (UITypeEditor))]
+        [Editor(typeof(TrackDrawModeEditor), typeof(UITypeEditor))]
         public TrackBarOwnerDrawParts OwnerDrawParts
         {
             get { return m_OwnerDrawParts; }

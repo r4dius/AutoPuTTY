@@ -15,7 +15,7 @@ namespace AutoPuTTY
 
         private void formClosing(object sender, FormClosingEventArgs e)
         {
-            if(bOK.Enabled) bOK_Click(sender, e);
+            if (bOK.Enabled) bOK_Click(sender, e);
             else e.Cancel = true;
         }
 

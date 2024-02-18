@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoPuTTY.Properties;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
@@ -13,9 +14,8 @@ using System.Threading;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml;
-using AutoPuTTY.Properties;
-using ListBox=System.Windows.Forms.ListBox;
-using MenuItem=System.Windows.Forms.MenuItem;
+using ListBox = System.Windows.Forms.ListBox;
+using MenuItem = System.Windows.Forms.MenuItem;
 
 namespace AutoPuTTY
 {
@@ -150,7 +150,7 @@ namespace AutoPuTTY
                 listmenu.Index = i;
                 listmenu.Text = type;
                 string _type = Array.IndexOf(types, type).ToString();
-                listmenu.Click += delegate { Connect(_type); }; 
+                listmenu.Click += delegate { Connect(_type); };
                 cmList.MenuItems.Add(listmenu);
                 i++;
             }
@@ -203,7 +203,8 @@ namespace AutoPuTTY
             SetWindowSize(Settings.Default.size, Settings.Default.position);
 
             // convert old decryptable password to md5 hash
-            if (Settings.Default.password.Trim() != "") {
+            if (Settings.Default.password.Trim() != "")
+            {
                 Settings.Default.passwordmd5 = MD5Hash(Decrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
                 Settings.Default.password = "";
 
@@ -231,8 +232,8 @@ namespace AutoPuTTY
         private static extern bool InsertMenu(IntPtr hMenu, Int32 wPosition, Int32 wFlags, Int32 wIDNewItem, string lpNewItem);
         [DllImport("user32.dll")]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-        
-        private void Startup ()
+
+        private void Startup()
         {
             passwordrequired = false;
             ShowTableLayoutPanel(tlMain);
@@ -871,7 +872,7 @@ namespace AutoPuTTY
         {
             string[] _size = size.Split('x');
             string[] _position = position.Split('x');
-            
+
             if (_size.Length == 2)
             {
                 int size_w = Convert.ToInt32(_size[0]);
@@ -942,7 +943,8 @@ namespace AutoPuTTY
             {
                 if (xmldoc.DocumentElement != null)
                 {
-                    if (xmlnode.Count > 0) {
+                    if (xmlnode.Count > 0)
+                    {
                         xmldoc.DocumentElement.ReplaceChild(newpath, xmlnode[0]);
                     }
                     else
@@ -1061,7 +1063,7 @@ namespace AutoPuTTY
                 else return new ArrayList();
             }
 
-            server.AddRange(new string[] {name, host, user, pass, type.ToString()});
+            server.AddRange(new string[] { name, host, user, pass, type.ToString() });
             return server;
         }
 
@@ -1368,7 +1370,7 @@ namespace AutoPuTTY
                 }
             }
             else lbList_ContextMenu_Enable(false);
-            
+
             IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
             ShowWindowAsync(hWnd, 5); // SW_SHOW
 
@@ -1430,7 +1432,7 @@ namespace AutoPuTTY
             itemslist.AddRange(lbList.Items);
             lbList.Items.Clear();
 
-            foreach ( string item in itemslist )
+            foreach (string item in itemslist)
             {
                 string _item = item;
                 if (!cbCase.Checked)
@@ -1441,7 +1443,7 @@ namespace AutoPuTTY
 
                 /*if (!filterpopup.cbWhole.Checked)
                 {*/
-                    if (_item.IndexOf(s) >= 0 || s == "") lbList.Items.Add(item);
+                if (_item.IndexOf(s) >= 0 || s == "") lbList.Items.Add(item);
                 /*}
                 else
                 {
@@ -1473,10 +1475,10 @@ namespace AutoPuTTY
 
             ArrayList server = XmlGetServer(lbList.SelectedItem.ToString());
 
-            tbName.Text = (string) server[0];
-            tbHost.Text = Decrypt((string) server[1]);
-            tbUser.Text = Decrypt((string) server[2]);
-            tbPass.Text = Decrypt((string) server[3]);
+            tbName.Text = (string)server[0];
+            tbHost.Text = Decrypt((string)server[1]);
+            tbUser.Text = Decrypt((string)server[2]);
+            tbPass.Text = Decrypt((string)server[3]);
             cbType.SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server[4])]);
             lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
 
@@ -1512,7 +1514,7 @@ namespace AutoPuTTY
 
             string key = e.KeyChar.ToString();
 
-            if (e.KeyChar == (char) Keys.Return) Connect("-1");
+            if (e.KeyChar == (char)Keys.Return) Connect("-1");
             else if (key.Length == 1)
             {
                 if (unixtime - oldunixtime < 1000)
@@ -1903,11 +1905,11 @@ namespace AutoPuTTY
 
         public void ShowTableLayoutPanel(TableLayoutPanel tlPanel)
         {
-            TableLayoutPanel[] panelList = { tlAbout, tlMain, tlPassword};
+            TableLayoutPanel[] panelList = { tlAbout, tlMain, tlPassword };
 
             foreach (TableLayoutPanel panel in panelList)
             {
-                if(panel.Name == tlPanel.Name)
+                if (panel.Name == tlPanel.Name)
                 {
                     tlPanel.BringToFront();
                     tlPanel.Visible = true;
