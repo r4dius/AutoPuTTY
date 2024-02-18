@@ -403,5 +403,29 @@ namespace AutoPuTTY.Properties {
                 this["cryptopasswordkey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string passwordmd5 {
+            get {
+                return ((string)(this["passwordmd5"]));
+            }
+            set {
+                this["passwordmd5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0, 0, 0")]
+        public global::System.Drawing.Rectangle windowsposition {
+            get {
+                return ((global::System.Drawing.Rectangle)(this["windowsposition"]));
+            }
+            set {
+                this["windowsposition"] = value;
+            }
+        }
     }
 }

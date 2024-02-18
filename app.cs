@@ -29,7 +29,6 @@ namespace AutoPuTTY
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-
                 Application.Run(new formMain());
             }
             else

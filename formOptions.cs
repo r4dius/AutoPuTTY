@@ -32,13 +32,12 @@ namespace AutoPuTTY
 
             if (File.Exists(Settings.Default.cfgpath))
             {
-                if (Settings.Default.password.Trim() != "")
+                if (Settings.Default.passwordmd5.Trim() != "")
                 {
-                    tbGPassword.Text = Settings.Default.password;
-                    tbGConfirm.Text = Settings.Default.password;
+                    tbGPassword.Text = Settings.Default.passwordmd5;
+                    tbGConfirm.Text = Settings.Default.passwordmd5;
                     cbGPassword.Checked = true;
                 } else cbGPassword.Checked = false;
-                Console.WriteLine("3");
                 cbGMulti.Checked = Settings.Default.multicolumn;
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
                 cbGSize.Checked = (_size.Length == 2 ? true : false);
@@ -337,21 +336,21 @@ namespace AutoPuTTY
             }
             else
             {
-                if (Settings.Default.password != tbGPassword.Text)
+                if (mainform.MD5Hash(tbGPassword.Text) != Settings.Default.passwordmd5)
                 {
-                    Settings.Default.password = tbGPassword.Text;
-                    mainform.XmlConfigSet("password", mainform.Encrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
+                    Settings.Default.passwordmd5 = mainform.MD5Hash(tbGPassword.Text);
+                    mainform.XmlConfigSet("passwordmd5", Settings.Default.passwordmd5.ToString());
 
                     if (mainform.lbList.Items.Count > 0)
                     {
-                        string[] bwArgs = { "recrypt", Settings.Default.password };
+                        string[] bwArgs = { "recrypt", tbGPassword.Text };
                         bwProgress.RunWorkerAsync(bwArgs);
                         recryptpopup = new popupRecrypt(this);
                         recryptpopup.Text = "Applying" + recryptpopup.Text;
                         recryptpopup.ShowDialog(this);
                     }
 
-                    Settings.Default.cryptokey = Settings.Default.password;
+                    Settings.Default.cryptokey = tbGPassword.Text;
                 }
                 bGPassword.Enabled = false;
             }
@@ -382,7 +381,7 @@ namespace AutoPuTTY
             }
             else
             {
-                if (Settings.Default.password != "")
+                if (Settings.Default.passwordmd5 != "")
                 {
                     DialogResult remove = MessageBox.Show("This will remove password protection", "Remove password ?", MessageBoxButtons.OKCancel);
 
@@ -394,8 +393,9 @@ namespace AutoPuTTY
                         recryptpopup.Text = "Removing" + recryptpopup.Text;
                         recryptpopup.ShowDialog(this);
 
-                        mainform.XmlDropNode("ID='password'");
-                        Settings.Default.password = "";
+                        mainform.XmlDropNode("ID='passwordmd5'");
+
+                        Settings.Default.passwordmd5 = "";
                         Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
                     }
                     else

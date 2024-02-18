@@ -75,6 +75,7 @@
     <StartupObject>AutoPuTTY.app</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -106,12 +107,6 @@
       <DependentUpon>formOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\cryptDPAPI.cs" />
-    <Compile Include="popupPassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="popupPassword.Designer.cs">
-      <DependentUpon>popupPassword.cs</DependentUpon>
-    </Compile>
     <Compile Include="formMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,10 +127,6 @@
     <EmbeddedResource Include="formMain.resx">
       <SubType>Designer</SubType>
       <DependentUpon>formMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="popupPassword.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>popupPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="popupImport.resx">
       <SubType>Designer</SubType>

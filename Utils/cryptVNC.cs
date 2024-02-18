@@ -70,10 +70,6 @@ namespace AutoPuTTY
 					((desKey[i] & 0x80) >> 7)
 					);
 			}
-			//for (int i = 0; i < newkey.Length; i++)
-			//{
-			//    Console.WriteLine(newkey[i]);
-			//}
 			return newkey;
 		}
 	}

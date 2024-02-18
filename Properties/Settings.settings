@@ -98,5 +98,11 @@
     <Setting Name="cryptopasswordkey" Type="System.String" Scope="User">
       <Value Profile="(Default)">;Sk/#µ^éD}=@|</Value>
     </Setting>
+    <Setting Name="passwordmd5" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="windowsposition" Type="System.Drawing.Rectangle" Scope="User">
+      <Value Profile="(Default)">0, 0, 0, 0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

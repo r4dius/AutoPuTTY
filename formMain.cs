@@ -21,7 +21,7 @@ namespace AutoPuTTY
 {
     public partial class formMain : Form
     {
-        public bool auth;
+        public bool passwordrequired;
         public const int IDM_ABOUT = 1000;
         public const int IDM_OPTIONS = 900;
         public const int MF_BYPOSITION = 0x400;
@@ -39,9 +39,8 @@ namespace AutoPuTTY
         private double unixtime;
         private double oldunixtime;
         private int tries;
-        private string laststate = "normal";
         private string keysearch = "";
-        private ManualResetEvent waitforpassword = new ManualResetEvent(false);
+        private string laststate = "normal";
 
         public formMain()
         {
@@ -81,8 +80,7 @@ namespace AutoPuTTY
 
             InitializeComponent();
 
-            tVersion.Text = Properties.Settings.Default.version;
-            tPassVersion.Text = Properties.Settings.Default.version;
+            tAboutVersion.Text = Properties.Settings.Default.version;
 
             //clone types array to have a sorted version
             _types = (string[])types.Clone();
@@ -99,6 +97,7 @@ namespace AutoPuTTY
             if (XmlConfigGet("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
             if (XmlConfigGet("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlConfigGet("multicolumnwidth"));
             if (XmlConfigGet("password") != "") Settings.Default.password = XmlConfigGet("password");
+            if (XmlConfigGet("passwordmd5") != "") Settings.Default.passwordmd5 = XmlConfigGet("passwordmd5");
             if (XmlConfigGet("position") != "") Settings.Default.position = XmlConfigGet("position");
             if (XmlConfigGet("putty") != "") Settings.Default.puttypath = XmlConfigGet("putty");
             if (XmlConfigGet("puttycommand") != "") Settings.Default.puttycommand = XmlConfigGet("puttycommand");
@@ -202,12 +201,20 @@ namespace AutoPuTTY
             }
 
             SetWindowSize(Settings.Default.size, Settings.Default.position);
-            Console.WriteLine("test");
 
-            if (XmlConfigGet("password").Trim() != "")
+            // convert old decryptable password to md5 hash
+            if (Settings.Default.password.Trim() != "") {
+                Settings.Default.passwordmd5 = MD5Hash(Decrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
+                Settings.Default.password = "";
+
+                XmlConfigSet("passwordmd5", Settings.Default.passwordmd5.ToString());
+                XmlDropNode("ID='password'");
+            }
+            if (Settings.Default.passwordmd5.Trim() != "")
             {
-                tableLayoutPassword.BringToFront();
-                tableLayoutPassword.Visible = true;
+                passwordrequired = true;
+                BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
+                ShowTableLayoutPanel(tlPassword);
             }
             else
             {
@@ -227,6 +234,8 @@ namespace AutoPuTTY
         
         private void Startup ()
         {
+            passwordrequired = false;
+            ShowTableLayoutPanel(tlMain);
             XmlToList();
             if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
             BeginInvoke(new InvokeDelegate(lbList.Focus));
@@ -239,9 +248,8 @@ namespace AutoPuTTY
                 switch (m.WParam.ToInt32())
                 {
                     case IDM_ABOUT:
-                        tableLayoutAbout.Visible = true;
-                        tableLayoutAbout.BringToFront();
-                        bOK.Focus();
+                        ShowTableLayoutPanel(tlAbout);
+                        bAboutOK.Focus();
                         return;
                     default:
                         break;
@@ -886,12 +894,12 @@ namespace AutoPuTTY
             if (state)
             {
                 bEye.Image = ImageOpacity.Set(Resources.iconeyeshow, (float)0.50);
-                tbPass.UseSystemPasswordChar = true;
+                tbPass.PasswordChar = '●';
             }
             else
             {
                 bEye.Image = ImageOpacity.Set(Resources.iconeyehide, (float)0.50);
-                tbPass.UseSystemPasswordChar = false;
+                tbPass.PasswordChar = '\0';
             }
         }
 
@@ -1151,7 +1159,7 @@ namespace AutoPuTTY
 
         private void bEye_Click(object sender, EventArgs e)
         {
-            TooglePassword(!tbPass.UseSystemPasswordChar);
+            TooglePassword(!(tbPass.PasswordChar == '●'));
         }
 
         private void bEye_MouseEnter(object sender, EventArgs e)
@@ -1161,7 +1169,7 @@ namespace AutoPuTTY
 
         private void bEye_MouseLeave(object sender, EventArgs e)
         {
-            bEye.Image = (tbPass.UseSystemPasswordChar ? Resources.iconeyeshow : Resources.iconeyehide);
+            bEye.Image = (tbPass.PasswordChar == '●' ? Resources.iconeyeshow : Resources.iconeyehide);
         }
 
         private void bModify_Click(object sender, EventArgs e)
@@ -1286,7 +1294,7 @@ namespace AutoPuTTY
         private void cbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
-            tbName_TextChanged(this, e);
+            tbName_TextChanged(sender, e);
         }
 
         private void cbType_DrawItem(object sender, DrawItemEventArgs e)
@@ -1552,7 +1560,7 @@ namespace AutoPuTTY
             }
             if (e.KeyCode == Keys.Escape)
             {
-                if (tableLayoutAbout.Visible) bOK_Click_1(sender, e);
+                if (tlAbout.Visible) bAboutOK_Click(sender, e);
                 else bSearchClose_Click(sender, e);
             }
         }
@@ -1579,7 +1587,10 @@ namespace AutoPuTTY
             }
 
             tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterw ? tlLeft.Width - tbFilter.Left : tbfilterw;
+        }
 
+        private void formMain_ResizeEnd(object sender, EventArgs e)
+        {
             if (Settings.Default.size != "")
             {
                 Settings.Default.size = Width + "x" + Height;
@@ -1625,39 +1636,73 @@ namespace AutoPuTTY
 
         private void tbHost_TextChanged(object sender, EventArgs e)
         {
-            tbName_TextChanged(this, e);
+            tbName_TextChanged(sender, e);
         }
 
         private void tbName_TextChanged(object sender, EventArgs e)
         {
-            ArrayList server;
-            string tbNameVal = "", tbHostVar = "", tbUserVal = "", tbPassVal = "", cbTypeVal = "0";
-            Color normal = SystemColors.Window, changed_ok = Color.FromArgb(235, 255, 225), changed_error = Color.FromArgb(255, 235, 225);
+            ComboBox cbSender = new ComboBox();
+            TextBox tbSender = new TextBox();
+            if (sender is ComboBox) cbSender = (ComboBox)sender;
+            else tbSender = (TextBox)sender;
+
+            ArrayList server = new ArrayList();
+            string tbVal = "";
+            int cbVal = 0;
+            Color normal = SystemColors.Window;
+            Color changed_ok = Color.FromArgb(235, 255, 225);
+            Color changed_error = Color.FromArgb(255, 235, 225);
 
             if (lbList.SelectedItem != null)
             {
                 server = XmlGetServer(lbList.SelectedItem.ToString());
-                tbNameVal = (string)server[0];
-                tbHostVar = Decrypt((string)server[1]);
-                tbUserVal = Decrypt((string)server[2]);
-                tbPassVal = Decrypt((string)server[3]);
-                cbTypeVal = (string)server[4];
+
+                if (sender is ComboBox)
+                {
+                    cbVal = Array.IndexOf(_types, types[Convert.ToInt32((string)server[4])]);
+                }
+                else
+                {
+                    switch (tbSender.Name)
+                    {
+                        case "tbName":
+                            tbVal = (string)server[0];
+                            break;
+                        case "tbHost":
+                            tbVal = Decrypt((string)server[1]);
+                            break;
+                        case "tbUser":
+                            tbVal = Decrypt((string)server[2]);
+                            break;
+                        case "tbPass":
+                            tbVal = Decrypt((string)server[3]);
+                            break;
+                    }
+                }
             }
 
-            if (tbName.Text != tbNameVal)
+            if (sender is ComboBox)
             {
-                if (XmlGetServer(tbName.Text.Trim()).Count > 0) tbName.BackColor = changed_error;
-                else tbName.BackColor = changed_ok;
+                if (cbSender.SelectedIndex != cbVal) cbSender.BackColor = changed_ok;
+                else cbSender.BackColor = normal;
             }
-            else tbName.BackColor = normal;
-            if (tbHost.Text != tbHostVar) tbHost.BackColor = changed_ok;
-            else tbHost.BackColor = normal;
-            if (tbUser.Text != tbUserVal) tbUser.BackColor = changed_ok;
-            else tbUser.BackColor = normal;
-            if (tbPass.Text != tbPassVal) tbPass.BackColor = changed_ok;
-            else tbPass.BackColor = normal;
-            if (cbType.SelectedIndex.ToString() != cbTypeVal) cbType.BackColor = changed_ok;
-            else cbType.BackColor = normal;
+            else
+            {
+                if (tbSender.Name == "tbName")
+                {
+                    if (tbSender.Text != tbVal)
+                    {
+                        if (XmlGetServer(tbSender.Text.Trim()).Count > 0 || tbSender.Text.Trim() == "") tbSender.BackColor = changed_error;
+                        else tbSender.BackColor = changed_ok;
+                    }
+                    else tbSender.BackColor = normal;
+                }
+                else
+                {
+                    if (tbSender.Text != tbVal) tbSender.BackColor = changed_ok;
+                    else tbSender.BackColor = normal;
+                }
+            }
 
             if (indexchanged) return;
             //modify an existing item
@@ -1688,12 +1733,12 @@ namespace AutoPuTTY
 
         private void tbPass_TextChanged(object sender, EventArgs e)
         {
-            tbName_TextChanged(this, e);
+            tbName_TextChanged(sender, e);
         }
 
         private void tbUser_TextChanged(object sender, EventArgs e)
         {
-            tbName_TextChanged(this, e);
+            tbName_TextChanged(sender, e);
         }
 
         // update "search"
@@ -1723,76 +1768,110 @@ namespace AutoPuTTY
 
         private void liWebsite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(liWebsite.Text);
+            Process.Start(liAboutWebsite.Text);
         }
 
-        private void bOK_Click_1(object sender, EventArgs e)
+        private void bAboutOK_Click(object sender, EventArgs e)
         {
-            tableLayoutAbout.Visible = false;
+            if (passwordrequired) ShowTableLayoutPanel(tlPassword);
+            else ShowTableLayoutPanel(tlMain);
         }
 
-        private void tbPassword_Enter(object sender, EventArgs e)
+        // prevent line break
+        private void tbPassFake_KeyDown(object sender, KeyEventArgs e)
         {
-            tbPassword.UseSystemPasswordChar = true;
-            if (tbPassword.Text == "Password" && tbPassword.ForeColor == System.Drawing.Color.Gray)
+            if (e.KeyCode == Keys.Enter)
             {
-                tbPassword.Text = "";
-                tbPassword.ForeColor = System.Drawing.Color.Black;
-            }
-        }
-
-        private void tbPassword_Leave(object sender, EventArgs e)
-        {
-            if (tbPassword.Text == "" && tbPassword.ForeColor == System.Drawing.Color.Black)
-            {
-                tbPassword.Text = "Password";
-                tbPassword.ForeColor = System.Drawing.Color.Gray;
-                tbPassword.UseSystemPasswordChar = false;
-            }
-        }
-
-        private void tbPassword_TextChanged(object sender, EventArgs e)
-        {
-            /*
-            if (e.KeyCode.Equals(Keys.Enter))
-            {
-                SendKeys.Send("{TAB}");
                 e.SuppressKeyPress = true;
             }
-            */
+        }
+
+        // get first chat input and send it to the real password textbox
+        private void tbPassFake_TextChanged(object sender, EventArgs e)
+        {
+            if (tbPassFake.Text == "") return;
+            tbPassPassword.Focus();
+            tbPassPassword.Text = tbPassFake.Text;
+            tbPassPassword.SelectionStart = tbPassPassword.Text.Length;
+            tbPassFake.Text = "";
+        }
+
+        // set focus on the actual password textbox when clicking on the fake "background" textbox
+        private void tbPassFake_Click(object sender, EventArgs e)
+        {
+            tbPassPassword.Focus();
+        }
+
+        private void pPasswordBack_Click(object sender, EventArgs e)
+        {
+            tbPassFake_Click(sender, e);
+        }
+
+        private void tbPassPassword_Click(object sender, EventArgs e)
+        {
+            tbPassPassword_Enter(sender, e);
+        }
+
+        private void tbPassPassword_Enter(object sender, EventArgs e)
+        {
+            if (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray)
+            {
+                tbPassPassword.Text = "";
+                tbPassPassword.ForeColor = Color.Black;
+                tbPassPassword.PasswordChar = '●';
+            }
+        }
+
+        // submit password with enter key
+        private void tbPassPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // prevent annoying beep when empty
+                e.SuppressKeyPress = true;
+                bPassOK_Click(this, new EventArgs());
+            }
+            if (e.KeyCode == Keys.Tab)
+            {
+                // prevent annoying beep when empty
+                e.SuppressKeyPress = true;
+                bPassOK.Focus();
+            }
+        }
+
+        private void tbPassPassword_Leave(object sender, EventArgs e)
+        {
+            if (tbPassPassword.Text == "")
+            {
+                tbPassPassword.Text = "Password";
+                tbPassPassword.ForeColor = Color.Gray;
+                tbPassPassword.PasswordChar = '\0';
+            }
         }
 
         private void bPassOK_Click(object sender, EventArgs e)
         {
-            if (tbPassword.Text == "Password" && tbPassword.ForeColor == System.Drawing.Color.Gray)
+            if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
             {
-                lPassMessage.Text = "Try to fill a password...";
-                return;
-            }
-
-            if (Encrypt(tbPassword.Text, Settings.Default.cryptopasswordkey) == Settings.Default.password)
-            {
-                //userpassword = tbPassword.Text;
-                auth = true;
-                tableLayoutPassword.SendToBack();
-                tableLayoutPassword.Visible = false;
-
-                Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
-                Settings.Default.cryptokey = tbPassword.Text;
-
-                Startup();
+                lPassMessage.Text = "Try to filling a password...";
             }
             else
             {
-                tbPassword.Text = "Password";
-                tbPassword.ForeColor = System.Drawing.Color.Gray;
-                tbPassword.UseSystemPasswordChar = false;
+                if (MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5)
+                {
+                    Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
+                    Settings.Default.cryptokey = tbPassPassword.Text;
+
+                    Startup();
+                    return;
+                }
+
+                tbPassPassword.Text = "Password";
+                tbPassPassword.ForeColor = Color.Gray;
+                tbPassPassword.PasswordChar = '\0';
 
                 switch (tries)
                 {
-                    case 0:
-                        lPassMessage.Text = "You failed, try again...";
-                        break;
                     case 1:
                         lPassMessage.Text = "You failed again, looks like you lost it...";
                         break;
@@ -1803,12 +1882,15 @@ namespace AutoPuTTY
                         lPassMessage.Text = "Ahahahah :)";
                         break;
                     case 4:
-                        lPassMessage.Text = "You're screwed :/";
-                        break;
-                    case 5:
                         lPassMessage.Text = "Still not good...";
                         break;
+                    case 5:
+                        lPassMessage.Text = "You're screwed :/";
+                        break;
                     case 6:
+                        lPassMessage.Text = "Are you drunk ?";
+                        break;
+                    case 7:
                         lPassMessage.Text = "You should close...";
                         break;
                     default:
@@ -1816,6 +1898,46 @@ namespace AutoPuTTY
                         break;
                 }
                 tries++;
+            }
+        }
+
+        public void ShowTableLayoutPanel(TableLayoutPanel tlPanel)
+        {
+            TableLayoutPanel[] panelList = { tlAbout, tlMain, tlPassword};
+
+            foreach (TableLayoutPanel panel in panelList)
+            {
+                if(panel.Name == tlPanel.Name)
+                {
+                    tlPanel.BringToFront();
+                    tlPanel.Visible = true;
+                }
+                else
+                {
+                    panel.Visible = false;
+                }
+            }
+        }
+
+        // thanks chatgpt
+        public string MD5Hash(string input)
+        {
+            // convert the input string to a byte array and compute the hash.
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+                // create a new StringBuilder to collect the bytes and create a string.
+                StringBuilder stringBuilder = new StringBuilder();
+
+                // loop through each byte of the hashed data and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    stringBuilder.Append(data[i].ToString("x2"));
+                }
+
+                // return the hexadecimal string.
+                return stringBuilder.ToString();
             }
         }
 
