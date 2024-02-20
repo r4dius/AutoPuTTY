@@ -1816,11 +1816,12 @@ namespace AutoPuTTY
 
         private void tbPassPassword_Enter(object sender, EventArgs e)
         {
-            if (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray)
+            if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
             {
                 tbPassPassword.Text = "";
                 tbPassPassword.ForeColor = Color.Black;
                 tbPassPassword.PasswordChar = '●';
+                tbPassPassword.Focus();
             }
         }
 
@@ -1856,6 +1857,8 @@ namespace AutoPuTTY
             if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
             {
                 lPassMessage.Text = "Try to filling a password...";
+
+                tbPassPassword_Enter(sender, e);
             }
             else
             {
@@ -1868,9 +1871,8 @@ namespace AutoPuTTY
                     return;
                 }
 
-                tbPassPassword.Text = "Password";
-                tbPassPassword.ForeColor = Color.Gray;
-                tbPassPassword.PasswordChar = '\0';
+                tbPassPassword.Text = "";
+                tbPassPassword_Enter(sender, e);
 
                 switch (tries)
                 {
