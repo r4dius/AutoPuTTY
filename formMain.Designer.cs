@@ -569,7 +569,7 @@
             this.bAboutOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.bAboutOK.Location = new System.Drawing.Point(96, 172);
             this.bAboutOK.Name = "bAboutOK";
-            this.bAboutOK.Size = new System.Drawing.Size(69, 29);
+            this.bAboutOK.Size = new System.Drawing.Size(69, 30);
             this.bAboutOK.TabIndex = 23;
             this.bAboutOK.Text = "OK";
             this.bAboutOK.UseVisualStyleBackColor = true;
@@ -798,9 +798,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(261, 229);
-            this.Controls.Add(this.tlPassword);
-            this.Controls.Add(this.tlMain);
             this.Controls.Add(this.tlAbout);
+            this.Controls.Add(this.tlMain);
+            this.Controls.Add(this.tlPassword);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "formMain";
