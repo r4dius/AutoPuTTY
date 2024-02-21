@@ -59,10 +59,11 @@
             this.tlMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlLeft = new System.Windows.Forms.TableLayoutPanel();
             this.pFind = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbCase = new System.Windows.Forms.CheckBox();
+            this.pFindToogle = new System.Windows.Forms.Panel();
             this.bClose = new System.Windows.Forms.PictureBox();
             this.tbFilter = new System.Windows.Forms.TextBox();
+            this.cbCase = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.lbListSep = new System.Windows.Forms.TableLayoutPanel();
             this.lbList = new System.Windows.Forms.ListBox();
             this.tlAbout = new System.Windows.Forms.TableLayoutPanel();
@@ -89,6 +90,7 @@
             this.tlMain.SuspendLayout();
             this.tlLeft.SuspendLayout();
             this.pFind.SuspendLayout();
+            this.pFindToogle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bClose)).BeginInit();
             this.lbListSep.SuspendLayout();
             this.tlAbout.SuspendLayout();
@@ -148,7 +150,7 @@
             this.bEye.Margin = new System.Windows.Forms.Padding(0);
             this.bEye.Name = "bEye";
             this.bEye.Size = new System.Drawing.Size(22, 15);
-            this.bEye.TabIndex = 21;
+            this.bEye.TabIndex = 11;
             this.bEye.TabStop = false;
             this.bEye.Click += new System.EventHandler(this.bEye_Click);
             this.bEye.DoubleClick += new System.EventHandler(this.bEye_Click);
@@ -400,8 +402,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tlLeft.ColumnCount = 1;
             this.tlLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlLeft.Controls.Add(this.pFind, 0, 1);
             this.tlLeft.Controls.Add(this.lbListSep, 0, 0);
+            this.tlLeft.Controls.Add(this.pFind, 0, 1);
             this.tlLeft.Location = new System.Drawing.Point(0, 0);
             this.tlLeft.Margin = new System.Windows.Forms.Padding(0);
             this.tlLeft.Name = "tlLeft";
@@ -416,43 +418,33 @@
             this.pFind.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pFind.Controls.Add(this.pFindToogle);
             this.pFind.Controls.Add(this.label1);
-            this.pFind.Controls.Add(this.cbCase);
-            this.pFind.Controls.Add(this.bClose);
-            this.pFind.Controls.Add(this.tbFilter);
             this.pFind.Location = new System.Drawing.Point(0, 204);
             this.pFind.Margin = new System.Windows.Forms.Padding(0);
             this.pFind.Name = "pFind";
             this.pFind.Size = new System.Drawing.Size(131, 25);
             this.pFind.TabIndex = 1;
             // 
-            // label1
+            // pFindToogle
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.pFindToogle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(131, 1);
-            this.label1.TabIndex = 8;
-            // 
-            // cbCase
-            // 
-            this.cbCase.AutoSize = true;
-            this.cbCase.Location = new System.Drawing.Point(174, 5);
-            this.cbCase.Name = "cbCase";
-            this.cbCase.Size = new System.Drawing.Size(82, 17);
-            this.cbCase.TabIndex = 7;
-            this.cbCase.Text = "Match case";
-            this.cbCase.UseVisualStyleBackColor = true;
-            this.cbCase.CheckedChanged += new System.EventHandler(this.cbSearchCase_CheckedChanged);
+            this.pFindToogle.Controls.Add(this.bClose);
+            this.pFindToogle.Controls.Add(this.tbFilter);
+            this.pFindToogle.Controls.Add(this.cbCase);
+            this.pFindToogle.Location = new System.Drawing.Point(0, 1);
+            this.pFindToogle.Margin = new System.Windows.Forms.Padding(0);
+            this.pFindToogle.Name = "pFindToogle";
+            this.pFindToogle.Size = new System.Drawing.Size(131, 24);
+            this.pFindToogle.TabIndex = 9;
             // 
             // bClose
             // 
             this.bClose.BackColor = System.Drawing.Color.Transparent;
             this.bClose.Image = global::AutoPuTTY.Properties.Resources.close;
-            this.bClose.Location = new System.Drawing.Point(2, 3);
+            this.bClose.Location = new System.Drawing.Point(2, 2);
             this.bClose.Margin = new System.Windows.Forms.Padding(0);
             this.bClose.Name = "bClose";
             this.bClose.Size = new System.Drawing.Size(20, 20);
@@ -465,13 +457,35 @@
             // 
             // tbFilter
             // 
-            this.tbFilter.Location = new System.Drawing.Point(24, 3);
+            this.tbFilter.Location = new System.Drawing.Point(24, 2);
             this.tbFilter.Name = "tbFilter";
             this.tbFilter.Size = new System.Drawing.Size(107, 20);
             this.tbFilter.TabIndex = 4;
             this.tbFilter.TextChanged += new System.EventHandler(this.tbSearch_Changed);
             this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
             this.tbFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbSearch_KeyPress);
+            // 
+            // cbCase
+            // 
+            this.cbCase.AutoSize = true;
+            this.cbCase.Location = new System.Drawing.Point(174, 4);
+            this.cbCase.Name = "cbCase";
+            this.cbCase.Size = new System.Drawing.Size(82, 17);
+            this.cbCase.TabIndex = 5;
+            this.cbCase.Text = "Match case";
+            this.cbCase.UseVisualStyleBackColor = true;
+            this.cbCase.CheckedChanged += new System.EventHandler(this.cbSearchCase_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(131, 1);
+            this.label1.TabIndex = 8;
             // 
             // lbListSep
             // 
@@ -798,9 +812,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(261, 229);
-            this.Controls.Add(this.tlAbout);
             this.Controls.Add(this.tlMain);
             this.Controls.Add(this.tlPassword);
+            this.Controls.Add(this.tlAbout);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "formMain";
@@ -817,7 +831,8 @@
             this.tlMain.ResumeLayout(false);
             this.tlLeft.ResumeLayout(false);
             this.pFind.ResumeLayout(false);
-            this.pFind.PerformLayout();
+            this.pFindToogle.ResumeLayout(false);
+            this.pFindToogle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bClose)).EndInit();
             this.lbListSep.ResumeLayout(false);
             this.tlAbout.ResumeLayout(false);
@@ -892,6 +907,7 @@
         private System.Windows.Forms.Panel pPassBackRight;
         private System.Windows.Forms.TextBox tbPassBack;
         private System.Windows.Forms.TextBox tbPassFake;
+        private System.Windows.Forms.Panel pFindToogle;
     }
 }
 

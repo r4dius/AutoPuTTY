@@ -804,14 +804,14 @@ namespace AutoPuTTY
         private void SearchSwitch(bool status)
         {
             // reset the search input text
-            if (status && !pFind.Visible) tbFilter.Text = "";
+            if (status && !pFindToogle.Visible) tbFilter.Text = "";
             // show the "search" form
             tlLeft.RowStyles[1].Height = status ? 25 : 0;
-            pFind.Visible = status;
+            pFindToogle.Visible = status;
             // focus the filter input
             tbFilter.Focus();
             // pressed ctrl + F twice, select the search input text so we can search again over last one
-            if (status && pFind.Visible && tbFilter.Text != "") tbFilter.SelectAll();
+            if (status && pFindToogle.Visible && tbFilter.Text != "") tbFilter.SelectAll();
         }
 
         private void SearchSwitchShow(object sender, EventArgs e)
@@ -1156,7 +1156,7 @@ namespace AutoPuTTY
                 Error("No name ?\nNo hostname ??\nTry again ...");
             }
 
-            if (pFind.Visible) tbSearch_Changed(new object(), new EventArgs());
+            if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
         }
 
         private void bEye_Click(object sender, EventArgs e)
@@ -1236,7 +1236,7 @@ namespace AutoPuTTY
             bAdd.Enabled = false;
             BeginInvoke(new InvokeDelegate(lbList.Focus));
 
-            if (pFind.Visible) tbSearch_Changed(new object(), new EventArgs());
+            if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
         }
 
         private void bDelete_Click(object sender, EventArgs e)
@@ -1588,7 +1588,7 @@ namespace AutoPuTTY
             }
 
             tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterw ? tlLeft.Width - tbFilter.Left : tbfilterw;
-            if(pFind.Width >= 250) cbCase.TabStop = true;
+            if(pFindToogle.Width >= 250) cbCase.TabStop = true;
             else cbCase.TabStop = false;
         }
 
@@ -1747,7 +1747,7 @@ namespace AutoPuTTY
         // update "search"
         private void tbSearch_Changed(object sender, EventArgs e)
         {
-            if (pFind.Visible) lbList_Filter(tbFilter.Text);
+            if (pFindToogle.Visible) lbList_Filter(tbFilter.Text);
         }
 
         // prevent the beep sound when pressing ctrl + F in the search input
