@@ -74,12 +74,15 @@
             this.tAboutTitle = new System.Windows.Forms.Label();
             this.tlPassword = new System.Windows.Forms.TableLayoutPanel();
             this.panelPassword = new System.Windows.Forms.Panel();
-            this.pPassPasswordBack = new System.Windows.Forms.Panel();
-            this.tbPassPassword = new System.Windows.Forms.TextBox();
+            this.pPassBackRight = new System.Windows.Forms.Panel();
             this.bPassOK = new System.Windows.Forms.Button();
+            this.pPassBackLeft = new System.Windows.Forms.Panel();
+            this.tbPassPassword = new System.Windows.Forms.TextBox();
+            this.pbPassEye = new System.Windows.Forms.PictureBox();
             this.lPassMessage = new System.Windows.Forms.Label();
             this.pPassLogo = new System.Windows.Forms.PictureBox();
             this.lPassName = new System.Windows.Forms.Label();
+            this.tbPassBack = new System.Windows.Forms.TextBox();
             this.tbPassFake = new System.Windows.Forms.TextBox();
             this.pConfig.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).BeginInit();
@@ -93,7 +96,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.piAboutLogo)).BeginInit();
             this.tlPassword.SuspendLayout();
             this.panelPassword.SuspendLayout();
-            this.pPassPasswordBack.SuspendLayout();
+            this.pPassBackRight.SuspendLayout();
+            this.pPassBackLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPassEye)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pPassLogo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -641,10 +646,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.panelPassword.Controls.Add(this.pPassPasswordBack);
+            this.panelPassword.Controls.Add(this.pPassBackRight);
+            this.panelPassword.Controls.Add(this.pPassBackLeft);
             this.panelPassword.Controls.Add(this.lPassMessage);
             this.panelPassword.Controls.Add(this.pPassLogo);
             this.panelPassword.Controls.Add(this.lPassName);
+            this.panelPassword.Controls.Add(this.tbPassBack);
             this.panelPassword.Controls.Add(this.tbPassFake);
             this.panelPassword.Location = new System.Drawing.Point(0, 0);
             this.panelPassword.Margin = new System.Windows.Forms.Padding(0);
@@ -652,49 +659,78 @@
             this.panelPassword.Size = new System.Drawing.Size(261, 229);
             this.panelPassword.TabIndex = 0;
             // 
-            // pPassPasswordBack
+            // pPassBackRight
             // 
-            this.pPassPasswordBack.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pPassPasswordBack.BackColor = System.Drawing.Color.White;
-            this.pPassPasswordBack.Controls.Add(this.tbPassPassword);
-            this.pPassPasswordBack.Controls.Add(this.bPassOK);
-            this.pPassPasswordBack.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.pPassPasswordBack.Location = new System.Drawing.Point(27, 171);
-            this.pPassPasswordBack.Name = "pPassPasswordBack";
-            this.pPassPasswordBack.Size = new System.Drawing.Size(207, 31);
-            this.pPassPasswordBack.TabIndex = 28;
-            this.pPassPasswordBack.Click += new System.EventHandler(this.pPasswordBack_Click);
+            this.pPassBackRight.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pPassBackRight.BackColor = System.Drawing.Color.White;
+            this.pPassBackRight.Controls.Add(this.bPassOK);
+            this.pPassBackRight.Cursor = System.Windows.Forms.Cursors.Default;
+            this.pPassBackRight.Location = new System.Drawing.Point(202, 172);
+            this.pPassBackRight.Name = "pPassBackRight";
+            this.pPassBackRight.Size = new System.Drawing.Size(32, 30);
+            this.pPassBackRight.TabIndex = 29;
+            // 
+            // bPassOK
+            // 
+            this.bPassOK.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.bPassOK.BackColor = System.Drawing.Color.White;
+            this.bPassOK.Cursor = System.Windows.Forms.Cursors.Default;
+            this.bPassOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.bPassOK.Image = ((System.Drawing.Image)(resources.GetObject("bPassOK.Image")));
+            this.bPassOK.Location = new System.Drawing.Point(2, 0);
+            this.bPassOK.Name = "bPassOK";
+            this.bPassOK.Size = new System.Drawing.Size(30, 30);
+            this.bPassOK.TabIndex = 23;
+            this.bPassOK.UseVisualStyleBackColor = true;
+            this.bPassOK.Click += new System.EventHandler(this.bPassOK_Click);
+            // 
+            // pPassBackLeft
+            // 
+            this.pPassBackLeft.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pPassBackLeft.BackColor = System.Drawing.Color.White;
+            this.pPassBackLeft.Controls.Add(this.tbPassPassword);
+            this.pPassBackLeft.Controls.Add(this.pbPassEye);
+            this.pPassBackLeft.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.pPassBackLeft.Location = new System.Drawing.Point(27, 172);
+            this.pPassBackLeft.Name = "pPassBackLeft";
+            this.pPassBackLeft.Size = new System.Drawing.Size(175, 30);
+            this.pPassBackLeft.TabIndex = 28;
+            this.pPassBackLeft.Click += new System.EventHandler(this.pPasswordBack_Click);
             // 
             // tbPassPassword
             // 
-            this.tbPassPassword.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tbPassPassword.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.tbPassPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbPassPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.tbPassPassword.ForeColor = System.Drawing.Color.Gray;
             this.tbPassPassword.Location = new System.Drawing.Point(6, 4);
             this.tbPassPassword.Name = "tbPassPassword";
-            this.tbPassPassword.Size = new System.Drawing.Size(150, 20);
+            this.tbPassPassword.Size = new System.Drawing.Size(141, 20);
             this.tbPassPassword.TabIndex = 24;
             this.tbPassPassword.Text = "Password";
             this.tbPassPassword.WordWrap = false;
             this.tbPassPassword.Click += new System.EventHandler(this.tbPassPassword_Click);
+            this.tbPassPassword.TextChanged += new System.EventHandler(this.tbPassPassword_TextChanged);
             this.tbPassPassword.Enter += new System.EventHandler(this.tbPassPassword_Enter);
             this.tbPassPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassPassword_KeyDown);
             this.tbPassPassword.Leave += new System.EventHandler(this.tbPassPassword_Leave);
             // 
-            // bPassOK
+            // pbPassEye
             // 
-            this.bPassOK.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.bPassOK.BackColor = System.Drawing.Color.White;
-            this.bPassOK.Cursor = System.Windows.Forms.Cursors.Default;
-            this.bPassOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.bPassOK.Location = new System.Drawing.Point(162, 1);
-            this.bPassOK.Name = "bPassOK";
-            this.bPassOK.Size = new System.Drawing.Size(44, 29);
-            this.bPassOK.TabIndex = 23;
-            this.bPassOK.Text = "OK";
-            this.bPassOK.UseVisualStyleBackColor = false;
-            this.bPassOK.Click += new System.EventHandler(this.bPassOK_Click);
+            this.pbPassEye.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.pbPassEye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbPassEye.Cursor = System.Windows.Forms.Cursors.Default;
+            this.pbPassEye.Image = global::AutoPuTTY.Properties.Resources.eye;
+            this.pbPassEye.Location = new System.Drawing.Point(150, 2);
+            this.pbPassEye.Name = "pbPassEye";
+            this.pbPassEye.Size = new System.Drawing.Size(26, 26);
+            this.pbPassEye.TabIndex = 25;
+            this.pbPassEye.TabStop = false;
+            this.pbPassEye.Visible = false;
+            this.pbPassEye.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbPassEye_MouseDown);
+            this.pbPassEye.MouseEnter += new System.EventHandler(this.pbPassEye_MouseEnter);
+            this.pbPassEye.MouseLeave += new System.EventHandler(this.pbPassEye_MouseLeave);
+            this.pbPassEye.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbPassEye_MouseUp);
             // 
             // lPassMessage
             // 
@@ -732,16 +768,27 @@
             this.lPassName.Text = "AutoPuTTY";
             this.lPassName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // tbPassBack
+            // 
+            this.tbPassBack.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tbPassBack.BackColor = System.Drawing.SystemColors.Window;
+            this.tbPassBack.Enabled = false;
+            this.tbPassBack.Location = new System.Drawing.Point(25, 170);
+            this.tbPassBack.Multiline = true;
+            this.tbPassBack.Name = "tbPassBack";
+            this.tbPassBack.Size = new System.Drawing.Size(211, 34);
+            this.tbPassBack.TabIndex = 30;
+            this.tbPassBack.TabStop = false;
+            // 
             // tbPassFake
             // 
             this.tbPassFake.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tbPassFake.Location = new System.Drawing.Point(25, 169);
-            this.tbPassFake.Multiline = true;
+            this.tbPassFake.BackColor = System.Drawing.SystemColors.Window;
+            this.tbPassFake.Location = new System.Drawing.Point(121, 177);
             this.tbPassFake.Name = "tbPassFake";
-            this.tbPassFake.Size = new System.Drawing.Size(211, 35);
-            this.tbPassFake.TabIndex = 27;
+            this.tbPassFake.Size = new System.Drawing.Size(19, 20);
+            this.tbPassFake.TabIndex = 31;
             this.tbPassFake.TabStop = false;
-            this.tbPassFake.Click += new System.EventHandler(this.tbPassFake_Click);
             this.tbPassFake.TextChanged += new System.EventHandler(this.tbPassFake_TextChanged);
             this.tbPassFake.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassFake_KeyDown);
             // 
@@ -751,9 +798,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(261, 229);
+            this.Controls.Add(this.tlPassword);
             this.Controls.Add(this.tlMain);
             this.Controls.Add(this.tlAbout);
-            this.Controls.Add(this.tlPassword);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "formMain";
@@ -780,8 +827,10 @@
             this.tlPassword.ResumeLayout(false);
             this.panelPassword.ResumeLayout(false);
             this.panelPassword.PerformLayout();
-            this.pPassPasswordBack.ResumeLayout(false);
-            this.pPassPasswordBack.PerformLayout();
+            this.pPassBackRight.ResumeLayout(false);
+            this.pPassBackLeft.ResumeLayout(false);
+            this.pPassBackLeft.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPassEye)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pPassLogo)).EndInit();
             this.ResumeLayout(false);
 
@@ -837,9 +886,12 @@
         private System.Windows.Forms.PictureBox pPassLogo;
         private System.Windows.Forms.Label lPassName;
         private System.Windows.Forms.Label lPassMessage;
-        private System.Windows.Forms.TextBox tbPassFake;
-        private System.Windows.Forms.Panel pPassPasswordBack;
+        private System.Windows.Forms.Panel pPassBackLeft;
         private System.Windows.Forms.Label tAboutVersion;
+        private System.Windows.Forms.PictureBox pbPassEye;
+        private System.Windows.Forms.Panel pPassBackRight;
+        private System.Windows.Forms.TextBox tbPassBack;
+        private System.Windows.Forms.TextBox tbPassFake;
     }
 }
 

@@ -214,6 +214,7 @@ namespace AutoPuTTY
             if (Settings.Default.passwordmd5.Trim() != "")
             {
                 passwordrequired = true;
+                pbPassEye.Image = ImageOpacity.Set(pbPassEye.Image, (float)0.50);
                 BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
                 ShowTableLayoutPanel(tlPassword);
             }
@@ -1849,7 +1850,39 @@ namespace AutoPuTTY
                 tbPassPassword.Text = "Password";
                 tbPassPassword.ForeColor = Color.Gray;
                 tbPassPassword.PasswordChar = '\0';
+                pbPassEye.Visible = false;
             }
+        }
+
+        private void tbPassPassword_TextChanged(object sender, EventArgs e)
+        {
+            if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
+            {
+                pbPassEye.Visible = false;
+            } else
+            {
+                pbPassEye.Visible = true;
+            }
+        }
+
+        private void pbPassEye_MouseDown(object sender, MouseEventArgs e)
+        {
+            tbPassPassword.PasswordChar = '\0';
+        }
+
+        private void pbPassEye_MouseUp(object sender, MouseEventArgs e)
+        {
+            tbPassPassword.PasswordChar = '●';
+        }
+
+        private void pbPassEye_MouseEnter(object sender, EventArgs e)
+        {
+            pbPassEye.Image = Resources.eye;
+        }
+
+        private void pbPassEye_MouseLeave(object sender, EventArgs e)
+        {
+            pbPassEye.Image = ImageOpacity.Set(pbPassEye.Image, (float)0.50);
         }
 
         private void bPassOK_Click(object sender, EventArgs e)

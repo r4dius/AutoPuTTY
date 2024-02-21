@@ -178,8 +178,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ok.png" />
     <None Include="Resources\about.png" />
     <Content Include="Resources\autoputty.ico" />
+    <None Include="Resources\eye.png" />
     <Content Include="Resources\iconeyehide.png" />
     <Content Include="Resources\iconeyeshow.png" />
     <None Include="Resources\close.png" />
