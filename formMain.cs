@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,8 @@ namespace AutoPuTTY
         public const int SW_RESTORE = 9;
         public string[] types = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SCP)", "WinSCP (SFTP)", "WinSCP (FTP)" };
         public string[] _types;
-        private const int tbfilterw = 145;
+        private const int tbfilterwidth = 145;
+        private const int pfindwidth = 250;
         private bool indexchanged;
         private bool filter;
         private bool selectall;
@@ -1587,8 +1589,8 @@ namespace AutoPuTTY
                 laststate = WindowState.ToString();
             }
 
-            tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterw ? tlLeft.Width - tbFilter.Left : tbfilterw;
-            if(pFindToogle.Width >= 250) cbCase.TabStop = true;
+            tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterwidth ? tlLeft.Width - tbFilter.Left : tbfilterwidth;
+            if(pFindToogle.Width >= pfindwidth) cbCase.TabStop = true;
             else cbCase.TabStop = false;
         }
 
@@ -1647,7 +1649,7 @@ namespace AutoPuTTY
             ComboBox cbSender = new ComboBox();
             TextBox tbSender = new TextBox();
             if (sender is ComboBox) cbSender = (ComboBox)sender;
-            else tbSender = (TextBox)sender;
+            else if (sender is TextBox) tbSender = (TextBox)sender;
 
             ArrayList server = new ArrayList();
             string tbVal = "";
@@ -1664,7 +1666,7 @@ namespace AutoPuTTY
                 {
                     cbVal = Array.IndexOf(_types, types[Convert.ToInt32((string)server[4])]);
                 }
-                else
+                else if (sender is TextBox)
                 {
                     switch (tbSender.Name)
                     {
@@ -1689,7 +1691,7 @@ namespace AutoPuTTY
                 if (cbSender.SelectedIndex != cbVal) cbSender.BackColor = changed_ok;
                 else cbSender.BackColor = normal;
             }
-            else
+            else if (sender is TextBox)
             {
                 if (tbSender.Name == "tbName")
                 {
