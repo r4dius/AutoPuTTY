@@ -17,11 +17,11 @@ Source : https://github.com/r4dius/AutoPuTTY
 ## So how do I use this ? ##
 
 ### Configure tools ###
-- Click the "wheel" button and select paths for the tools you want to use, default configuration will run tools from current path (except for RDP which is : %WINDIR%\system32\mstsc.exe) 
+- Click the Options ("3 dashes" button) at the bottom right and configure paths for the tools you want to use, default configuration will run tools from current path (except for RDP which is : %WINDIR%\system32\mstsc.exe) 
 
 ### Adding a server ###
 - Name and Hostname are required, Username and Password are optional
-- Name is unique
+- Name has to be unique
 - Don't forget the connection "Type", default is PuTTY
 - You can import server lists from the Options / General menu ("3 dashes" button)
 - SSH jump can be used by adding proxy syntax before the username, it looks like :\
@@ -43,13 +43,14 @@ Source : https://github.com/r4dius/AutoPuTTY
 - To delete multiple servers, select them then right click on the selection and select "Delete"
 
 ### Search servers ###
-- Press Ctrl+F, if window size is large enougth, there's a "Match case" option too
+- Right-click on server list and click "Search..." or press Ctrl+F, if window size is large enough, there'll be "Match case" option too
 
 ## Source includes ##
 - A modified DPAPI crypto class (http://www.obviex.com/samples/dpapi.aspx) from Chip Forster : http://www.remkoweijnen.nl/blog/2007/10/18/how-rdp-passwords-are-encrypted/#comment-562
 - A VNC crypto class from VncSharp : http://cdot.senecac.on.ca/projects/vncsharp/
 - The FusionTrackBar class from FusionToolkit : http://transparenttrackbar.codeplex.com/
 - Code to set image opacity : http://www.geekpedia.com/code110_Set-Image-Opacity-Using-Csharp.html
+- Some stuff from ChatGPT, why not
 
 #
 
