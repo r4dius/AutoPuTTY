@@ -1442,14 +1442,7 @@ namespace AutoPuTTY
                     _item = _item.ToLower();
                 }
 
-                /*if (!filterpopup.cbWhole.Checked)
-                {*/
                 if (_item.IndexOf(s) >= 0 || s == "") lbList.Items.Add(item);
-                /*}
-                else
-                {
-                    if (_item == s || s == "") lbList.Items.Add(item);
-                }*/
             }
 
             filter = false;
@@ -1693,11 +1686,11 @@ namespace AutoPuTTY
             }
             else if (sender is TextBox)
             {
-                if (tbSender.Name == "tbName")
+                if (tbSender.Name == "tbName" || tbSender.Name == "tbHost")
                 {
                     if (tbSender.Text != tbVal)
                     {
-                        if (XmlGetServer(tbSender.Text.Trim()).Count > 0 || tbSender.Text.Trim() == "") tbSender.BackColor = changed_error;
+                        if ((tbSender.Name == "tbName" && XmlGetServer(tbSender.Text.Trim()).Count > 0) || tbSender.Text.Trim() == "") tbSender.BackColor = changed_error;
                         else tbSender.BackColor = changed_ok;
                     }
                     else tbSender.BackColor = normal;
