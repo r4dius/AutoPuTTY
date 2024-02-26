@@ -17,7 +17,7 @@ Source : https://github.com/r4dius/AutoPuTTY
 ## So how do I use this ? ##
 
 ### Configure tools ###
-- Click the Options ("3 dashes" button) at the bottom right and configure paths for the tools you want to use, default configuration will run tools from current path (except for RDP which is : %WINDIR%\system32\mstsc.exe) 
+- Click the Options button ("3 dashes") at the bottom right and configure paths for the tools you want to use, default configuration will run tools from current path (except for RDP which is : %WINDIR%\system32\mstsc.exe) 
 
 ### Adding a server ###
 - Name and Hostname are required, Username and Password are optional
