@@ -13,10 +13,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 using System.Xml;
 using ListBox = System.Windows.Forms.ListBox;
 using MenuItem = System.Windows.Forms.MenuItem;
+using MessageBox = System.Windows.Forms.MessageBox;
+using SystemColors = System.Drawing.SystemColors;
 
 namespace AutoPuTTY
 {
@@ -180,28 +184,39 @@ namespace AutoPuTTY
             AutoSize = false;
             MinimumSize = Size;
 
+            int left = 0;
+            int top = 0;
+            int width = Size.Width;
+            int height = Size.Height;
+
             if (Settings.Default.position == "")
             {
                 Rectangle screen = Screen.FromControl(this).Bounds;
-
-                int width = Size.Width;
-                int height = Size.Height;
-
-                if (Settings.Default.size != "")
-                {
-                    string[] _size = Settings.Default.size.Split('x');
-                    if (_size.Length == 2)
-                    {
-                        width = Convert.ToInt32(_size[0]);
-                        height = Convert.ToInt32(_size[1]);
-                    }
-                }
-
-                Left = screen.Width / 2 - width / 2;
-                Top = screen.Height / 2 - height / 2;
+                left = screen.Width / 2 - width / 2;
+                top = screen.Height / 2 - height / 2;
             }
 
-            SetWindowSize(Settings.Default.size, Settings.Default.position);
+            if (Settings.Default.size != "")
+            {
+                string[] _size = Settings.Default.size.Split('x');
+                if (_size.Length == 2)
+                {
+                    width = Convert.ToInt32(_size[0]);
+                    height = Convert.ToInt32(_size[1]);
+                }
+            }
+
+            if (Settings.Default.position != "")
+            {
+                string[] _position = Settings.Default.position.Split('x');
+                if (_position.Length == 2)
+                {
+                    left = Convert.ToInt32(_position[0]);
+                    top = Convert.ToInt32(_position[1]);
+                }
+            }
+
+            this.DesktopBounds =  new Rectangle(left, top, width, height);
 
             // convert old decryptable password to md5 hash
             if (Settings.Default.password.Trim() != "")
@@ -1565,9 +1580,11 @@ namespace AutoPuTTY
         {
             if (Settings.Default.position != "")
             {
-                Settings.Default.position = Left + "x" + Top;
+                Settings.Default.position = DesktopBounds.X + "x" + DesktopBounds.Y;
                 XmlConfigSet("position", Settings.Default.position.ToString());
             }
+
+            Console.WriteLine(SystemParameters.VirtualScreenWidth + "x" + SystemParameters.VirtualScreenHeight);
         }
 
         private void mainForm_Resize(object sender, EventArgs e)
@@ -1591,13 +1608,13 @@ namespace AutoPuTTY
         {
             if (Settings.Default.size != "")
             {
-                Settings.Default.size = Width + "x" + Height;
+                Settings.Default.size = DesktopBounds.Width + "x" + DesktopBounds.Height;
                 XmlConfigSet("size", Settings.Default.size.ToString());
             }
 
             if (Settings.Default.position != "")
             {
-                Settings.Default.position = Left + "x" + Top;
+                Settings.Default.position = DesktopBounds.X + "x" + DesktopBounds.Y;
                 XmlConfigSet("position", Settings.Default.position.ToString());
             }
         }
