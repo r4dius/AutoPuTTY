@@ -46,7 +46,7 @@ namespace AutoPuTTY
         private int tries;
         private string keysearch = "";
         private string laststate = "normal";
-
+        private Screen current;
         public formMain()
         {
 #if DEBUG
@@ -189,13 +189,6 @@ namespace AutoPuTTY
             int width = Size.Width;
             int height = Size.Height;
 
-            if (Settings.Default.position == "")
-            {
-                Rectangle screen = Screen.FromControl(this).Bounds;
-                left = screen.Width / 2 - width / 2;
-                top = screen.Height / 2 - height / 2;
-            }
-
             if (Settings.Default.size != "")
             {
                 string[] _size = Settings.Default.size.Split('x');
@@ -206,7 +199,13 @@ namespace AutoPuTTY
                 }
             }
 
-            if (Settings.Default.position != "")
+            if (Settings.Default.position == "")
+            {
+                Rectangle screen = Screen.FromControl(this).Bounds;
+                left = screen.Width / 2 - width / 2;
+                top = screen.Height / 2 - height / 2;
+            }
+            else
             {
                 string[] _position = Settings.Default.position.Split('x');
                 if (_position.Length == 2)
@@ -214,6 +213,21 @@ namespace AutoPuTTY
                     left = Convert.ToInt32(_position[0]);
                     top = Convert.ToInt32(_position[1]);
                 }
+
+                current = Screen.FromControl(this);
+
+                if (left + width - 7 > current.WorkingArea.Width) left = current.WorkingArea.Width - width;
+                if (top + height - 7 > current.WorkingArea.Height) top = current.WorkingArea.Height - height;
+
+                int borderwidth = (DesktopBounds.Width - ClientSize.Width) / 2;
+                int titleheight = DesktopBounds.Height - ClientSize.Height - borderwidth;
+                Console.WriteLine("border " + borderwidth + " title " + titleheight);
+
+
+                Console.WriteLine("current " + current.ToString());
+                Console.WriteLine("working " + current.WorkingArea);
+                Console.WriteLine("screen bounds " + current.Bounds);
+                Console.WriteLine("form bounds " + DesktopBounds);
             }
 
             this.DesktopBounds =  new Rectangle(left, top, width, height);
@@ -1585,6 +1599,11 @@ namespace AutoPuTTY
             }
 
             Console.WriteLine(SystemParameters.VirtualScreenWidth + "x" + SystemParameters.VirtualScreenHeight);
+            Screen[] test = Screen.AllScreens;
+            Screen current = Screen.FromControl(this);
+            Console.WriteLine("string " + current.ToString());
+            Console.WriteLine("working " + current.WorkingArea);
+            Console.WriteLine("bounds " + current.Bounds);
         }
 
         private void mainForm_Resize(object sender, EventArgs e)
@@ -1617,6 +1636,10 @@ namespace AutoPuTTY
                 Settings.Default.position = DesktopBounds.X + "x" + DesktopBounds.Y;
                 XmlConfigSet("position", Settings.Default.position.ToString());
             }
+
+            Console.WriteLine("form bounds " + DesktopBounds);
+            Console.WriteLine("form size " + Size.ToString());
+            Console.WriteLine("form ClientSize " + ClientSize.ToString());
         }
 
         // systray close click
