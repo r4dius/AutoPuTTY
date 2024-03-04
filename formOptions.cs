@@ -378,12 +378,13 @@ namespace AutoPuTTY
             {
                 tbGPassword.Enabled = true;
                 tbGConfirm.Enabled = true;
+                tbGPassword.Focus();
             }
             else
             {
                 if (Settings.Default.passwordmd5 != "")
                 {
-                    DialogResult remove = MessageBoxEx.Show(this, "This will remove password protection", "Remove password ?", MessageBoxButtons.OKCancel);
+                    DialogResult remove = MessageBoxEx.Show(this, "This will remove password protection", "Remove password ?", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                     if (remove == DialogResult.OK)
                     {
