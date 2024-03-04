@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,11 +15,10 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Media.Media3D;
 using System.Xml;
+using ComboBox = System.Windows.Forms.ComboBox;
 using ListBox = System.Windows.Forms.ListBox;
 using MenuItem = System.Windows.Forms.MenuItem;
-using MessageBox = System.Windows.Forms.MessageBox;
 using SystemColors = System.Drawing.SystemColors;
 using TextBox = System.Windows.Forms.TextBox;
 
@@ -33,8 +31,9 @@ namespace AutoPuTTY
         public const int IDM_OPTIONS = 900;
         public const int MF_BYPOSITION = 0x400;
         public const int MF_SEPARATOR = 0x800;
-        public const int WM_SYSCOMMAND = 0x112;
         public const int SW_RESTORE = 9;
+        public const int SW_SHOW = 5;
+        public const int WM_SYSCOMMAND = 0x112;
         public string[] types = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SCP)", "WinSCP (SFTP)", "WinSCP (FTP)" };
         public string[] _types;
         private const int tbfilterwidth = 145;
@@ -49,6 +48,7 @@ namespace AutoPuTTY
         private string keysearch = "";
         private string laststate = "normal";
         private Screen current;
+
         public formMain()
         {
 #if DEBUG
@@ -78,7 +78,7 @@ namespace AutoPuTTY
                         }
                         catch (UnauthorizedAccessException)
                         {
-                            Error("No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
+                            Error(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
                             Environment.Exit(-1);
                         }
                     }
@@ -265,7 +265,7 @@ namespace AutoPuTTY
 
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == WM_SYSCOMMAND)
+            if(m.Msg == WM_SYSCOMMAND)
             {
                 switch (m.WParam.ToInt32())
                 {
@@ -453,7 +453,7 @@ namespace AutoPuTTY
             {
                 if (lbList.SelectedItems.Count > 5)
                 {
-                    if (MessageBox.Show(this, "Are you sure you want to connect to the " + lbList.SelectedItems.Count + " selected items ?", "Connection confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK) return;
+                    if (MessageBoxEx.Show(this, "Are you sure you want to connect to the " + lbList.SelectedItems.Count + " selected items ?", "Connection confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK) return;
                 }
 
                 foreach (object item in lbList.SelectedItems)
@@ -538,7 +538,7 @@ namespace AutoPuTTY
                                     }
                                     catch
                                     {
-                                        MessageBox.Show(this, "Output path for generated \".rdp\" connection files doesn't exist.\nFiles will be generated in the current path.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        MessageBoxEx.Show(this, "Output path for generated \".rdp\" connection files doesn't exist.\nFiles will be generated in the current path.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                         rdpout = "";
                                     }
                                 }
@@ -586,7 +586,7 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBox.Show(this, "Could not find file \"" + rdpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                if (MessageBoxEx.Show(this, "Could not find file \"" + rdpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                                 {
                                     using (formOptions optionsform = new formOptions(this))
                                     {
@@ -630,7 +630,7 @@ namespace AutoPuTTY
                                     }
                                     catch
                                     {
-                                        MessageBox.Show(this, "Output path for generated \".vnc\" connection files doesn't exist.\nFiles will be generated in the current path.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        MessageBoxEx.Show(this, "Output path for generated \".vnc\" connection files doesn't exist.\nFiles will be generated in the current path.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                         vncout = "";
                                     }
                                 }
@@ -671,7 +671,7 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBox.Show(this, "Could not find file \"" + vncpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                if (MessageBoxEx.Show(this, "Could not find file \"" + vncpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                                 {
                                     using (formOptions optionsform = new formOptions(this))
                                     {
@@ -753,7 +753,7 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBox.Show(this, "Could not find file \"" + winscppath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                if (MessageBoxEx.Show(this, "Could not find file \"" + winscppath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                                 {
                                     using (formOptions optionsform = new formOptions(this))
                                     {
@@ -835,7 +835,7 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBox.Show(this, "Could not find file \"" + puttypath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                if (MessageBoxEx.Show(this, "Could not find file \"" + puttypath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                                 {
                                     using (formOptions optionsform = new formOptions(this))
                                     {
@@ -935,9 +935,9 @@ namespace AutoPuTTY
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
         }
 
-        private void Error(string message)
+        private void Error(Form form, string message)
         {
-            MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            MessageBoxEx.Show(form, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private static string[] ExtractFilePath(string path)
@@ -1071,7 +1071,7 @@ namespace AutoPuTTY
             }
             catch
             {
-                Error("\"" + Settings.Default.cfgpath + "\" file is corrupt, delete it and try again.");
+                Error(this, "\"" + Settings.Default.cfgpath + "\" file is corrupt, delete it and try again.");
                 Environment.Exit(-1);
             }
 
@@ -1117,7 +1117,7 @@ namespace AutoPuTTY
             }
             catch (UnauthorizedAccessException)
             {
-                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
             }
         }
 
@@ -1147,7 +1147,7 @@ namespace AutoPuTTY
             }
             catch (UnauthorizedAccessException)
             {
-                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
             }
         }
 
@@ -1172,7 +1172,7 @@ namespace AutoPuTTY
             }
             catch (UnauthorizedAccessException)
             {
-                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
             }
         }
 
@@ -1239,7 +1239,7 @@ namespace AutoPuTTY
             }
             else
             {
-                Error("\"" + Settings.Default.cfgpath + "\" file not found.");
+                Error(this, "\"" + Settings.Default.cfgpath + "\" file not found.");
             }
         }
 
@@ -1289,7 +1289,7 @@ namespace AutoPuTTY
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+                    Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
                 }
 
                 //reset colors
@@ -1310,7 +1310,7 @@ namespace AutoPuTTY
             }
             else
             {
-                Error("No name ?\nNo hostname ??\nTry again ...");
+                Error(this, "No name ?\nNo hostname ??\nTry again ...");
             }
 
             if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
@@ -1379,7 +1379,7 @@ namespace AutoPuTTY
             }
             catch (UnauthorizedAccessException)
             {
-                Error("Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
             }
 
             remove = true;
@@ -1398,14 +1398,18 @@ namespace AutoPuTTY
 
         private void bDelete_Click(object sender, EventArgs e)
         {
-            if (lbList.SelectedItems.Count > 0)
+            string confirmtxt = "Are you sure you want to delete the selected item ?";
+            if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                XmlDropNode("Name=" + ParseXpathString(lbList.SelectedItems[0].ToString()));
-                remove = true;
-                lbList.Items.Remove(lbList.SelectedItems[0].ToString());
-                remove = false;
-                lbList.SelectedItems.Clear();
-                tbName_TextChanged(this, e);
+                if (lbList.SelectedItems.Count > 0)
+                {
+                    XmlDropNode("Name=" + ParseXpathString(lbList.SelectedItems[0].ToString()));
+                    remove = true;
+                    lbList.Items.Remove(lbList.SelectedItems[0].ToString());
+                    remove = false;
+                    lbList.SelectedItems.Clear();
+                    tbName_TextChanged(this, e);
+                }
             }
         }
 
@@ -1475,7 +1479,7 @@ namespace AutoPuTTY
                 ArrayList _items = new ArrayList();
                 string confirmtxt = "Are you sure you want to delete the selected item ?";
                 if (lbList.SelectedItems.Count > 1) confirmtxt = "Are you sure you want to delete the " + lbList.SelectedItems.Count + " selected items ?";
-                if (MessageBox.Show(confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     remove = true;
                     while (lbList.SelectedItems.Count > 0)
@@ -1528,7 +1532,7 @@ namespace AutoPuTTY
             else lbList_ContextMenu_Enable(false);
 
             IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
-            ShowWindowAsync(hWnd, 5); // SW_SHOW
+            ShowWindowAsync(hWnd, SW_SHOW);
 
             int loop = 0;
             while (!Visible)
@@ -1539,7 +1543,7 @@ namespace AutoPuTTY
                 if (loop > 10)
                 {
                     //let's crash
-                    MessageBox.Show("Something bad happened");
+                    Error(this, "Something bad happened");
                     break;
                 }
             }

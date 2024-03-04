@@ -17,7 +17,7 @@
     <GenerateManifests>false</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>false</SignManifests>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -117,6 +117,7 @@
     <Compile Include="app.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ImageOpacity.cs" />
+    <Compile Include="Utils\MessageBoxEx.cs" />
     <EmbeddedResource Include="popupRecrypt.resx">
       <DependentUpon>popupRecrypt.cs</DependentUpon>
       <SubType>Designer</SubType>

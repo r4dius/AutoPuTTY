@@ -325,13 +325,13 @@ namespace AutoPuTTY
         {
             if (tbGPassword.Text.Trim() == "")
             {
-                MessageBox.Show(this, "Password can't be empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBoxEx.Show(this, "Password can't be empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tbGPassword.Text = "";
                 tbGConfirm.Text = "";
             }
             else if (tbGConfirm.Text != tbGPassword.Text)
             {
-                MessageBox.Show(this, "Password confirmation doesn't match", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBoxEx.Show(this, "Password confirmation doesn't match", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tbGConfirm.Text = "";
             }
             else
@@ -383,7 +383,7 @@ namespace AutoPuTTY
             {
                 if (Settings.Default.passwordmd5 != "")
                 {
-                    DialogResult remove = MessageBox.Show("This will remove password protection", "Remove password ?", MessageBoxButtons.OKCancel);
+                    DialogResult remove = MessageBoxEx.Show(this, "This will remove password protection", "Remove password ?", MessageBoxButtons.OKCancel);
 
                     if (remove == DialogResult.OK)
                     {
@@ -439,7 +439,7 @@ namespace AutoPuTTY
 
         private void liGImport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBox.Show("List format:\r\n\r\nName     Hostname[:port]     [[Domain\\]username]     [Password]     [Type]\r\n\r\n- One server per line.\r\n- Use a tab as separator.\r\n- Only \"Name\" and \"Hostname\" are required.\r\n- \"Type\" is a numerical value, use the following correspondence:\r\n    0 = PuTTY\r\n    1 = Remote Desktop\r\n    2 = VNC\r\n    3 = WinSCP (SCP)\r\n    4 = WinSCP (SFTP)\r\n    5 = WinSCP (FTP)\r\n- If no \"Type\" is given it'll be set as \"PuTTY\" by default.", "Import list");
+            MessageBoxEx.Show(this, "List format:\r\n\r\nName     Hostname[:port]     [[Domain\\]username]     [Password]     [Type]\r\n\r\n- One server per line.\r\n- Use a tab as separator.\r\n- Only \"Name\" and \"Hostname\" are required.\r\n- \"Type\" is a numerical value, use the following correspondence:\r\n    0 = PuTTY\r\n    1 = Remote Desktop\r\n    2 = VNC\r\n    3 = WinSCP (SCP)\r\n    4 = WinSCP (SFTP)\r\n    5 = WinSCP (FTP)\r\n- If no \"Type\" is given it'll be set as \"PuTTY\" by default.", "Import list", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void slGMulti_Scroll(object sender, EventArgs e)
