@@ -415,5 +415,17 @@ namespace AutoPuTTY.Properties {
                 this["passwordmd5"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool maximized {
+            get {
+                return ((bool)(this["maximized"]));
+            }
+            set {
+                this["maximized"] = value;
+            }
+        }
     }
 }

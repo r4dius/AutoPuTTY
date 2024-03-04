@@ -58,14 +58,14 @@
             this.cmList = new System.Windows.Forms.ContextMenu();
             this.tlMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlLeft = new System.Windows.Forms.TableLayoutPanel();
+            this.lbListSep = new System.Windows.Forms.TableLayoutPanel();
+            this.lbList = new System.Windows.Forms.ListBox();
             this.pFind = new System.Windows.Forms.Panel();
             this.pFindToogle = new System.Windows.Forms.Panel();
             this.bClose = new System.Windows.Forms.PictureBox();
             this.tbFilter = new System.Windows.Forms.TextBox();
             this.cbCase = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.lbListSep = new System.Windows.Forms.TableLayoutPanel();
-            this.lbList = new System.Windows.Forms.ListBox();
             this.tlAbout = new System.Windows.Forms.TableLayoutPanel();
             this.panelAbout = new System.Windows.Forms.Panel();
             this.tAboutVersion = new System.Windows.Forms.Label();
@@ -89,10 +89,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).BeginInit();
             this.tlMain.SuspendLayout();
             this.tlLeft.SuspendLayout();
+            this.lbListSep.SuspendLayout();
             this.pFind.SuspendLayout();
             this.pFindToogle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bClose)).BeginInit();
-            this.lbListSep.SuspendLayout();
             this.tlAbout.SuspendLayout();
             this.panelAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piAboutLogo)).BeginInit();
@@ -413,6 +413,46 @@
             this.tlLeft.Size = new System.Drawing.Size(131, 229);
             this.tlLeft.TabIndex = 0;
             // 
+            // lbListSep
+            // 
+            this.lbListSep.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbListSep.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.lbListSep.ColumnCount = 2;
+            this.lbListSep.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.lbListSep.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.lbListSep.Controls.Add(this.lbList, 0, 0);
+            this.lbListSep.Location = new System.Drawing.Point(0, 0);
+            this.lbListSep.Margin = new System.Windows.Forms.Padding(0);
+            this.lbListSep.Name = "lbListSep";
+            this.lbListSep.RowCount = 1;
+            this.lbListSep.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.lbListSep.Size = new System.Drawing.Size(131, 204);
+            this.lbListSep.TabIndex = 2;
+            // 
+            // lbList
+            // 
+            this.lbList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbList.IntegralHeight = false;
+            this.lbList.Location = new System.Drawing.Point(0, 0);
+            this.lbList.Margin = new System.Windows.Forms.Padding(0);
+            this.lbList.Name = "lbList";
+            this.lbList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lbList.Size = new System.Drawing.Size(130, 204);
+            this.lbList.Sorted = true;
+            this.lbList.TabIndex = 0;
+            this.lbList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbList_DrawItem);
+            this.lbList.SelectedIndexChanged += new System.EventHandler(this.lbList_IndexChanged);
+            this.lbList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbList_KeyDown);
+            this.lbList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lbList_KeyPress);
+            this.lbList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbList_DoubleClick);
+            this.lbList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbList_MouseClick);
+            // 
             // pFind
             // 
             this.pFind.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -486,46 +526,6 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(131, 1);
             this.label1.TabIndex = 8;
-            // 
-            // lbListSep
-            // 
-            this.lbListSep.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbListSep.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.lbListSep.ColumnCount = 2;
-            this.lbListSep.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.lbListSep.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.lbListSep.Controls.Add(this.lbList, 0, 0);
-            this.lbListSep.Location = new System.Drawing.Point(0, 0);
-            this.lbListSep.Margin = new System.Windows.Forms.Padding(0);
-            this.lbListSep.Name = "lbListSep";
-            this.lbListSep.RowCount = 1;
-            this.lbListSep.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.lbListSep.Size = new System.Drawing.Size(131, 204);
-            this.lbListSep.TabIndex = 2;
-            // 
-            // lbList
-            // 
-            this.lbList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbList.IntegralHeight = false;
-            this.lbList.Location = new System.Drawing.Point(0, 0);
-            this.lbList.Margin = new System.Windows.Forms.Padding(0);
-            this.lbList.Name = "lbList";
-            this.lbList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbList.Size = new System.Drawing.Size(130, 204);
-            this.lbList.Sorted = true;
-            this.lbList.TabIndex = 0;
-            this.lbList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbList_DrawItem);
-            this.lbList.SelectedIndexChanged += new System.EventHandler(this.lbList_IndexChanged);
-            this.lbList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbList_KeyDown);
-            this.lbList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lbList_KeyPress);
-            this.lbList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbList_DoubleClick);
-            this.lbList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbList_MouseClick);
             // 
             // tlAbout
             // 
@@ -821,6 +821,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "AutoPuTTY";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.formMain_FormClosing);
             this.ResizeEnd += new System.EventHandler(this.formMain_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainForm_KeyDown);
             this.Move += new System.EventHandler(this.mainForm_Move);
@@ -830,11 +831,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).EndInit();
             this.tlMain.ResumeLayout(false);
             this.tlLeft.ResumeLayout(false);
+            this.lbListSep.ResumeLayout(false);
             this.pFind.ResumeLayout(false);
             this.pFindToogle.ResumeLayout(false);
             this.pFindToogle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bClose)).EndInit();
-            this.lbListSep.ResumeLayout(false);
             this.tlAbout.ResumeLayout(false);
             this.panelAbout.ResumeLayout(false);
             this.panelAbout.PerformLayout();

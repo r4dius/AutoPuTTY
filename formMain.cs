@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Media3D;
@@ -21,6 +22,7 @@ using ListBox = System.Windows.Forms.ListBox;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.Forms.MessageBox;
 using SystemColors = System.Drawing.SystemColors;
+using TextBox = System.Windows.Forms.TextBox;
 
 namespace AutoPuTTY
 {
@@ -98,6 +100,7 @@ namespace AutoPuTTY
             }
 
             cbType.SelectedIndex = 0;
+            if (XmlConfigGet("maximized").ToLower() == "true") Settings.Default.maximized = true;
             if (XmlConfigGet("minimize").ToLower() == "false") Settings.Default.minimize = false;
             if (XmlConfigGet("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
             if (XmlConfigGet("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlConfigGet("multicolumnwidth"));
@@ -184,21 +187,9 @@ namespace AutoPuTTY
             AutoSize = false;
             MinimumSize = Size;
 
-            int left = 0;
-            int top = 0;
-            int width = Size.Width;
-            int height = Size.Height;
+            OpenAtSavedPosition(this);
 
-            if (Settings.Default.size != "")
-            {
-                string[] _size = Settings.Default.size.Split('x');
-                if (_size.Length == 2)
-                {
-                    width = Convert.ToInt32(_size[0]);
-                    height = Convert.ToInt32(_size[1]);
-                }
-            }
-
+            /*
             if (Settings.Default.position == "")
             {
                 Rectangle screen = Screen.FromControl(this).Bounds;
@@ -207,6 +198,13 @@ namespace AutoPuTTY
             }
             else
             {
+                string[] _size = Settings.Default.size.Split('x');
+                if (_size.Length == 2)
+                {
+                    width = Convert.ToInt32(_size[0]);
+                    height = Convert.ToInt32(_size[1]);
+                }
+
                 string[] _position = Settings.Default.position.Split('x');
                 if (_position.Length == 2)
                 {
@@ -231,6 +229,7 @@ namespace AutoPuTTY
             }
 
             this.DesktopBounds =  new Rectangle(left, top, width, height);
+            */
 
             // convert old decryptable password to md5 hash
             if (Settings.Default.password.Trim() != "")
@@ -264,15 +263,6 @@ namespace AutoPuTTY
         [DllImport("user32.dll")]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
-        private void Startup()
-        {
-            passwordrequired = false;
-            ShowTableLayoutPanel(tlMain);
-            XmlToList();
-            if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
-            BeginInvoke(new InvokeDelegate(lbList.Focus));
-        }
-
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == WM_SYSCOMMAND)
@@ -292,6 +282,142 @@ namespace AutoPuTTY
                 miRestore_Click(new object(), new EventArgs());
             }
             base.WndProc(ref m);
+        }
+
+        private void Startup()
+        {
+            passwordrequired = false;
+            ShowTableLayoutPanel(tlMain);
+            XmlToList();
+            if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
+            BeginInvoke(new InvokeDelegate(lbList.Focus));
+        }
+
+        private static bool IsValidPosition(int x, int y, int width, int height)
+        {
+            // Get the screen the window is currently on
+            Screen screen = Screen.FromPoint(new Point(x, y));
+
+            // Check if the window is completely inside the screen bounds
+            if (x >= screen.Bounds.Left &&
+                y >= screen.Bounds.Top &&
+                x + width <= screen.Bounds.Right &&
+                y + height <= screen.Bounds.Bottom)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void OpenAtSavedPosition(Form form)
+        {
+            int left = 0;
+            int top = 0;
+            int width = form.Size.Width;
+            int height = form.Size.Height;
+            int borderwidth = (form.DesktopBounds.Width - form.ClientSize.Width) / 2;
+            int titleheight = form.DesktopBounds.Height - form.ClientSize.Height - borderwidth;
+
+            if (Settings.Default.position == "" && Settings.Default.size == "")
+            {
+                // no position saved, center form on primary screen
+                left = (Screen.PrimaryScreen.WorkingArea.Width - width) / 2;
+                top = (Screen.PrimaryScreen.WorkingArea.Height - height) / 2;
+            }
+            else
+            {
+                if (Settings.Default.size != "")
+                {
+                    string[] _size = Settings.Default.size.Split('x');
+                    if (_size.Length == 2)
+                    {
+                        width = Convert.ToInt32(_size[0]);
+                        height = Convert.ToInt32(_size[1]);
+                    }
+                }
+
+                if (Settings.Default.position != "")
+                {
+                    string[] _position = Settings.Default.position.Split('x');
+                    if (_position.Length == 2)
+                    {
+                        left = Convert.ToInt32(_position[0]);
+                        top = Convert.ToInt32(_position[1]);
+                    }
+                }
+                else
+                {
+                    // no position saved, center form on primary screen
+                    left = (Screen.PrimaryScreen.WorkingArea.Width - width) / 2;
+                    top = (Screen.PrimaryScreen.WorkingArea.Height - height) / 2;
+                }
+
+                // Check if the saved position is valid (not out of bounds)
+                if (!IsValidPosition(left, top, width, height))
+                {
+                    Console.WriteLine("notvalid 1");
+                    // If the saved position is out of bounds, center the form on the screen it's on
+                    Screen screen = Screen.FromPoint(new Point(left + borderwidth, top));
+                    Console.WriteLine(screen);
+                    if (width - (borderwidth * 2) > screen.WorkingArea.Width)
+                    {
+                        width = screen.WorkingArea.Width + (borderwidth * 2);
+                        Console.WriteLine("do 1");
+                    }
+                    if (height - borderwidth > screen.WorkingArea.Height)
+                    {
+                        height = screen.WorkingArea.Height + borderwidth;
+                        Console.WriteLine("do 2");
+                    }
+                    if (left + borderwidth < screen.WorkingArea.X)
+                    {
+                        left = screen.WorkingArea.X;
+                        Console.WriteLine("do 3");
+                    }
+                    if (top < screen.WorkingArea.Y)
+                    {
+                        top = screen.WorkingArea.Y;
+                        Console.WriteLine("do 4");
+                    }
+                    if (left + width - borderwidth > screen.WorkingArea.Width)
+                    {
+                        left = screen.WorkingArea.X + screen.WorkingArea.Width - width + borderwidth;
+                        Console.WriteLine("do 5");
+                    }
+                    if (top + height - borderwidth > screen.WorkingArea.Height)
+                    {
+                        top = screen.WorkingArea.Y + screen.WorkingArea.Height - height + borderwidth;
+                        Console.WriteLine("do 6");
+                    }
+                    Console.WriteLine(screen);
+                }
+                else
+                {
+                    // Check if the window is larger than the screen
+                    Screen screen = Screen.FromPoint(new Point(left + borderwidth, top));
+                    if (width > screen.WorkingArea.Width || height > screen.WorkingArea.Height)
+                    {
+                        // Shrink the window to fit within the screen bounds
+                        width = Math.Min(width, screen.WorkingArea.Width);
+                        height = Math.Min(height, screen.WorkingArea.Height);
+
+                        Console.WriteLine("size 1");
+                    }
+
+                    // Check if the window is partially or completely outside the screen bounds after resizing
+                    if (!IsValidPosition(form.Left, form.Top, form.Width, form.Height))
+                    {
+                        // Move the window back into the screen bounds
+                        left = Math.Max(screen.WorkingArea.Left, Math.Min(form.Left, screen.WorkingArea.Right - form.Width));
+                        top = Math.Max(screen.WorkingArea.Top, Math.Min(form.Top, screen.WorkingArea.Bottom - form.Height));
+                        Console.WriteLine("notvalid 2");
+                    }
+                }
+            }
+
+            form.DesktopBounds = new Rectangle(left, top, width, height);
+            if (Settings.Default.position != "" && Settings.Default.maximized) form.WindowState = FormWindowState.Maximized;
         }
 
         private static bool CheckWriteAccess(string path)
@@ -1573,6 +1699,12 @@ namespace AutoPuTTY
             lbList_ContextMenu();
         }
 
+        private void formMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Console.WriteLine(WindowState);
+            XmlConfigSet("maximized", (WindowState == FormWindowState.Maximized).ToString());
+        }
+
         private void mainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F && e.Control)
@@ -1598,17 +1730,19 @@ namespace AutoPuTTY
                 XmlConfigSet("position", Settings.Default.position.ToString());
             }
 
-            Console.WriteLine(SystemParameters.VirtualScreenWidth + "x" + SystemParameters.VirtualScreenHeight);
+            //Console.WriteLine(SystemParameters.VirtualScreenWidth + "x" + SystemParameters.VirtualScreenHeight);
             Screen[] test = Screen.AllScreens;
             Screen current = Screen.FromControl(this);
+            /*
             Console.WriteLine("string " + current.ToString());
             Console.WriteLine("working " + current.WorkingArea);
             Console.WriteLine("bounds " + current.Bounds);
+            */
         }
 
         private void mainForm_Resize(object sender, EventArgs e)
         {
-            if (Settings.Default.minimize && FormWindowState.Minimized == WindowState)
+            if (Settings.Default.minimize && WindowState == FormWindowState.Minimized)
             {
                 Hide();
                 miRestore.Enabled = true;
@@ -1636,10 +1770,6 @@ namespace AutoPuTTY
                 Settings.Default.position = DesktopBounds.X + "x" + DesktopBounds.Y;
                 XmlConfigSet("position", Settings.Default.position.ToString());
             }
-
-            Console.WriteLine("form bounds " + DesktopBounds);
-            Console.WriteLine("form size " + Size.ToString());
-            Console.WriteLine("form ClientSize " + ClientSize.ToString());
         }
 
         // systray close click
