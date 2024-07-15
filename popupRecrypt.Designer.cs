@@ -32,8 +32,8 @@ namespace AutoPuTTY
         {
             this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.bOK = new System.Windows.Forms.Button();
-            this.lProgressValue = new System.Windows.Forms.Label();
-            this.lProgress = new System.Windows.Forms.Label();
+            this.lProgressValue = new SingleClickLabel();
+            this.lProgress = new SingleClickLabel();
             this.lSep1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 

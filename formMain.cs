@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Xml;
 using ComboBox = System.Windows.Forms.ComboBox;
+using Label = System.Windows.Forms.Label;
 using ListBox = System.Windows.Forms.ListBox;
 using MenuItem = System.Windows.Forms.MenuItem;
 using SystemColors = System.Drawing.SystemColors;
@@ -2152,5 +2153,37 @@ namespace AutoPuTTY
         private delegate bool InvokeDelegate();
 
         #endregion
+
+        private void lPass_Click(object sender, EventArgs e)
+        {
+            Label label = (Label)sender;
+            SwitchPassword(label.Text == "Password");
+        }
+        private void SwitchPassword(bool _switch)
+        {
+            if (_switch)
+            {
+                lPass.Text = "Vault";
+                tbPass.Visible = false;
+                cbVault.Visible = true;
+            }
+            else
+            {
+                lPass.Text = "Password";
+                tbPass.Visible = true;
+                cbVault.Visible = false;
+            }
+        }
+
+        private void bEdit_Click(object sender, EventArgs e)
+        {
+            lbVault.Visible = true;
+            pVault.Visible = true;
+        }
+
+        private void lbVault_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

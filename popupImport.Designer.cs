@@ -32,17 +32,17 @@ namespace AutoPuTTY
         {
             this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.bCancel = new System.Windows.Forms.Button();
-            this.lProgressValue = new System.Windows.Forms.Label();
-            this.lProgress = new System.Windows.Forms.Label();
-            this.lAdded = new System.Windows.Forms.Label();
-            this.lReplaced = new System.Windows.Forms.Label();
-            this.lSkipped = new System.Windows.Forms.Label();
-            this.lAddedValue = new System.Windows.Forms.Label();
-            this.lReplacedValue = new System.Windows.Forms.Label();
-            this.lSkippedValue = new System.Windows.Forms.Label();
+            this.lProgressValue = new SingleClickLabel();
+            this.lProgress = new SingleClickLabel();
+            this.lAdded = new SingleClickLabel();
+            this.lReplaced = new SingleClickLabel();
+            this.lSkipped = new SingleClickLabel();
+            this.lAddedValue = new SingleClickLabel();
+            this.lReplacedValue = new SingleClickLabel();
+            this.lSkippedValue = new SingleClickLabel();
             this.bSkip = new System.Windows.Forms.Button();
             this.bReplace = new System.Windows.Forms.Button();
-            this.lWarning = new System.Windows.Forms.Label();
+            this.lWarning = new SingleClickLabel();
             this.iWarning = new System.Windows.Forms.PictureBox();
             this.pWarning = new System.Windows.Forms.Panel();
             this.lSep3 = new System.Windows.Forms.Label();
