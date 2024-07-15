@@ -173,7 +173,7 @@ namespace AutoPuTTY
                         {
                             if (cbGReplace.Checked || (!cbGReplace.Checked && ImportAskDuplicate(_name)))
                             {
-                                XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@Name=" + formMain.ParseXpathString(_name) + "]");
+                                XmlNodeList xmlnode = xmldoc.SelectNodes("//Server[@Name=" + formMain.ParseXpathString(_name) + "]");
                                 if (xmldoc.DocumentElement != null)
                                 {
                                     if (xmlnode != null) xmldoc.DocumentElement.ReplaceChild(newserver, xmlnode[0]);
@@ -285,7 +285,7 @@ namespace AutoPuTTY
                         newserver.AppendChild(type);
                     }
 
-                    XmlNodeList xmlnodename = xmldoc.SelectNodes("//*[@Name=" + formMain.ParseXpathString(xmlnode.Attributes[0].Value) + "]");
+                    XmlNodeList xmlnodename = xmldoc.SelectNodes("//Server[@Name=" + formMain.ParseXpathString(xmlnode.Attributes[0].Value) + "]");
                     if (xmldoc.DocumentElement != null)
                     {
                         if (xmlnodename != null) xmldoc.DocumentElement.ReplaceChild(newserver, xmlnodename[0]);
@@ -394,7 +394,7 @@ namespace AutoPuTTY
                         recryptpopup.Text = "Removing" + recryptpopup.Text;
                         recryptpopup.ShowDialog(this);
 
-                        mainform.XmlDropNode("ID='passwordmd5'");
+                        mainform.XmlDropNode("Config", "ID='passwordmd5'");
 
                         Settings.Default.passwordmd5 = "";
                         Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;

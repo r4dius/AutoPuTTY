@@ -239,7 +239,7 @@ namespace AutoPuTTY
                 Settings.Default.password = "";
 
                 XmlConfigSet("passwordmd5", Settings.Default.passwordmd5.ToString());
-                XmlDropNode("ID='password'");
+                XmlDropNode("Config", "ID='password'");
             }
             if (Settings.Default.passwordmd5.Trim() != "")
             {
@@ -1076,7 +1076,7 @@ namespace AutoPuTTY
                 Environment.Exit(-1);
             }
 
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@ID=" + ParseXpathString(id) + "]");
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//Config[@ID=" + ParseXpathString(id) + "]");
             if (xmlnode != null)
             {
                 if (xmlnode.Count > 0) return xmlnode[0].InnerText;
@@ -1096,7 +1096,7 @@ namespace AutoPuTTY
             newpath.SetAttributeNode(name);
             newpath.InnerText = val;
 
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@ID=" + ParseXpathString(id) + "]");
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//Config[@ID=" + ParseXpathString(id) + "]");
             if (xmlnode != null)
             {
                 if (xmldoc.DocumentElement != null)
@@ -1130,13 +1130,13 @@ namespace AutoPuTTY
             newfile.Close();
         }
 
-        public void XmlDropNode(string node)
+        public void XmlDropNode(string node, string value)
         {
             string file = Settings.Default.cfgpath;
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(file);
 
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@" + node + "]");
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//" + node + "[@" + value + "]");
             if (xmldoc.DocumentElement != null)
             {
                 if (xmlnode != null) xmldoc.DocumentElement.RemoveChild(xmlnode[0]);
@@ -1152,15 +1152,15 @@ namespace AutoPuTTY
             }
         }
 
-        public void XmlDropNode(ArrayList node)
+        public void XmlDropNode(ArrayList values)
         {
             string file = Settings.Default.cfgpath;
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(file);
 
-            foreach (string item in node)
+            foreach (string item in values)
             {
-                XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@" + item + "]");
+                XmlNodeList xmlnode = xmldoc.SelectNodes("//Server[@" + item + "]");
                 if (xmldoc.DocumentElement != null)
                 {
                     if (xmlnode != null) xmldoc.DocumentElement.RemoveChild(xmlnode[0]);
@@ -1194,7 +1194,7 @@ namespace AutoPuTTY
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(file);
 
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@Name=" + ParseXpathString(name) + "]");
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//Server[@Name=" + ParseXpathString(name) + "]");
             if (xmlnode != null)
             {
                 if (xmlnode.Count > 0)
@@ -1223,6 +1223,50 @@ namespace AutoPuTTY
 
             server.AddRange(new string[] { name, host, user, pass, type.ToString() });
             return server;
+        }
+
+        public static ArrayList XmlGetVault(string name)
+        {
+            if (!File.Exists(Settings.Default.cfgpath))
+            {
+                return new ArrayList();
+            }
+
+            ArrayList vault = new ArrayList();
+            string user = "";
+            string pass = "";
+            string priv = "";
+
+            string file = Settings.Default.cfgpath;
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(file);
+
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//Vault[@Name=" + ParseXpathString(name) + "]");
+            if (xmlnode != null)
+            {
+                if (xmlnode.Count > 0)
+                {
+                    foreach (XmlElement childnode in xmlnode[0].ChildNodes)
+                    {
+                        switch (childnode.Name)
+                        {
+                            case "User":
+                                user = childnode.InnerText;
+                                break;
+                            case "Password":
+                                pass = childnode.InnerText;
+                                break;
+                            case "PrivateKey":
+                                priv = childnode.InnerText;
+                                break;
+                        }
+                    }
+                }
+                else return new ArrayList();
+            }
+
+            vault.AddRange(new string[] { name, pass, priv });
+            return vault;
         }
 
         internal void XmlToList()
@@ -1368,7 +1412,7 @@ namespace AutoPuTTY
                 newserver.AppendChild(type);
             }
 
-            XmlNodeList xmlnode = xmldoc.SelectNodes("//*[@Name=" + ParseXpathString(lbList.SelectedItem.ToString()) + "]");
+            XmlNodeList xmlnode = xmldoc.SelectNodes("//Server[@Name=" + ParseXpathString(lbList.SelectedItem.ToString()) + "]");
             if (xmldoc.DocumentElement != null)
             {
                 if (xmlnode != null) xmldoc.DocumentElement.ReplaceChild(newserver, xmlnode[0]);
@@ -1404,7 +1448,7 @@ namespace AutoPuTTY
             {
                 if (lbList.SelectedItems.Count > 0)
                 {
-                    XmlDropNode("Name=" + ParseXpathString(lbList.SelectedItems[0].ToString()));
+                    XmlDropNode("Server", "Name=" + ParseXpathString(lbList.SelectedItems[0].ToString()));
                     remove = true;
                     lbList.Items.Remove(lbList.SelectedItems[0].ToString());
                     remove = false;
@@ -1714,7 +1758,7 @@ namespace AutoPuTTY
         {
             if (e.KeyCode == Keys.F && e.Control)
             {
-                SearchSwitch(true);
+                if (tlMain.Visible) SearchSwitch(true);
             }
             else if (e.KeyCode == Keys.O && e.Control)
             {
@@ -2177,6 +2221,8 @@ namespace AutoPuTTY
 
         private void bEdit_Click(object sender, EventArgs e)
         {
+            lbVault.BringToFront();
+            pVault.BringToFront();
             lbVault.Visible = true;
             pVault.Visible = true;
         }
@@ -2184,6 +2230,30 @@ namespace AutoPuTTY
         private void lbVault_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+            if (filter || selectall) return;
+            if (remove || lbVault.SelectedItem == null)
+            {
+                if (bVDelete.Enabled) bVDelete.Enabled = false;
+                return;
+            }
+            indexchanged = true;
+
+            //reset colors
+            tbVName.BackColor = SystemColors.Window;
+            tbVPass.BackColor = SystemColors.Window;
+            tbVPriv.BackColor = SystemColors.Window;
+
+            ArrayList vault = XmlGetVault(lbList.SelectedItem.ToString());
+
+            tbVName.Text = (string)vault[0];
+            tbVPass.Text = Decrypt((string)vault[1]);
+            tbVPriv.Text = Decrypt((string)vault[2]);
+
+            if (bVAdd.Enabled) bAdd.Enabled = false;
+            if (bVModify.Enabled) bModify.Enabled = false;
+            if (!bVDelete.Enabled) bDelete.Enabled = true;
+
+            indexchanged = false;
         }
     }
 }
