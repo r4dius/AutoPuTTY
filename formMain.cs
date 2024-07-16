@@ -2219,12 +2219,25 @@ namespace AutoPuTTY
             }
         }
 
+        private void SwitchVault(bool show)
+        {
+            if (show)
+            {
+                lbVault.BringToFront();
+                pVault.BringToFront();
+            }
+            else
+            {
+                lbVault.SendToBack();
+                pVault.SendToBack();
+            }
+            lbVault.Visible = show;
+            pVault.Visible = show;
+        }
+
         private void bEdit_Click(object sender, EventArgs e)
         {
-            lbVault.BringToFront();
-            pVault.BringToFront();
-            lbVault.Visible = true;
-            pVault.Visible = true;
+            SwitchVault(true);
         }
 
         private void lbVault_SelectedIndexChanged(object sender, EventArgs e)
@@ -2254,6 +2267,11 @@ namespace AutoPuTTY
             if (!bVDelete.Enabled) bDelete.Enabled = true;
 
             indexchanged = false;
+        }
+
+        private void bVOk_Click(object sender, EventArgs e)
+        {
+            SwitchVault(false);
         }
     }
 }

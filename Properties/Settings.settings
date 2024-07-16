@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">0.40</Value>
+      <Value Profile="(Default)">0.42</Value>
     </Setting>
     <Setting Name="multicolumnwidth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>

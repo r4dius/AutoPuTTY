@@ -33,18 +33,16 @@
             this.tbPass = new System.Windows.Forms.TextBox();
             this.pConfig = new System.Windows.Forms.Panel();
             this.pVault = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.bVOk = new System.Windows.Forms.Button();
             this.bVDelete = new System.Windows.Forms.Button();
             this.bVAdd = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.tbVPriv = new System.Windows.Forms.TextBox();
-            this.singleClickLabel3 = new AutoPuTTY.SingleClickLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.tbVPass = new System.Windows.Forms.TextBox();
-            this.singleClickLabel2 = new AutoPuTTY.SingleClickLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.tbVName = new System.Windows.Forms.TextBox();
-            this.singleClickLabel1 = new AutoPuTTY.SingleClickLabel();
             this.bVModify = new System.Windows.Forms.Button();
             this.bEdit = new System.Windows.Forms.PictureBox();
             this.cbVault = new System.Windows.Forms.ComboBox();
@@ -55,18 +53,13 @@
             this.lSep2 = new System.Windows.Forms.Label();
             this.lSep1 = new System.Windows.Forms.Label();
             this.bOptions = new System.Windows.Forms.Button();
-            this.lHost = new AutoPuTTY.SingleClickLabel();
             this.cbType = new System.Windows.Forms.ComboBox();
             this.tbUser = new System.Windows.Forms.TextBox();
             this.tbHost = new System.Windows.Forms.TextBox();
             this.tbName = new System.Windows.Forms.TextBox();
-            this.lType = new AutoPuTTY.SingleClickLabel();
             this.bDelete = new System.Windows.Forms.Button();
             this.bAdd = new System.Windows.Forms.Button();
             this.bModify = new System.Windows.Forms.Button();
-            this.lPass = new AutoPuTTY.SingleClickLabel();
-            this.lUser = new AutoPuTTY.SingleClickLabel();
-            this.lName = new AutoPuTTY.SingleClickLabel();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmSystray = new System.Windows.Forms.ContextMenu();
             this.miRestore = new System.Windows.Forms.MenuItem();
@@ -86,11 +79,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tlAbout = new System.Windows.Forms.TableLayoutPanel();
             this.panelAbout = new System.Windows.Forms.Panel();
-            this.tAboutVersion = new AutoPuTTY.SingleClickLabel();
             this.bAboutOK = new System.Windows.Forms.Button();
             this.piAboutLogo = new System.Windows.Forms.PictureBox();
             this.liAboutWebsite = new System.Windows.Forms.LinkLabel();
-            this.tAboutTitle = new AutoPuTTY.SingleClickLabel();
             this.tlPassword = new System.Windows.Forms.TableLayoutPanel();
             this.panelPassword = new System.Windows.Forms.Panel();
             this.pPassBackRight = new System.Windows.Forms.Panel();
@@ -98,12 +89,21 @@
             this.pPassBackLeft = new System.Windows.Forms.Panel();
             this.tbPassPassword = new System.Windows.Forms.TextBox();
             this.pbPassEye = new System.Windows.Forms.PictureBox();
-            this.lPassMessage = new AutoPuTTY.SingleClickLabel();
             this.pPassLogo = new System.Windows.Forms.PictureBox();
-            this.lPassName = new AutoPuTTY.SingleClickLabel();
             this.tbPassBack = new System.Windows.Forms.TextBox();
             this.tbPassFake = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.singleClickLabel3 = new AutoPuTTY.SingleClickLabel();
+            this.singleClickLabel2 = new AutoPuTTY.SingleClickLabel();
+            this.singleClickLabel1 = new AutoPuTTY.SingleClickLabel();
+            this.lHost = new AutoPuTTY.SingleClickLabel();
+            this.lType = new AutoPuTTY.SingleClickLabel();
+            this.lPass = new AutoPuTTY.SingleClickLabel();
+            this.lUser = new AutoPuTTY.SingleClickLabel();
+            this.lName = new AutoPuTTY.SingleClickLabel();
+            this.lPassMessage = new AutoPuTTY.SingleClickLabel();
+            this.lPassName = new AutoPuTTY.SingleClickLabel();
+            this.tAboutVersion = new AutoPuTTY.SingleClickLabel();
+            this.tAboutTitle = new AutoPuTTY.SingleClickLabel();
             this.pConfig.SuspendLayout();
             this.pVault.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bEdit)).BeginInit();
@@ -138,7 +138,6 @@
             // pConfig
             // 
             this.pConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pConfig.Controls.Add(this.pVault);
             this.pConfig.Controls.Add(this.bEdit);
             this.pConfig.Controls.Add(this.cbVault);
             this.pConfig.Controls.Add(this.bEye);
@@ -161,6 +160,7 @@
             this.pConfig.Controls.Add(this.lPass);
             this.pConfig.Controls.Add(this.lUser);
             this.pConfig.Controls.Add(this.lName);
+            this.pConfig.Controls.Add(this.pVault);
             this.pConfig.Location = new System.Drawing.Point(131, 0);
             this.pConfig.Margin = new System.Windows.Forms.Padding(0);
             this.pConfig.Name = "pConfig";
@@ -169,8 +169,7 @@
             // 
             // pVault
             // 
-            this.pVault.Controls.Add(this.label5);
-            this.pVault.Controls.Add(this.button1);
+            this.pVault.Controls.Add(this.bVOk);
             this.pVault.Controls.Add(this.bVDelete);
             this.pVault.Controls.Add(this.bVAdd);
             this.pVault.Controls.Add(this.label4);
@@ -183,6 +182,7 @@
             this.pVault.Controls.Add(this.tbVName);
             this.pVault.Controls.Add(this.singleClickLabel1);
             this.pVault.Controls.Add(this.bVModify);
+            this.pVault.Controls.Add(this.label5);
             this.pVault.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pVault.Location = new System.Drawing.Point(0, 0);
             this.pVault.Name = "pVault";
@@ -190,18 +190,28 @@
             this.pVault.TabIndex = 23;
             this.pVault.Visible = false;
             // 
-            // button1
+            // label5
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Image = global::AutoPuTTY.Properties.Resources.iconoptions;
-            this.button1.Location = new System.Drawing.Point(97, 198);
-            this.button1.Margin = new System.Windows.Forms.Padding(0);
-            this.button1.Name = "button1";
-            this.button1.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.button1.Size = new System.Drawing.Size(32, 30);
-            this.button1.TabIndex = 30;
-            this.button1.UseCompatibleTextRendering = true;
-            this.button1.UseVisualStyleBackColor = true;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 120);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(93, 13);
+            this.label5.TabIndex = 31;
+            this.label5.Text = "Used by # servers";
+            // 
+            // bVOk
+            // 
+            this.bVOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVOk.Image = global::AutoPuTTY.Properties.Resources.ok;
+            this.bVOk.Location = new System.Drawing.Point(97, 198);
+            this.bVOk.Margin = new System.Windows.Forms.Padding(0);
+            this.bVOk.Name = "bVOk";
+            this.bVOk.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVOk.Size = new System.Drawing.Size(32, 30);
+            this.bVOk.TabIndex = 30;
+            this.bVOk.UseCompatibleTextRendering = true;
+            this.bVOk.UseVisualStyleBackColor = true;
+            this.bVOk.Click += new System.EventHandler(this.bVOk_Click);
             // 
             // bVDelete
             // 
@@ -249,15 +259,6 @@
             this.tbVPriv.Size = new System.Drawing.Size(126, 20);
             this.tbVPriv.TabIndex = 27;
             // 
-            // singleClickLabel3
-            // 
-            this.singleClickLabel3.AutoSize = true;
-            this.singleClickLabel3.Location = new System.Drawing.Point(3, 81);
-            this.singleClickLabel3.Name = "singleClickLabel3";
-            this.singleClickLabel3.Size = new System.Drawing.Size(60, 13);
-            this.singleClickLabel3.TabIndex = 25;
-            this.singleClickLabel3.Text = "Private key";
-            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -275,15 +276,6 @@
             this.tbVPass.Name = "tbVPass";
             this.tbVPass.Size = new System.Drawing.Size(126, 20);
             this.tbVPass.TabIndex = 24;
-            // 
-            // singleClickLabel2
-            // 
-            this.singleClickLabel2.AutoSize = true;
-            this.singleClickLabel2.Location = new System.Drawing.Point(3, 42);
-            this.singleClickLabel2.Name = "singleClickLabel2";
-            this.singleClickLabel2.Size = new System.Drawing.Size(53, 13);
-            this.singleClickLabel2.TabIndex = 22;
-            this.singleClickLabel2.Text = "Password";
             // 
             // label2
             // 
@@ -303,15 +295,6 @@
             this.tbVName.Size = new System.Drawing.Size(126, 20);
             this.tbVName.TabIndex = 21;
             // 
-            // singleClickLabel1
-            // 
-            this.singleClickLabel1.AutoSize = true;
-            this.singleClickLabel1.Location = new System.Drawing.Point(3, 3);
-            this.singleClickLabel1.Name = "singleClickLabel1";
-            this.singleClickLabel1.Size = new System.Drawing.Size(60, 13);
-            this.singleClickLabel1.TabIndex = 19;
-            this.singleClickLabel1.Text = "Vault name";
-            // 
             // bVModify
             // 
             this.bVModify.Enabled = false;
@@ -330,7 +313,7 @@
             // 
             this.bEdit.BackColor = System.Drawing.Color.Transparent;
             this.bEdit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.bEdit.Image = global::AutoPuTTY.Properties.Resources.iconeyeshow;
+            this.bEdit.Image = global::AutoPuTTY.Properties.Resources.iconedit;
             this.bEdit.Location = new System.Drawing.Point(83, 119);
             this.bEdit.Margin = new System.Windows.Forms.Padding(0);
             this.bEdit.Name = "bEdit";
@@ -434,15 +417,6 @@
             this.bOptions.UseVisualStyleBackColor = true;
             this.bOptions.Click += new System.EventHandler(this.bOptions_Click);
             // 
-            // lHost
-            // 
-            this.lHost.AutoSize = true;
-            this.lHost.Location = new System.Drawing.Point(3, 42);
-            this.lHost.Name = "lHost";
-            this.lHost.Size = new System.Drawing.Size(82, 13);
-            this.lHost.TabIndex = 4;
-            this.lHost.Text = "Hostname[:port]";
-            // 
             // cbType
             // 
             this.cbType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -478,15 +452,6 @@
             this.tbName.Size = new System.Drawing.Size(126, 20);
             this.tbName.TabIndex = 3;
             this.tbName.TextChanged += new System.EventHandler(this.tbName_TextChanged);
-            // 
-            // lType
-            // 
-            this.lType.AutoSize = true;
-            this.lType.Location = new System.Drawing.Point(3, 159);
-            this.lType.Name = "lType";
-            this.lType.Size = new System.Drawing.Size(31, 13);
-            this.lType.TabIndex = 14;
-            this.lType.Text = "Type";
             // 
             // bDelete
             // 
@@ -532,36 +497,6 @@
             this.bModify.UseCompatibleTextRendering = true;
             this.bModify.UseVisualStyleBackColor = true;
             this.bModify.Click += new System.EventHandler(this.bModify_Click);
-            // 
-            // lPass
-            // 
-            this.lPass.AutoSize = true;
-            this.lPass.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lPass.Location = new System.Drawing.Point(3, 120);
-            this.lPass.Name = "lPass";
-            this.lPass.Size = new System.Drawing.Size(53, 13);
-            this.lPass.TabIndex = 10;
-            this.lPass.Text = "Password";
-            this.lPass.Click += new System.EventHandler(this.lPass_Click);
-            // 
-            // lUser
-            // 
-            this.lUser.AutoSize = true;
-            this.lUser.Location = new System.Drawing.Point(3, 81);
-            this.lUser.Name = "lUser";
-            this.lUser.Size = new System.Drawing.Size(55, 13);
-            this.lUser.TabIndex = 7;
-            this.lUser.Text = "Username";
-            // 
-            // lName
-            // 
-            this.lName.AutoSize = true;
-            this.lName.Location = new System.Drawing.Point(3, 3);
-            this.lName.Name = "lName";
-            this.lName.Size = new System.Drawing.Size(35, 13);
-            this.lName.TabIndex = 0;
-            this.lName.Text = "Name";
             // 
             // notifyIcon
             // 
@@ -802,18 +737,6 @@
             this.panelAbout.Size = new System.Drawing.Size(261, 229);
             this.panelAbout.TabIndex = 0;
             // 
-            // tAboutVersion
-            // 
-            this.tAboutVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tAboutVersion.AutoSize = true;
-            this.tAboutVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.tAboutVersion.ForeColor = System.Drawing.Color.White;
-            this.tAboutVersion.Location = new System.Drawing.Point(174, 97);
-            this.tAboutVersion.Name = "tAboutVersion";
-            this.tAboutVersion.Size = new System.Drawing.Size(41, 13);
-            this.tAboutVersion.TabIndex = 24;
-            this.tAboutVersion.Text = "version";
-            // 
             // bAboutOK
             // 
             this.bAboutOK.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -855,20 +778,6 @@
             this.liAboutWebsite.Text = "http://r4di.us/autoputty";
             this.liAboutWebsite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.liAboutWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liWebsite_LinkClicked);
-            // 
-            // tAboutTitle
-            // 
-            this.tAboutTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tAboutTitle.AutoSize = true;
-            this.tAboutTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.tAboutTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tAboutTitle.ForeColor = System.Drawing.Color.White;
-            this.tAboutTitle.Location = new System.Drawing.Point(61, 89);
-            this.tAboutTitle.Name = "tAboutTitle";
-            this.tAboutTitle.Size = new System.Drawing.Size(116, 23);
-            this.tAboutTitle.TabIndex = 19;
-            this.tAboutTitle.Text = "AutoPuTTY";
-            this.tAboutTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tlPassword
             // 
@@ -983,17 +892,6 @@
             this.pbPassEye.MouseLeave += new System.EventHandler(this.pbPassEye_MouseLeave);
             this.pbPassEye.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbPassEye_MouseUp);
             // 
-            // lPassMessage
-            // 
-            this.lPassMessage.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lPassMessage.ForeColor = System.Drawing.Color.White;
-            this.lPassMessage.Location = new System.Drawing.Point(0, 115);
-            this.lPassMessage.Name = "lPassMessage";
-            this.lPassMessage.Size = new System.Drawing.Size(261, 21);
-            this.lPassMessage.TabIndex = 25;
-            this.lPassMessage.Text = "Enter valid password or die :)";
-            this.lPassMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // pPassLogo
             // 
             this.pPassLogo.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -1005,19 +903,6 @@
             this.pPassLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pPassLogo.TabIndex = 21;
             this.pPassLogo.TabStop = false;
-            // 
-            // lPassName
-            // 
-            this.lPassName.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lPassName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.lPassName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lPassName.ForeColor = System.Drawing.Color.White;
-            this.lPassName.Location = new System.Drawing.Point(0, 89);
-            this.lPassName.Name = "lPassName";
-            this.lPassName.Size = new System.Drawing.Size(261, 23);
-            this.lPassName.TabIndex = 19;
-            this.lPassName.Text = "AutoPuTTY";
-            this.lPassName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tbPassBack
             // 
@@ -1043,14 +928,130 @@
             this.tbPassFake.TextChanged += new System.EventHandler(this.tbPassFake_TextChanged);
             this.tbPassFake.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassFake_KeyDown);
             // 
-            // label5
+            // singleClickLabel3
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 120);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(93, 13);
-            this.label5.TabIndex = 31;
-            this.label5.Text = "Used by # servers";
+            this.singleClickLabel3.AutoSize = true;
+            this.singleClickLabel3.Location = new System.Drawing.Point(3, 81);
+            this.singleClickLabel3.Name = "singleClickLabel3";
+            this.singleClickLabel3.Size = new System.Drawing.Size(60, 13);
+            this.singleClickLabel3.TabIndex = 25;
+            this.singleClickLabel3.Text = "Private key";
+            // 
+            // singleClickLabel2
+            // 
+            this.singleClickLabel2.AutoSize = true;
+            this.singleClickLabel2.Location = new System.Drawing.Point(3, 42);
+            this.singleClickLabel2.Name = "singleClickLabel2";
+            this.singleClickLabel2.Size = new System.Drawing.Size(53, 13);
+            this.singleClickLabel2.TabIndex = 22;
+            this.singleClickLabel2.Text = "Password";
+            // 
+            // singleClickLabel1
+            // 
+            this.singleClickLabel1.AutoSize = true;
+            this.singleClickLabel1.Location = new System.Drawing.Point(3, 3);
+            this.singleClickLabel1.Name = "singleClickLabel1";
+            this.singleClickLabel1.Size = new System.Drawing.Size(60, 13);
+            this.singleClickLabel1.TabIndex = 19;
+            this.singleClickLabel1.Text = "Vault name";
+            // 
+            // lHost
+            // 
+            this.lHost.AutoSize = true;
+            this.lHost.Location = new System.Drawing.Point(3, 42);
+            this.lHost.Name = "lHost";
+            this.lHost.Size = new System.Drawing.Size(82, 13);
+            this.lHost.TabIndex = 4;
+            this.lHost.Text = "Hostname[:port]";
+            // 
+            // lType
+            // 
+            this.lType.AutoSize = true;
+            this.lType.Location = new System.Drawing.Point(3, 159);
+            this.lType.Name = "lType";
+            this.lType.Size = new System.Drawing.Size(31, 13);
+            this.lType.TabIndex = 14;
+            this.lType.Text = "Type";
+            // 
+            // lPass
+            // 
+            this.lPass.AutoSize = true;
+            this.lPass.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lPass.Location = new System.Drawing.Point(3, 120);
+            this.lPass.Name = "lPass";
+            this.lPass.Size = new System.Drawing.Size(53, 13);
+            this.lPass.TabIndex = 10;
+            this.lPass.Text = "Password";
+            this.lPass.Click += new System.EventHandler(this.lPass_Click);
+            // 
+            // lUser
+            // 
+            this.lUser.AutoSize = true;
+            this.lUser.Location = new System.Drawing.Point(3, 81);
+            this.lUser.Name = "lUser";
+            this.lUser.Size = new System.Drawing.Size(55, 13);
+            this.lUser.TabIndex = 7;
+            this.lUser.Text = "Username";
+            // 
+            // lName
+            // 
+            this.lName.AutoSize = true;
+            this.lName.Location = new System.Drawing.Point(3, 3);
+            this.lName.Name = "lName";
+            this.lName.Size = new System.Drawing.Size(35, 13);
+            this.lName.TabIndex = 0;
+            this.lName.Text = "Name";
+            // 
+            // lPassMessage
+            // 
+            this.lPassMessage.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lPassMessage.ForeColor = System.Drawing.Color.White;
+            this.lPassMessage.Location = new System.Drawing.Point(0, 115);
+            this.lPassMessage.Name = "lPassMessage";
+            this.lPassMessage.Size = new System.Drawing.Size(261, 21);
+            this.lPassMessage.TabIndex = 25;
+            this.lPassMessage.Text = "Enter valid password or die :)";
+            this.lPassMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lPassName
+            // 
+            this.lPassName.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lPassName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.lPassName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lPassName.ForeColor = System.Drawing.Color.White;
+            this.lPassName.Location = new System.Drawing.Point(0, 89);
+            this.lPassName.Name = "lPassName";
+            this.lPassName.Size = new System.Drawing.Size(261, 23);
+            this.lPassName.TabIndex = 19;
+            this.lPassName.Text = "AutoPuTTY";
+            this.lPassName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // tAboutVersion
+            // 
+            this.tAboutVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tAboutVersion.AutoSize = true;
+            this.tAboutVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.tAboutVersion.ForeColor = System.Drawing.Color.White;
+            this.tAboutVersion.Location = new System.Drawing.Point(174, 97);
+            this.tAboutVersion.Name = "tAboutVersion";
+            this.tAboutVersion.Size = new System.Drawing.Size(41, 13);
+            this.tAboutVersion.TabIndex = 24;
+            this.tAboutVersion.Text = "version";
+            // 
+            // tAboutTitle
+            // 
+            this.tAboutTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tAboutTitle.AutoSize = true;
+            this.tAboutTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.tAboutTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tAboutTitle.ForeColor = System.Drawing.Color.White;
+            this.tAboutTitle.Location = new System.Drawing.Point(61, 89);
+            this.tAboutTitle.Name = "tAboutTitle";
+            this.tAboutTitle.Size = new System.Drawing.Size(116, 23);
+            this.tAboutTitle.TabIndex = 19;
+            this.tAboutTitle.Text = "AutoPuTTY";
+            this.tAboutTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // formMain
             // 
@@ -1168,7 +1169,7 @@
         private System.Windows.Forms.Button bVModify;
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.ListBox lbVault;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bVOk;
         private System.Windows.Forms.Button bVDelete;
         private System.Windows.Forms.Button bVAdd;
         private System.Windows.Forms.Label label4;
