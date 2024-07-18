@@ -1298,6 +1298,7 @@ namespace AutoPuTTY
         internal void XmlToVault()
         {
             XmlToList("Vault", lbVault);
+            //for (int i = 0; i < xmlnode.Count; i++) if (!list.Items.Contains(xmlnode[i].Attributes[0].Value)) list.Items.Add(xmlnode[i].Attributes[0].Value);
         }
 
         private void bAdd_Click(object sender, EventArgs e)
@@ -1684,6 +1685,7 @@ namespace AutoPuTTY
             cbType.BackColor = SystemColors.Window;
 
             ArrayList server = XmlGetServer(lbList.SelectedItem.ToString());
+            Debug.WriteLine(server);
 
             tbName.Text = (string)server[0];
             tbHost.Text = Decrypt((string)server[1]);
@@ -1880,6 +1882,10 @@ namespace AutoPuTTY
             if (lbList.SelectedItem != null)
             {
                 server = XmlGetServer(lbList.SelectedItem.ToString());
+                foreach (var item in server)
+                {
+                    Debug.WriteLine("The nodes of MDG are:" + item);
+                }
 
                 if (sender is ComboBox)
                 {

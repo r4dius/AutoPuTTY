@@ -32,6 +32,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formMain));
             this.tbPass = new System.Windows.Forms.TextBox();
             this.pConfig = new System.Windows.Forms.Panel();
+            this.pVault = new System.Windows.Forms.Panel();
+            this.bVOk = new System.Windows.Forms.Button();
+            this.bVDelete = new System.Windows.Forms.Button();
+            this.bVAdd = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbVPriv = new System.Windows.Forms.TextBox();
+            this.singleClickLabel3 = new AutoPuTTY.SingleClickLabel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbVPass = new System.Windows.Forms.TextBox();
+            this.singleClickLabel2 = new AutoPuTTY.SingleClickLabel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbVName = new System.Windows.Forms.TextBox();
+            this.singleClickLabel1 = new AutoPuTTY.SingleClickLabel();
+            this.bVModify = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.bEdit = new System.Windows.Forms.PictureBox();
             this.cbVault = new System.Windows.Forms.ComboBox();
             this.bEye = new System.Windows.Forms.PictureBox();
@@ -62,8 +77,8 @@
             this.tlLeft = new System.Windows.Forms.TableLayoutPanel();
             this.lbListSep = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lbList = new System.Windows.Forms.ListBox();
             this.lbVault = new System.Windows.Forms.ListBox();
+            this.lbList = new System.Windows.Forms.ListBox();
             this.pFind = new System.Windows.Forms.Panel();
             this.pFindToogle = new System.Windows.Forms.Panel();
             this.bClose = new System.Windows.Forms.PictureBox();
@@ -89,22 +104,8 @@
             this.lPassName = new AutoPuTTY.SingleClickLabel();
             this.tbPassBack = new System.Windows.Forms.TextBox();
             this.tbPassFake = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.bVModify = new System.Windows.Forms.Button();
-            this.singleClickLabel1 = new AutoPuTTY.SingleClickLabel();
-            this.tbVName = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.singleClickLabel2 = new AutoPuTTY.SingleClickLabel();
-            this.tbVPass = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.singleClickLabel3 = new AutoPuTTY.SingleClickLabel();
-            this.tbVPriv = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.bVAdd = new System.Windows.Forms.Button();
-            this.bVDelete = new System.Windows.Forms.Button();
-            this.bVOk = new System.Windows.Forms.Button();
-            this.pVault = new System.Windows.Forms.Panel();
             this.pConfig.SuspendLayout();
+            this.pVault.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).BeginInit();
             this.tlMain.SuspendLayout();
@@ -123,7 +124,6 @@
             this.pPassBackLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPassEye)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pPassLogo)).BeginInit();
-            this.pVault.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbPass
@@ -166,6 +166,182 @@
             this.pConfig.Name = "pConfig";
             this.pConfig.Size = new System.Drawing.Size(130, 229);
             this.pConfig.TabIndex = 1;
+            // 
+            // pVault
+            // 
+            this.pVault.Controls.Add(this.bVOk);
+            this.pVault.Controls.Add(this.bVDelete);
+            this.pVault.Controls.Add(this.bVAdd);
+            this.pVault.Controls.Add(this.label4);
+            this.pVault.Controls.Add(this.tbVPriv);
+            this.pVault.Controls.Add(this.singleClickLabel3);
+            this.pVault.Controls.Add(this.label3);
+            this.pVault.Controls.Add(this.tbVPass);
+            this.pVault.Controls.Add(this.singleClickLabel2);
+            this.pVault.Controls.Add(this.label2);
+            this.pVault.Controls.Add(this.tbVName);
+            this.pVault.Controls.Add(this.singleClickLabel1);
+            this.pVault.Controls.Add(this.bVModify);
+            this.pVault.Controls.Add(this.label5);
+            this.pVault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pVault.Location = new System.Drawing.Point(0, 0);
+            this.pVault.Name = "pVault";
+            this.pVault.Size = new System.Drawing.Size(130, 229);
+            this.pVault.TabIndex = 23;
+            this.pVault.Visible = false;
+            // 
+            // bVOk
+            // 
+            this.bVOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVOk.Image = global::AutoPuTTY.Properties.Resources.ok;
+            this.bVOk.Location = new System.Drawing.Point(97, 198);
+            this.bVOk.Margin = new System.Windows.Forms.Padding(0);
+            this.bVOk.Name = "bVOk";
+            this.bVOk.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVOk.Size = new System.Drawing.Size(32, 30);
+            this.bVOk.TabIndex = 30;
+            this.bVOk.UseCompatibleTextRendering = true;
+            this.bVOk.UseVisualStyleBackColor = true;
+            this.bVOk.Click += new System.EventHandler(this.bVOk_Click);
+            // 
+            // bVDelete
+            // 
+            this.bVDelete.Enabled = false;
+            this.bVDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVDelete.Image = global::AutoPuTTY.Properties.Resources.icondelete;
+            this.bVDelete.Location = new System.Drawing.Point(65, 198);
+            this.bVDelete.Margin = new System.Windows.Forms.Padding(0);
+            this.bVDelete.Name = "bVDelete";
+            this.bVDelete.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVDelete.Size = new System.Drawing.Size(32, 30);
+            this.bVDelete.TabIndex = 29;
+            this.bVDelete.UseCompatibleTextRendering = true;
+            this.bVDelete.UseVisualStyleBackColor = true;
+            this.bVDelete.Click += new System.EventHandler(this.bVDelete_Click);
+            // 
+            // bVAdd
+            // 
+            this.bVAdd.Enabled = false;
+            this.bVAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVAdd.Image = global::AutoPuTTY.Properties.Resources.iconadd;
+            this.bVAdd.Location = new System.Drawing.Point(33, 198);
+            this.bVAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.bVAdd.Name = "bVAdd";
+            this.bVAdd.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVAdd.Size = new System.Drawing.Size(32, 30);
+            this.bVAdd.TabIndex = 28;
+            this.bVAdd.UseCompatibleTextRendering = true;
+            this.bVAdd.UseVisualStyleBackColor = true;
+            this.bVAdd.Click += new System.EventHandler(this.bVAdd_Click);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label4.Location = new System.Drawing.Point(2, 95);
+            this.label4.Margin = new System.Windows.Forms.Padding(0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(126, 2);
+            this.label4.TabIndex = 26;
+            // 
+            // tbVPriv
+            // 
+            this.tbVPriv.Location = new System.Drawing.Point(2, 98);
+            this.tbVPriv.Name = "tbVPriv";
+            this.tbVPriv.Size = new System.Drawing.Size(126, 20);
+            this.tbVPriv.TabIndex = 27;
+            this.tbVPriv.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
+            // 
+            // singleClickLabel3
+            // 
+            this.singleClickLabel3.AutoSize = true;
+            this.singleClickLabel3.Location = new System.Drawing.Point(3, 81);
+            this.singleClickLabel3.Name = "singleClickLabel3";
+            this.singleClickLabel3.Size = new System.Drawing.Size(60, 13);
+            this.singleClickLabel3.TabIndex = 25;
+            this.singleClickLabel3.Text = "Private key";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label3.Location = new System.Drawing.Point(2, 56);
+            this.label3.Margin = new System.Windows.Forms.Padding(0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(126, 2);
+            this.label3.TabIndex = 23;
+            // 
+            // tbVPass
+            // 
+            this.tbVPass.Location = new System.Drawing.Point(2, 59);
+            this.tbVPass.Name = "tbVPass";
+            this.tbVPass.Size = new System.Drawing.Size(126, 20);
+            this.tbVPass.TabIndex = 24;
+            this.tbVPass.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
+            // 
+            // singleClickLabel2
+            // 
+            this.singleClickLabel2.AutoSize = true;
+            this.singleClickLabel2.Location = new System.Drawing.Point(3, 42);
+            this.singleClickLabel2.Name = "singleClickLabel2";
+            this.singleClickLabel2.Size = new System.Drawing.Size(53, 13);
+            this.singleClickLabel2.TabIndex = 22;
+            this.singleClickLabel2.Text = "Password";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label2.Location = new System.Drawing.Point(2, 17);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(126, 2);
+            this.label2.TabIndex = 20;
+            // 
+            // tbVName
+            // 
+            this.tbVName.Location = new System.Drawing.Point(2, 20);
+            this.tbVName.Name = "tbVName";
+            this.tbVName.Size = new System.Drawing.Size(126, 20);
+            this.tbVName.TabIndex = 21;
+            this.tbVName.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
+            // 
+            // singleClickLabel1
+            // 
+            this.singleClickLabel1.AutoSize = true;
+            this.singleClickLabel1.Location = new System.Drawing.Point(3, 3);
+            this.singleClickLabel1.Name = "singleClickLabel1";
+            this.singleClickLabel1.Size = new System.Drawing.Size(60, 13);
+            this.singleClickLabel1.TabIndex = 19;
+            this.singleClickLabel1.Text = "Vault name";
+            // 
+            // bVModify
+            // 
+            this.bVModify.Enabled = false;
+            this.bVModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVModify.Image = global::AutoPuTTY.Properties.Resources.iconmodify;
+            this.bVModify.Location = new System.Drawing.Point(1, 198);
+            this.bVModify.Margin = new System.Windows.Forms.Padding(0);
+            this.bVModify.Name = "bVModify";
+            this.bVModify.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVModify.Size = new System.Drawing.Size(32, 30);
+            this.bVModify.TabIndex = 18;
+            this.bVModify.UseCompatibleTextRendering = true;
+            this.bVModify.UseVisualStyleBackColor = true;
+            this.bVModify.Click += new System.EventHandler(this.bVModify_Click);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.Location = new System.Drawing.Point(3, 120);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(124, 13);
+            this.label5.TabIndex = 31;
+            this.label5.Text = "Used by # servers";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // bEdit
             // 
@@ -495,6 +671,22 @@
             this.panel1.Size = new System.Drawing.Size(130, 204);
             this.panel1.TabIndex = 0;
             // 
+            // lbVault
+            // 
+            this.lbVault.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbVault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbVault.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbVault.IntegralHeight = false;
+            this.lbVault.Location = new System.Drawing.Point(0, 0);
+            this.lbVault.Margin = new System.Windows.Forms.Padding(0);
+            this.lbVault.Name = "lbVault";
+            this.lbVault.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lbVault.Size = new System.Drawing.Size(130, 204);
+            this.lbVault.Sorted = true;
+            this.lbVault.TabIndex = 1;
+            this.lbVault.Visible = false;
+            this.lbVault.SelectedIndexChanged += new System.EventHandler(this.lbVault_SelectedIndexChanged);
+            // 
             // lbList
             // 
             this.lbList.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -514,22 +706,6 @@
             this.lbList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbList_KeyDown);
             this.lbList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lbList_KeyPress);
             this.lbList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbList_MouseClick);
-            // 
-            // lbVault
-            // 
-            this.lbVault.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbVault.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbVault.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbVault.IntegralHeight = false;
-            this.lbVault.Location = new System.Drawing.Point(0, 0);
-            this.lbVault.Margin = new System.Windows.Forms.Padding(0);
-            this.lbVault.Name = "lbVault";
-            this.lbVault.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbVault.Size = new System.Drawing.Size(130, 204);
-            this.lbVault.Sorted = true;
-            this.lbVault.TabIndex = 1;
-            this.lbVault.Visible = false;
-            this.lbVault.SelectedIndexChanged += new System.EventHandler(this.lbVault_SelectedIndexChanged);
             // 
             // pFind
             // 
@@ -884,182 +1060,6 @@
             this.tbPassFake.TextChanged += new System.EventHandler(this.tbPassFake_TextChanged);
             this.tbPassFake.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassFake_KeyDown);
             // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.Location = new System.Drawing.Point(3, 120);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(124, 13);
-            this.label5.TabIndex = 31;
-            this.label5.Text = "Used by # servers";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // bVModify
-            // 
-            this.bVModify.Enabled = false;
-            this.bVModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bVModify.Image = global::AutoPuTTY.Properties.Resources.iconmodify;
-            this.bVModify.Location = new System.Drawing.Point(1, 198);
-            this.bVModify.Margin = new System.Windows.Forms.Padding(0);
-            this.bVModify.Name = "bVModify";
-            this.bVModify.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bVModify.Size = new System.Drawing.Size(32, 30);
-            this.bVModify.TabIndex = 18;
-            this.bVModify.UseCompatibleTextRendering = true;
-            this.bVModify.UseVisualStyleBackColor = true;
-            this.bVModify.Click += new System.EventHandler(this.bVModify_Click);
-            // 
-            // singleClickLabel1
-            // 
-            this.singleClickLabel1.AutoSize = true;
-            this.singleClickLabel1.Location = new System.Drawing.Point(3, 3);
-            this.singleClickLabel1.Name = "singleClickLabel1";
-            this.singleClickLabel1.Size = new System.Drawing.Size(60, 13);
-            this.singleClickLabel1.TabIndex = 19;
-            this.singleClickLabel1.Text = "Vault name";
-            // 
-            // tbVName
-            // 
-            this.tbVName.Location = new System.Drawing.Point(2, 20);
-            this.tbVName.Name = "tbVName";
-            this.tbVName.Size = new System.Drawing.Size(126, 20);
-            this.tbVName.TabIndex = 21;
-            this.tbVName.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label2.Location = new System.Drawing.Point(2, 17);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(126, 2);
-            this.label2.TabIndex = 20;
-            // 
-            // singleClickLabel2
-            // 
-            this.singleClickLabel2.AutoSize = true;
-            this.singleClickLabel2.Location = new System.Drawing.Point(3, 42);
-            this.singleClickLabel2.Name = "singleClickLabel2";
-            this.singleClickLabel2.Size = new System.Drawing.Size(53, 13);
-            this.singleClickLabel2.TabIndex = 22;
-            this.singleClickLabel2.Text = "Password";
-            // 
-            // tbVPass
-            // 
-            this.tbVPass.Location = new System.Drawing.Point(2, 59);
-            this.tbVPass.Name = "tbVPass";
-            this.tbVPass.Size = new System.Drawing.Size(126, 20);
-            this.tbVPass.TabIndex = 24;
-            this.tbVPass.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label3.Location = new System.Drawing.Point(2, 56);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(126, 2);
-            this.label3.TabIndex = 23;
-            // 
-            // singleClickLabel3
-            // 
-            this.singleClickLabel3.AutoSize = true;
-            this.singleClickLabel3.Location = new System.Drawing.Point(3, 81);
-            this.singleClickLabel3.Name = "singleClickLabel3";
-            this.singleClickLabel3.Size = new System.Drawing.Size(60, 13);
-            this.singleClickLabel3.TabIndex = 25;
-            this.singleClickLabel3.Text = "Private key";
-            // 
-            // tbVPriv
-            // 
-            this.tbVPriv.Location = new System.Drawing.Point(2, 98);
-            this.tbVPriv.Name = "tbVPriv";
-            this.tbVPriv.Size = new System.Drawing.Size(126, 20);
-            this.tbVPriv.TabIndex = 27;
-            this.tbVPriv.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label4.Location = new System.Drawing.Point(2, 95);
-            this.label4.Margin = new System.Windows.Forms.Padding(0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(126, 2);
-            this.label4.TabIndex = 26;
-            // 
-            // bVAdd
-            // 
-            this.bVAdd.Enabled = false;
-            this.bVAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bVAdd.Image = global::AutoPuTTY.Properties.Resources.iconadd;
-            this.bVAdd.Location = new System.Drawing.Point(33, 198);
-            this.bVAdd.Margin = new System.Windows.Forms.Padding(0);
-            this.bVAdd.Name = "bVAdd";
-            this.bVAdd.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bVAdd.Size = new System.Drawing.Size(32, 30);
-            this.bVAdd.TabIndex = 28;
-            this.bVAdd.UseCompatibleTextRendering = true;
-            this.bVAdd.UseVisualStyleBackColor = true;
-            this.bVAdd.Click += new System.EventHandler(this.bVAdd_Click);
-            // 
-            // bVDelete
-            // 
-            this.bVDelete.Enabled = false;
-            this.bVDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bVDelete.Image = global::AutoPuTTY.Properties.Resources.icondelete;
-            this.bVDelete.Location = new System.Drawing.Point(65, 198);
-            this.bVDelete.Margin = new System.Windows.Forms.Padding(0);
-            this.bVDelete.Name = "bVDelete";
-            this.bVDelete.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bVDelete.Size = new System.Drawing.Size(32, 30);
-            this.bVDelete.TabIndex = 29;
-            this.bVDelete.UseCompatibleTextRendering = true;
-            this.bVDelete.UseVisualStyleBackColor = true;
-            this.bVDelete.Click += new System.EventHandler(this.bVDelete_Click);
-            // 
-            // bVOk
-            // 
-            this.bVOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bVOk.Image = global::AutoPuTTY.Properties.Resources.ok;
-            this.bVOk.Location = new System.Drawing.Point(97, 198);
-            this.bVOk.Margin = new System.Windows.Forms.Padding(0);
-            this.bVOk.Name = "bVOk";
-            this.bVOk.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bVOk.Size = new System.Drawing.Size(32, 30);
-            this.bVOk.TabIndex = 30;
-            this.bVOk.UseCompatibleTextRendering = true;
-            this.bVOk.UseVisualStyleBackColor = true;
-            this.bVOk.Click += new System.EventHandler(this.bVOk_Click);
-            // 
-            // pVault
-            // 
-            this.pVault.Controls.Add(this.bVOk);
-            this.pVault.Controls.Add(this.bVDelete);
-            this.pVault.Controls.Add(this.bVAdd);
-            this.pVault.Controls.Add(this.label4);
-            this.pVault.Controls.Add(this.tbVPriv);
-            this.pVault.Controls.Add(this.singleClickLabel3);
-            this.pVault.Controls.Add(this.label3);
-            this.pVault.Controls.Add(this.tbVPass);
-            this.pVault.Controls.Add(this.singleClickLabel2);
-            this.pVault.Controls.Add(this.label2);
-            this.pVault.Controls.Add(this.tbVName);
-            this.pVault.Controls.Add(this.singleClickLabel1);
-            this.pVault.Controls.Add(this.bVModify);
-            this.pVault.Controls.Add(this.label5);
-            this.pVault.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pVault.Location = new System.Drawing.Point(0, 0);
-            this.pVault.Name = "pVault";
-            this.pVault.Size = new System.Drawing.Size(130, 229);
-            this.pVault.TabIndex = 23;
-            this.pVault.Visible = false;
-            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1082,6 +1082,8 @@
             this.Resize += new System.EventHandler(this.mainForm_Resize);
             this.pConfig.ResumeLayout(false);
             this.pConfig.PerformLayout();
+            this.pVault.ResumeLayout(false);
+            this.pVault.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).EndInit();
             this.tlMain.ResumeLayout(false);
@@ -1104,8 +1106,6 @@
             this.pPassBackLeft.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPassEye)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pPassLogo)).EndInit();
-            this.pVault.ResumeLayout(false);
-            this.pVault.PerformLayout();
             this.ResumeLayout(false);
 
         }
