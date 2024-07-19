@@ -385,6 +385,7 @@ namespace AutoPuTTY
                         recryptpopup.ShowDialog(this);
                     }
 
+                    Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbGPassword.Text;
                 }
                 bGPassword.Enabled = false;
