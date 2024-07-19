@@ -1,3 +1,4 @@
+using AutoPuTTY;
 using AutoPuTTY.Properties;
 using System;
 using System.Collections;
@@ -19,7 +20,6 @@ namespace AutoPuTTY
         public bool importempty;
         public object locker = new object();
         public string importreplace = "";
-        public static XmlDocument xmlconfig = formMain.xmlconfig;
 
         public formOptions(formMain form)
         {
@@ -225,9 +225,9 @@ namespace AutoPuTTY
             importcancel = false;
             int count = 0;
 
-            xmlconfig.Load(Settings.Default.cfgpath);
+            formMain.xmlconfig.Load(Settings.Default.cfgpath);
 
-            XmlNodeList xmlnodes = xmlconfig.SelectNodes("/List/Server");
+            XmlNodeList xmlnodes = formMain.xmlconfig.SelectNodes("/List/Server");
             if (xmlnodes != null) foreach (XmlNode xmlnode in xmlnodes)
                 {
                     count++;
@@ -255,47 +255,34 @@ namespace AutoPuTTY
                         }
                     }
 
-                    XmlElement newserver = xmlconfig.CreateElement("Server");
-                    XmlAttribute name = xmlconfig.CreateAttribute("Name");
+                    XmlElement newserver = formMain.xmlconfig.CreateElement("Server");
+                    XmlAttribute name = formMain.xmlconfig.CreateAttribute("Name");
+                    XmlElement host = formMain.xmlconfig.CreateElement("Host");
+                    XmlElement user = formMain.xmlconfig.CreateElement("User");
+                    XmlElement pass = formMain.xmlconfig.CreateElement("Password");
+                    XmlElement type = formMain.xmlconfig.CreateElement("Type");
                     name.Value = xmlnode.Attributes[0].Value;
                     newserver.SetAttributeNode(name);
+                    newserver.AppendChild(host);
+                    newserver.AppendChild(user);
+                    newserver.AppendChild(pass);
+                    newserver.AppendChild(type);
+                    host.InnerText = mainform.Encrypt(_host, newpass);
+                    user.InnerText = mainform.Encrypt(_user, newpass);
+                    pass.InnerText = mainform.Encrypt(_pass, newpass);
+                    type.InnerText = _type.ToString();
 
-                    if (_host != "")
+                    XmlNodeList xmlnodename = formMain.xmlconfig.SelectNodes("//Server[@Name=" + formMain.ParseXpathString(xmlnode.Attributes[0].Value) + "]");
+                    if (formMain.xmlconfig.DocumentElement != null)
                     {
-                        XmlElement host = xmlconfig.CreateElement("Host");
-                        host.InnerText = mainform.Encrypt(_host, newpass);
-                        newserver.AppendChild(host);
-                    }
-                    if (_user != "")
-                    {
-                        XmlElement user = xmlconfig.CreateElement("User");
-                        user.InnerText = mainform.Encrypt(_user, newpass);
-                        newserver.AppendChild(user);
-                    }
-                    if (_pass != "")
-                    {
-                        XmlElement pass = xmlconfig.CreateElement("Password");
-                        pass.InnerText = mainform.Encrypt(_pass, newpass);
-                        newserver.AppendChild(pass);
-                    }
-                    if (_type > 0)
-                    {
-                        XmlElement type = xmlconfig.CreateElement("Type");
-                        type.InnerText = _type.ToString();
-                        newserver.AppendChild(type);
-                    }
-
-                    XmlNodeList xmlnodename = xmlconfig.SelectNodes("//Server[@Name=" + formMain.ParseXpathString(xmlnode.Attributes[0].Value) + "]");
-                    if (xmlconfig.DocumentElement != null)
-                    {
-                        if (xmlnodename != null) xmlconfig.DocumentElement.ReplaceChild(newserver, xmlnodename[0]);
+                        if (xmlnodename != null) formMain.xmlconfig.DocumentElement.ReplaceChild(newserver, xmlnodename[0]);
                     }
 
                     string[] args = new string[] { "recrypt", count + " / " + (mainform.lbList.Items.Count + mainform.lbVault.Items.Count) };
                     bwProgress.ReportProgress(((int)((double)count / (double)(mainform.lbList.Items.Count + mainform.lbVault.Items.Count) * 100)), args);
                 }
 
-            xmlnodes = xmlconfig.SelectNodes("/List/Vault");
+            xmlnodes = formMain.xmlconfig.SelectNodes("/List/Vault");
             if (xmlnodes != null) foreach (XmlNode xmlnode in xmlnodes)
                 {
                     count++;
@@ -315,35 +302,35 @@ namespace AutoPuTTY
                         }
                     }
 
-                    XmlElement newvault = xmlconfig.CreateElement("Vault");
-                    XmlAttribute name = xmlconfig.CreateAttribute("Name");
+                    XmlElement newvault = formMain.xmlconfig.CreateElement("Vault");
+                    XmlAttribute name = formMain.xmlconfig.CreateAttribute("Name");
                     name.Value = xmlnode.Attributes[0].Value;
                     newvault.SetAttributeNode(name);
 
                     if (_pass != "")
                     {
-                        XmlElement pass = xmlconfig.CreateElement("Password");
+                        XmlElement pass = formMain.xmlconfig.CreateElement("Password");
                         pass.InnerText = mainform.Encrypt(_pass, newpass);
                         newvault.AppendChild(pass);
                     }
                     if (_priv != "")
                     {
-                        XmlElement priv = xmlconfig.CreateElement("PrivateKey");
+                        XmlElement priv = formMain.xmlconfig.CreateElement("PrivateKey");
                         priv.InnerText = mainform.Encrypt(_priv, newpass);
                         newvault.AppendChild(priv);
                     }
 
-                    XmlNodeList xmlnodename = xmlconfig.SelectNodes("//Vault[@Name=" + formMain.ParseXpathString(xmlnode.Attributes[0].Value) + "]");
-                    if (xmlconfig.DocumentElement != null)
+                    XmlNodeList xmlnodename = formMain.xmlconfig.SelectNodes("//Vault[@Name=" + formMain.ParseXpathString(xmlnode.Attributes[0].Value) + "]");
+                    if (formMain.xmlconfig.DocumentElement != null)
                     {
-                        if (xmlnodename != null) xmlconfig.DocumentElement.ReplaceChild(newvault, xmlnodename[0]);
+                        if (xmlnodename != null) formMain.xmlconfig.DocumentElement.ReplaceChild(newvault, xmlnodename[0]);
                     }
 
                     string[] args = new string[] { "recrypt", count + " / " + (mainform.lbList.Items.Count + mainform.lbVault.Items.Count) };
                     bwProgress.ReportProgress(((int)((double)count / (double)(mainform.lbList.Items.Count + mainform.lbVault.Items.Count) * 100)), args);
                 }
 
-            xmlconfig.Save(Settings.Default.cfgpath);
+            formMain.xmlconfig.Save(Settings.Default.cfgpath);
 #if DEBUG
             Debug.WriteLine("Encryption duration :" + (DateTime.Now - time));
 #endif

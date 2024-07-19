@@ -864,31 +864,11 @@ namespace AutoPuTTY
             }
         }
 
-        public string Decrypt(string toDecrypt)
-        {
-            if (toDecrypt == "") return "";
-
-            byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
-            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptokey));
-
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
-            tdes.Key = keyArray;
-            tdes.Mode = CipherMode.ECB;
-            tdes.Padding = PaddingMode.PKCS7;
-
-            ICryptoTransform cTransform = tdes.CreateDecryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            hashmd5.Clear();
-            tdes.Clear();
-
-            return Encoding.UTF8.GetString(resultArray);
-        }
-
         public string Decrypt(string toDecrypt, string key)
         {
             if (toDecrypt == "") return "";
+            Debug.WriteLine("to decrypt " + toDecrypt);
+            Debug.WriteLine("decrypto " + Settings.Default.cryptokey);
 
             byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
             MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
@@ -908,30 +888,18 @@ namespace AutoPuTTY
             return Encoding.UTF8.GetString(resultArray);
         }
 
-        public string Encrypt(string toEncrypt)
+        public string Decrypt(string toDecrypt)
         {
-            byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
-            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.cryptokey));
-
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
-            tdes.Key = keyArray;
-            tdes.Mode = CipherMode.ECB;
-            tdes.Padding = PaddingMode.PKCS7;
-
-            ICryptoTransform cTransform = tdes.CreateEncryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
-            hashmd5.Clear();
-            tdes.Clear();
-
-            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+            return Decrypt(toDecrypt, Settings.Default.cryptokey);
         }
 
         public string Encrypt(string toEncrypt, string key)
         {
             if (toEncrypt == "") return "";
 
+            Debug.WriteLine("to crypt " + toEncrypt);
+            Debug.WriteLine("crypto " + key);
+
             byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
             MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
             byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
@@ -948,6 +916,11 @@ namespace AutoPuTTY
             tdes.Clear();
 
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+        }
+
+        public string Encrypt(string toEncrypt)
+        {
+            return Encrypt(toEncrypt, Settings.Default.cryptokey);
         }
 
         private void Error(Form form, string message)
@@ -1088,10 +1061,10 @@ namespace AutoPuTTY
 
         public string XmlGetConfig(string id)
         {
-            XmlNodeList xmlnode = xmlconfig.SelectNodes("//Config[@ID=" + ParseXpathString(id) + "]");
+            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Config[@ID=" + ParseXpathString(id) + "]");
             if (xmlnode != null)
             {
-                if (xmlnode.Count > 0) return xmlnode[0].InnerText;
+                return xmlnode.InnerText;
             }
             return "";
         }
@@ -1104,20 +1077,14 @@ namespace AutoPuTTY
             newpath.SetAttributeNode(name);
             newpath.InnerText = val;
 
-            XmlNodeList xmlnode = xmlconfig.SelectNodes("//Config[@ID=" + ParseXpathString(id) + "]");
+            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Config[@ID=" + ParseXpathString(id) + "]");
             if (xmlnode != null)
             {
-                if (xmlconfig.DocumentElement != null)
-                {
-                    if (xmlnode.Count > 0)
-                    {
-                        xmlconfig.DocumentElement.ReplaceChild(newpath, xmlnode[0]);
-                    }
-                    else
-                    {
-                        xmlconfig.DocumentElement.InsertBefore(newpath, xmlconfig.DocumentElement.FirstChild);
-                    }
-                }
+                xmlconfig.DocumentElement.ReplaceChild(newpath, xmlnode);
+            }
+            else
+            {
+                xmlconfig.DocumentElement.InsertBefore(newpath, xmlconfig.DocumentElement.FirstChild);
             }
 
             try
@@ -1134,10 +1101,10 @@ namespace AutoPuTTY
         {
             foreach (string item in items)
             {
-                XmlNodeList xmlnode = xmlconfig.SelectNodes("//" + node + "[@" + item + "]");
+                XmlNode xmlnode = xmlconfig.SelectSingleNode("//" + node + "[@" + item + "]");
                 if (xmlconfig.DocumentElement != null)
                 {
-                    if (xmlnode != null) xmlconfig.DocumentElement.RemoveChild(xmlnode[0]);
+                    if (xmlnode != null) xmlconfig.DocumentElement.RemoveChild(xmlnode);
                 }
             }
 
@@ -1153,7 +1120,7 @@ namespace AutoPuTTY
 
         public void XmlDropConfig(string item)
         {
-            XmlDropNode("Config", new ArrayList { "ID=" + item });
+            XmlDropNode("Config", new ArrayList { "ID=" + ParseXpathString(item) });
         }
 
         public void XmlDropServer(string item)
@@ -1191,32 +1158,29 @@ namespace AutoPuTTY
 
             xmlconfig.Load(Settings.Default.cfgpath);
 
-            XmlNodeList xmlnode = xmlconfig.SelectNodes("//Server[@Name=" + ParseXpathString(name) + "]");
+            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(name) + "]");
             if (xmlnode != null)
             {
-                if (xmlnode.Count > 0)
+                foreach (XmlElement childnode in xmlnode.ChildNodes)
                 {
-                    foreach (XmlElement childnode in xmlnode[0].ChildNodes)
+                    switch (childnode.Name)
                     {
-                        switch (childnode.Name)
-                        {
-                            case "Host":
-                                host = childnode.InnerText;
-                                break;
-                            case "User":
-                                user = childnode.InnerText;
-                                break;
-                            case "Password":
-                                pass = childnode.InnerText;
-                                break;
-                            case "Type":
-                                Int32.TryParse(childnode.InnerText, out type);
-                                break;
-                        }
+                        case "Host":
+                            host = childnode.InnerText;
+                            break;
+                        case "User":
+                            user = childnode.InnerText;
+                            break;
+                        case "Password":
+                            pass = childnode.InnerText;
+                            break;
+                        case "Type":
+                            Int32.TryParse(childnode.InnerText, out type);
+                            break;
                     }
                 }
-                else return new ArrayList();
             }
+            else return new ArrayList();
 
             server.AddRange(new string[] { name, host, user, pass, type.ToString() });
             return server;
@@ -1230,37 +1194,30 @@ namespace AutoPuTTY
             }
 
             ArrayList vault = new ArrayList();
-            string user = "";
             string pass = "";
             string priv = "";
 
             xmlconfig.Load(Settings.Default.cfgpath);
 
-            XmlNodeList xmlnode = xmlconfig.SelectNodes("//Vault[@Name=" + ParseXpathString(name) + "]");
+            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Vault[@Name=" + ParseXpathString(name) + "]");
             if (xmlnode != null)
             {
-                if (xmlnode.Count > 0)
+                foreach (XmlElement childnode in xmlnode.ChildNodes)
                 {
-                    foreach (XmlElement childnode in xmlnode[0].ChildNodes)
+                    switch (childnode.Name)
                     {
-                        switch (childnode.Name)
-                        {
-                            case "User":
-                                user = childnode.InnerText;
-                                break;
-                            case "Password":
-                                pass = childnode.InnerText;
-                                break;
-                            case "PrivateKey":
-                                priv = childnode.InnerText;
-                                break;
-                        }
+                        case "Password":
+                            pass = childnode.InnerText;
+                            break;
+                        case "PrivateKey":
+                            priv = childnode.InnerText;
+                            break;
                     }
                 }
-                else return new ArrayList();
             }
+            else return new ArrayList();
 
-            vault.AddRange(new string[] { name, pass, priv });
+        vault.AddRange(new string[] { name, pass, priv });
             return vault;
         }
 
@@ -1299,33 +1256,21 @@ namespace AutoPuTTY
 
                 XmlElement newserver = xmlconfig.CreateElement("Server");
                 XmlAttribute name = xmlconfig.CreateAttribute("Name");
+                XmlElement host = xmlconfig.CreateElement("Host");
+                XmlElement user = xmlconfig.CreateElement("User");
+                XmlElement pass = xmlconfig.CreateElement("Password");
+                XmlElement type = xmlconfig.CreateElement("Type");
                 name.Value = tbName.Text.Trim();
+                host.InnerText = Encrypt(tbHost.Text.Trim());
+                user.InnerText = Encrypt(tbUser.Text);
+                pass.InnerText = Encrypt(tbPass.Text);
+                pass.InnerText = Encrypt(tbPass.Text);
+                type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
                 newserver.SetAttributeNode(name);
-
-                if (tbHost.Text.Trim() != "")
-                {
-                    XmlElement host = xmlconfig.CreateElement("Host");
-                    host.InnerText = Encrypt(tbHost.Text.Trim());
-                    newserver.AppendChild(host);
-                }
-                if (tbUser.Text != "")
-                {
-                    XmlElement user = xmlconfig.CreateElement("User");
-                    user.InnerText = Encrypt(tbUser.Text);
-                    newserver.AppendChild(user);
-                }
-                if (tbPass.Text != "")
-                {
-                    XmlElement pass = xmlconfig.CreateElement("Password");
-                    pass.InnerText = Encrypt(tbPass.Text);
-                    newserver.AppendChild(pass);
-                }
-                if (cbType.SelectedIndex > 0)
-                {
-                    XmlElement type = xmlconfig.CreateElement("Type");
-                    type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
-                    newserver.AppendChild(type);
-                }
+                newserver.AppendChild(host);
+                newserver.AppendChild(user);
+                newserver.AppendChild(pass);
+                newserver.AppendChild(type);
 
                 if (xmlconfig.DocumentElement != null) xmlconfig.DocumentElement.InsertAfter(newserver, xmlconfig.DocumentElement.LastChild);
 
@@ -1362,21 +1307,6 @@ namespace AutoPuTTY
             if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
         }
 
-        private void bEye_Click(object sender, EventArgs e)
-        {
-            TooglePassword(!(tbPass.PasswordChar == '●'));
-        }
-
-        private void bEye_MouseEnter(object sender, EventArgs e)
-        {
-            bEye.Image = ImageOpacity.Set(bEye.Image, (float)0.50);
-        }
-
-        private void bEye_MouseLeave(object sender, EventArgs e)
-        {
-            bEye.Image = (tbPass.PasswordChar == '●' ? Resources.iconeyeshow : Resources.iconeyehide);
-        }
-
         private void bModify_Click(object sender, EventArgs e)
         {
             xmlconfig.Load(Settings.Default.cfgpath);
@@ -1386,35 +1316,23 @@ namespace AutoPuTTY
             name.Value = tbName.Text.Trim();
             newserver.SetAttributeNode(name);
 
-            if (tbHost.Text.Trim() != "")
-            {
-                XmlElement host = xmlconfig.CreateElement("Host");
-                host.InnerText = Encrypt(tbHost.Text.Trim());
-                newserver.AppendChild(host);
-            }
-            if (tbUser.Text != "")
-            {
-                XmlElement user = xmlconfig.CreateElement("User");
-                user.InnerText = Encrypt(tbUser.Text);
-                newserver.AppendChild(user);
-            }
-            if (tbPass.Text != "")
-            {
-                XmlElement pass = xmlconfig.CreateElement("Password");
-                pass.InnerText = Encrypt(tbPass.Text);
-                newserver.AppendChild(pass);
-            }
-            if (cbType.SelectedIndex > 0)
-            {
-                XmlElement type = xmlconfig.CreateElement("Type");
-                type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
-                newserver.AppendChild(type);
-            }
+            XmlElement host = xmlconfig.CreateElement("Host");
+            XmlElement user = xmlconfig.CreateElement("User");
+            XmlElement pass = xmlconfig.CreateElement("Password");
+            XmlElement type = xmlconfig.CreateElement("Type");
+            host.InnerText = Encrypt(tbHost.Text.Trim());
+            user.InnerText = Encrypt(tbUser.Text);
+            pass.InnerText = Encrypt(tbPass.Text);
+            type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
+            newserver.AppendChild(host);
+            newserver.AppendChild(user);
+            newserver.AppendChild(pass);
+            newserver.AppendChild(type);
 
-            XmlNodeList xmlnode = xmlconfig.SelectNodes("//Server[@Name=" + ParseXpathString(lbList.SelectedItem.ToString()) + "]");
+            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(lbList.SelectedItem.ToString()) + "]");
             if (xmlconfig.DocumentElement != null)
             {
-                if (xmlnode != null) xmlconfig.DocumentElement.ReplaceChild(newserver, xmlnode[0]);
+                if (xmlnode != null) xmlconfig.DocumentElement.ReplaceChild(newserver, xmlnode);
             }
 
             try
@@ -1438,6 +1356,21 @@ namespace AutoPuTTY
             BeginInvoke(new InvokeDelegate(lbList.Focus));
 
             if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
+        }
+
+        private void bEye_Click(object sender, EventArgs e)
+        {
+            TooglePassword(!(tbPass.PasswordChar == '●'));
+        }
+
+        private void bEye_MouseEnter(object sender, EventArgs e)
+        {
+            bEye.Image = ImageOpacity.Set(bEye.Image, (float)0.50);
+        }
+
+        private void bEye_MouseLeave(object sender, EventArgs e)
+        {
+            bEye.Image = (tbPass.PasswordChar == '●' ? Resources.iconeyeshow : Resources.iconeyehide);
         }
 
         private void bDelete_Click(object sender, EventArgs e)
@@ -1859,10 +1792,6 @@ namespace AutoPuTTY
             if (lbList.SelectedItem != null)
             {
                 server = XmlGetServer(lbList.SelectedItem.ToString());
-                foreach (var item in server)
-                {
-                    Debug.WriteLine("The nodes of MDG are:" + item);
-                }
 
                 if (sender is ComboBox)
                 {
@@ -2347,21 +2276,14 @@ namespace AutoPuTTY
 
                 XmlElement newvault = xmlconfig.CreateElement("Vault");
                 XmlAttribute name = xmlconfig.CreateAttribute("Name");
+                XmlElement pass = xmlconfig.CreateElement("Password");
+                XmlElement priv = xmlconfig.CreateElement("PrivateKey");
                 name.Value = tbVName.Text.Trim();
+                pass.InnerText = Encrypt(tbVPass.Text);
+                priv.InnerText = Encrypt(tbVPriv.Text);
                 newvault.SetAttributeNode(name);
-
-                if (tbPass.Text != "")
-                {
-                    XmlElement pass = xmlconfig.CreateElement("Password");
-                    pass.InnerText = Encrypt(tbVPass.Text);
-                    newvault.AppendChild(pass);
-                }
-                if (tbVPriv.Text != "")
-                {
-                    XmlElement priv = xmlconfig.CreateElement("PrivateKey");
-                    priv.InnerText = Encrypt(tbVPriv.Text);
-                    newvault.AppendChild(priv);
-                }
+                newvault.AppendChild(pass);
+                newvault.AppendChild(priv);
 
                 if (xmlconfig.DocumentElement != null) xmlconfig.DocumentElement.InsertAfter(newvault, xmlconfig.DocumentElement.LastChild);
 
@@ -2402,21 +2324,14 @@ namespace AutoPuTTY
 
             XmlElement newvault = xmlconfig.CreateElement("Vault");
             XmlAttribute name = xmlconfig.CreateAttribute("Name");
+            XmlElement pass = xmlconfig.CreateElement("Password");
+            XmlElement priv = xmlconfig.CreateElement("PrivateKey");
             name.Value = tbVName.Text.Trim();
+            pass.InnerText = Encrypt(tbVPass.Text);
+            priv.InnerText = Encrypt(tbVPriv.Text);
             newvault.SetAttributeNode(name);
-
-            if (tbVPass.Text != "")
-            {
-                XmlElement pass = xmlconfig.CreateElement("Password");
-                pass.InnerText = Encrypt(tbVPass.Text);
-                newvault.AppendChild(pass);
-            }
-            if (tbVPriv.Text != "")
-            {
-                XmlElement priv = xmlconfig.CreateElement("PrivateKey");
-                priv.InnerText = Encrypt(tbVPriv.Text);
-                newvault.AppendChild(priv);
-            }
+            newvault.AppendChild(pass);
+            newvault.AppendChild(priv);
 
             XmlNodeList xmlnode = xmlconfig.SelectNodes("//Vault[@Name=" + ParseXpathString(lbVault.SelectedItem.ToString()) + "]");
             if (xmlconfig.DocumentElement != null)
