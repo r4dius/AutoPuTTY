@@ -188,6 +188,7 @@
     <Content Include="Resources\autoputty.ico" />
     <None Include="Resources\eye.png" />
     <None Include="Resources\iconedit.png" />
+    <None Include="Resources\iconcopy.png" />
     <Content Include="Resources\iconeyehide.png" />
     <Content Include="Resources\iconeyeshow.png" />
     <None Include="Resources\close.png" />

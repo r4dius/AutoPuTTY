@@ -12,9 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web;
-using System.Web.UI.WebControls;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Xml;
 using ComboBox = System.Windows.Forms.ComboBox;
@@ -159,40 +157,34 @@ namespace AutoPuTTY
             connectmenu.Text = "Connect";
             connectmenu.Click += lbList_DoubleClick;
             cmList.MenuItems.Add(connectmenu);
-            i++;
             MenuItem sepmenu = new MenuItem();
             sepmenu.Text = "-";
-            sepmenu.Index = i;
+            sepmenu.Index = i++;
             cmList.MenuItems.Add(sepmenu);
-            i++;
             foreach (string type in _types)
             {
                 MenuItem listmenu = new MenuItem();
-                listmenu.Index = i;
+                listmenu.Index = i++;
                 listmenu.Text = type;
                 string _type = Array.IndexOf(types, type).ToString();
                 listmenu.Click += delegate { Connect(_type); };
                 cmList.MenuItems.Add(listmenu);
-                i++;
             }
             sepmenu = new MenuItem();
             sepmenu.Text = "-";
-            sepmenu.Index = i;
+            sepmenu.Index = i++;
             cmList.MenuItems.Add(sepmenu.CloneMenu());
-            i++;
             MenuItem deletemenu = new MenuItem();
-            deletemenu.Index = i;
+            deletemenu.Index = i++;
             deletemenu.Text = "Delete";
             deletemenu.Click += mDelete_Click;
             cmList.MenuItems.Add(deletemenu);
-            i++;
             sepmenu = new MenuItem();
             sepmenu.Text = "-";
-            sepmenu.Index = i;
+            sepmenu.Index = i++;
             cmList.MenuItems.Add(sepmenu.CloneMenu());
-            i++;
             MenuItem searchmenu = new MenuItem();
-            searchmenu.Index = i;
+            searchmenu.Index = i++;
             searchmenu.Text = "Search...";
             searchmenu.Click += SearchSwitchShow;
             cmList.MenuItems.Add(searchmenu);
@@ -371,41 +363,41 @@ namespace AutoPuTTY
                 // Check if the saved position is valid (not out of bounds)
                 if (!IsValidPosition(left, top, width, height))
                 {
-                    Console.WriteLine("notvalid 1");
+                    Debug.WriteLine("notvalid 1");
                     // If the saved position is out of bounds, center the form on the screen it's on
                     Screen screen = Screen.FromPoint(new Point(left + borderwidth, top));
-                    Console.WriteLine(screen);
+                    Debug.WriteLine(screen);
                     if (width - (borderwidth * 2) > screen.WorkingArea.Width)
                     {
                         width = screen.WorkingArea.Width + (borderwidth * 2);
-                        Console.WriteLine("do 1");
+                        Debug.WriteLine("do 1");
                     }
                     if (height - borderwidth > screen.WorkingArea.Height)
                     {
                         height = screen.WorkingArea.Height + borderwidth;
-                        Console.WriteLine("do 2");
+                        Debug.WriteLine("do 2");
                     }
                     if (left + borderwidth < screen.WorkingArea.X)
                     {
                         left = screen.WorkingArea.X;
-                        Console.WriteLine("do 3");
+                        Debug.WriteLine("do 3");
                     }
                     if (top < screen.WorkingArea.Y)
                     {
                         top = screen.WorkingArea.Y;
-                        Console.WriteLine("do 4");
+                        Debug.WriteLine("do 4");
                     }
                     if (left + width - borderwidth > screen.WorkingArea.Width)
                     {
                         left = screen.WorkingArea.X + screen.WorkingArea.Width - width + borderwidth;
-                        Console.WriteLine("do 5");
+                        Debug.WriteLine("do 5");
                     }
                     if (top + height - borderwidth > screen.WorkingArea.Height)
                     {
                         top = screen.WorkingArea.Y + screen.WorkingArea.Height - height + borderwidth;
-                        Console.WriteLine("do 6");
+                        Debug.WriteLine("do 6");
                     }
-                    Console.WriteLine(screen);
+                    Debug.WriteLine(screen);
                 }
                 else
                 {
@@ -417,7 +409,7 @@ namespace AutoPuTTY
                         width = Math.Min(width, screen.WorkingArea.Width);
                         height = Math.Min(height, screen.WorkingArea.Height);
 
-                        Console.WriteLine("size 1");
+                        Debug.WriteLine("size 1");
                     }
 
                     // Check if the window is partially or completely outside the screen bounds after resizing
@@ -426,7 +418,7 @@ namespace AutoPuTTY
                         // Move the window back into the screen bounds
                         left = Math.Max(screen.WorkingArea.Left, Math.Min(form.Left, screen.WorkingArea.Right - form.Width));
                         top = Math.Max(screen.WorkingArea.Top, Math.Min(form.Top, screen.WorkingArea.Bottom - form.Height));
-                        Console.WriteLine("notvalid 2");
+                        Debug.WriteLine("notvalid 2");
                     }
                 }
             }
@@ -867,8 +859,6 @@ namespace AutoPuTTY
         public string Decrypt(string toDecrypt, string key)
         {
             if (toDecrypt == "") return "";
-            Debug.WriteLine("to decrypt " + toDecrypt);
-            Debug.WriteLine("decrypto " + Settings.Default.cryptokey);
 
             byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
             MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
@@ -896,9 +886,6 @@ namespace AutoPuTTY
         public string Encrypt(string toEncrypt, string key)
         {
             if (toEncrypt == "") return "";
-
-            Debug.WriteLine("to crypt " + toEncrypt);
-            Debug.WriteLine("crypto " + key);
 
             byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
             MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
@@ -1230,7 +1217,18 @@ namespace AutoPuTTY
                 xmlconfig.Load(Settings.Default.cfgpath);
 
                 XmlNodeList xmlnode = xmlconfig.GetElementsByTagName(node);
-                for (int i = 0; i < xmlnode.Count; i++) if (!list.Items.Contains(xmlnode[i].Attributes[0].Value)) list.Items.Add(xmlnode[i].Attributes[0].Value);
+                for (int i = 0; i < xmlnode.Count; i++)
+                {
+                    if (!list.Items.Contains(xmlnode[i].Attributes[0].Value))
+                    {
+                        list.Items.Add(xmlnode[i].Attributes[0].Value);
+                        if (node == "Vault")
+                        {
+                            Debug.WriteLine("Add cbVault " + xmlnode[i].Attributes[0].Value);
+                            cbVault.Items.Add(xmlnode[i].Attributes[0].Value.ToString());
+                        }
+                    }
+                }
             }
             else
             {
@@ -1246,6 +1244,7 @@ namespace AutoPuTTY
         internal void XmlToVault()
         {
             XmlToList("Vault", lbVault);
+
         }
 
         private void bAdd_Click(object sender, EventArgs e)
@@ -1363,14 +1362,16 @@ namespace AutoPuTTY
             TooglePassword(!(tbPass.PasswordChar == '●'));
         }
 
-        private void bEye_MouseEnter(object sender, EventArgs e)
+        private void bIcon_MouseEnter(object sender, EventArgs e)
         {
-            bEye.Image = ImageOpacity.Set(bEye.Image, (float)0.50);
+            PictureBox icon = (PictureBox)sender;
+            icon.Image = ImageOpacity.Set(icon.Image, (float)0.50);
         }
 
-        private void bEye_MouseLeave(object sender, EventArgs e)
+        private void bIcon_MouseLeave(object sender, EventArgs e)
         {
-            bEye.Image = (tbPass.PasswordChar == '●' ? Resources.iconeyeshow : Resources.iconeyehide);
+            PictureBox icon = (PictureBox)sender;
+            icon.Image = ImageOpacity.Set(icon.Image, 2);
         }
 
         private void bDelete_Click(object sender, EventArgs e)
@@ -1436,7 +1437,7 @@ namespace AutoPuTTY
             tbName_TextChanged(sender, e);
         }
 
-        private void cbType_DrawItem(object sender, DrawItemEventArgs e)
+        private void comboBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             int index = e.Index >= 0 ? e.Index : -1;
             Brush brush = ((e.State & DrawItemState.Selected) > 0) ? SystemBrushes.HighlightText : new SolidBrush(((System.Windows.Forms.ComboBox)sender).ForeColor);
@@ -2129,18 +2130,10 @@ namespace AutoPuTTY
         }
         private void SwitchPassword(bool _switch)
         {
-            if (_switch)
-            {
-                lPass.Text = "Vault";
-                tbPass.Visible = false;
-                cbVault.Visible = true;
-            }
-            else
-            {
-                lPass.Text = "Password";
-                tbPass.Visible = true;
-                cbVault.Visible = false;
-            }
+            lPass.Text = (_switch ? "Vault" : "Password");
+            tbPass.Visible = !_switch;
+            cbVault.Visible = _switch;
+            bEdit.Visible = _switch;
         }
 
         private void SwitchVault(bool show)
@@ -2303,6 +2296,7 @@ namespace AutoPuTTY
 
                 tbVName.Text = tbVName.Text.Trim();
                 lbVault.Items.Add(tbVName.Text);
+                cbVault.Items.Add(tbVName.Text);
                 lbVault.SelectedItems.Clear();
                 lbVault.SelectedItem = tbVName.Text;
                 bVModify.Enabled = false;
@@ -2349,10 +2343,12 @@ namespace AutoPuTTY
             }
 
             remove = true;
+            cbVault.Items.RemoveAt(lbVault.Items.IndexOf(lbVault.SelectedItem));
             lbVault.Items.RemoveAt(lbVault.Items.IndexOf(lbVault.SelectedItem));
             remove = false;
             tbVName.Text = tbVName.Text.Trim();
             lbVault.Items.Add(tbVName.Text);
+            cbVault.Items.Add(tbVName.Text);
             lbVault.SelectedItems.Clear();
             lbVault.SelectedItem = tbVName.Text;
             bVModify.Enabled = false;
@@ -2371,12 +2367,60 @@ namespace AutoPuTTY
                 {
                     XmlDropVault("Name=" + ParseXpathString(lbVault.SelectedItems[0].ToString()));
                     remove = true;
+                    cbVault.Items.Remove(lbVault.SelectedItems[0].ToString());
                     lbVault.Items.Remove(lbVault.SelectedItems[0].ToString());
                     remove = false;
                     lbVault.SelectedItems.Clear();
                     tbVName_TextChanged(this, e);
                 }
             }
+        }
+
+        private void lbVault_ControlAdded(object sender, ControlEventArgs e)
+        {
+            Debug.WriteLine("Add cbVault " + "e.Control.Name");
+            cbVault.Items.Add(e.Control.Name);
+        }
+
+        private void lbVault_ControlRemoved(object sender, ControlEventArgs e)
+        {
+            Debug.WriteLine("Remove cbVault " + "e.Control.Name");
+            cbVault.Items.Remove(e.Control.Name);
+        }
+
+        private void bCopyName_Click(object sender, EventArgs e)
+        {
+            System.Windows.Clipboard.SetText(tbName.Text);
+        }
+
+        private void bCopyHost_Click(object sender, EventArgs e)
+        {
+            System.Windows.Clipboard.SetText(tbHost.Text);
+        }
+
+        private void bCopyUser_Click(object sender, EventArgs e)
+        {
+            System.Windows.Clipboard.SetText(tbUser.Text);
+        }
+
+        private void bCopyPass_Click(object sender, EventArgs e)
+        {
+            System.Windows.Clipboard.SetText(tbPass.Text);
+        }
+
+        private void bVCopyName_Click(object sender, EventArgs e)
+        {
+            System.Windows.Clipboard.SetText(tbVName.Text);
+        }
+
+        private void bVCopyPass_Click(object sender, EventArgs e)
+        {
+            System.Windows.Clipboard.SetText(tbVPass.Text);
+        }
+
+        private void bVCopyPriv_Click(object sender, EventArgs e)
+        {
+            System.Windows.Clipboard.SetText(tbVPriv.Text);
         }
     }
 }
