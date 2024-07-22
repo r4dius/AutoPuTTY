@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">0.42</Value>
+      <Value Profile="(Default)">0.50</Value>
     </Setting>
     <Setting Name="multicolumnwidth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
@@ -103,6 +103,9 @@
     </Setting>
     <Setting Name="maximized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="tooltips" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

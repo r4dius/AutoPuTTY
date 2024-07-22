@@ -91,6 +91,7 @@ namespace AutoPuTTY
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.pOGeneral = new System.Windows.Forms.Panel();
+            this.cbGTooltips = new System.Windows.Forms.CheckBox();
             this.cbGMinimize = new System.Windows.Forms.CheckBox();
             this.cbGPosition = new System.Windows.Forms.CheckBox();
             this.cbGSize = new System.Windows.Forms.CheckBox();
@@ -435,6 +436,7 @@ namespace AutoPuTTY
             // 
             this.cbRDSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbRDSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRDSize.FormattingEnabled = true;
             this.cbRDSize.Items.AddRange(new object[] {
             "",
@@ -859,6 +861,7 @@ namespace AutoPuTTY
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pOGeneral.BackColor = System.Drawing.Color.Transparent;
+            this.pOGeneral.Controls.Add(this.cbGTooltips);
             this.pOGeneral.Controls.Add(this.cbGMinimize);
             this.pOGeneral.Controls.Add(this.cbGPosition);
             this.pOGeneral.Controls.Add(this.cbGSize);
@@ -878,6 +881,19 @@ namespace AutoPuTTY
             this.pOGeneral.Name = "pOGeneral";
             this.pOGeneral.Size = new System.Drawing.Size(286, 189);
             this.pOGeneral.TabIndex = 0;
+            // 
+            // cbGTooltips
+            // 
+            this.cbGTooltips.AutoSize = true;
+            this.cbGTooltips.Checked = true;
+            this.cbGTooltips.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGTooltips.Location = new System.Drawing.Point(152, 144);
+            this.cbGTooltips.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGTooltips.Name = "cbGTooltips";
+            this.cbGTooltips.Size = new System.Drawing.Size(89, 17);
+            this.cbGTooltips.TabIndex = 15;
+            this.cbGTooltips.Text = "Show tooltips";
+            this.cbGTooltips.CheckedChanged += new System.EventHandler(this.cbGTooltips_CheckedChanged);
             // 
             // cbGMinimize
             // 
@@ -1248,6 +1264,12 @@ namespace AutoPuTTY
             this.bOK.Text = "OK";
             this.bOK.UseVisualStyleBackColor = true;
             // 
+            // toolTipOptions
+            // 
+            this.toolTipOptions.AutoPopDelay = 5000;
+            this.toolTipOptions.InitialDelay = 200;
+            this.toolTipOptions.ReshowDelay = 100;
+            // 
             // formOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1387,6 +1409,7 @@ namespace AutoPuTTY
         private SingleClickLabel lGConfirm;
         private SingleClickLabel lGOther;
         private SingleClickLabel lWSCPOther;
+        public System.Windows.Forms.CheckBox cbGTooltips;
     }
 }
 

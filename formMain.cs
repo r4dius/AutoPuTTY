@@ -1,9 +1,11 @@
 ﻿using AutoPuTTY.Properties;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -49,6 +51,11 @@ namespace AutoPuTTY
         private string keysearch = "";
         private string laststate = "normal";
         private Screen current;
+        private Image iconedithover;
+        private Image iconcopyhover;
+        private Image iconeyeshowhover;
+        private Image iconeyehidehover;
+        private Image iconeyehover;
 
         public formMain()
         {
@@ -131,6 +138,7 @@ namespace AutoPuTTY
             if (XmlGetConfig("rdspan").ToLower() == "true") Settings.Default.rdspan = true;
             if (XmlGetConfig("remotedesktop") != "") Settings.Default.rdpath = XmlGetConfig("remotedesktop");
             if (XmlGetConfig("size") != "") Settings.Default.size = XmlGetConfig("size");
+            if (XmlGetConfig("tooltips").ToLower() == "false") Settings.Default.tooltips = false;
             if (XmlGetConfig("vnc") != "") Settings.Default.vncpath = XmlGetConfig("vnc");
             if (XmlGetConfig("vncfilespath") != "") Settings.Default.vncfilespath = XmlGetConfig("vncfilespath");
             if (XmlGetConfig("vncfullscreen").ToLower() == "true") Settings.Default.vncfullscreen = true;
@@ -145,11 +153,19 @@ namespace AutoPuTTY
             InsertMenu(sysMenuHandle, 5, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
             InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
 
+            toolTipMain.Active = Settings.Default.tooltips;
+
             notifyIcon.Visible = Settings.Default.minimize;
             notifyIcon.ContextMenu = cmSystray;
 
             lbList.MultiColumn = Settings.Default.multicolumn;
             lbList.ColumnWidth = Settings.Default.multicolumnwidth * 10;
+
+            iconedithover = ImageOpacity.Set(Resources.iconedit, (float)0.5);
+            iconcopyhover = ImageOpacity.Set(Resources.iconcopy, (float)0.5);
+            iconeyeshowhover = ImageOpacity.Set(Resources.iconeyeshow, (float)0.5);
+            iconeyehidehover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
+            iconeyehover = ImageOpacity.Set(Resources.eye, (float)0.5);
 
             int i = 0;
             MenuItem connectmenu = new MenuItem();
@@ -248,7 +264,7 @@ namespace AutoPuTTY
             if (Settings.Default.passwordmd5.Trim() != "")
             {
                 passwordrequired = true;
-                pbPassEye.Image = ImageOpacity.Set(pbPassEye.Image, (float)0.50);
+                pbPassEye.Image = iconeyehover;
                 BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
                 ShowTableLayoutPanel(tlPassword);
             }
@@ -270,7 +286,7 @@ namespace AutoPuTTY
 
         protected override void WndProc(ref Message m)
         {
-            if(m.Msg == WM_SYSCOMMAND)
+            if (m.Msg == WM_SYSCOMMAND)
             {
                 switch (m.WParam.ToInt32())
                 {
@@ -292,6 +308,13 @@ namespace AutoPuTTY
         private void Startup()
         {
             passwordrequired = false;
+            bCopyName.Enabled = false;
+            bCopyHost.Enabled = false;
+            bCopyUser.Enabled = false;
+            bCopyPass.Enabled = false;
+            bVCopyName.Enabled = false;
+            bVCopyPass.Enabled = false;
+            bVCopyPriv.Enabled = false;
             ShowTableLayoutPanel(tlMain);
             XmlToServer();
             XmlToVault();
@@ -465,23 +488,32 @@ namespace AutoPuTTY
 
                 foreach (object item in lbList.SelectedItems)
                 {
-                    ArrayList server = XmlGetServer(item.ToString());
+                    IDictionary<string, string> server = XmlGetServer(item.ToString());
 
                     string[] f = { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
                     string[] ps = { "/", "\\\\" };
                     string[] pr = { "\\", "\\" };
                     string[] _temp;
                     string winscpprot = "sftp://";
-                    string _host = Decrypt(server[1].ToString());
-                    string _user = Decrypt(server[2].ToString());
-                    string _pass = Decrypt(server[3].ToString());
-                    string _type = type == "-1" ? server[4].ToString() : type;
+                    string _host = Decrypt(server["Host"]);
+                    string _user = Decrypt(server["User"]);
+                    string _pass = Decrypt(server["Password"]);
+                    string _vault = server["Vault"];
+                    string _type = type == "-1" ? server["Type"] : type;
                     string proxy = "";
                     string proxyuser = "";
                     string proxypass = "";
                     string proxyhost = "";
                     string proxyport = "";
                     string _userfromproxy = "";
+                    string _vaultprivatekey = "";
+
+                    if (_vault.Trim() != "")
+                    {
+                        IDictionary<string, string> vault = XmlGetVault(_vault);
+                        _pass = Decrypt(vault["Password"]);
+                        _vaultprivatekey = Decrypt(vault["PrivateKey"]);
+                    }
 
                     //SSH Jump
                     if (_user.Contains("#"))
@@ -556,7 +588,7 @@ namespace AutoPuTTY
                                     if (Int32.TryParse(width.Trim(), out num)) arraylist.Add(width.Trim());
                                 }
 
-                                TextWriter rdpfile = new StreamWriter(rdpout + ReplaceU(f, server[0].ToString()) + ".rdp");
+                                TextWriter rdpfile = new StreamWriter(rdpout + ReplaceU(f, server["Name"]) + ".rdp");
                                 if (Settings.Default.rdsize == "Full screen") rdpfile.WriteLine("screen mode id:i:2");
                                 else rdpfile.WriteLine("screen mode id:i:1");
                                 if (arraylist.Count == 2)
@@ -577,7 +609,7 @@ namespace AutoPuTTY
 
                                 Process myProc = new Process();
                                 myProc.StartInfo.FileName = rdpath;
-                                myProc.StartInfo.Arguments = "\"" + rdpout + ReplaceU(f, server[0].ToString()) + ".rdp\"";
+                                myProc.StartInfo.Arguments = "\"" + rdpout + ReplaceU(f, server["Name"]) + ".rdp\"";
                                 if (rdpargs != "") myProc.StartInfo.Arguments += " " + rdpargs;
 
                                 Debug.WriteLine(myProc.StartInfo.FileName + myProc.StartInfo.FileName.IndexOf('"').ToString() + File.Exists(myProc.StartInfo.FileName).ToString());
@@ -642,7 +674,7 @@ namespace AutoPuTTY
                                     }
                                 }
 
-                                TextWriter vncfile = new StreamWriter(vncout + ReplaceU(f, server[0].ToString()) + ".vnc");
+                                TextWriter vncfile = new StreamWriter(vncout + ReplaceU(f, server["Name"]) + ".vnc");
                                 vncfile.WriteLine("[Connection]");
                                 if (host != "") vncfile.WriteLine("host=" + host.Trim());
                                 if (port != "") vncfile.WriteLine("port=" + port.Trim());
@@ -665,7 +697,7 @@ namespace AutoPuTTY
 
                                 Process myProc = new Process();
                                 myProc.StartInfo.FileName = Settings.Default.vncpath;
-                                myProc.StartInfo.Arguments = "-config \"" + vncout + ReplaceU(f, server[0].ToString()) + ".vnc\"";
+                                myProc.StartInfo.Arguments = "-config \"" + vncout + ReplaceU(f, server["Name"]) + ".vnc\"";
                                 if (vncargs != "") myProc.StartInfo.Arguments += " " + vncargs;
                                 try
                                 {
@@ -731,7 +763,8 @@ namespace AutoPuTTY
                                 if (host != "") myProc.StartInfo.Arguments += HttpUtility.UrlEncode(host);
                                 if (port != "") myProc.StartInfo.Arguments += ":" + port;
                                 if (winscpprot == "ftp://") myProc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
-                                if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") myProc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
+                                if (_vaultprivatekey != "") myProc.StartInfo.Arguments += " /privatekey=\"" + _vaultprivatekey + "\"";
+                                else if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") myProc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
 
                                 //SSH Jump
                                 if (proxyhost != "")
@@ -822,7 +855,8 @@ namespace AutoPuTTY
                                 if (port != "") myProc.StartInfo.Arguments += " " + port;
                                 if (_user != "" && _pass != "") myProc.StartInfo.Arguments += " -pw \"" + ReplaceA(passs, passr, _pass) + "\"";
                                 if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") myProc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
-                                if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") myProc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
+                                if (_vaultprivatekey != "") myProc.StartInfo.Arguments += " -i \"" + _vaultprivatekey + "\"";
+                                else if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") myProc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
                                 if (Settings.Default.puttyforward) myProc.StartInfo.Arguments += " -X";
                                 if (puttyargs != "") myProc.StartInfo.Arguments += " " + puttyargs;
 
@@ -1026,12 +1060,14 @@ namespace AutoPuTTY
         {
             if (state)
             {
-                bEye.Image = ImageOpacity.Set(Resources.iconeyeshow, (float)0.50);
+                bEye.Image = iconeyeshowhover;
+                toolTipMain.SetToolTip(bEye, "Show password");
                 tbPass.PasswordChar = '●';
             }
             else
             {
-                bEye.Image = ImageOpacity.Set(Resources.iconeyehide, (float)0.50);
+                bEye.Image = iconeyehidehover;
+                toolTipMain.SetToolTip(bEye, "Hide password");
                 tbPass.PasswordChar = '\0';
             }
         }
@@ -1112,7 +1148,7 @@ namespace AutoPuTTY
 
         public void XmlDropServer(string item)
         {
-            XmlDropNode("Server", new ArrayList{ "Name=" + ParseXpathString(item) });
+            XmlDropNode("Server", new ArrayList { "Name=" + ParseXpathString(item) });
         }
 
         public void XmlDropServer(ArrayList items)
@@ -1122,7 +1158,16 @@ namespace AutoPuTTY
 
         public void XmlDropVault(string item)
         {
-            XmlDropNode("Vault", new ArrayList{item});
+            // delete vault name for existing servers
+            XmlNodeList servernodes = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(lbVault.SelectedItems[0].ToString()) + "]");
+            if (servernodes != null)
+            {
+                foreach (XmlNode servernode in servernodes)
+                {
+                    servernode.InnerText = string.Empty;
+                }
+            }
+            XmlDropNode("Vault", new ArrayList { item });
         }
 
         public void XmlDropVault(ArrayList items)
@@ -1130,17 +1175,19 @@ namespace AutoPuTTY
             XmlDropNode("Vault", items);
         }
 
-        public ArrayList XmlGetServer(string name)
+        public IDictionary<string, string> XmlGetServer(string name)
         {
+            IDictionary<string, string> server = new Dictionary<string, string>();
+
             if (!File.Exists(Settings.Default.cfgpath))
             {
-                return new ArrayList();
+                return server;
             }
 
-            ArrayList server = new ArrayList();
             string host = "";
             string user = "";
             string pass = "";
+            string vault = "";
             int type = 0;
 
             xmlconfig.Load(Settings.Default.cfgpath);
@@ -1161,26 +1208,36 @@ namespace AutoPuTTY
                         case "Password":
                             pass = childnode.InnerText;
                             break;
+                        case "Vault":
+                            vault = childnode.InnerText;
+                            break;
                         case "Type":
                             Int32.TryParse(childnode.InnerText, out type);
                             break;
                     }
                 }
             }
-            else return new ArrayList();
+            else return server;
 
-            server.AddRange(new string[] { name, host, user, pass, type.ToString() });
+            server.Add("Name", name);
+            server.Add("Host", host);
+            server.Add("User", user);
+            server.Add("Password", pass);
+            server.Add("Vault", vault);
+            server.Add("Type", type.ToString());
+
             return server;
         }
 
-        public ArrayList XmlGetVault(string name)
+        public IDictionary<string, string> XmlGetVault(string name)
         {
+            IDictionary<string, string> vault = new Dictionary<string, string>();
+
             if (!File.Exists(Settings.Default.cfgpath))
             {
-                return new ArrayList();
+                return vault;
             }
 
-            ArrayList vault = new ArrayList();
             string pass = "";
             string priv = "";
 
@@ -1202,21 +1259,26 @@ namespace AutoPuTTY
                     }
                 }
             }
-            else return new ArrayList();
+            else return vault;
 
-        vault.AddRange(new string[] { name, pass, priv });
+            vault.Add("Name", name);
+            vault.Add("Password", pass);
+            vault.Add("PrivateKey", priv);
+
             return vault;
         }
 
         internal void XmlToList(string node, ListBox list)
         {
             list.Items.Clear();
+            Debug.WriteLine("node " + node);
 
             if (File.Exists(Settings.Default.cfgpath))
             {
                 xmlconfig.Load(Settings.Default.cfgpath);
 
-                XmlNodeList xmlnode = xmlconfig.GetElementsByTagName(node);
+                //XmlNodeList xmlnode = xmlconfig.GetElementsByTagName(node);
+                XmlNodeList xmlnode = xmlconfig.SelectNodes("/List/" + node);
                 for (int i = 0; i < xmlnode.Count; i++)
                 {
                     if (!list.Items.Contains(xmlnode[i].Attributes[0].Value))
@@ -1258,17 +1320,25 @@ namespace AutoPuTTY
                 XmlElement host = xmlconfig.CreateElement("Host");
                 XmlElement user = xmlconfig.CreateElement("User");
                 XmlElement pass = xmlconfig.CreateElement("Password");
+                XmlElement vault = xmlconfig.CreateElement("Vault");
                 XmlElement type = xmlconfig.CreateElement("Type");
                 name.Value = tbName.Text.Trim();
                 host.InnerText = Encrypt(tbHost.Text.Trim());
                 user.InnerText = Encrypt(tbUser.Text);
-                pass.InnerText = Encrypt(tbPass.Text);
-                pass.InnerText = Encrypt(tbPass.Text);
+                if (lPass.Text == "Password")
+                {
+                    pass.InnerText = Encrypt(tbPass.Text);
+                }
+                else
+                {
+                    vault.InnerText = cbVault.Text;
+                }
                 type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
                 newserver.SetAttributeNode(name);
                 newserver.AppendChild(host);
                 newserver.AppendChild(user);
                 newserver.AppendChild(pass);
+                newserver.AppendChild(vault);
                 newserver.AppendChild(type);
 
                 if (xmlconfig.DocumentElement != null) xmlconfig.DocumentElement.InsertAfter(newserver, xmlconfig.DocumentElement.LastChild);
@@ -1287,6 +1357,7 @@ namespace AutoPuTTY
                 tbHost.BackColor = SystemColors.Window;
                 tbUser.BackColor = SystemColors.Window;
                 tbPass.BackColor = SystemColors.Window;
+                cbVault.BackColor = SystemColors.Window;
                 cbType.BackColor = SystemColors.Window;
 
                 tbName.Text = tbName.Text.Trim();
@@ -1318,14 +1389,28 @@ namespace AutoPuTTY
             XmlElement host = xmlconfig.CreateElement("Host");
             XmlElement user = xmlconfig.CreateElement("User");
             XmlElement pass = xmlconfig.CreateElement("Password");
+            XmlElement vault = xmlconfig.CreateElement("Vault");
             XmlElement type = xmlconfig.CreateElement("Type");
             host.InnerText = Encrypt(tbHost.Text.Trim());
             user.InnerText = Encrypt(tbUser.Text);
-            pass.InnerText = Encrypt(tbPass.Text);
+            if (lPass.Text == "Password")
+            {
+                pass.InnerText = Encrypt(tbPass.Text);
+            }
+            else
+            {
+                vault.InnerText = cbVault.Text;
+            }
+
+            Debug.WriteLine("tbPass.Text " + tbPass.Text);
+            Debug.WriteLine("pass.InnerText " + pass.InnerText);
+            Debug.WriteLine("vault.InnerText " + vault.InnerText);
+
             type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
             newserver.AppendChild(host);
             newserver.AppendChild(user);
             newserver.AppendChild(pass);
+            newserver.AppendChild(vault);
             newserver.AppendChild(type);
 
             XmlNode xmlnode = xmlconfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(lbList.SelectedItem.ToString()) + "]");
@@ -1362,16 +1447,44 @@ namespace AutoPuTTY
             TooglePassword(!(tbPass.PasswordChar == '●'));
         }
 
-        private void bIcon_MouseEnter(object sender, EventArgs e)
+        private void bIconEdit_MouseEnter(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
-            icon.Image = ImageOpacity.Set(icon.Image, (float)0.50);
+            icon.Image = iconedithover;
         }
 
-        private void bIcon_MouseLeave(object sender, EventArgs e)
+        private void bIconEdit_MouseLeave(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
-            icon.Image = ImageOpacity.Set(icon.Image, 2);
+            icon.Image = Resources.iconedit;
+        }
+
+        private void bIconEye_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            if(tbPass.PasswordChar == '●') icon.Image = iconeyeshowhover;
+            else icon.Image = iconeyehidehover;
+        }
+
+        private void bIconEye_MouseLeave(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            if (tbPass.PasswordChar == '●') icon.Image = Resources.iconeyeshow;
+            else icon.Image = Resources.iconeyehide;
+        }
+
+        private void bIconCopy_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            if (!icon.Enabled) return;
+            icon.Image = iconcopyhover;
+        }
+
+        private void bIconCopy_MouseLeave(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            if (!icon.Enabled) return;
+            icon.Image = Resources.iconcopy;
         }
 
         private void bDelete_Click(object sender, EventArgs e)
@@ -1386,7 +1499,7 @@ namespace AutoPuTTY
                     lbList.Items.Remove(lbList.SelectedItems[0].ToString());
                     remove = false;
                     lbList.SelectedItems.Clear();
-                    tbName_TextChanged(this, e);
+                    tbServer_TextChanged(this, e);
                 }
             }
         }
@@ -1434,7 +1547,7 @@ namespace AutoPuTTY
         private void cbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
-            tbName_TextChanged(sender, e);
+            tbServer_TextChanged(sender, e);
         }
 
         private void comboBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -1467,7 +1580,7 @@ namespace AutoPuTTY
                     }
                     remove = false;
                     if (_items.Count > 0) XmlDropServer(_items);
-                    tbName_TextChanged(this, e);
+                    tbServer_TextChanged(this, e);
                 }
             }
         }
@@ -1594,15 +1707,27 @@ namespace AutoPuTTY
             tbUser.BackColor = SystemColors.Window;
             tbPass.BackColor = SystemColors.Window;
             cbType.BackColor = SystemColors.Window;
+            cbVault.BackColor = SystemColors.Window;
 
-            ArrayList server = XmlGetServer(lbList.SelectedItem.ToString());
+            IDictionary<string, string> server = XmlGetServer(lbList.SelectedItem.ToString());
             Debug.WriteLine(server);
 
-            tbName.Text = (string)server[0];
-            tbHost.Text = Decrypt((string)server[1]);
-            tbUser.Text = Decrypt((string)server[2]);
-            tbPass.Text = Decrypt((string)server[3]);
-            cbType.SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server[4])]);
+            tbName.Text = server["Name"];
+            tbHost.Text = Decrypt(server["Host"]);
+            tbUser.Text = Decrypt(server["User"]);
+            tbPass.Text = Decrypt(server["Password"]);
+            if (server["Vault"].Trim() != "" && cbVault.Items.Contains(server["Vault"]))
+            {
+                SwitchPassword(true);
+                cbVault.SelectedItem = server["Vault"];
+            }
+            else
+            {
+                SwitchPassword(false);
+                if(cbVault.Items.Count > 0) cbVault.SelectedIndex = 0;
+            }
+            cbType.SelectedItem = _types[Convert.ToInt32(server["Type"])];
+            //SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
             lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
 
             if (bAdd.Enabled) bAdd.Enabled = false;
@@ -1727,7 +1852,7 @@ namespace AutoPuTTY
             }
 
             tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterwidth ? tlLeft.Width - tbFilter.Left : tbfilterwidth;
-            if(pFindToogle.Width >= pfindwidth) cbCase.TabStop = true;
+            if (pFindToogle.Width >= pfindwidth) cbCase.TabStop = true;
             else cbCase.TabStop = false;
         }
 
@@ -1776,55 +1901,65 @@ namespace AutoPuTTY
             }
         }
 
-        private void tbName_TextChanged(object sender, EventArgs e)
+        private void tbServer_TextChanged(object sender, EventArgs e)
         {
             ComboBox cbSender = new ComboBox();
             TextBox tbSender = new TextBox();
             if (sender is ComboBox) cbSender = (ComboBox)sender;
             else if (sender is TextBox) tbSender = (TextBox)sender;
 
-            ArrayList server = new ArrayList();
+            IDictionary<string, string> server = new Dictionary<string, string>();
             string tbVal = "";
             int cbVal = 0;
             Color normal = SystemColors.Window;
             Color changed_ok = Color.FromArgb(235, 255, 225);
             Color changed_error = Color.FromArgb(255, 235, 225);
 
-            if (lbList.SelectedItem != null)
-            {
-                server = XmlGetServer(lbList.SelectedItem.ToString());
-
-                if (sender is ComboBox)
-                {
-                    cbVal = Array.IndexOf(_types, types[Convert.ToInt32((string)server[4])]);
-                }
-                else if (sender is TextBox)
-                {
-                    switch (tbSender.Name)
-                    {
-                        case "tbName":
-                            tbVal = (string)server[0];
-                            break;
-                        case "tbHost":
-                            tbVal = Decrypt((string)server[1]);
-                            break;
-                        case "tbUser":
-                            tbVal = Decrypt((string)server[2]);
-                            break;
-                        case "tbPass":
-                            tbVal = Decrypt((string)server[3]);
-                            break;
-                    }
-                }
-            }
+            if (lbList.SelectedItem != null) server = XmlGetServer(lbList.SelectedItem.ToString());
 
             if (sender is ComboBox)
             {
+                if (lbList.SelectedItem != null) {
+                    switch (cbSender.Name)
+                    {
+                        case "cbVault":
+                            cbVal = cbVault.Items.IndexOf(server["Vault"]);
+                            break;
+                        case "cbType":
+                            cbVal = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
+                            break;
+                    }
+                }
+
                 if (cbSender.SelectedIndex != cbVal) cbSender.BackColor = changed_ok;
                 else cbSender.BackColor = normal;
             }
             else if (sender is TextBox)
             {
+                switch (tbSender.Name)
+                {
+                    case "tbName":
+                        if (lbList.SelectedItem != null) tbVal = server["Name"];
+                        if (tbSender.Text.Trim() == "") bCopyName.Enabled = false;
+                        else bCopyName.Enabled = true;
+                        break;
+                    case "tbHost":
+                        if (lbList.SelectedItem != null) tbVal = Decrypt(server["Host"]);
+                        if (tbSender.Text.Trim() == "") bCopyHost.Enabled = false;
+                        else bCopyHost.Enabled = true;
+                        break;
+                    case "tbUser":
+                        if (lbList.SelectedItem != null) tbVal = Decrypt(server["User"]);
+                        if (tbSender.Text.Trim() == "") bCopyUser.Enabled = false;
+                        else bCopyUser.Enabled = true;
+                        break;
+                    case "tbPass":
+                        if (lbList.SelectedItem != null) tbVal = Decrypt(server["Password"]);
+                        if (tbSender.Text.Trim() == "") bCopyPass.Enabled = false;
+                        else bCopyPass.Enabled = true;
+                        break;
+                }
+
                 if (tbSender.Name == "tbName" || tbSender.Name == "tbHost")
                 {
                     if (tbSender.Text != tbVal)
@@ -1839,7 +1974,7 @@ namespace AutoPuTTY
                     if (tbSender.Text != tbVal) tbSender.BackColor = changed_ok;
                     else tbSender.BackColor = normal;
                 }
-            }
+            }            
 
             if (indexchanged) return;
             //modify an existing item
@@ -1866,21 +2001,6 @@ namespace AutoPuTTY
                 if (tbName.Text.Trim() != "" && tbHost.Text.Trim() != "" && XmlGetServer(tbName.Text.Trim()).Count < 1) bAdd.Enabled = true;
                 else bAdd.Enabled = false;
             }
-        }
-
-        private void tbHost_TextChanged(object sender, EventArgs e)
-        {
-            tbName_TextChanged(sender, e);
-        }
-
-        private void tbPass_TextChanged(object sender, EventArgs e)
-        {
-            tbName_TextChanged(sender, e);
-        }
-
-        private void tbUser_TextChanged(object sender, EventArgs e)
-        {
-            tbName_TextChanged(sender, e);
         }
 
         // update "search"
@@ -2021,7 +2141,7 @@ namespace AutoPuTTY
 
         private void pbPassEye_MouseLeave(object sender, EventArgs e)
         {
-            pbPassEye.Image = ImageOpacity.Set(pbPassEye.Image, (float)0.50);
+            pbPassEye.Image = iconeyehover;
         }
 
         private void bPassOK_Click(object sender, EventArgs e)
@@ -2131,6 +2251,7 @@ namespace AutoPuTTY
         private void SwitchPassword(bool _switch)
         {
             lPass.Text = (_switch ? "Vault" : "Password");
+            toolTipMain.SetToolTip(lPass, "Switch to " + (_switch ? "password" : "vault"));
             tbPass.Visible = !_switch;
             cbVault.Visible = _switch;
             bEdit.Visible = _switch;
@@ -2172,11 +2293,11 @@ namespace AutoPuTTY
             tbVPass.BackColor = SystemColors.Window;
             tbVPriv.BackColor = SystemColors.Window;
 
-            ArrayList vault = XmlGetVault(lbVault.SelectedItem.ToString());
+            IDictionary<string, string> vault = XmlGetVault(lbVault.SelectedItem.ToString());
 
-            tbVName.Text = (string)vault[0];
-            tbVPass.Text = Decrypt((string)vault[1]);
-            tbVPriv.Text = Decrypt((string)vault[2]);
+            tbVName.Text = vault["Name"];
+            tbVPass.Text = Decrypt(vault["Password"]);
+            tbVPriv.Text = Decrypt(vault["PrivateKey"]);
 
             if (bVAdd.Enabled) bVAdd.Enabled = false;
             if (bVModify.Enabled) bVModify.Enabled = false;
@@ -2195,28 +2316,31 @@ namespace AutoPuTTY
             TextBox tbVSender = new TextBox();
             if (sender is TextBox) tbVSender = (TextBox)sender;
 
-            ArrayList vault = new ArrayList();
+            IDictionary<string, string> vault = new Dictionary<string, string>();
             string tbVal = "";
             Color normal = SystemColors.Window;
             Color changed_ok = Color.FromArgb(235, 255, 225);
             Color changed_error = Color.FromArgb(255, 235, 225);
 
-            if (lbVault.SelectedItem != null)
-            {
-                vault = XmlGetVault(lbVault.SelectedItem.ToString());
+            if (lbVault.SelectedItem != null) vault = XmlGetVault(lbVault.SelectedItem.ToString());
 
-                switch (tbVSender.Name)
-                {
-                    case "tbVName":
-                        tbVal = (string)vault[0];
-                        break;
-                    case "tbVPass":
-                        tbVal = Decrypt((string)vault[1]);
-                        break;
-                    case "tbVPriv":
-                        tbVal = Decrypt((string)vault[2]);
-                        break;
-                }
+            switch (tbVSender.Name)
+            {
+                case "tbVName":
+                    if (lbVault.SelectedItem != null) tbVal = vault["Name"];
+                    if (tbVSender.Text.Trim() == "") bVCopyName.Enabled = false;
+                    else bVCopyName.Enabled = true;
+                    break;
+                case "tbVPass":
+                    if (lbVault.SelectedItem != null) tbVal = Decrypt(vault["Password"]);
+                    if (tbVSender.Text.Trim() == "") bVCopyPass.Enabled = false;
+                    else bVCopyPass.Enabled = true;
+                    break;
+                case "tbVPriv":
+                    if (lbVault.SelectedItem != null) tbVal = Decrypt(vault["PrivateKey"]);
+                    if (tbVSender.Text.Trim() == "") bVCopyPriv.Enabled = false;
+                    else bVCopyPriv.Enabled = true;
+                    break;
             }
 
             if (tbVSender.Name == "tbVName")
@@ -2278,7 +2402,11 @@ namespace AutoPuTTY
                 newvault.AppendChild(pass);
                 newvault.AppendChild(priv);
 
-                if (xmlconfig.DocumentElement != null) xmlconfig.DocumentElement.InsertAfter(newvault, xmlconfig.DocumentElement.LastChild);
+                if (xmlconfig.DocumentElement != null)
+                {
+                    XmlNode lastvault = xmlconfig.SelectSingleNode("/List/Vault[last()]");
+                    xmlconfig.DocumentElement.InsertAfter(newvault, lastvault != null ? lastvault : xmlconfig.DocumentElement.LastChild);
+                }
 
                 try
                 {
@@ -2316,6 +2444,8 @@ namespace AutoPuTTY
         {
             xmlconfig.Load(Settings.Default.cfgpath);
 
+            bool changecb = false;
+
             XmlElement newvault = xmlconfig.CreateElement("Vault");
             XmlAttribute name = xmlconfig.CreateAttribute("Name");
             XmlElement pass = xmlconfig.CreateElement("Password");
@@ -2327,10 +2457,23 @@ namespace AutoPuTTY
             newvault.AppendChild(pass);
             newvault.AppendChild(priv);
 
-            XmlNodeList xmlnode = xmlconfig.SelectNodes("//Vault[@Name=" + ParseXpathString(lbVault.SelectedItem.ToString()) + "]");
+            XmlNode vaultnode = xmlconfig.SelectSingleNode("//Vault[@Name=" + ParseXpathString(lbVault.SelectedItem.ToString()) + "]");
             if (xmlconfig.DocumentElement != null)
             {
-                if (xmlnode != null) xmlconfig.DocumentElement.ReplaceChild(newvault, xmlnode[0]);
+                if (vaultnode != null)
+                {
+                    xmlconfig.DocumentElement.ReplaceChild(newvault, vaultnode);
+
+                    // replace vault name for existing servers
+                    XmlNodeList servernodes = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(lbVault.SelectedItem.ToString()) + "]");
+                    if (servernodes != null)
+                    {
+                        foreach (XmlNode servernode in servernodes)
+                        {
+                            servernode.InnerText = name.Value;
+                        }
+                    }
+                }
             }
 
             try
@@ -2342,6 +2485,10 @@ namespace AutoPuTTY
                 Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
             }
 
+            if (lbVault.SelectedItem != null) {
+                if ((string)cbVault.SelectedItem == lbVault.SelectedItem.ToString()) changecb = true;
+            }
+
             remove = true;
             cbVault.Items.RemoveAt(lbVault.Items.IndexOf(lbVault.SelectedItem));
             lbVault.Items.RemoveAt(lbVault.Items.IndexOf(lbVault.SelectedItem));
@@ -2349,6 +2496,7 @@ namespace AutoPuTTY
             tbVName.Text = tbVName.Text.Trim();
             lbVault.Items.Add(tbVName.Text);
             cbVault.Items.Add(tbVName.Text);
+            if (changecb) cbVault.SelectedItem = name.Value;
             lbVault.SelectedItems.Clear();
             lbVault.SelectedItem = tbVName.Text;
             bVModify.Enabled = false;
@@ -2421,6 +2569,16 @@ namespace AutoPuTTY
         private void bVCopyPriv_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbVPriv.Text);
+        }
+
+        private void bCopy_EnabledChanged(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            if (icon.Enabled)
+            {
+                icon.Image = Resources.iconcopy;
+            }
+            else icon.Image = iconcopyhover;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace AutoPuTTY.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.42")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.50")]
         public string version {
             get {
                 return ((string)(this["version"]));
@@ -425,6 +425,18 @@ namespace AutoPuTTY.Properties {
             }
             set {
                 this["maximized"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool tooltips {
+            get {
+                return ((bool)(this["tooltips"]));
+            }
+            set {
+                this["tooltips"] = value;
             }
         }
     }

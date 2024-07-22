@@ -45,6 +45,7 @@ namespace AutoPuTTY
                 cbGSize.Checked = (_size.Length == 2 ? true : false);
                 cbGPosition.Checked = (_position.Length == 2 ? true : false);
                 cbGMinimize.Checked = Settings.Default.minimize;
+                cbGTooltips.Checked = Settings.Default.tooltips;
 
                 tbPuTTYPath.Text = Settings.Default.puttypath;
                 cbPuTTYExecute.Checked = Settings.Default.puttyexecute;
@@ -71,6 +72,7 @@ namespace AutoPuTTY
                 cbWSCPPassive.Checked = Settings.Default.winscppassive;
             }
 
+            toolTipOptions.Active = cbGTooltips.Checked;
             bGPassword.Enabled = false;
             firstread = false;
         }
@@ -876,6 +878,14 @@ namespace AutoPuTTY
                     recryptpopup.RecryptComplete();
                     break;
             }
+        }
+
+        private void cbGTooltips_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.tooltips = cbGTooltips.Checked;
+            if (!firstread) mainform.XmlSetConfig("tooltips", Settings.Default.tooltips.ToString());
+            mainform.toolTipMain.Active = Settings.Default.tooltips;
+            toolTipOptions.Active = Settings.Default.tooltips;
         }
     }
 }
