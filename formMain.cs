@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Xml;
 using ComboBox = System.Windows.Forms.ComboBox;
@@ -1364,6 +1365,7 @@ namespace AutoPuTTY
                 lbList.Items.Add(tbName.Text);
                 lbList.SelectedItems.Clear();
                 lbList.SelectedItem = tbName.Text;
+                if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
                 bModify.Enabled = false;
                 bAdd.Enabled = false;
                 bDelete.Enabled = true;
@@ -1373,8 +1375,6 @@ namespace AutoPuTTY
             {
                 Error(this, "No name ?\nNo hostname ??\nTry again ...");
             }
-
-            if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
         }
 
         private void bModify_Click(object sender, EventArgs e)
@@ -1435,11 +1435,10 @@ namespace AutoPuTTY
             lbList.Items.Add(tbName.Text);
             lbList.SelectedItems.Clear();
             lbList.SelectedItem = tbName.Text;
+            if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
             bModify.Enabled = false;
             bAdd.Enabled = false;
             BeginInvoke(new InvokeDelegate(lbList.Focus));
-
-            if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
         }
 
         private void bEye_Click(object sender, EventArgs e)
@@ -1514,10 +1513,19 @@ namespace AutoPuTTY
 
         private void bSearchClose_Click(object sender, EventArgs e)
         {
+            string selected = "";
+            if (lbList.SelectedItem != null) selected = lbList.SelectedItem.ToString();
             SwitchSearch(false);
             if (tbFilter.Text == "") return;
             XmlToServer();
-            if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
+            if (lbList.Items.Count > 0 && lbList.Items.Contains(selected))
+            {
+                lbList.SelectedItem = selected;
+            }
+            else
+            {
+                lbList.SelectedItems.Clear();
+            }
         }
 
         // "search" form change close button image on mouse down
@@ -1553,11 +1561,12 @@ namespace AutoPuTTY
         private void comboBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             int index = e.Index >= 0 ? e.Index : -1;
-            Brush brush = ((e.State & DrawItemState.Selected) > 0) ? SystemBrushes.HighlightText : new SolidBrush(((System.Windows.Forms.ComboBox)sender).ForeColor);
+            Brush brush = ((e.State & DrawItemState.Selected) > 0) ? SystemBrushes.HighlightText : new SolidBrush(((ComboBox)sender).ForeColor);
             e.DrawBackground();
             if (index != -1)
             {
-                e.Graphics.DrawString(((System.Windows.Forms.ComboBox)sender).Items[index].ToString(), e.Font, brush, e.Bounds, StringFormat.GenericDefault);
+                StringFormat format = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center };
+                e.Graphics.DrawString(((ComboBox)sender).Items[index].ToString(), e.Font, brush, e.Bounds, format);
             }
             e.DrawFocusRectangle();
         }
@@ -1654,7 +1663,7 @@ namespace AutoPuTTY
             Connect("-1");
         }
 
-        private void lbList_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
+        private void lbList_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0) return;
             e.DrawBackground();
@@ -1666,7 +1675,7 @@ namespace AutoPuTTY
             e.DrawFocusRectangle();
         }
 
-        public void lbList_Filter(string s)
+        public void lbList_Filter(string search, string selected)
         {
             filter = true;
             XmlToServer();
@@ -1679,15 +1688,22 @@ namespace AutoPuTTY
                 string _item = item;
                 if (!cbCase.Checked)
                 {
-                    s = s.ToLower();
+                    search = search.ToLower();
                     _item = _item.ToLower();
                 }
 
-                if (_item.IndexOf(s) >= 0 || s == "") lbList.Items.Add(item);
+                if (_item.IndexOf(search) >= 0 || search == "") lbList.Items.Add(item);
             }
 
             filter = false;
-            lbList.SelectedIndex = lbList.Items.Count > 0 ? 0 : -1;
+            if (lbList.Items.Count > 0 && lbList.Items.Contains(selected))
+            {
+                lbList.SelectedItem = selected;
+            }
+            else
+            {
+                lbList.SelectedItems.Clear();
+            }
             if (lbList.Items.Count < 1) lbList_IndexChanged(new object(), new EventArgs());
         }
 
@@ -2006,7 +2022,12 @@ namespace AutoPuTTY
         // update "search"
         private void tbSearch_Changed(object sender, EventArgs e)
         {
-            if (pFindToogle.Visible) lbList_Filter(tbFilter.Text);
+            string selected = "";
+            if (pFindToogle.Visible)
+            {
+                if (lbList.SelectedItem != null) selected = lbList.SelectedItem.ToString();
+                lbList_Filter(tbFilter.Text, selected);
+            }
         }
 
         // prevent the beep sound when pressing ctrl + F in the search input
