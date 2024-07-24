@@ -495,6 +495,8 @@
             this.cbVault.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbVault.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVault.FormattingEnabled = true;
+            this.cbVault.Items.AddRange(new object[] {
+            ""});
             this.cbVault.Location = new System.Drawing.Point(2, 136);
             this.cbVault.Name = "cbVault";
             this.cbVault.Size = new System.Drawing.Size(126, 21);
