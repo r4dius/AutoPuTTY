@@ -1940,12 +1940,15 @@ namespace AutoPuTTY
                     {
                         case "cbVault":
                             cbVal = cbVault.Items.IndexOf(server["Vault"]);
+                            Debug.WriteLine("cbvault cbVal " +  cbVal);
                             break;
                         case "cbType":
                             cbVal = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
                             break;
                     }
                 }
+
+                Debug.WriteLine("cbSender.SelectedIndex " + cbSender.SelectedIndex);
 
                 if (cbSender.SelectedIndex != cbVal) cbSender.BackColor = changed_ok;
                 else cbSender.BackColor = normal;
@@ -1985,12 +1988,27 @@ namespace AutoPuTTY
                     }
                     else tbSender.BackColor = normal;
                 }
+
+                if (tbSender.Name == "tbPass")
+                {
+                    if (cbVault.Items.Contains(server["Vault"])) {
+                        if (tbSender.Text.Trim() == tbVal && tbSender.Text.Trim() == "")
+                        {
+                            tbSender.BackColor = changed_ok;
+                        }
+                        else tbSender.BackColor = normal;
+                    }
+                    else {
+                        if (tbSender.Text != tbVal) tbSender.BackColor = changed_ok;
+                        else tbSender.BackColor = normal;
+                    }
+                }
                 else
                 {
                     if (tbSender.Text != tbVal) tbSender.BackColor = changed_ok;
                     else tbSender.BackColor = normal;
                 }
-            }            
+            }
 
             if (indexchanged) return;
             //modify an existing item
@@ -2267,8 +2285,18 @@ namespace AutoPuTTY
         private void lPass_Click(object sender, EventArgs e)
         {
             Label label = (Label)sender;
-            SwitchPassword(label.Text == "Password");
+            if (label.Text == "Password")
+            {
+                SwitchPassword(true);
+                tbServer_TextChanged(cbVault, e);
+            }
+            else
+            {
+                SwitchPassword(false);
+                tbServer_TextChanged(tbPass, e);
+            }
         }
+
         private void SwitchPassword(bool _switch)
         {
             lPass.Text = (_switch ? "Vault" : "Password");
