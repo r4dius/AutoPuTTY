@@ -79,13 +79,13 @@
             this.cmSystray = new System.Windows.Forms.ContextMenu();
             this.miRestore = new System.Windows.Forms.MenuItem();
             this.miClose = new System.Windows.Forms.MenuItem();
-            this.cmList = new System.Windows.Forms.ContextMenu();
+            this.cmServer = new System.Windows.Forms.ContextMenu();
             this.tlMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlLeft = new System.Windows.Forms.TableLayoutPanel();
-            this.lbListSep = new System.Windows.Forms.TableLayoutPanel();
+            this.lbServerSep = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lbList = new System.Windows.Forms.ListBox();
             this.lbVault = new System.Windows.Forms.ListBox();
+            this.lbServer = new System.Windows.Forms.ListBox();
             this.pFind = new System.Windows.Forms.Panel();
             this.pFindToogle = new System.Windows.Forms.Panel();
             this.bClose = new System.Windows.Forms.PictureBox();
@@ -112,6 +112,7 @@
             this.tbPassBack = new System.Windows.Forms.TextBox();
             this.tbPassFake = new System.Windows.Forms.TextBox();
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
+            this.cmVault = new System.Windows.Forms.ContextMenu();
             this.pConfig.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyPass)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyHost)).BeginInit();
@@ -125,7 +126,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bVCopyName)).BeginInit();
             this.tlMain.SuspendLayout();
             this.tlLeft.SuspendLayout();
-            this.lbListSep.SuspendLayout();
+            this.lbServerSep.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pFind.SuspendLayout();
             this.pFindToogle.SuspendLayout();
@@ -153,11 +154,11 @@
             // pConfig
             // 
             this.pConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pConfig.Controls.Add(this.bEdit);
             this.pConfig.Controls.Add(this.bCopyPass);
             this.pConfig.Controls.Add(this.bCopyHost);
             this.pConfig.Controls.Add(this.bCopyName);
             this.pConfig.Controls.Add(this.bCopyUser);
-            this.pConfig.Controls.Add(this.bEdit);
             this.pConfig.Controls.Add(this.bEye);
             this.pConfig.Controls.Add(this.lSep5);
             this.pConfig.Controls.Add(this.lSep4);
@@ -259,7 +260,7 @@
             this.bEdit.BackColor = System.Drawing.Color.Transparent;
             this.bEdit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.bEdit.Image = global::AutoPuTTY.Properties.Resources.iconedit;
-            this.bEdit.Location = new System.Drawing.Point(62, 119);
+            this.bEdit.Location = new System.Drawing.Point(84, 119);
             this.bEdit.Margin = new System.Windows.Forms.Padding(0);
             this.bEdit.Name = "bEdit";
             this.bEdit.Size = new System.Drawing.Size(22, 15);
@@ -495,7 +496,6 @@
             this.cbVault.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbVault.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbVault.FormattingEnabled = true;
-            this.cbVault.Items.AddRange(new object[] {});
             this.cbVault.Location = new System.Drawing.Point(2, 136);
             this.cbVault.Name = "cbVault";
             this.cbVault.Size = new System.Drawing.Size(126, 21);
@@ -790,7 +790,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tlLeft.ColumnCount = 1;
             this.tlLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlLeft.Controls.Add(this.lbListSep, 0, 0);
+            this.tlLeft.Controls.Add(this.lbServerSep, 0, 0);
             this.tlLeft.Controls.Add(this.pFind, 0, 1);
             this.tlLeft.Location = new System.Drawing.Point(0, 0);
             this.tlLeft.Margin = new System.Windows.Forms.Padding(0);
@@ -801,54 +801,34 @@
             this.tlLeft.Size = new System.Drawing.Size(131, 229);
             this.tlLeft.TabIndex = 0;
             // 
-            // lbListSep
+            // lbServerSep
             // 
-            this.lbListSep.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lbServerSep.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbListSep.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.lbListSep.ColumnCount = 2;
-            this.lbListSep.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.lbListSep.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.lbListSep.Controls.Add(this.panel1, 0, 0);
-            this.lbListSep.Location = new System.Drawing.Point(0, 0);
-            this.lbListSep.Margin = new System.Windows.Forms.Padding(0);
-            this.lbListSep.Name = "lbListSep";
-            this.lbListSep.RowCount = 1;
-            this.lbListSep.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.lbListSep.Size = new System.Drawing.Size(131, 204);
-            this.lbListSep.TabIndex = 2;
+            this.lbServerSep.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.lbServerSep.ColumnCount = 2;
+            this.lbServerSep.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.lbServerSep.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.lbServerSep.Controls.Add(this.panel1, 0, 0);
+            this.lbServerSep.Location = new System.Drawing.Point(0, 0);
+            this.lbServerSep.Margin = new System.Windows.Forms.Padding(0);
+            this.lbServerSep.Name = "lbServerSep";
+            this.lbServerSep.RowCount = 1;
+            this.lbServerSep.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.lbServerSep.Size = new System.Drawing.Size(131, 204);
+            this.lbServerSep.TabIndex = 2;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.lbList);
             this.panel1.Controls.Add(this.lbVault);
+            this.panel1.Controls.Add(this.lbServer);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(130, 204);
             this.panel1.TabIndex = 0;
-            // 
-            // lbList
-            // 
-            this.lbList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbList.IntegralHeight = false;
-            this.lbList.Location = new System.Drawing.Point(0, 0);
-            this.lbList.Margin = new System.Windows.Forms.Padding(0);
-            this.lbList.Name = "lbList";
-            this.lbList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbList.Size = new System.Drawing.Size(130, 204);
-            this.lbList.Sorted = true;
-            this.lbList.TabIndex = 0;
-            this.lbList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbList_DrawItem);
-            this.lbList.SelectedIndexChanged += new System.EventHandler(this.lbList_IndexChanged);
-            this.lbList.DoubleClick += new System.EventHandler(this.lbList_DoubleClick);
-            this.lbList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbList_KeyDown);
-            this.lbList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lbList_KeyPress);
-            this.lbList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbList_MouseClick);
             // 
             // lbVault
             // 
@@ -862,11 +842,35 @@
             this.lbVault.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbVault.Size = new System.Drawing.Size(130, 204);
             this.lbVault.Sorted = true;
-            this.lbVault.TabIndex = 1;
+            this.lbVault.TabIndex = 0;
             this.lbVault.Visible = false;
+            this.lbVault.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox_DrawItem);
             this.lbVault.SelectedIndexChanged += new System.EventHandler(this.lbVault_SelectedIndexChanged);
             this.lbVault.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.lbVault_ControlAdded);
             this.lbVault.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.lbVault_ControlRemoved);
+            this.lbVault.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox_KeyDown);
+            this.lbVault.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.listBox_KeyPress);
+            this.lbVault.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listBox_MouseDown);
+            // 
+            // lbServer
+            // 
+            this.lbServer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbServer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbServer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbServer.IntegralHeight = false;
+            this.lbServer.Location = new System.Drawing.Point(0, 0);
+            this.lbServer.Margin = new System.Windows.Forms.Padding(0);
+            this.lbServer.Name = "lbServer";
+            this.lbServer.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lbServer.Size = new System.Drawing.Size(130, 204);
+            this.lbServer.Sorted = true;
+            this.lbServer.TabIndex = 0;
+            this.lbServer.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox_DrawItem);
+            this.lbServer.SelectedIndexChanged += new System.EventHandler(this.lbServer_IndexChanged);
+            this.lbServer.DoubleClick += new System.EventHandler(this.lbServer_DoubleClick);
+            this.lbServer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox_KeyDown);
+            this.lbServer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.listBox_KeyPress);
+            this.lbServer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listBox_MouseDown);
             // 
             // pFind
             // 
@@ -1263,7 +1267,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bVCopyName)).EndInit();
             this.tlMain.ResumeLayout(false);
             this.tlLeft.ResumeLayout(false);
-            this.lbListSep.ResumeLayout(false);
+            this.lbServerSep.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.pFind.ResumeLayout(false);
             this.pFindToogle.ResumeLayout(false);
@@ -1300,7 +1304,7 @@
         private System.Windows.Forms.MenuItem miRestore;
         private System.Windows.Forms.MenuItem miClose;
         private System.Windows.Forms.ComboBox cbType;
-        private System.Windows.Forms.ContextMenu cmList;
+        private System.Windows.Forms.ContextMenu cmServer;
         private System.Windows.Forms.Button bOptions;
         private System.Windows.Forms.Label lSep5;
         private System.Windows.Forms.Label lSep4;
@@ -1313,8 +1317,8 @@
         private System.Windows.Forms.TextBox tbFilter;
         private System.Windows.Forms.PictureBox bClose;
         private System.Windows.Forms.CheckBox cbCase;
-        private System.Windows.Forms.TableLayoutPanel lbListSep;
-        public System.Windows.Forms.ListBox lbList;
+        private System.Windows.Forms.TableLayoutPanel lbServerSep;
+        public System.Windows.Forms.ListBox lbServer;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox bEye;
         private System.Windows.Forms.TableLayoutPanel tlAbout;
@@ -1369,6 +1373,7 @@
         private System.Windows.Forms.PictureBox bCopyUser;
         private System.Windows.Forms.PictureBox bVCopyPriv;
         public System.Windows.Forms.ToolTip toolTipMain;
+        private System.Windows.Forms.ContextMenu cmVault;
     }
 }
 

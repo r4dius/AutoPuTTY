@@ -14,6 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Web.UI;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
@@ -96,7 +97,7 @@ namespace AutoPuTTY
 
             InitializeComponent();
 
-            tAboutVersion.Text = Properties.Settings.Default.version;
+            tAboutVersion.Text = Settings.Default.version;
 
             //clone types array to have a sorted version
             _types = (string[])types.Clone();
@@ -159,8 +160,8 @@ namespace AutoPuTTY
             notifyIcon.Visible = Settings.Default.minimize;
             notifyIcon.ContextMenu = cmSystray;
 
-            lbList.MultiColumn = Settings.Default.multicolumn;
-            lbList.ColumnWidth = Settings.Default.multicolumnwidth * 10;
+            lbServer.MultiColumn = Settings.Default.multicolumn;
+            lbServer.ColumnWidth = Settings.Default.multicolumnwidth * 10;
 
             iconedithover = ImageOpacity.Set(Resources.iconedit, (float)0.5);
             iconcopyhover = ImageOpacity.Set(Resources.iconcopy, (float)0.5);
@@ -172,12 +173,12 @@ namespace AutoPuTTY
             MenuItem connectmenu = new MenuItem();
             connectmenu.Index = i;
             connectmenu.Text = "Connect";
-            connectmenu.Click += lbList_DoubleClick;
-            cmList.MenuItems.Add(connectmenu);
+            connectmenu.Click += lbServer_DoubleClick;
+            cmServer.MenuItems.Add(connectmenu);
             MenuItem sepmenu = new MenuItem();
             sepmenu.Text = "-";
             sepmenu.Index = i++;
-            cmList.MenuItems.Add(sepmenu);
+            cmServer.MenuItems.Add(sepmenu);
             foreach (string type in _types)
             {
                 MenuItem listmenu = new MenuItem();
@@ -185,26 +186,32 @@ namespace AutoPuTTY
                 listmenu.Text = type;
                 string _type = Array.IndexOf(types, type).ToString();
                 listmenu.Click += delegate { Connect(_type); };
-                cmList.MenuItems.Add(listmenu);
+                cmServer.MenuItems.Add(listmenu);
             }
             sepmenu = new MenuItem();
             sepmenu.Text = "-";
             sepmenu.Index = i++;
-            cmList.MenuItems.Add(sepmenu.CloneMenu());
+            cmServer.MenuItems.Add(sepmenu.CloneMenu());
             MenuItem deletemenu = new MenuItem();
             deletemenu.Index = i++;
             deletemenu.Text = "Delete";
-            deletemenu.Click += mDelete_Click;
-            cmList.MenuItems.Add(deletemenu);
+            deletemenu.Click += mDeleteServer;
+            cmServer.MenuItems.Add(deletemenu);
             sepmenu = new MenuItem();
             sepmenu.Text = "-";
             sepmenu.Index = i++;
-            cmList.MenuItems.Add(sepmenu.CloneMenu());
+            cmServer.MenuItems.Add(sepmenu.CloneMenu());
             MenuItem searchmenu = new MenuItem();
             searchmenu.Index = i++;
             searchmenu.Text = "Search...";
             searchmenu.Click += SearchSwitchShow;
-            cmList.MenuItems.Add(searchmenu);
+            cmServer.MenuItems.Add(searchmenu);
+
+            MenuItem deletevaultmenu = new MenuItem();
+            deletevaultmenu.Index = i++;
+            deletevaultmenu.Text = "Delete";
+            deletevaultmenu.Click += mDeleteVault;
+            cmVault.MenuItems.Add(deletevaultmenu);
 
             AutoSize = false;
             MinimumSize = Size;
@@ -319,9 +326,9 @@ namespace AutoPuTTY
             ShowTableLayoutPanel(tlMain);
             XmlToServer();
             XmlToVault();
-            if (lbList.Items.Count > 0) lbList.SelectedIndex = 0;
+            if (lbServer.Items.Count > 0) lbServer.SelectedIndex = 0;
             if (lbVault.Items.Count > 0) lbVault.SelectedIndex = 0;
-            BeginInvoke(new InvokeDelegate(lbList.Focus));
+            BeginInvoke(new InvokeDelegate(lbServer.Focus));
         }
 
         private static bool IsValidPosition(int x, int y, int width, int height)
@@ -478,16 +485,16 @@ namespace AutoPuTTY
             // browsing files with OpenFileDialog() fucks with CurrentDirectory, lets fix it
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            if (lbList.SelectedItems == null) return;
+            if (lbServer.SelectedItems == null) return;
 
-            if (lbList.SelectedItems.Count > 0)
+            if (lbServer.SelectedItems.Count > 0)
             {
-                if (lbList.SelectedItems.Count > 5)
+                if (lbServer.SelectedItems.Count > 5)
                 {
-                    if (MessageBoxEx.Show(this, "Are you sure you want to connect to the " + lbList.SelectedItems.Count + " selected items ?", "Connection confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK) return;
+                    if (MessageBoxEx.Show(this, "Are you sure you want to connect to the " + lbServer.SelectedItems.Count + " selected items ?", "Connection confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK) return;
                 }
 
-                foreach (object item in lbList.SelectedItems)
+                foreach (object item in lbServer.SelectedItems)
                 {
                     IDictionary<string, string> server = XmlGetServer(item.ToString());
 
@@ -1301,7 +1308,7 @@ namespace AutoPuTTY
 
         internal void XmlToServer()
         {
-            XmlToList("Server", lbList);
+            XmlToList("Server", lbServer);
         }
 
         internal void XmlToVault()
@@ -1362,14 +1369,14 @@ namespace AutoPuTTY
                 cbType.BackColor = SystemColors.Window;
 
                 tbName.Text = tbName.Text.Trim();
-                lbList.Items.Add(tbName.Text);
-                lbList.SelectedItems.Clear();
-                lbList.SelectedItem = tbName.Text;
+                lbServer.Items.Add(tbName.Text);
+                lbServer.SelectedItems.Clear();
+                lbServer.SelectedItem = tbName.Text;
                 if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
                 bModify.Enabled = false;
                 bAdd.Enabled = false;
                 bDelete.Enabled = true;
-                BeginInvoke(new InvokeDelegate(lbList.Focus));
+                BeginInvoke(new InvokeDelegate(lbServer.Focus));
             }
             else
             {
@@ -1413,7 +1420,7 @@ namespace AutoPuTTY
             newserver.AppendChild(vault);
             newserver.AppendChild(type);
 
-            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(lbList.SelectedItem.ToString()) + "]");
+            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(lbServer.SelectedItem.ToString()) + "]");
             if (xmlconfig.DocumentElement != null)
             {
                 if (xmlnode != null) xmlconfig.DocumentElement.ReplaceChild(newserver, xmlnode);
@@ -1429,16 +1436,16 @@ namespace AutoPuTTY
             }
 
             remove = true;
-            lbList.Items.RemoveAt(lbList.Items.IndexOf(lbList.SelectedItem));
+            lbServer.Items.RemoveAt(lbServer.Items.IndexOf(lbServer.SelectedItem));
             remove = false;
             tbName.Text = tbName.Text.Trim();
-            lbList.Items.Add(tbName.Text);
-            lbList.SelectedItems.Clear();
-            lbList.SelectedItem = tbName.Text;
+            lbServer.Items.Add(tbName.Text);
+            lbServer.SelectedItems.Clear();
+            lbServer.SelectedItem = tbName.Text;
             if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
             bModify.Enabled = false;
             bAdd.Enabled = false;
-            BeginInvoke(new InvokeDelegate(lbList.Focus));
+            BeginInvoke(new InvokeDelegate(lbServer.Focus));
         }
 
         private void bEye_Click(object sender, EventArgs e)
@@ -1491,13 +1498,13 @@ namespace AutoPuTTY
             string confirmtxt = "Are you sure you want to delete the selected item ?";
             if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                if (lbList.SelectedItems.Count > 0)
+                if (lbServer.SelectedItems.Count > 0)
                 {
-                    XmlDropServer(lbList.SelectedItems[0].ToString());
+                    XmlDropServer(lbServer.SelectedItems[0].ToString());
                     remove = true;
-                    lbList.Items.Remove(lbList.SelectedItems[0].ToString());
+                    lbServer.Items.Remove(lbServer.SelectedItems[0].ToString());
                     remove = false;
-                    lbList.SelectedItems.Clear();
+                    lbServer.SelectedItems.Clear();
                     tbServer_TextChanged(this, e);
                 }
             }
@@ -1514,17 +1521,17 @@ namespace AutoPuTTY
         private void bSearchClose_Click(object sender, EventArgs e)
         {
             string selected = "";
-            if (lbList.SelectedItem != null) selected = lbList.SelectedItem.ToString();
+            if (lbServer.SelectedItem != null) selected = lbServer.SelectedItem.ToString();
             SwitchSearch(false);
             if (tbFilter.Text == "") return;
             XmlToServer();
-            if (lbList.Items.Count > 0 && lbList.Items.Contains(selected))
+            if (lbServer.Items.Count > 0 && lbServer.Items.Contains(selected))
             {
-                lbList.SelectedItem = selected;
+                lbServer.SelectedItem = selected;
             }
             else
             {
-                lbList.SelectedItems.Clear();
+                lbServer.SelectedItems.Clear();
             }
         }
 
@@ -1571,65 +1578,92 @@ namespace AutoPuTTY
             e.DrawFocusRectangle();
         }
 
+        private void mDeleteServer(object sender, EventArgs e)
+        {
+            mDelete_Click(lbServer, e);
+        }
+
+        private void mDeleteVault(object sender, EventArgs e)
+        {
+            mDelete_Click(lbVault, e);
+        }
+
         // delete multiple confirmation menu
         private void mDelete_Click(object sender, EventArgs e)
         {
-            if (lbList.SelectedItems.Count > 0)
+            ListBox list = (ListBox)sender;
+
+            if (list.SelectedItems.Count > 0)
             {
                 ArrayList _items = new ArrayList();
                 string confirmtxt = "Are you sure you want to delete the selected item ?";
-                if (lbList.SelectedItems.Count > 1) confirmtxt = "Are you sure you want to delete the " + lbList.SelectedItems.Count + " selected items ?";
+                if (list.SelectedItems.Count > 1) confirmtxt = "Are you sure you want to delete the " + list.SelectedItems.Count + " selected items ?";
                 if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     remove = true;
-                    while (lbList.SelectedItems.Count > 0)
+                    while (list.SelectedItems.Count > 0)
                     {
-                        _items.Add("Name=" + ParseXpathString(lbList.SelectedItem.ToString()));
-                        lbList.Items.Remove(lbList.SelectedItem);
+                        _items.Add("Name=" + ParseXpathString(list.SelectedItem.ToString()));
+                        if(list.Name == "lbVault")
+                        {
+                            cbVault.Items.Remove(list.SelectedItem);
+                        }
+                        list.Items.Remove(list.SelectedItem);
                     }
                     remove = false;
-                    if (_items.Count > 0) XmlDropServer(_items);
-                    tbServer_TextChanged(this, e);
+                    if (_items.Count > 0)
+                    {
+                        if(list.Name == "lbVault") XmlDropVault(_items);
+                        else XmlDropServer(_items);
+                    }
+                    if (list.Name == "lbVault") tbVName_TextChanged(this, e);
+                    else tbServer_TextChanged(this, e);
                 }
             }
         }
 
-        private void lbList_ContextMenu()
+        private void listBox_ContextMenu(object sender)
         {
-            lbList_ContextMenu(false);
+            listBox_ContextMenu(sender, false);
         }
 
-        private void lbList_ContextMenu(bool keyboard)
+        private void listBox_ContextMenu(object sender, bool keyboard)
         {
-            if (lbList.Items.Count > 0)
+            ListBox list = (ListBox)sender;
+            ContextMenu menu = new ContextMenu();
+
+            if (list.Name == "lbVault") menu = cmVault;
+            else menu = cmServer;
+
+            if (list.Items.Count > 0)
             {
-                if (keyboard && lbList.SelectedItems.Count > 0)
+                if (keyboard && list.SelectedItems.Count > 0)
                 {
-                    lbList_ContextMenu_Enable(true);
+                    contextMenu_Enable(menu, true);
                 }
                 else
                 {
-                    int rightindex = lbList.IndexFromPoint(lbList.PointToClient(MousePosition));
+                    int rightindex = list.IndexFromPoint(lbServer.PointToClient(MousePosition));
                     if (rightindex >= 0)
                     {
-                        lbList_ContextMenu_Enable(true);
-                        if (lbList.GetSelected(rightindex))
+                        contextMenu_Enable(menu, true);
+                        if (list.GetSelected(rightindex))
                         {
-                            lbList.SelectedIndex = rightindex;
+                            list.SelectedIndex = rightindex;
                         }
                         else
                         {
-                            lbList.SelectedIndex = -1;
-                            lbList.SelectedIndex = rightindex;
+                            list.SelectedIndex = -1;
+                            list.SelectedIndex = rightindex;
                         }
                     }
                     else
                     {
-                        lbList_ContextMenu_Enable(false);
+                        contextMenu_Enable(menu, false);
                     }
                 }
             }
-            else lbList_ContextMenu_Enable(false);
+            else contextMenu_Enable(menu, false);
 
             IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
             ShowWindowAsync(hWnd, SW_SHOW);
@@ -1647,23 +1681,23 @@ namespace AutoPuTTY
                     break;
                 }
             }
-            cmList.Show(this, PointToClient(MousePosition));
+            menu.Show(this, PointToClient(MousePosition));
         }
 
-        private void lbList_ContextMenu_Enable(bool status)
+        private void contextMenu_Enable(ContextMenu menu, bool status)
         {
-            for (int i = 0; i < cmList.MenuItems.Count; i++)
+            for (int i = 0; i < menu.MenuItems.Count; i++)
             {
-                cmList.MenuItems[i].Enabled = status;
+                menu.MenuItems[i].Enabled = status;
             }
         }
 
-        private void lbList_DoubleClick(object sender, EventArgs e)
+        private void lbServer_DoubleClick(object sender, EventArgs e)
         {
             Connect("-1");
         }
 
-        private void lbList_DrawItem(object sender, DrawItemEventArgs e)
+        private void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0) return;
             e.DrawBackground();
@@ -1671,17 +1705,17 @@ namespace AutoPuTTY
             Rectangle bounds = e.Bounds;
             if (bounds.X < 1) bounds.X = 1;
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected) myBrush = Brushes.White;
-            e.Graphics.DrawString(lbList.Items[e.Index].ToString(), e.Font, myBrush, bounds, StringFormat.GenericDefault);
+            e.Graphics.DrawString(lbServer.Items[e.Index].ToString(), e.Font, myBrush, bounds, StringFormat.GenericDefault);
             e.DrawFocusRectangle();
         }
 
-        public void lbList_Filter(string search, string selected)
+        public void lbServer_Filter(string search, string selected)
         {
             filter = true;
             XmlToServer();
-            ListBox.ObjectCollection itemslist = new ListBox.ObjectCollection(lbList);
-            itemslist.AddRange(lbList.Items);
-            lbList.Items.Clear();
+            ListBox.ObjectCollection itemslist = new ListBox.ObjectCollection(lbServer);
+            itemslist.AddRange(lbServer.Items);
+            lbServer.Items.Clear();
 
             foreach (string item in itemslist)
             {
@@ -1692,25 +1726,25 @@ namespace AutoPuTTY
                     _item = _item.ToLower();
                 }
 
-                if (_item.IndexOf(search) >= 0 || search == "") lbList.Items.Add(item);
+                if (_item.IndexOf(search) >= 0 || search == "") lbServer.Items.Add(item);
             }
 
             filter = false;
-            if (lbList.Items.Count > 0 && lbList.Items.Contains(selected))
+            if (lbServer.Items.Count > 0 && lbServer.Items.Contains(selected))
             {
-                lbList.SelectedItem = selected;
+                lbServer.SelectedItem = selected;
             }
             else
             {
-                lbList.SelectedItems.Clear();
+                lbServer.SelectedItems.Clear();
             }
-            if (lbList.Items.Count < 1) lbList_IndexChanged(new object(), new EventArgs());
+            if (lbServer.Items.Count < 1) lbServer_IndexChanged(new object(), new EventArgs());
         }
 
-        public void lbList_IndexChanged(object sender, EventArgs e)
+        public void lbServer_IndexChanged(object sender, EventArgs e)
         {
             if (filter || selectall) return;
-            if (remove || lbList.SelectedItem == null)
+            if (remove || lbServer.SelectedItem == null)
             {
                 if (bDelete.Enabled) bDelete.Enabled = false;
                 return;
@@ -1725,7 +1759,7 @@ namespace AutoPuTTY
             cbType.BackColor = SystemColors.Window;
             cbVault.BackColor = SystemColors.Window;
 
-            IDictionary<string, string> server = XmlGetServer(lbList.SelectedItem.ToString());
+            IDictionary<string, string> server = XmlGetServer(lbServer.SelectedItem.ToString());
             Debug.WriteLine(server);
 
             tbName.Text = server["Name"];
@@ -1753,24 +1787,30 @@ namespace AutoPuTTY
             indexchanged = false;
         }
 
-        protected void lbList_KeyDown(object sender, KeyEventArgs e)
+        protected void listBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Apps) lbList_ContextMenu(true);
-            if (e.KeyCode == Keys.Delete) mDelete_Click(sender, e);
+            ListBox list = (ListBox)sender;
+
+            if (e.KeyCode == Keys.Apps) listBox_ContextMenu(sender, true);
+            if (e.KeyCode == Keys.Delete)
+            {
+                mDelete_Click(sender, e);
+            }
             if (e.KeyCode == Keys.A && e.Control)
             {
-                for (int i = 0; i < lbList.Items.Count; i++)
+                for (int i = 0; i < list.Items.Count; i++)
                 {
                     //change index for the first item only
                     if (i > 0) selectall = true;
-                    lbList.SetSelected(i, true);
+                    list.SetSelected(i, true);
                 }
                 selectall = false;
             }
         }
 
-        protected void lbList_KeyPress(object sender, KeyPressEventArgs e)
+        protected void listBox_KeyPress(object sender, KeyPressEventArgs e)
         {
+            ListBox list = (ListBox)sender;
             e.Handled = true;
 
             TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
@@ -1778,7 +1818,7 @@ namespace AutoPuTTY
 
             string key = e.KeyChar.ToString();
 
-            if (e.KeyChar == (char)Keys.Return) Connect("-1");
+            if (list.Name == "lbServer" && e.KeyChar == (char)Keys.Return) Connect("-1");
             else if (key.Length == 1)
             {
                 if (unixtime - oldunixtime < 1000)
@@ -1789,18 +1829,18 @@ namespace AutoPuTTY
                 {
                     keysearch = e.KeyChar.ToString();
                 }
-                if (lbList.FindString(keysearch) >= 0)
+                if (list.FindString(keysearch) >= 0)
                 {
-                    lbList.SelectedIndex = -1;
-                    lbList.SelectedIndex = lbList.FindString(keysearch);
+                    list.SelectedIndex = -1;
+                    list.SelectedIndex = list.FindString(keysearch);
                 }
                 else
                 {
                     keysearch = e.KeyChar.ToString();
-                    if (lbList.FindString(keysearch) >= 0)
+                    if (list.FindString(keysearch) >= 0)
                     {
-                        lbList.SelectedIndex = -1;
-                        lbList.SelectedIndex = lbList.FindString(keysearch);
+                        list.SelectedIndex = -1;
+                        list.SelectedIndex = list.FindString(keysearch);
                     }
                 }
             }
@@ -1808,10 +1848,10 @@ namespace AutoPuTTY
             oldunixtime = unixtime;
         }
 
-        private void lbList_MouseClick(object sender, MouseEventArgs e)
+        private void listBox_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right) return;
-            lbList_ContextMenu();
+            listBox_ContextMenu(sender);
         }
 
         private void formMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -1931,11 +1971,11 @@ namespace AutoPuTTY
             Color changed_ok = Color.FromArgb(235, 255, 225);
             Color changed_error = Color.FromArgb(255, 235, 225);
 
-            if (lbList.SelectedItem != null) server = XmlGetServer(lbList.SelectedItem.ToString());
+            if (lbServer.SelectedItem != null) server = XmlGetServer(lbServer.SelectedItem.ToString());
 
             if (sender is ComboBox)
             {
-                if (lbList.SelectedItem != null) {
+                if (lbServer.SelectedItem != null) {
                     switch (cbSender.Name)
                     {
                         case "cbVault":
@@ -1958,22 +1998,22 @@ namespace AutoPuTTY
                 switch (tbSender.Name)
                 {
                     case "tbName":
-                        if (lbList.SelectedItem != null) tbVal = server["Name"];
+                        if (lbServer.SelectedItem != null) tbVal = server["Name"];
                         if (tbSender.Text.Trim() == "") bCopyName.Enabled = false;
                         else bCopyName.Enabled = true;
                         break;
                     case "tbHost":
-                        if (lbList.SelectedItem != null) tbVal = Decrypt(server["Host"]);
+                        if (lbServer.SelectedItem != null) tbVal = Decrypt(server["Host"]);
                         if (tbSender.Text.Trim() == "") bCopyHost.Enabled = false;
                         else bCopyHost.Enabled = true;
                         break;
                     case "tbUser":
-                        if (lbList.SelectedItem != null) tbVal = Decrypt(server["User"]);
+                        if (lbServer.SelectedItem != null) tbVal = Decrypt(server["User"]);
                         if (tbSender.Text.Trim() == "") bCopyUser.Enabled = false;
                         else bCopyUser.Enabled = true;
                         break;
                     case "tbPass":
-                        if (lbList.SelectedItem != null) tbVal = Decrypt(server["Password"]);
+                        if (lbServer.SelectedItem != null) tbVal = Decrypt(server["Password"]);
                         if (tbSender.Text.Trim() == "") bCopyPass.Enabled = false;
                         else bCopyPass.Enabled = true;
                         break;
@@ -1991,12 +2031,8 @@ namespace AutoPuTTY
 
                 if (tbSender.Name == "tbPass")
                 {
-                    if (cbVault.Items.Contains(server["Vault"])) {
-                        if (tbSender.Text.Trim() == tbVal && tbSender.Text.Trim() == "")
-                        {
-                            tbSender.BackColor = changed_ok;
-                        }
-                        else tbSender.BackColor = normal;
+                    if (cbVault.Items.Contains(server["Vault"]) && tbSender.Text.Trim() == tbVal && tbSender.Text.Trim() == "") {
+                        tbSender.BackColor = changed_ok;
                     }
                     else {
                         if (tbSender.Text != tbVal) tbSender.BackColor = changed_ok;
@@ -2012,10 +2048,10 @@ namespace AutoPuTTY
 
             if (indexchanged) return;
             //modify an existing item
-            if (lbList.SelectedItem != null && tbName.Text.Trim() != "" && tbHost.Text.Trim() != "")
+            if (lbServer.SelectedItem != null && tbName.Text.Trim() != "" && tbHost.Text.Trim() != "")
             {
                 //changed name
-                if (tbName.Text != lbList.SelectedItem.ToString())
+                if (tbName.Text != lbServer.SelectedItem.ToString())
                 {
                     //if new name doesn't exist in list, modify or add
                     bModify.Enabled = XmlGetServer(tbName.Text.Trim()).Count > 0 ? false : true;
@@ -2043,8 +2079,8 @@ namespace AutoPuTTY
             string selected = "";
             if (pFindToogle.Visible)
             {
-                if (lbList.SelectedItem != null) selected = lbList.SelectedItem.ToString();
-                lbList_Filter(tbFilter.Text, selected);
+                if (lbServer.SelectedItem != null) selected = lbServer.SelectedItem.ToString();
+                lbServer_Filter(tbFilter.Text, selected);
             }
         }
 
@@ -2303,6 +2339,7 @@ namespace AutoPuTTY
             toolTipMain.SetToolTip(lPass, "Switch to " + (_switch ? "password" : "vault"));
             tbPass.Visible = !_switch;
             cbVault.Visible = _switch;
+            bEye.Visible = !_switch;
             bEdit.Visible = _switch;
         }
 

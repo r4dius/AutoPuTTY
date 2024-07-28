@@ -167,7 +167,7 @@ namespace AutoPuTTY
                         newserver.AppendChild(type);
                     }
 
-                    if (mainform.lbList.Items.Contains(_name)) //duplicate
+                    if (mainform.lbServer.Items.Contains(_name)) //duplicate
                     {
                         if (cbGSkip.Checked) //skip
                         {
@@ -182,15 +182,15 @@ namespace AutoPuTTY
                                 {
                                     if (xmlnode != null) xmldoc.DocumentElement.ReplaceChild(newserver, xmlnode[0]);
                                 }
-                                if (mainform.lbList.InvokeRequired) Invoke(new MethodInvoker(delegate
+                                if (mainform.lbServer.InvokeRequired) Invoke(new MethodInvoker(delegate
                                 {
-                                    mainform.lbList.Items.Remove(_name);
-                                    mainform.lbList.Items.Add(_name);
+                                    mainform.lbServer.Items.Remove(_name);
+                                    mainform.lbServer.Items.Add(_name);
                                 }));
                                 else
                                 {
-                                    mainform.lbList.Items.Remove(_name);
-                                    mainform.lbList.Items.Add(_name);
+                                    mainform.lbServer.Items.Remove(_name);
+                                    mainform.lbServer.Items.Add(_name);
                                 }
                                 c_replace++;
                             }
@@ -204,8 +204,8 @@ namespace AutoPuTTY
                     else //add
                     {
                         if (xmldoc.DocumentElement != null) xmldoc.DocumentElement.InsertAfter(newserver, xmldoc.DocumentElement.LastChild);
-                        if (mainform.lbList.InvokeRequired) Invoke(new MethodInvoker(delegate { mainform.lbList.Items.Add(_name); }));
-                        else mainform.lbList.Items.Add(_name);
+                        if (mainform.lbServer.InvokeRequired) Invoke(new MethodInvoker(delegate { mainform.lbServer.Items.Add(_name); }));
+                        else mainform.lbServer.Items.Add(_name);
                         c_add++;
                     }
                 }
@@ -280,8 +280,8 @@ namespace AutoPuTTY
                         if (xmlnodename != null) formMain.xmlconfig.DocumentElement.ReplaceChild(newserver, xmlnodename[0]);
                     }
 
-                    string[] args = new string[] { "recrypt", count + " / " + (mainform.lbList.Items.Count + mainform.lbVault.Items.Count) };
-                    bwProgress.ReportProgress(((int)((double)count / (double)(mainform.lbList.Items.Count + mainform.lbVault.Items.Count) * 100)), args);
+                    string[] args = new string[] { "recrypt", count + " / " + (mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) };
+                    bwProgress.ReportProgress(((int)((double)count / (double)(mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) * 100)), args);
                 }
 
             xmlnodes = formMain.xmlconfig.SelectNodes("/List/Vault");
@@ -328,8 +328,8 @@ namespace AutoPuTTY
                         if (xmlnodename != null) formMain.xmlconfig.DocumentElement.ReplaceChild(newvault, xmlnodename[0]);
                     }
 
-                    string[] args = new string[] { "recrypt", count + " / " + (mainform.lbList.Items.Count + mainform.lbVault.Items.Count) };
-                    bwProgress.ReportProgress(((int)((double)count / (double)(mainform.lbList.Items.Count + mainform.lbVault.Items.Count) * 100)), args);
+                    string[] args = new string[] { "recrypt", count + " / " + (mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) };
+                    bwProgress.ReportProgress(((int)((double)count / (double)(mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) * 100)), args);
                 }
 
             formMain.xmlconfig.Save(Settings.Default.cfgpath);
@@ -378,7 +378,7 @@ namespace AutoPuTTY
                     Settings.Default.passwordmd5 = mainform.MD5Hash(tbGPassword.Text);
                     mainform.XmlSetConfig("passwordmd5", Settings.Default.passwordmd5.ToString());
 
-                    if (mainform.lbList.Items.Count > 0 || mainform.lbVault.Items.Count > 0)
+                    if (mainform.lbServer.Items.Count > 0 || mainform.lbVault.Items.Count > 0)
                     {
                         string[] bwArgs = { "recrypt", tbGPassword.Text };
                         bwProgress.RunWorkerAsync(bwArgs);
@@ -406,7 +406,7 @@ namespace AutoPuTTY
             Settings.Default.multicolumn = cbGMulti.Checked;
             if (!firstread) mainform.XmlSetConfig("multicolumn", Settings.Default.multicolumn.ToString());
 
-            mainform.lbList.MultiColumn = Settings.Default.multicolumn;
+            mainform.lbServer.MultiColumn = Settings.Default.multicolumn;
             slGMulti.Enabled = Settings.Default.multicolumn;
         }
 
@@ -486,7 +486,7 @@ namespace AutoPuTTY
             if (!cbGMulti.Checked) return;
             Settings.Default.multicolumnwidth = slGMulti.Value;
             if (!firstread) mainform.XmlSetConfig("multicolumnwidth", Settings.Default.multicolumnwidth.ToString());
-            mainform.lbList.ColumnWidth = Settings.Default.multicolumnwidth * 10;
+            mainform.lbServer.ColumnWidth = Settings.Default.multicolumnwidth * 10;
         }
 
         private void tbGConfirm_GotFocus(object sender, EventArgs e)
@@ -871,8 +871,8 @@ namespace AutoPuTTY
             {
                 case "import":
                     importpopup.ImportComplete();
-                    mainform.lbList.SelectedItems.Clear();
-                    if (mainform.lbList.Items.Count > 0) mainform.lbList.SelectedIndex = 0;
+                    mainform.lbServer.SelectedItems.Clear();
+                    if (mainform.lbServer.Items.Count > 0) mainform.lbServer.SelectedIndex = 0;
                     break;
                 case "recrypt":
                     recryptpopup.RecryptComplete();
