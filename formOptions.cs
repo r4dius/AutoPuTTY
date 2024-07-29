@@ -1,8 +1,6 @@
-using AutoPuTTY;
 using AutoPuTTY.Properties;
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;

@@ -23,51 +23,6 @@ namespace AutoPuTTY.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.50")]
-        public string version {
-            get {
-                return ((string)(this["version"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
-        public int multicolumnwidth {
-            get {
-                return ((int)(this["multicolumnwidth"]));
-            }
-            set {
-                this["multicolumnwidth"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool multicolumn {
-            get {
-                return ((bool)(this["multicolumn"]));
-            }
-            set {
-                this["multicolumn"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string cryptokeyoriginal {
-            get {
-                return ((string)(this["cryptokeyoriginal"]));
-            }
-            set {
-                this["cryptokeyoriginal"] = value;
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
@@ -106,61 +61,37 @@ namespace AutoPuTTY.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("putty.exe")]
-        public string puttypath {
-            get {
-                return ((string)(this["puttypath"]));
-            }
-            set {
-                this["puttypath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("mstsc.exe")]
-        public string rdpath {
-            get {
-                return ((string)(this["rdpath"]));
-            }
-            set {
-                this["rdpath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("vncviewer.exe")]
-        public string vncpath {
-            get {
-                return ((string)(this["vncpath"]));
-            }
-            set {
-                this["vncpath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("winscp.exe")]
-        public string winscppath {
-            get {
-                return ((string)(this["winscppath"]));
-            }
-            set {
-                this["winscppath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string password {
+        public string cryptokeyoriginal {
             get {
-                return ((string)(this["password"]));
+                return ((string)(this["cryptokeyoriginal"]));
             }
             set {
-                this["password"] = value;
+                this["cryptokeyoriginal"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(";Sk/#µ^éD}=@|")]
+        public string cryptopasswordkey {
+            get {
+                return ((string)(this["cryptopasswordkey"]));
+            }
+            set {
+                this["cryptopasswordkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool maximized {
+            get {
+                return ((bool)(this["maximized"]));
+            }
+            set {
+                this["maximized"] = value;
             }
         }
         
@@ -179,12 +110,60 @@ namespace AutoPuTTY.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool puttyexecute {
+        public bool multicolumn {
             get {
-                return ((bool)(this["puttyexecute"]));
+                return ((bool)(this["multicolumn"]));
             }
             set {
-                this["puttyexecute"] = value;
+                this["multicolumn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int multicolumnwidth {
+            get {
+                return ((int)(this["multicolumnwidth"]));
+            }
+            set {
+                this["multicolumnwidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string password {
+            get {
+                return ((string)(this["password"]));
+            }
+            set {
+                this["password"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string passwordmd5 {
+            get {
+                return ((string)(this["passwordmd5"]));
+            }
+            set {
+                this["passwordmd5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string position {
+            get {
+                return ((string)(this["position"]));
+            }
+            set {
+                this["position"] = value;
             }
         }
         
@@ -197,6 +176,30 @@ namespace AutoPuTTY.Properties {
             }
             set {
                 this["puttycommand"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool puttyexecute {
+            get {
+                return ((bool)(this["puttyexecute"]));
+            }
+            set {
+                this["puttyexecute"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool puttyforward {
+            get {
+                return ((bool)(this["puttyforward"]));
+            }
+            set {
+                this["puttyforward"] = value;
             }
         }
         
@@ -226,6 +229,30 @@ namespace AutoPuTTY.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("putty.exe")]
+        public string puttypath {
+            get {
+                return ((string)(this["puttypath"]));
+            }
+            set {
+                this["puttypath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool rdadmin {
+            get {
+                return ((bool)(this["rdadmin"]));
+            }
+            set {
+                this["rdadmin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string rdfilespath {
             get {
@@ -250,6 +277,18 @@ namespace AutoPuTTY.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mstsc.exe")]
+        public string rdpath {
+            get {
+                return ((string)(this["rdpath"]));
+            }
+            set {
+                this["rdpath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string rdsize {
             get {
@@ -257,6 +296,42 @@ namespace AutoPuTTY.Properties {
             }
             set {
                 this["rdsize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool rdspan {
+            get {
+                return ((bool)(this["rdspan"]));
+            }
+            set {
+                this["rdspan"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string size {
+            get {
+                return ((string)(this["size"]));
+            }
+            set {
+                this["size"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool tooltips {
+            get {
+                return ((bool)(this["tooltips"]));
+            }
+            set {
+                this["tooltips"] = value;
             }
         }
         
@@ -281,6 +356,18 @@ namespace AutoPuTTY.Properties {
             }
             set {
                 this["vncfullscreen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("vncviewer.exe")]
+        public string vncpath {
+            get {
+                return ((string)(this["vncpath"]));
+            }
+            set {
+                this["vncpath"] = value;
             }
         }
         
@@ -322,37 +409,13 @@ namespace AutoPuTTY.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool rdadmin {
+        [global::System.Configuration.DefaultSettingValueAttribute("winscp.exe")]
+        public string winscppath {
             get {
-                return ((bool)(this["rdadmin"]));
+                return ((string)(this["winscppath"]));
             }
             set {
-                this["rdadmin"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool puttyforward {
-            get {
-                return ((bool)(this["puttyforward"]));
-            }
-            set {
-                this["puttyforward"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool rdspan {
-            get {
-                return ((bool)(this["rdspan"]));
-            }
-            set {
-                this["rdspan"] = value;
+                this["winscppath"] = value;
             }
         }
         
@@ -365,78 +428,6 @@ namespace AutoPuTTY.Properties {
             }
             set {
                 this["winscppassive"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string size {
-            get {
-                return ((string)(this["size"]));
-            }
-            set {
-                this["size"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string position {
-            get {
-                return ((string)(this["position"]));
-            }
-            set {
-                this["position"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(";Sk/#µ^éD}=@|")]
-        public string cryptopasswordkey {
-            get {
-                return ((string)(this["cryptopasswordkey"]));
-            }
-            set {
-                this["cryptopasswordkey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string passwordmd5 {
-            get {
-                return ((string)(this["passwordmd5"]));
-            }
-            set {
-                this["passwordmd5"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool maximized {
-            get {
-                return ((bool)(this["maximized"]));
-            }
-            set {
-                this["maximized"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool tooltips {
-            get {
-                return ((bool)(this["tooltips"]));
-            }
-            set {
-                this["tooltips"] = value;
             }
         }
     }

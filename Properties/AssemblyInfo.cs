@@ -28,5 +28,11 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.40")]
-[assembly: AssemblyFileVersion("0.40")]
+
+[assembly: AssemblyVersion(Info.version)]
+[assembly: AssemblyFileVersion(Info.version)]
+
+public static class Info
+{
+    public const string version = "0.50";
+}

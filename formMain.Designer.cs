@@ -32,11 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formMain));
             this.tbPass = new System.Windows.Forms.TextBox();
             this.pConfig = new System.Windows.Forms.Panel();
+            this.bEdit = new System.Windows.Forms.PictureBox();
             this.bCopyPass = new System.Windows.Forms.PictureBox();
             this.bCopyHost = new System.Windows.Forms.PictureBox();
             this.bCopyName = new System.Windows.Forms.PictureBox();
             this.bCopyUser = new System.Windows.Forms.PictureBox();
-            this.bEdit = new System.Windows.Forms.PictureBox();
             this.bEye = new System.Windows.Forms.PictureBox();
             this.lSep5 = new System.Windows.Forms.Label();
             this.lSep4 = new System.Windows.Forms.Label();
@@ -113,12 +113,15 @@
             this.tbPassFake = new System.Windows.Forms.TextBox();
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
             this.cmVault = new System.Windows.Forms.ContextMenu();
+            this.panelUpdate = new System.Windows.Forms.Panel();
+            this.liAboutUpdate = new System.Windows.Forms.LinkLabel();
+            this.tAboutSep = new AutoPuTTY.SingleClickLabel();
             this.pConfig.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyPass)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyHost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyUser)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).BeginInit();
             this.pVault.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bVCopyPriv)).BeginInit();
@@ -140,6 +143,7 @@
             this.pPassBackLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPassEye)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pPassLogo)).BeginInit();
+            this.panelUpdate.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbPass
@@ -186,6 +190,23 @@
             this.pConfig.Name = "pConfig";
             this.pConfig.Size = new System.Drawing.Size(130, 229);
             this.pConfig.TabIndex = 1;
+            // 
+            // bEdit
+            // 
+            this.bEdit.BackColor = System.Drawing.Color.Transparent;
+            this.bEdit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bEdit.Image = global::AutoPuTTY.Properties.Resources.iconedit;
+            this.bEdit.Location = new System.Drawing.Point(84, 119);
+            this.bEdit.Margin = new System.Windows.Forms.Padding(0);
+            this.bEdit.Name = "bEdit";
+            this.bEdit.Size = new System.Drawing.Size(22, 15);
+            this.bEdit.TabIndex = 22;
+            this.bEdit.TabStop = false;
+            this.toolTipMain.SetToolTip(this.bEdit, "Access vault list");
+            this.bEdit.Visible = false;
+            this.bEdit.Click += new System.EventHandler(this.bEdit_Click);
+            this.bEdit.MouseEnter += new System.EventHandler(this.bIconEdit_MouseEnter);
+            this.bEdit.MouseLeave += new System.EventHandler(this.bIconEdit_MouseLeave);
             // 
             // bCopyPass
             // 
@@ -254,23 +275,6 @@
             this.bCopyUser.Click += new System.EventHandler(this.bCopyUser_Click);
             this.bCopyUser.MouseEnter += new System.EventHandler(this.bIconCopy_MouseEnter);
             this.bCopyUser.MouseLeave += new System.EventHandler(this.bIconCopy_MouseLeave);
-            // 
-            // bEdit
-            // 
-            this.bEdit.BackColor = System.Drawing.Color.Transparent;
-            this.bEdit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.bEdit.Image = global::AutoPuTTY.Properties.Resources.iconedit;
-            this.bEdit.Location = new System.Drawing.Point(84, 119);
-            this.bEdit.Margin = new System.Windows.Forms.Padding(0);
-            this.bEdit.Name = "bEdit";
-            this.bEdit.Size = new System.Drawing.Size(22, 15);
-            this.bEdit.TabIndex = 22;
-            this.bEdit.TabStop = false;
-            this.toolTipMain.SetToolTip(this.bEdit, "Access vault list");
-            this.bEdit.Visible = false;
-            this.bEdit.Click += new System.EventHandler(this.bEdit_Click);
-            this.bEdit.MouseEnter += new System.EventHandler(this.bIconEdit_MouseEnter);
-            this.bEdit.MouseLeave += new System.EventHandler(this.bIconEdit_MouseLeave);
             // 
             // bEye
             // 
@@ -974,7 +978,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.panelAbout.Controls.Add(this.tAboutVersion);
+            this.panelAbout.Controls.Add(this.panelUpdate);
             this.panelAbout.Controls.Add(this.bAboutOK);
             this.panelAbout.Controls.Add(this.piAboutLogo);
             this.panelAbout.Controls.Add(this.liAboutWebsite);
@@ -987,15 +991,16 @@
             // 
             // tAboutVersion
             // 
-            this.tAboutVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tAboutVersion.AutoSize = true;
             this.tAboutVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
             this.tAboutVersion.ForeColor = System.Drawing.Color.White;
-            this.tAboutVersion.Location = new System.Drawing.Point(174, 97);
+            this.tAboutVersion.Location = new System.Drawing.Point(87, 2);
+            this.tAboutVersion.Margin = new System.Windows.Forms.Padding(0);
             this.tAboutVersion.Name = "tAboutVersion";
             this.tAboutVersion.Size = new System.Drawing.Size(41, 13);
             this.tAboutVersion.TabIndex = 24;
             this.tAboutVersion.Text = "version";
+            this.tAboutVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // bAboutOK
             // 
@@ -1035,20 +1040,19 @@
             this.liAboutWebsite.Size = new System.Drawing.Size(261, 21);
             this.liAboutWebsite.TabIndex = 22;
             this.liAboutWebsite.TabStop = true;
-            this.liAboutWebsite.Text = "http://r4di.us/autoputty";
+            this.liAboutWebsite.Text = "https://r4di.us/autoputty/";
             this.liAboutWebsite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.liAboutWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liWebsite_LinkClicked);
             // 
             // tAboutTitle
             // 
             this.tAboutTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tAboutTitle.AutoSize = true;
             this.tAboutTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
             this.tAboutTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tAboutTitle.ForeColor = System.Drawing.Color.White;
-            this.tAboutTitle.Location = new System.Drawing.Point(61, 89);
+            this.tAboutTitle.Location = new System.Drawing.Point(0, 89);
             this.tAboutTitle.Name = "tAboutTitle";
-            this.tAboutTitle.Size = new System.Drawing.Size(116, 23);
+            this.tAboutTitle.Size = new System.Drawing.Size(261, 23);
             this.tAboutTitle.TabIndex = 19;
             this.tAboutTitle.Text = "AutoPuTTY";
             this.tAboutTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -1232,15 +1236,59 @@
             this.toolTipMain.InitialDelay = 200;
             this.toolTipMain.ReshowDelay = 100;
             // 
+            // panelUpdate
+            // 
+            this.panelUpdate.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.panelUpdate.AutoSize = true;
+            this.panelUpdate.Controls.Add(this.tAboutSep);
+            this.panelUpdate.Controls.Add(this.liAboutUpdate);
+            this.panelUpdate.Controls.Add(this.tAboutVersion);
+            this.panelUpdate.Location = new System.Drawing.Point(0, 139);
+            this.panelUpdate.Name = "panelUpdate";
+            this.panelUpdate.Size = new System.Drawing.Size(261, 21);
+            this.panelUpdate.TabIndex = 25;
+            // 
+            // liAboutUpdate
+            // 
+            this.liAboutUpdate.ActiveLinkColor = System.Drawing.Color.White;
+            this.liAboutUpdate.AutoSize = true;
+            this.liAboutUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.liAboutUpdate.DisabledLinkColor = System.Drawing.Color.Transparent;
+            this.liAboutUpdate.ForeColor = System.Drawing.Color.White;
+            this.liAboutUpdate.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.liAboutUpdate.LinkColor = System.Drawing.Color.White;
+            this.liAboutUpdate.Location = new System.Drawing.Point(136, 2);
+            this.liAboutUpdate.Margin = new System.Windows.Forms.Padding(0);
+            this.liAboutUpdate.Name = "liAboutUpdate";
+            this.liAboutUpdate.Size = new System.Drawing.Size(40, 13);
+            this.liAboutUpdate.TabIndex = 25;
+            this.liAboutUpdate.TabStop = true;
+            this.liAboutUpdate.Text = "update";
+            this.liAboutUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.liAboutUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liUpdate_LinkClicked);
+            // 
+            // tAboutSep
+            // 
+            this.tAboutSep.AutoSize = true;
+            this.tAboutSep.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.tAboutSep.ForeColor = System.Drawing.Color.White;
+            this.tAboutSep.Location = new System.Drawing.Point(123, 2);
+            this.tAboutSep.Margin = new System.Windows.Forms.Padding(0);
+            this.tAboutSep.Name = "tAboutSep";
+            this.tAboutSep.Size = new System.Drawing.Size(16, 13);
+            this.tAboutSep.TabIndex = 26;
+            this.tAboutSep.Text = " - ";
+            this.tAboutSep.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(261, 229);
-            this.Controls.Add(this.tlMain);
-            this.Controls.Add(this.tlPassword);
             this.Controls.Add(this.tlAbout);
+            this.Controls.Add(this.tlPassword);
+            this.Controls.Add(this.tlMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "formMain";
@@ -1254,11 +1302,11 @@
             this.Resize += new System.EventHandler(this.mainForm_Resize);
             this.pConfig.ResumeLayout(false);
             this.pConfig.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyPass)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyHost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyUser)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).EndInit();
             this.pVault.ResumeLayout(false);
             this.pVault.PerformLayout();
@@ -1285,6 +1333,8 @@
             this.pPassBackLeft.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPassEye)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pPassLogo)).EndInit();
+            this.panelUpdate.ResumeLayout(false);
+            this.panelUpdate.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1374,6 +1424,9 @@
         private System.Windows.Forms.PictureBox bVCopyPriv;
         public System.Windows.Forms.ToolTip toolTipMain;
         private System.Windows.Forms.ContextMenu cmVault;
+        private System.Windows.Forms.Panel panelUpdate;
+        private System.Windows.Forms.LinkLabel liAboutUpdate;
+        private SingleClickLabel tAboutSep;
     }
 }
 

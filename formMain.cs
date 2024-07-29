@@ -1,11 +1,11 @@
 ﻿using AutoPuTTY.Properties;
+using Octokit;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -14,9 +14,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web;
-using System.Web.UI;
-using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Xml;
 using ComboBox = System.Windows.Forms.ComboBox;
@@ -52,6 +49,7 @@ namespace AutoPuTTY
         private int tries;
         private string keysearch = "";
         private string laststate = "normal";
+        private string updatelink = "";
         private Screen current;
         private Image iconedithover;
         private Image iconcopyhover;
@@ -97,7 +95,8 @@ namespace AutoPuTTY
 
             InitializeComponent();
 
-            tAboutVersion.Text = Settings.Default.version;
+            tAboutVersion.Text = "v" + Info.version;
+            UpdateReset();
 
             //clone types array to have a sorted version
             _types = (string[])types.Clone();
@@ -329,6 +328,49 @@ namespace AutoPuTTY
             if (lbServer.Items.Count > 0) lbServer.SelectedIndex = 0;
             if (lbVault.Items.Count > 0) lbVault.SelectedIndex = 0;
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
+        }
+
+        private async void UpdateCheck()
+        {
+            liAboutUpdate.Text = "checking for update";
+            UpdateVersionPosition();
+
+            double version = Convert.ToDouble(Info.version);
+            double number;
+            try
+            {
+                var github = new GitHubClient(new ProductHeaderValue("AutoPuTTY"));
+                var release = await github.Repository.Release.GetLatest("r4dius", "AutoPuTTY");
+                Double.TryParse(release.TagName, out number);
+                tAboutVersion.AutoSize = true;
+                if (number > version)
+                {
+                    updatelink = release.HtmlUrl.ToString();
+                    liAboutUpdate.Text = "update available v" + number;
+                }
+                else
+                {
+                    liAboutUpdate.Text = "no update available";
+                }
+            } catch
+            {
+                liAboutUpdate.Text = "couldn't check for update";
+            }
+            UpdateVersionPosition();
+        }
+
+        private void UpdateVersionPosition()
+        {
+            int versiontextwidth = tAboutVersion.Width + tAboutSep.Width + liAboutUpdate.Width;
+            tAboutVersion.Left = panelUpdate.Width / 2 - versiontextwidth / 2;
+            tAboutSep.Left = tAboutVersion.Left + tAboutVersion.Width;
+            liAboutUpdate.Left = tAboutSep.Left + tAboutSep.Width;
+        }
+
+        private void UpdateReset()
+        {
+            liAboutUpdate.Text = "check for update";
+            UpdateVersionPosition();
         }
 
         private static bool IsValidPosition(int x, int y, int width, int height)
@@ -2110,6 +2152,7 @@ namespace AutoPuTTY
 
         private void bAboutOK_Click(object sender, EventArgs e)
         {
+            if (updatelink == "") UpdateReset();
             if (passwordrequired) ShowTableLayoutPanel(tlPassword);
             else ShowTableLayoutPanel(tlMain);
         }
@@ -2665,6 +2708,12 @@ namespace AutoPuTTY
                 icon.Image = Resources.iconcopy;
             }
             else icon.Image = iconcopyhover;
+        }
+
+        private void liUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (updatelink != "") Process.Start(updatelink);
+            else UpdateCheck();
         }
     }
 }
