@@ -7,3 +7,5 @@ obj/*
 putty/Release/*
 putty/x64/*
 Resources/PngOptimizer.exe
+/putty-0.80/x64
+/putty-0.80/.vs
