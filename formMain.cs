@@ -2073,7 +2073,7 @@ namespace AutoPuTTY
 
                 if (tbSender.Name == "tbPass")
                 {
-                    if (cbVault.Items.Contains(server["Vault"]) && tbSender.Text.Trim() == tbVal && tbSender.Text.Trim() == "") {
+                    if (lbServer.SelectedItem != null && cbVault.Items.Contains(server["Vault"]) && tbSender.Text.Trim() == tbVal && tbSender.Text.Trim() == "") {
                         tbSender.BackColor = changed_ok;
                     }
                     else {

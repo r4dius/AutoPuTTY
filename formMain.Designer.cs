@@ -94,6 +94,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tlAbout = new System.Windows.Forms.TableLayoutPanel();
             this.panelAbout = new System.Windows.Forms.Panel();
+            this.panelUpdate = new System.Windows.Forms.Panel();
+            this.tAboutSep = new AutoPuTTY.SingleClickLabel();
+            this.liAboutUpdate = new System.Windows.Forms.LinkLabel();
             this.tAboutVersion = new AutoPuTTY.SingleClickLabel();
             this.bAboutOK = new System.Windows.Forms.Button();
             this.piAboutLogo = new System.Windows.Forms.PictureBox();
@@ -113,9 +116,6 @@
             this.tbPassFake = new System.Windows.Forms.TextBox();
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
             this.cmVault = new System.Windows.Forms.ContextMenu();
-            this.panelUpdate = new System.Windows.Forms.Panel();
-            this.liAboutUpdate = new System.Windows.Forms.LinkLabel();
-            this.tAboutSep = new AutoPuTTY.SingleClickLabel();
             this.pConfig.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyPass)).BeginInit();
@@ -136,6 +136,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bClose)).BeginInit();
             this.tlAbout.SuspendLayout();
             this.panelAbout.SuspendLayout();
+            this.panelUpdate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piAboutLogo)).BeginInit();
             this.tlPassword.SuspendLayout();
             this.panelPassword.SuspendLayout();
@@ -143,7 +144,6 @@
             this.pPassBackLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPassEye)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pPassLogo)).BeginInit();
-            this.panelUpdate.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbPass
@@ -989,6 +989,50 @@
             this.panelAbout.Size = new System.Drawing.Size(261, 229);
             this.panelAbout.TabIndex = 0;
             // 
+            // panelUpdate
+            // 
+            this.panelUpdate.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.panelUpdate.AutoSize = true;
+            this.panelUpdate.Controls.Add(this.tAboutSep);
+            this.panelUpdate.Controls.Add(this.liAboutUpdate);
+            this.panelUpdate.Controls.Add(this.tAboutVersion);
+            this.panelUpdate.Location = new System.Drawing.Point(0, 139);
+            this.panelUpdate.Name = "panelUpdate";
+            this.panelUpdate.Size = new System.Drawing.Size(261, 21);
+            this.panelUpdate.TabIndex = 25;
+            // 
+            // tAboutSep
+            // 
+            this.tAboutSep.AutoSize = true;
+            this.tAboutSep.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.tAboutSep.ForeColor = System.Drawing.Color.White;
+            this.tAboutSep.Location = new System.Drawing.Point(123, 2);
+            this.tAboutSep.Margin = new System.Windows.Forms.Padding(0);
+            this.tAboutSep.Name = "tAboutSep";
+            this.tAboutSep.Size = new System.Drawing.Size(16, 13);
+            this.tAboutSep.TabIndex = 26;
+            this.tAboutSep.Text = " - ";
+            this.tAboutSep.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // liAboutUpdate
+            // 
+            this.liAboutUpdate.ActiveLinkColor = System.Drawing.Color.White;
+            this.liAboutUpdate.AutoSize = true;
+            this.liAboutUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.liAboutUpdate.DisabledLinkColor = System.Drawing.Color.Transparent;
+            this.liAboutUpdate.ForeColor = System.Drawing.Color.White;
+            this.liAboutUpdate.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.liAboutUpdate.LinkColor = System.Drawing.Color.White;
+            this.liAboutUpdate.Location = new System.Drawing.Point(136, 2);
+            this.liAboutUpdate.Margin = new System.Windows.Forms.Padding(0);
+            this.liAboutUpdate.Name = "liAboutUpdate";
+            this.liAboutUpdate.Size = new System.Drawing.Size(40, 13);
+            this.liAboutUpdate.TabIndex = 25;
+            this.liAboutUpdate.TabStop = true;
+            this.liAboutUpdate.Text = "update";
+            this.liAboutUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.liAboutUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liUpdate_LinkClicked);
+            // 
             // tAboutVersion
             // 
             this.tAboutVersion.AutoSize = true;
@@ -1236,59 +1280,15 @@
             this.toolTipMain.InitialDelay = 200;
             this.toolTipMain.ReshowDelay = 100;
             // 
-            // panelUpdate
-            // 
-            this.panelUpdate.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.panelUpdate.AutoSize = true;
-            this.panelUpdate.Controls.Add(this.tAboutSep);
-            this.panelUpdate.Controls.Add(this.liAboutUpdate);
-            this.panelUpdate.Controls.Add(this.tAboutVersion);
-            this.panelUpdate.Location = new System.Drawing.Point(0, 139);
-            this.panelUpdate.Name = "panelUpdate";
-            this.panelUpdate.Size = new System.Drawing.Size(261, 21);
-            this.panelUpdate.TabIndex = 25;
-            // 
-            // liAboutUpdate
-            // 
-            this.liAboutUpdate.ActiveLinkColor = System.Drawing.Color.White;
-            this.liAboutUpdate.AutoSize = true;
-            this.liAboutUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.liAboutUpdate.DisabledLinkColor = System.Drawing.Color.Transparent;
-            this.liAboutUpdate.ForeColor = System.Drawing.Color.White;
-            this.liAboutUpdate.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.liAboutUpdate.LinkColor = System.Drawing.Color.White;
-            this.liAboutUpdate.Location = new System.Drawing.Point(136, 2);
-            this.liAboutUpdate.Margin = new System.Windows.Forms.Padding(0);
-            this.liAboutUpdate.Name = "liAboutUpdate";
-            this.liAboutUpdate.Size = new System.Drawing.Size(40, 13);
-            this.liAboutUpdate.TabIndex = 25;
-            this.liAboutUpdate.TabStop = true;
-            this.liAboutUpdate.Text = "update";
-            this.liAboutUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.liAboutUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liUpdate_LinkClicked);
-            // 
-            // tAboutSep
-            // 
-            this.tAboutSep.AutoSize = true;
-            this.tAboutSep.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.tAboutSep.ForeColor = System.Drawing.Color.White;
-            this.tAboutSep.Location = new System.Drawing.Point(123, 2);
-            this.tAboutSep.Margin = new System.Windows.Forms.Padding(0);
-            this.tAboutSep.Name = "tAboutSep";
-            this.tAboutSep.Size = new System.Drawing.Size(16, 13);
-            this.tAboutSep.TabIndex = 26;
-            this.tAboutSep.Text = " - ";
-            this.tAboutSep.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(261, 229);
+            this.Controls.Add(this.tlMain);
             this.Controls.Add(this.tlAbout);
             this.Controls.Add(this.tlPassword);
-            this.Controls.Add(this.tlMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "formMain";
@@ -1324,6 +1324,8 @@
             this.tlAbout.ResumeLayout(false);
             this.panelAbout.ResumeLayout(false);
             this.panelAbout.PerformLayout();
+            this.panelUpdate.ResumeLayout(false);
+            this.panelUpdate.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piAboutLogo)).EndInit();
             this.tlPassword.ResumeLayout(false);
             this.panelPassword.ResumeLayout(false);
@@ -1333,8 +1335,6 @@
             this.pPassBackLeft.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPassEye)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pPassLogo)).EndInit();
-            this.panelUpdate.ResumeLayout(false);
-            this.panelUpdate.PerformLayout();
             this.ResumeLayout(false);
 
         }
