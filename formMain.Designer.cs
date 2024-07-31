@@ -73,7 +73,7 @@
             this.tbVName = new System.Windows.Forms.TextBox();
             this.singleClickLabel1 = new AutoPuTTY.SingleClickLabel();
             this.bVModify = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lUsedBy = new System.Windows.Forms.Label();
             this.bVCopyName = new System.Windows.Forms.PictureBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmSystray = new System.Windows.Forms.ContextMenu();
@@ -158,6 +158,7 @@
             // pConfig
             // 
             this.pConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pConfig.Controls.Add(this.pVault);
             this.pConfig.Controls.Add(this.bEdit);
             this.pConfig.Controls.Add(this.bCopyPass);
             this.pConfig.Controls.Add(this.bCopyHost);
@@ -184,7 +185,6 @@
             this.pConfig.Controls.Add(this.lName);
             this.pConfig.Controls.Add(this.cbVault);
             this.pConfig.Controls.Add(this.tbPass);
-            this.pConfig.Controls.Add(this.pVault);
             this.pConfig.Location = new System.Drawing.Point(131, 0);
             this.pConfig.Margin = new System.Windows.Forms.Padding(0);
             this.pConfig.Name = "pConfig";
@@ -526,7 +526,7 @@
             this.pVault.Controls.Add(this.tbVName);
             this.pVault.Controls.Add(this.singleClickLabel1);
             this.pVault.Controls.Add(this.bVModify);
-            this.pVault.Controls.Add(this.label5);
+            this.pVault.Controls.Add(this.lUsedBy);
             this.pVault.Controls.Add(this.bVCopyName);
             this.pVault.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pVault.Location = new System.Drawing.Point(0, 0);
@@ -716,15 +716,15 @@
             this.bVModify.UseVisualStyleBackColor = true;
             this.bVModify.Click += new System.EventHandler(this.bVModify_Click);
             // 
-            // label5
+            // lUsedBy
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.Location = new System.Drawing.Point(3, 120);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(124, 13);
-            this.label5.TabIndex = 31;
-            this.label5.Text = "Used by # servers";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lUsedBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lUsedBy.Location = new System.Drawing.Point(3, 120);
+            this.lUsedBy.Name = "lUsedBy";
+            this.lUsedBy.Size = new System.Drawing.Size(124, 13);
+            this.lUsedBy.TabIndex = 31;
+            this.lUsedBy.Text = "Used by # servers";
+            this.lUsedBy.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // bVCopyName
             // 
@@ -1414,7 +1414,7 @@
         private System.Windows.Forms.TextBox tbVName;
         private SingleClickLabel singleClickLabel1;
         private System.Windows.Forms.Button bVModify;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lUsedBy;
         private System.Windows.Forms.PictureBox bVCopyName;
         private System.Windows.Forms.PictureBox bVCopyPass;
         private System.Windows.Forms.PictureBox bCopyPass;

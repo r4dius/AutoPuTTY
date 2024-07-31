@@ -1129,7 +1129,7 @@ namespace AutoPuTTY
             xmlconfig.InsertBefore(xmlDeclaration, root);
             XmlElement list = xmlconfig.CreateElement(string.Empty, "List", string.Empty);
             xmlconfig.AppendChild(list);
-            xmlconfig.Save(Settings.Default.cfgfilepath);
+            XmlSave();
         }
 
         public string XmlGetConfig(string id)
@@ -1140,6 +1140,18 @@ namespace AutoPuTTY
                 return xmlnode.InnerText;
             }
             return "";
+        }
+
+        public void XmlSave()
+        {
+            try
+            {
+                xmlconfig.Save(Settings.Default.cfgpath);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+            }
         }
 
         public void XmlSetConfig(string id, string val)
@@ -1160,45 +1172,45 @@ namespace AutoPuTTY
                 xmlconfig.DocumentElement.InsertBefore(newpath, xmlconfig.DocumentElement.FirstChild);
             }
 
-            try
-            {
-                xmlconfig.Save(Settings.Default.cfgpath);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            }
+            XmlSave();
         }
 
         public void XmlDropNode(string node, ArrayList items)
         {
             foreach (string item in items)
             {
-                XmlNode xmlnode = xmlconfig.SelectSingleNode("//" + node + "[@" + item + "]");
+                string name = (node == "Config" ? "ID" : "Name");
+                XmlNode xmlnode = xmlconfig.SelectSingleNode("//" + node + "[@" + name + "=" + ParseXpathString(item) + "]");
                 if (xmlconfig.DocumentElement != null)
                 {
                     if (xmlnode != null) xmlconfig.DocumentElement.RemoveChild(xmlnode);
                 }
+
+                if (node == "Vault")
+                {
+                    // delete vault name for existing servers
+                    XmlNodeList xmlnodes = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(item) + "]");
+                    if (xmlnodes != null)
+                    {
+                        foreach (XmlNode _xmlnode in xmlnodes)
+                        {
+                            _xmlnode.InnerText = string.Empty;
+                        }
+                    }
+                }
             }
 
-            try
-            {
-                xmlconfig.Save(Settings.Default.cfgpath);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            }
+            XmlSave();
         }
 
         public void XmlDropConfig(string item)
         {
-            XmlDropNode("Config", new ArrayList { "ID=" + ParseXpathString(item) });
+            XmlDropNode("Config", new ArrayList { item });
         }
 
         public void XmlDropServer(string item)
         {
-            XmlDropNode("Server", new ArrayList { "Name=" + ParseXpathString(item) });
+            XmlDropNode("Server", new ArrayList { item });
         }
 
         public void XmlDropServer(ArrayList items)
@@ -1208,15 +1220,6 @@ namespace AutoPuTTY
 
         public void XmlDropVault(string item)
         {
-            // delete vault name for existing servers
-            XmlNodeList servernodes = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(lbVault.SelectedItems[0].ToString()) + "]");
-            if (servernodes != null)
-            {
-                foreach (XmlNode servernode in servernodes)
-                {
-                    servernode.InnerText = string.Empty;
-                }
-            }
             XmlDropNode("Vault", new ArrayList { item });
         }
 
@@ -1393,14 +1396,7 @@ namespace AutoPuTTY
 
                 if (xmlconfig.DocumentElement != null) xmlconfig.DocumentElement.InsertAfter(newserver, xmlconfig.DocumentElement.LastChild);
 
-                try
-                {
-                    xmlconfig.Save(Settings.Default.cfgpath);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-                }
+                XmlSave();
 
                 //reset colors
                 tbName.BackColor = SystemColors.Window;
@@ -1468,14 +1464,7 @@ namespace AutoPuTTY
                 if (xmlnode != null) xmlconfig.DocumentElement.ReplaceChild(newserver, xmlnode);
             }
 
-            try
-            {
-                xmlconfig.Save(Settings.Default.cfgpath);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            }
+            XmlSave();
 
             remove = true;
             lbServer.Items.RemoveAt(lbServer.Items.IndexOf(lbServer.SelectedItem));
@@ -1645,7 +1634,7 @@ namespace AutoPuTTY
                     remove = true;
                     while (list.SelectedItems.Count > 0)
                     {
-                        _items.Add("Name=" + ParseXpathString(list.SelectedItem.ToString()));
+                        _items.Add(list.SelectedItem.ToString());
                         if(list.Name == "lbVault")
                         {
                             cbVault.Items.Remove(list.SelectedItem);
@@ -2412,6 +2401,7 @@ namespace AutoPuTTY
             if (filter || selectall) return;
             if (remove || lbVault.SelectedItem == null)
             {
+                lUsedBy.Text = "";
                 if (bVDelete.Enabled) bVDelete.Enabled = false;
                 return;
             }
@@ -2431,6 +2421,9 @@ namespace AutoPuTTY
             if (bVAdd.Enabled) bVAdd.Enabled = false;
             if (bVModify.Enabled) bVModify.Enabled = false;
             if (!bVDelete.Enabled) bVDelete.Enabled = true;
+
+            int usedby = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(vault["Name"]) + "]").Count;
+            lUsedBy.Text = "Used by " + usedby.ToString() + " servers";
 
             indexchanged = false;
         }
@@ -2537,14 +2530,7 @@ namespace AutoPuTTY
                     xmlconfig.DocumentElement.InsertAfter(newvault, lastvault != null ? lastvault : xmlconfig.DocumentElement.LastChild);
                 }
 
-                try
-                {
-                    xmlconfig.Save(Settings.Default.cfgpath);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-                }
+                XmlSave();
 
                 //reset colors
                 tbVName.BackColor = SystemColors.Window;
@@ -2605,14 +2591,7 @@ namespace AutoPuTTY
                 }
             }
 
-            try
-            {
-                xmlconfig.Save(Settings.Default.cfgpath);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            }
+            XmlSave();
 
             if (lbVault.SelectedItem != null) {
                 if ((string)cbVault.SelectedItem == lbVault.SelectedItem.ToString()) changecb = true;
@@ -2642,10 +2621,11 @@ namespace AutoPuTTY
             {
                 if (lbVault.SelectedItems.Count > 0)
                 {
-                    XmlDropVault("Name=" + ParseXpathString(lbVault.SelectedItems[0].ToString()));
+                    string vault = lbVault.SelectedItems[0].ToString();
+                    XmlDropVault(vault);
                     remove = true;
-                    cbVault.Items.Remove(lbVault.SelectedItems[0].ToString());
-                    lbVault.Items.Remove(lbVault.SelectedItems[0].ToString());
+                    cbVault.Items.Remove(vault);
+                    lbVault.Items.Remove(vault);
                     remove = false;
                     lbVault.SelectedItems.Clear();
                     tbVName_TextChanged(this, e);
