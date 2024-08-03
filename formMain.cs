@@ -66,8 +66,12 @@ namespace AutoPuTTY
             string cfgpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace("file:\\", "");
             string userpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            if (File.Exists(cfgpath + "\\" + Settings.Default.cfgfilepath)) Settings.Default.cfgpath = cfgpath + "\\" + Settings.Default.cfgfilepath;
-            else if (File.Exists(userpath + "\\" + Settings.Default.cfgfilepath)) Settings.Default.cfgpath = userpath + "\\" + Settings.Default.cfgfilepath;
+            if (File.Exists(cfgpath + "\\" + Settings.Default.cfgfilepath)) {
+                Settings.Default.cfgpath = cfgpath + "\\" + Settings.Default.cfgfilepath;
+            }
+            else if (File.Exists(userpath + "\\" + Settings.Default.cfgfilepath)) {
+                Settings.Default.cfgpath = userpath + "\\" + Settings.Default.cfgfilepath;
+            }
             else
             {
                 try
@@ -203,7 +207,7 @@ namespace AutoPuTTY
             MenuItem searchmenu = new MenuItem();
             searchmenu.Index = i++;
             searchmenu.Text = "Search...";
-            searchmenu.Click += SearchSwitchShow;
+            searchmenu.Click += SwitchSearchShow;
             cmServer.MenuItems.Add(searchmenu);
 
             MenuItem deletevaultmenu = new MenuItem();
@@ -217,48 +221,6 @@ namespace AutoPuTTY
 
             OpenAtSavedPosition(this);
 
-            /*
-            if (Settings.Default.position == "")
-            {
-                Rectangle screen = Screen.FromControl(this).Bounds;
-                left = screen.Width / 2 - width / 2;
-                top = screen.Height / 2 - height / 2;
-            }
-            else
-            {
-                string[] _size = Settings.Default.size.Split('x');
-                if (_size.Length == 2)
-                {
-                    width = Convert.ToInt32(_size[0]);
-                    height = Convert.ToInt32(_size[1]);
-                }
-
-                string[] _position = Settings.Default.position.Split('x');
-                if (_position.Length == 2)
-                {
-                    left = Convert.ToInt32(_position[0]);
-                    top = Convert.ToInt32(_position[1]);
-                }
-
-                current = Screen.FromControl(this);
-
-                if (left + width - 7 > current.WorkingArea.Width) left = current.WorkingArea.Width - width;
-                if (top + height - 7 > current.WorkingArea.Height) top = current.WorkingArea.Height - height;
-
-                int borderwidth = (DesktopBounds.Width - ClientSize.Width) / 2;
-                int titleheight = DesktopBounds.Height - ClientSize.Height - borderwidth;
-                Console.WriteLine("border " + borderwidth + " title " + titleheight);
-
-
-                Console.WriteLine("current " + current.ToString());
-                Console.WriteLine("working " + current.WorkingArea);
-                Console.WriteLine("screen bounds " + current.Bounds);
-                Console.WriteLine("form bounds " + DesktopBounds);
-            }
-
-            this.DesktopBounds =  new Rectangle(left, top, width, height);
-            */
-
             // convert old decryptable password to md5 hash
             if (Settings.Default.password.Trim() != "")
             {
@@ -266,7 +228,7 @@ namespace AutoPuTTY
                 Settings.Default.password = "";
 
                 XmlSetConfig("passwordmd5", Settings.Default.passwordmd5.ToString());
-                XmlDropConfig("password");
+                XmlDropNode("Config", new ArrayList { "password" });
             }
             if (Settings.Default.passwordmd5.Trim() != "")
             {
@@ -319,14 +281,20 @@ namespace AutoPuTTY
             bCopyHost.Enabled = false;
             bCopyUser.Enabled = false;
             bCopyPass.Enabled = false;
-            bVCopyName.Enabled = false;
-            bVCopyPass.Enabled = false;
-            bVCopyPriv.Enabled = false;
+            bCopyVaultName.Enabled = false;
+            bCopyVaultPass.Enabled = false;
+            bCopyVaultPriv.Enabled = false;
             ShowTableLayoutPanel(tlMain);
             XmlToServer();
             XmlToVault();
-            if (lbServer.Items.Count > 0) lbServer.SelectedIndex = 0;
-            if (lbVault.Items.Count > 0) lbVault.SelectedIndex = 0;
+            if (lbServer.Items.Count > 0)
+            {
+                lbServer.SelectedIndex = 0;
+            }
+            if (lbVault.Items.Count > 0)
+            {
+                lbVault.SelectedIndex = 0;
+            }
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
         }
 
@@ -352,7 +320,8 @@ namespace AutoPuTTY
                 {
                     liAboutUpdate.Text = "no update available";
                 }
-            } catch
+            }
+            catch
             {
                 liAboutUpdate.Text = "couldn't check for update";
             }
@@ -1030,7 +999,7 @@ namespace AutoPuTTY
             if (status && pFindToogle.Visible && tbFilter.Text != "") tbFilter.SelectAll();
         }
 
-        private void SearchSwitchShow(object sender, EventArgs e)
+        private void SwitchSearchShow(object sender, EventArgs e)
         {
             SwitchSearch(true);
         }
@@ -1203,31 +1172,6 @@ namespace AutoPuTTY
             XmlSave();
         }
 
-        public void XmlDropConfig(string item)
-        {
-            XmlDropNode("Config", new ArrayList { item });
-        }
-
-        public void XmlDropServer(string item)
-        {
-            XmlDropNode("Server", new ArrayList { item });
-        }
-
-        public void XmlDropServer(ArrayList items)
-        {
-            XmlDropNode("Server", items);
-        }
-
-        public void XmlDropVault(string item)
-        {
-            XmlDropNode("Vault", new ArrayList { item });
-        }
-
-        public void XmlDropVault(ArrayList items)
-        {
-            XmlDropNode("Vault", items);
-        }
-
         public IDictionary<string, string> XmlGetServer(string name)
         {
             IDictionary<string, string> server = new Dictionary<string, string>();
@@ -1269,15 +1213,14 @@ namespace AutoPuTTY
                             break;
                     }
                 }
-            }
-            else return server;
 
-            server.Add("Name", name);
-            server.Add("Host", host);
-            server.Add("User", user);
-            server.Add("Password", pass);
-            server.Add("Vault", vault);
-            server.Add("Type", type.ToString());
+                server.Add("Name", name);
+                server.Add("Host", host);
+                server.Add("User", user);
+                server.Add("Password", pass);
+                server.Add("Vault", vault);
+                server.Add("Type", type.ToString());
+            }
 
             return server;
         }
@@ -1394,7 +1337,10 @@ namespace AutoPuTTY
                 newserver.AppendChild(vault);
                 newserver.AppendChild(type);
 
-                if (xmlconfig.DocumentElement != null) xmlconfig.DocumentElement.InsertAfter(newserver, xmlconfig.DocumentElement.LastChild);
+                if (xmlconfig.DocumentElement != null)
+                {
+                    xmlconfig.DocumentElement.InsertAfter(newserver, xmlconfig.DocumentElement.LastChild);
+                }
 
                 XmlSave();
 
@@ -1446,11 +1392,6 @@ namespace AutoPuTTY
             {
                 vault.InnerText = cbVault.Text;
             }
-
-            Debug.WriteLine("tbPass.Text " + tbPass.Text);
-            Debug.WriteLine("pass.InnerText " + pass.InnerText);
-            Debug.WriteLine("vault.InnerText " + vault.InnerText);
-
             type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
             newserver.AppendChild(host);
             newserver.AppendChild(user);
@@ -1499,7 +1440,7 @@ namespace AutoPuTTY
         private void bIconEye_MouseEnter(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
-            if(tbPass.PasswordChar == '●') icon.Image = iconeyeshowhover;
+            if (tbPass.PasswordChar == '●') icon.Image = iconeyeshowhover;
             else icon.Image = iconeyehidehover;
         }
 
@@ -1531,7 +1472,7 @@ namespace AutoPuTTY
             {
                 if (lbServer.SelectedItems.Count > 0)
                 {
-                    XmlDropServer(lbServer.SelectedItems[0].ToString());
+                    XmlDropNode("Server", new ArrayList { lbServer.SelectedItems[0].ToString() });
                     remove = true;
                     lbServer.Items.Remove(lbServer.SelectedItems[0].ToString());
                     remove = false;
@@ -1624,31 +1565,47 @@ namespace AutoPuTTY
         {
             ListBox list = (ListBox)sender;
 
-            if (list.SelectedItems.Count > 0)
+            int count = list.SelectedItems.Count;
+            if (count > 0)
             {
-                ArrayList _items = new ArrayList();
+                ArrayList items = new ArrayList();
                 string confirmtxt = "Are you sure you want to delete the selected item ?";
-                if (list.SelectedItems.Count > 1) confirmtxt = "Are you sure you want to delete the " + list.SelectedItems.Count + " selected items ?";
+                if (count > 1)
+                {
+                    confirmtxt = "Are you sure you want to delete the " + count + " selected items ?";
+                }
                 if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     remove = true;
-                    while (list.SelectedItems.Count > 0)
+                    while (count > 0)
                     {
-                        _items.Add(list.SelectedItem.ToString());
-                        if(list.Name == "lbVault")
+                        items.Add(list.SelectedItem.ToString());
+                        if (list.Name == "lbVault")
                         {
                             cbVault.Items.Remove(list.SelectedItem);
                         }
                         list.Items.Remove(list.SelectedItem);
                     }
                     remove = false;
-                    if (_items.Count > 0)
+                    if (items.Count > 0)
                     {
-                        if(list.Name == "lbVault") XmlDropVault(_items);
-                        else XmlDropServer(_items);
+                        if (list.Name == "lbVault")
+                        {
+                            XmlDropNode("Vault", items);
+                        }
+                        else
+                        {
+                            XmlDropNode("Server", items);
+                        }
                     }
-                    if (list.Name == "lbVault") tbVName_TextChanged(this, e);
-                    else tbServer_TextChanged(this, e);
+                    if (list.Name == "lbVault")
+                    {
+                        tbVaultName_TextChanged(this, e);
+                    }
+                    else
+                    {
+                        tbServer_TextChanged(this, e);
+                    }
                 }
             }
         }
@@ -1663,8 +1620,14 @@ namespace AutoPuTTY
             ListBox list = (ListBox)sender;
             ContextMenu menu = new ContextMenu();
 
-            if (list.Name == "lbVault") menu = cmVault;
-            else menu = cmServer;
+            if (list.Name == "lbVault")
+            {
+                menu = cmVault;
+            }
+            else
+            {
+                menu = cmServer;
+            }
 
             if (list.Items.Count > 0)
             {
@@ -1730,12 +1693,21 @@ namespace AutoPuTTY
 
         private void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (e.Index < 0) return;
+            if (e.Index < 0)
+            {
+                return;
+            }
             e.DrawBackground();
             Brush myBrush = Brushes.Black;
             Rectangle bounds = e.Bounds;
-            if (bounds.X < 1) bounds.X = 1;
-            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected) myBrush = Brushes.White;
+            if (bounds.X < 1)
+            {
+                bounds.X = 1;
+            }
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                myBrush = Brushes.White;
+            }
             e.Graphics.DrawString(lbServer.Items[e.Index].ToString(), e.Font, myBrush, bounds, StringFormat.GenericDefault);
             e.DrawFocusRectangle();
         }
@@ -1757,27 +1729,47 @@ namespace AutoPuTTY
                     _item = _item.ToLower();
                 }
 
-                if (_item.IndexOf(search) >= 0 || search == "") lbServer.Items.Add(item);
+                if (_item.IndexOf(search) >= 0 || search == "")
+                {
+                    lbServer.Items.Add(item);
+                }
+            }
+
+            int count = lbServer.Items.Count;
+            if(search != "")
+            {
+                lResults.Text = "Found " + count.ToString() + " result" + (count > 1 ? "s" : "");
+                lResults.Visible = true;
+            }
+            else
+            {
+                lResults.Visible = false;
             }
 
             filter = false;
-            if (lbServer.Items.Count > 0 && lbServer.Items.Contains(selected))
+            if (count > 0)
             {
-                lbServer.SelectedItem = selected;
+                if (lbServer.Items.Contains(selected))
+                {
+                    lbServer.SelectedItem = selected;
+                }
             }
             else
             {
                 lbServer.SelectedItems.Clear();
+                lbServer_IndexChanged(new object(), new EventArgs());
             }
-            if (lbServer.Items.Count < 1) lbServer_IndexChanged(new object(), new EventArgs());
         }
 
         public void lbServer_IndexChanged(object sender, EventArgs e)
         {
-            if (filter || selectall) return;
+            if (filter || selectall)
+            {
+                return;
+            }
             if (remove || lbServer.SelectedItem == null)
             {
-                if (bDelete.Enabled) bDelete.Enabled = false;
+                bDelete.Enabled = false;
                 return;
             }
             indexchanged = true;
@@ -1805,15 +1797,18 @@ namespace AutoPuTTY
             else
             {
                 SwitchPassword(false);
-                if(cbVault.Items.Count > 0) cbVault.SelectedIndex = 0;
+                if (cbVault.Items.Count > 0)
+                {
+                    cbVault.SelectedIndex = 0;
+                }
             }
             cbType.SelectedItem = _types[Convert.ToInt32(server["Type"])];
             //SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
             lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
 
-            if (bAdd.Enabled) bAdd.Enabled = false;
-            if (bModify.Enabled) bModify.Enabled = false;
-            if (!bDelete.Enabled) bDelete.Enabled = true;
+            bAdd.Enabled = false;
+            bModify.Enabled = false;
+            bDelete.Enabled = true;
 
             indexchanged = false;
         }
@@ -1822,7 +1817,10 @@ namespace AutoPuTTY
         {
             ListBox list = (ListBox)sender;
 
-            if (e.KeyCode == Keys.Apps) listBox_ContextMenu(sender, true);
+            if (e.KeyCode == Keys.Apps)
+            {
+                listBox_ContextMenu(sender, true);
+            }
             if (e.KeyCode == Keys.Delete)
             {
                 mDelete_Click(sender, e);
@@ -1832,7 +1830,10 @@ namespace AutoPuTTY
                 for (int i = 0; i < list.Items.Count; i++)
                 {
                     //change index for the first item only
-                    if (i > 0) selectall = true;
+                    if (i > 0)
+                    {
+                        selectall = true;
+                    }
                     list.SetSelected(i, true);
                 }
                 selectall = false;
@@ -1849,7 +1850,10 @@ namespace AutoPuTTY
 
             string key = e.KeyChar.ToString();
 
-            if (list.Name == "lbServer" && e.KeyChar == (char)Keys.Return) Connect("-1");
+            if (list.Name == "lbServer" && e.KeyChar == (char)Keys.Return)
+            {
+                Connect("-1");
+            }
             else if (key.Length == 1)
             {
                 if (unixtime - oldunixtime < 1000)
@@ -1939,8 +1943,14 @@ namespace AutoPuTTY
             }
 
             tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterwidth ? tlLeft.Width - tbFilter.Left : tbfilterwidth;
-            if (pFindToogle.Width >= pfindwidth) cbCase.TabStop = true;
-            else cbCase.TabStop = false;
+            if (pFindToogle.Width >= pfindwidth)
+            {
+                cbCase.TabStop = true;
+            }
+            else
+            {
+                cbCase.TabStop = false;
+            }
         }
 
         private void formMain_ResizeEnd(object sender, EventArgs e)
@@ -2006,12 +2016,13 @@ namespace AutoPuTTY
 
             if (sender is ComboBox)
             {
-                if (lbServer.SelectedItem != null) {
+                if (lbServer.SelectedItem != null)
+                {
                     switch (cbSender.Name)
                     {
                         case "cbVault":
                             cbVal = cbVault.Items.IndexOf(server["Vault"]);
-                            Debug.WriteLine("cbvault cbVal " +  cbVal);
+                            Debug.WriteLine("cbvault cbVal " + cbVal);
                             break;
                         case "cbType":
                             cbVal = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
@@ -2021,32 +2032,74 @@ namespace AutoPuTTY
 
                 Debug.WriteLine("cbSender.SelectedIndex " + cbSender.SelectedIndex);
 
-                if (cbSender.SelectedIndex != cbVal) cbSender.BackColor = changed_ok;
-                else cbSender.BackColor = normal;
+                if (cbSender.SelectedIndex != cbVal)
+                {
+                    cbSender.BackColor = changed_ok;
+                }
+                else
+                {
+                    cbSender.BackColor = normal;
+                }
             }
             else if (sender is TextBox)
             {
                 switch (tbSender.Name)
                 {
                     case "tbName":
-                        if (lbServer.SelectedItem != null) tbVal = server["Name"];
-                        if (tbSender.Text.Trim() == "") bCopyName.Enabled = false;
-                        else bCopyName.Enabled = true;
+                        if (lbServer.SelectedItem != null)
+                        {
+                            tbVal = server["Name"];
+                        }
+                        if (tbSender.Text.Trim() == "")
+                        {
+                            bCopyName.Enabled = false;
+                        }
+                        else
+                        {
+                            bCopyName.Enabled = true;
+                        }
                         break;
                     case "tbHost":
-                        if (lbServer.SelectedItem != null) tbVal = Decrypt(server["Host"]);
-                        if (tbSender.Text.Trim() == "") bCopyHost.Enabled = false;
-                        else bCopyHost.Enabled = true;
+                        if (lbServer.SelectedItem != null)
+                        {
+                            tbVal = Decrypt(server["Host"]);
+                        }
+                        if (tbSender.Text.Trim() == "")
+                        {
+                            bCopyHost.Enabled = false;
+                        }
+                        else
+                        {
+                            bCopyHost.Enabled = true;
+                        }
                         break;
                     case "tbUser":
-                        if (lbServer.SelectedItem != null) tbVal = Decrypt(server["User"]);
-                        if (tbSender.Text.Trim() == "") bCopyUser.Enabled = false;
-                        else bCopyUser.Enabled = true;
+                        if (lbServer.SelectedItem != null)
+                        {
+                            tbVal = Decrypt(server["User"]);
+                        }
+                        if (tbSender.Text.Trim() == "")
+                        {
+                            bCopyUser.Enabled = false;
+                        }
+                        else
+                        {
+                            bCopyUser.Enabled = true;
+                        }
                         break;
                     case "tbPass":
-                        if (lbServer.SelectedItem != null) tbVal = Decrypt(server["Password"]);
-                        if (tbSender.Text.Trim() == "") bCopyPass.Enabled = false;
-                        else bCopyPass.Enabled = true;
+                        if (lbServer.SelectedItem != null)
+                        {
+                            tbVal = Decrypt(server["Password"]);
+                        }
+                        if (tbSender.Text.Trim() == "")
+                        {
+                            bCopyPass.Enabled = false;
+                        }
+                        else
+                        {
+                            bCopyPass.Enabled = true;
+                        }
                         break;
                 }
 
@@ -2054,53 +2107,85 @@ namespace AutoPuTTY
                 {
                     if (tbSender.Text != tbVal)
                     {
-                        if ((tbSender.Name == "tbName" && XmlGetServer(tbSender.Text.Trim()).Count > 0) || tbSender.Text.Trim() == "") tbSender.BackColor = changed_error;
-                        else tbSender.BackColor = changed_ok;
+                        if ((tbSender.Name == "tbName" && XmlGetServer(tbSender.Text.Trim()).Count > 0) || tbSender.Text.Trim() == "")
+                        {
+                            tbSender.BackColor = changed_error;
+                        }
+                        else
+                        {
+                            tbSender.BackColor = changed_ok;
+                        }
                     }
-                    else tbSender.BackColor = normal;
+                    else
+                    {
+                        tbSender.BackColor = normal;
+                    }
                 }
 
                 if (tbSender.Name == "tbPass")
                 {
-                    if (lbServer.SelectedItem != null && cbVault.Items.Contains(server["Vault"]) && tbSender.Text.Trim() == tbVal && tbSender.Text.Trim() == "") {
+                    if (lbServer.SelectedItem != null && cbVault.Items.Contains(server["Vault"]) && tbSender.Text.Trim() == tbVal && tbSender.Text.Trim() == "")
+                    {
                         tbSender.BackColor = changed_ok;
                     }
-                    else {
-                        if (tbSender.Text != tbVal) tbSender.BackColor = changed_ok;
-                        else tbSender.BackColor = normal;
+                    else
+                    {
+                        if (tbSender.Text != tbVal)
+                        {
+                            tbSender.BackColor = changed_ok;
+                        }
+                        else
+                        {
+                            tbSender.BackColor = normal;
+                        }
                     }
                 }
                 else
                 {
-                    if (tbSender.Text != tbVal) tbSender.BackColor = changed_ok;
-                    else tbSender.BackColor = normal;
+                    if (tbSender.Text != tbVal)
+                    {
+                        tbSender.BackColor = changed_ok;
+                    }
+                    else
+                    {
+                        tbSender.BackColor = normal;
+                    }
                 }
             }
 
-            if (indexchanged) return;
+            if (indexchanged)
+            {
+                return;
+            }
             //modify an existing item
             if (lbServer.SelectedItem != null && tbName.Text.Trim() != "" && tbHost.Text.Trim() != "")
             {
-                //changed name
                 if (tbName.Text != lbServer.SelectedItem.ToString())
                 {
+                    //changed name
                     //if new name doesn't exist in list, modify or add
                     bModify.Enabled = XmlGetServer(tbName.Text.Trim()).Count > 0 ? false : true;
                     bAdd.Enabled = XmlGetServer(tbName.Text.Trim()).Count > 0 ? false : true;
                 }
-                //changed other stuff
                 else
                 {
+                    //changed other stuff
                     bModify.Enabled = true;
                     bAdd.Enabled = false;
                 }
             }
-            //create new item
             else
             {
+                //create new item
                 bModify.Enabled = false;
-                if (tbName.Text.Trim() != "" && tbHost.Text.Trim() != "" && XmlGetServer(tbName.Text.Trim()).Count < 1) bAdd.Enabled = true;
-                else bAdd.Enabled = false;
+                if (tbName.Text.Trim() != "" && tbHost.Text.Trim() != "" && XmlGetServer(tbName.Text.Trim()).Count < 1)
+                {
+                    bAdd.Enabled = true;
+                }
+                else
+                {
+                    bAdd.Enabled = false;
+                }
             }
         }
 
@@ -2110,7 +2195,10 @@ namespace AutoPuTTY
             string selected = "";
             if (pFindToogle.Visible)
             {
-                if (lbServer.SelectedItem != null) selected = lbServer.SelectedItem.ToString();
+                if (lbServer.SelectedItem != null)
+                {
+                    selected = lbServer.SelectedItem.ToString();
+                }
                 lbServer_Filter(tbFilter.Text, selected);
             }
         }
@@ -2141,9 +2229,18 @@ namespace AutoPuTTY
 
         private void bAboutOK_Click(object sender, EventArgs e)
         {
-            if (updatelink == "") UpdateReset();
-            if (passwordrequired) ShowTableLayoutPanel(tlPassword);
-            else ShowTableLayoutPanel(tlMain);
+            if (updatelink == "")
+            {
+                UpdateReset();
+            }
+            if (passwordrequired)
+            {
+                ShowTableLayoutPanel(tlPassword);
+            }
+            else
+            {
+                ShowTableLayoutPanel(tlMain);
+            }
         }
 
         // prevent line break
@@ -2158,7 +2255,10 @@ namespace AutoPuTTY
         // get first chat input and send it to the real password textbox
         private void tbPassFake_TextChanged(object sender, EventArgs e)
         {
-            if (tbPassFake.Text == "") return;
+            if (tbPassFake.Text == "")
+            {
+                return;
+            }
             tbPassPassword.Focus();
             tbPassPassword.Text = tbPassFake.Text;
             tbPassPassword.SelectionStart = tbPassPassword.Text.Length;
@@ -2225,7 +2325,8 @@ namespace AutoPuTTY
             if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
             {
                 pbPassEye.Visible = false;
-            } else
+            }
+            else
             {
                 pbPassEye.Visible = true;
             }
@@ -2256,7 +2357,6 @@ namespace AutoPuTTY
             if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
             {
                 lPassMessage.Text = "Try to filling a password...";
-
                 tbPassPassword_Enter(sender, e);
             }
             else
@@ -2398,45 +2498,52 @@ namespace AutoPuTTY
 
         private void lbVault_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (filter || selectall) return;
+            if (filter || selectall)
+            {
+                return;
+            }
             if (remove || lbVault.SelectedItem == null)
             {
-                lUsedBy.Text = "";
-                if (bVDelete.Enabled) bVDelete.Enabled = false;
+                lUsedBy.Visible = false;
+                bVaultDelete.Enabled = false;
                 return;
             }
             indexchanged = true;
 
             //reset colors
-            tbVName.BackColor = SystemColors.Window;
-            tbVPass.BackColor = SystemColors.Window;
-            tbVPriv.BackColor = SystemColors.Window;
+            tbVaultName.BackColor = SystemColors.Window;
+            tbVaultPass.BackColor = SystemColors.Window;
+            tbVaultPriv.BackColor = SystemColors.Window;
 
             IDictionary<string, string> vault = XmlGetVault(lbVault.SelectedItem.ToString());
 
-            tbVName.Text = vault["Name"];
-            tbVPass.Text = Decrypt(vault["Password"]);
-            tbVPriv.Text = Decrypt(vault["PrivateKey"]);
+            tbVaultName.Text = vault["Name"];
+            tbVaultPass.Text = Decrypt(vault["Password"]);
+            tbVaultPriv.Text = Decrypt(vault["PrivateKey"]);
 
-            if (bVAdd.Enabled) bVAdd.Enabled = false;
-            if (bVModify.Enabled) bVModify.Enabled = false;
-            if (!bVDelete.Enabled) bVDelete.Enabled = true;
+            bVaultAdd.Enabled = false;
+            bVaultModify.Enabled = false;
+            bVaultDelete.Enabled = true;
 
             int usedby = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(vault["Name"]) + "]").Count;
+            lUsedBy.Visible = true;
             lUsedBy.Text = "Used by " + usedby.ToString() + " servers";
 
             indexchanged = false;
         }
 
-        private void bVOk_Click(object sender, EventArgs e)
+        private void bVaultOk_Click(object sender, EventArgs e)
         {
             SwitchVault(false);
         }
 
-        private void tbVName_TextChanged(object sender, EventArgs e)
+        private void tbVaultName_TextChanged(object sender, EventArgs e)
         {
-            TextBox tbVSender = new TextBox();
-            if (sender is TextBox) tbVSender = (TextBox)sender;
+            TextBox tbSender = new TextBox();
+            if (sender is TextBox)
+            {
+                tbSender = (TextBox)sender;
+            }
 
             IDictionary<string, string> vault = new Dictionary<string, string>();
             string tbVal = "";
@@ -2446,70 +2553,118 @@ namespace AutoPuTTY
 
             if (lbVault.SelectedItem != null) vault = XmlGetVault(lbVault.SelectedItem.ToString());
 
-            switch (tbVSender.Name)
+            switch (tbSender.Name)
             {
-                case "tbVName":
-                    if (lbVault.SelectedItem != null) tbVal = vault["Name"];
-                    if (tbVSender.Text.Trim() == "") bVCopyName.Enabled = false;
-                    else bVCopyName.Enabled = true;
+                case "tbVaultName":
+                    if (lbVault.SelectedItem != null)
+                    {
+                        tbVal = vault["Name"];
+                    }
+                    if (tbSender.Text.Trim() == "")
+                    {
+                        bCopyVaultName.Enabled = false;
+                    }
+                    else
+                    {
+                        bCopyVaultName.Enabled = true;
+                    }
                     break;
-                case "tbVPass":
-                    if (lbVault.SelectedItem != null) tbVal = Decrypt(vault["Password"]);
-                    if (tbVSender.Text.Trim() == "") bVCopyPass.Enabled = false;
-                    else bVCopyPass.Enabled = true;
+                case "tbVaultPass":
+                    if (lbVault.SelectedItem != null)
+                    {
+                        tbVal = Decrypt(vault["Password"]);
+                    }
+                    if (tbSender.Text.Trim() == "")
+                    {
+                        bCopyVaultPass.Enabled = false;
+                    }
+                    else
+                    {
+                        bCopyVaultPass.Enabled = true;
+                    }
                     break;
-                case "tbVPriv":
-                    if (lbVault.SelectedItem != null) tbVal = Decrypt(vault["PrivateKey"]);
-                    if (tbVSender.Text.Trim() == "") bVCopyPriv.Enabled = false;
-                    else bVCopyPriv.Enabled = true;
+                case "tbVaultPriv":
+                    if (lbVault.SelectedItem != null)
+                    {
+                        tbVal = Decrypt(vault["PrivateKey"]);
+                    }
+                    if (tbSender.Text.Trim() == "")
+                    {
+                        bCopyVaultPriv.Enabled = false;
+                    }
+                    else
+                    {
+                        bCopyVaultPriv.Enabled = true;
+                    }
                     break;
             }
 
-            if (tbVSender.Name == "tbVName")
+            if (tbSender.Name == "tbVaultName")
             {
-                if (tbVSender.Text != tbVal)
+                if (tbSender.Text != tbVal)
                 {
-                    if ((tbVSender.Name == "tbVName" && XmlGetVault(tbVSender.Text.Trim()).Count > 0) || tbVSender.Text.Trim() == "") tbVSender.BackColor = changed_error;
-                    else tbVSender.BackColor = changed_ok;
+                    if ((tbSender.Name == "tbVaultName" && XmlGetVault(tbSender.Text.Trim()).Count > 0) || tbSender.Text.Trim() == "")
+                    {
+                        tbSender.BackColor = changed_error;
+                    }
+                    else
+                    {
+                        tbSender.BackColor = changed_ok;
+                    }
                 }
-                else tbVSender.BackColor = normal;
+                else
+                {
+                    tbSender.BackColor = normal;
+                }
             }
             else
             {
-                if (tbVSender.Text != tbVal) tbVSender.BackColor = changed_ok;
-                else tbVSender.BackColor = normal;
+                if (tbSender.Text != tbVal)
+                {
+                    tbSender.BackColor = changed_ok;
+                }
+                else
+                {
+                    tbSender.BackColor = normal;
+                }
             }
 
             if (indexchanged) return;
             //modify an existing item
-            if (lbVault.SelectedItem != null && tbVName.Text.Trim() != "")
+            if (lbVault.SelectedItem != null && tbVaultName.Text.Trim() != "")
             {
                 //changed name
-                if (tbVName.Text != lbVault.SelectedItem.ToString())
+                if (tbVaultName.Text != lbVault.SelectedItem.ToString())
                 {
                     //if new name doesn't exist in list, modify or add
-                    bVModify.Enabled = XmlGetVault(tbVName.Text.Trim()).Count > 0 ? false : true;
-                    bVAdd.Enabled = XmlGetVault(tbVName.Text.Trim()).Count > 0 ? false : true;
+                    bVaultModify.Enabled = XmlGetVault(tbVaultName.Text.Trim()).Count > 0 ? false : true;
+                    bVaultAdd.Enabled = XmlGetVault(tbVaultName.Text.Trim()).Count > 0 ? false : true;
                 }
                 //changed other stuff
                 else
                 {
-                    bVModify.Enabled = true;
-                    bVAdd.Enabled = false;
+                    bVaultModify.Enabled = true;
+                    bVaultAdd.Enabled = false;
                 }
             }
             //create new item
             else
             {
-                bVModify.Enabled = false;
-                if (tbVName.Text.Trim() != "" && XmlGetVault(tbVName.Text.Trim()).Count < 1) bVAdd.Enabled = true;
-                else bVAdd.Enabled = false;
+                bVaultModify.Enabled = false;
+                if (tbVaultName.Text.Trim() != "" && XmlGetVault(tbVaultName.Text.Trim()).Count < 1)
+                {
+                    bVaultAdd.Enabled = true;
+                }
+                else
+                {
+                    bVaultAdd.Enabled = false;
+                }
             }
         }
 
-        private void bVAdd_Click(object sender, EventArgs e)
+        private void bVaultAdd_Click(object sender, EventArgs e)
         {
-            if (tbVName.Text.Trim() != "")
+            if (tbVaultName.Text.Trim() != "")
             {
                 xmlconfig.Load(Settings.Default.cfgpath);
 
@@ -2517,9 +2672,9 @@ namespace AutoPuTTY
                 XmlAttribute name = xmlconfig.CreateAttribute("Name");
                 XmlElement pass = xmlconfig.CreateElement("Password");
                 XmlElement priv = xmlconfig.CreateElement("PrivateKey");
-                name.Value = tbVName.Text.Trim();
-                pass.InnerText = Encrypt(tbVPass.Text);
-                priv.InnerText = Encrypt(tbVPriv.Text);
+                name.Value = tbVaultName.Text.Trim();
+                pass.InnerText = Encrypt(tbVaultPass.Text);
+                priv.InnerText = Encrypt(tbVaultPriv.Text);
                 newvault.SetAttributeNode(name);
                 newvault.AppendChild(pass);
                 newvault.AppendChild(priv);
@@ -2533,18 +2688,20 @@ namespace AutoPuTTY
                 XmlSave();
 
                 //reset colors
-                tbVName.BackColor = SystemColors.Window;
-                tbVPass.BackColor = SystemColors.Window;
-                tbVPriv.BackColor = SystemColors.Window;
+                tbVaultName.BackColor = SystemColors.Window;
+                tbVaultPass.BackColor = SystemColors.Window;
+                tbVaultPriv.BackColor = SystemColors.Window;
 
-                tbVName.Text = tbVName.Text.Trim();
-                lbVault.Items.Add(tbVName.Text);
-                cbVault.Items.Add(tbVName.Text);
+                tbVaultName.Text = tbVaultName.Text.Trim();
+                lbVault.Items.Add(tbVaultName.Text);
+                cbVault.Items.Add(tbVaultName.Text);
                 lbVault.SelectedItems.Clear();
-                lbVault.SelectedItem = tbVName.Text;
-                bVModify.Enabled = false;
-                bVAdd.Enabled = false;
-                bVDelete.Enabled = true;
+                lbVault.SelectedItem = tbVaultName.Text;
+
+                bVaultModify.Enabled = false;
+                bVaultAdd.Enabled = false;
+                bVaultDelete.Enabled = true;
+
                 BeginInvoke(new InvokeDelegate(lbVault.Focus));
             }
             else
@@ -2552,10 +2709,13 @@ namespace AutoPuTTY
                 Error(this, "No name ?\nTry again ...");
             }
 
-            if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
+            if (pFindToogle.Visible)
+            {
+                tbSearch_Changed(new object(), new EventArgs());
+            }
         }
 
-        private void bVModify_Click(object sender, EventArgs e)
+        private void bVaultModify_Click(object sender, EventArgs e)
         {
             xmlconfig.Load(Settings.Default.cfgpath);
 
@@ -2565,9 +2725,9 @@ namespace AutoPuTTY
             XmlAttribute name = xmlconfig.CreateAttribute("Name");
             XmlElement pass = xmlconfig.CreateElement("Password");
             XmlElement priv = xmlconfig.CreateElement("PrivateKey");
-            name.Value = tbVName.Text.Trim();
-            pass.InnerText = Encrypt(tbVPass.Text);
-            priv.InnerText = Encrypt(tbVPriv.Text);
+            name.Value = tbVaultName.Text.Trim();
+            pass.InnerText = Encrypt(tbVaultPass.Text);
+            priv.InnerText = Encrypt(tbVaultPriv.Text);
             newvault.SetAttributeNode(name);
             newvault.AppendChild(pass);
             newvault.AppendChild(priv);
@@ -2593,7 +2753,8 @@ namespace AutoPuTTY
 
             XmlSave();
 
-            if (lbVault.SelectedItem != null) {
+            if (lbVault.SelectedItem != null)
+            {
                 if ((string)cbVault.SelectedItem == lbVault.SelectedItem.ToString()) changecb = true;
             }
 
@@ -2601,20 +2762,26 @@ namespace AutoPuTTY
             cbVault.Items.RemoveAt(lbVault.Items.IndexOf(lbVault.SelectedItem));
             lbVault.Items.RemoveAt(lbVault.Items.IndexOf(lbVault.SelectedItem));
             remove = false;
-            tbVName.Text = tbVName.Text.Trim();
-            lbVault.Items.Add(tbVName.Text);
-            cbVault.Items.Add(tbVName.Text);
-            if (changecb) cbVault.SelectedItem = name.Value;
+            tbVaultName.Text = tbVaultName.Text.Trim();
+            lbVault.Items.Add(tbVaultName.Text);
+            cbVault.Items.Add(tbVaultName.Text);
+            if (changecb)
+            {
+                cbVault.SelectedItem = name.Value;
+            }
             lbVault.SelectedItems.Clear();
-            lbVault.SelectedItem = tbVName.Text;
-            bVModify.Enabled = false;
-            bVAdd.Enabled = false;
+            lbVault.SelectedItem = tbVaultName.Text;
+            bVaultModify.Enabled = false;
+            bVaultAdd.Enabled = false;
             BeginInvoke(new InvokeDelegate(lbVault.Focus));
 
-            if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
+            if (pFindToogle.Visible)
+            {
+                tbSearch_Changed(new object(), new EventArgs());
+            }
         }
 
-        private void bVDelete_Click(object sender, EventArgs e)
+        private void bVaultDelete_Click(object sender, EventArgs e)
         {
             string confirmtxt = "Are you sure you want to delete the selected item ?";
             if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
@@ -2622,13 +2789,13 @@ namespace AutoPuTTY
                 if (lbVault.SelectedItems.Count > 0)
                 {
                     string vault = lbVault.SelectedItems[0].ToString();
-                    XmlDropVault(vault);
+                    XmlDropNode("Vault", new ArrayList { vault });
                     remove = true;
                     cbVault.Items.Remove(vault);
                     lbVault.Items.Remove(vault);
                     remove = false;
                     lbVault.SelectedItems.Clear();
-                    tbVName_TextChanged(this, e);
+                    tbVaultName_TextChanged(this, e);
                 }
             }
         }
@@ -2665,19 +2832,19 @@ namespace AutoPuTTY
             System.Windows.Clipboard.SetText(tbPass.Text);
         }
 
-        private void bVCopyName_Click(object sender, EventArgs e)
+        private void bCopyVaultName_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbVName.Text);
+            System.Windows.Clipboard.SetText(tbVaultName.Text);
         }
 
-        private void bVCopyPass_Click(object sender, EventArgs e)
+        private void bCopyVaultPass_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbVPass.Text);
+            System.Windows.Clipboard.SetText(tbVaultPass.Text);
         }
 
-        private void bVCopyPriv_Click(object sender, EventArgs e)
+        private void bCopyVaultPriv_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbVPriv.Text);
+            System.Windows.Clipboard.SetText(tbVaultPriv.Text);
         }
 
         private void bCopy_EnabledChanged(object sender, EventArgs e)
@@ -2687,13 +2854,22 @@ namespace AutoPuTTY
             {
                 icon.Image = Resources.iconcopy;
             }
-            else icon.Image = iconcopyhover;
+            else
+            {
+                icon.Image = iconcopyhover;
+            }
         }
 
         private void liUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (updatelink != "") Process.Start(updatelink);
-            else UpdateCheck();
+            if (updatelink != "")
+            {
+                Process.Start(updatelink);
+            }
+            else
+            {
+                UpdateCheck();
+            }
         }
     }
 }

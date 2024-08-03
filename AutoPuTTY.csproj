@@ -75,8 +75,9 @@
     <StartupObject>AutoPuTTY.app</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Octokit, Version=13.0.1.0, Culture=neutral, PublicKeyToken=0be8860aee462442, processorArchitecture=MSIL">
+    <Reference Include="Octokit">
       <HintPath>packages\Octokit.13.0.1\lib\netstandard2.0\Octokit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

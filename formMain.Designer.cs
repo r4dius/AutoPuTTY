@@ -32,6 +32,24 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formMain));
             this.tbPass = new System.Windows.Forms.TextBox();
             this.pConfig = new System.Windows.Forms.Panel();
+            this.pVault = new System.Windows.Forms.Panel();
+            this.bCopyVaultPriv = new System.Windows.Forms.PictureBox();
+            this.bCopyVaultPass = new System.Windows.Forms.PictureBox();
+            this.bVaultOk = new System.Windows.Forms.Button();
+            this.bVaultDelete = new System.Windows.Forms.Button();
+            this.bVaultAdd = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbVaultPriv = new System.Windows.Forms.TextBox();
+            this.lVaultPriv = new AutoPuTTY.SingleClickLabel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbVaultPass = new System.Windows.Forms.TextBox();
+            this.lVaultPass = new AutoPuTTY.SingleClickLabel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbVaultName = new System.Windows.Forms.TextBox();
+            this.lVaultName = new AutoPuTTY.SingleClickLabel();
+            this.bVaultModify = new System.Windows.Forms.Button();
+            this.lUsedBy = new AutoPuTTY.SingleClickLabel();
+            this.bCopyVaultName = new System.Windows.Forms.PictureBox();
             this.bEdit = new System.Windows.Forms.PictureBox();
             this.bCopyPass = new System.Windows.Forms.PictureBox();
             this.bCopyHost = new System.Windows.Forms.PictureBox();
@@ -57,24 +75,6 @@
             this.lUser = new AutoPuTTY.SingleClickLabel();
             this.lName = new AutoPuTTY.SingleClickLabel();
             this.cbVault = new System.Windows.Forms.ComboBox();
-            this.pVault = new System.Windows.Forms.Panel();
-            this.bVCopyPriv = new System.Windows.Forms.PictureBox();
-            this.bVCopyPass = new System.Windows.Forms.PictureBox();
-            this.bVOk = new System.Windows.Forms.Button();
-            this.bVDelete = new System.Windows.Forms.Button();
-            this.bVAdd = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbVPriv = new System.Windows.Forms.TextBox();
-            this.singleClickLabel3 = new AutoPuTTY.SingleClickLabel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tbVPass = new System.Windows.Forms.TextBox();
-            this.singleClickLabel2 = new AutoPuTTY.SingleClickLabel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tbVName = new System.Windows.Forms.TextBox();
-            this.singleClickLabel1 = new AutoPuTTY.SingleClickLabel();
-            this.bVModify = new System.Windows.Forms.Button();
-            this.lUsedBy = new System.Windows.Forms.Label();
-            this.bVCopyName = new System.Windows.Forms.PictureBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmSystray = new System.Windows.Forms.ContextMenu();
             this.miRestore = new System.Windows.Forms.MenuItem();
@@ -88,6 +88,7 @@
             this.lbServer = new System.Windows.Forms.ListBox();
             this.pFind = new System.Windows.Forms.Panel();
             this.pFindToogle = new System.Windows.Forms.Panel();
+            this.lResults = new AutoPuTTY.SingleClickLabel();
             this.bClose = new System.Windows.Forms.PictureBox();
             this.tbFilter = new System.Windows.Forms.TextBox();
             this.cbCase = new System.Windows.Forms.CheckBox();
@@ -117,16 +118,16 @@
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
             this.cmVault = new System.Windows.Forms.ContextMenu();
             this.pConfig.SuspendLayout();
+            this.pVault.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bCopyVaultPriv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bCopyVaultPass)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bCopyVaultName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyPass)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyHost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).BeginInit();
-            this.pVault.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bVCopyPriv)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bVCopyPass)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bVCopyName)).BeginInit();
             this.tlMain.SuspendLayout();
             this.tlLeft.SuspendLayout();
             this.lbServerSep.SuspendLayout();
@@ -190,6 +191,241 @@
             this.pConfig.Name = "pConfig";
             this.pConfig.Size = new System.Drawing.Size(130, 229);
             this.pConfig.TabIndex = 1;
+            // 
+            // pVault
+            // 
+            this.pVault.Controls.Add(this.bCopyVaultPriv);
+            this.pVault.Controls.Add(this.bCopyVaultPass);
+            this.pVault.Controls.Add(this.bVaultOk);
+            this.pVault.Controls.Add(this.bVaultDelete);
+            this.pVault.Controls.Add(this.bVaultAdd);
+            this.pVault.Controls.Add(this.label4);
+            this.pVault.Controls.Add(this.tbVaultPriv);
+            this.pVault.Controls.Add(this.lVaultPriv);
+            this.pVault.Controls.Add(this.label3);
+            this.pVault.Controls.Add(this.tbVaultPass);
+            this.pVault.Controls.Add(this.lVaultPass);
+            this.pVault.Controls.Add(this.label2);
+            this.pVault.Controls.Add(this.tbVaultName);
+            this.pVault.Controls.Add(this.lVaultName);
+            this.pVault.Controls.Add(this.bVaultModify);
+            this.pVault.Controls.Add(this.lUsedBy);
+            this.pVault.Controls.Add(this.bCopyVaultName);
+            this.pVault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pVault.Location = new System.Drawing.Point(0, 0);
+            this.pVault.Name = "pVault";
+            this.pVault.Size = new System.Drawing.Size(130, 229);
+            this.pVault.TabIndex = 23;
+            this.pVault.Visible = false;
+            // 
+            // bCopyVaultPriv
+            // 
+            this.bCopyVaultPriv.BackColor = System.Drawing.Color.Transparent;
+            this.bCopyVaultPriv.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bCopyVaultPriv.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
+            this.bCopyVaultPriv.Location = new System.Drawing.Point(106, 80);
+            this.bCopyVaultPriv.Margin = new System.Windows.Forms.Padding(0);
+            this.bCopyVaultPriv.Name = "bCopyVaultPriv";
+            this.bCopyVaultPriv.Size = new System.Drawing.Size(22, 15);
+            this.bCopyVaultPriv.TabIndex = 33;
+            this.bCopyVaultPriv.TabStop = false;
+            this.bCopyVaultPriv.EnabledChanged += new System.EventHandler(this.bCopy_EnabledChanged);
+            this.bCopyVaultPriv.Click += new System.EventHandler(this.bCopyVaultPriv_Click);
+            this.bCopyVaultPriv.MouseEnter += new System.EventHandler(this.bIconCopy_MouseEnter);
+            this.bCopyVaultPriv.MouseLeave += new System.EventHandler(this.bIconCopy_MouseLeave);
+            // 
+            // bCopyVaultPass
+            // 
+            this.bCopyVaultPass.BackColor = System.Drawing.Color.Transparent;
+            this.bCopyVaultPass.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bCopyVaultPass.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
+            this.bCopyVaultPass.Location = new System.Drawing.Point(106, 41);
+            this.bCopyVaultPass.Margin = new System.Windows.Forms.Padding(0);
+            this.bCopyVaultPass.Name = "bCopyVaultPass";
+            this.bCopyVaultPass.Size = new System.Drawing.Size(22, 15);
+            this.bCopyVaultPass.TabIndex = 32;
+            this.bCopyVaultPass.TabStop = false;
+            this.toolTipMain.SetToolTip(this.bCopyVaultPass, "Copy password to clipboard");
+            this.bCopyVaultPass.EnabledChanged += new System.EventHandler(this.bCopy_EnabledChanged);
+            this.bCopyVaultPass.Click += new System.EventHandler(this.bCopyVaultPass_Click);
+            this.bCopyVaultPass.MouseEnter += new System.EventHandler(this.bIconCopy_MouseEnter);
+            this.bCopyVaultPass.MouseLeave += new System.EventHandler(this.bIconCopy_MouseLeave);
+            // 
+            // bVaultOk
+            // 
+            this.bVaultOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVaultOk.Image = global::AutoPuTTY.Properties.Resources.ok;
+            this.bVaultOk.Location = new System.Drawing.Point(97, 198);
+            this.bVaultOk.Margin = new System.Windows.Forms.Padding(0);
+            this.bVaultOk.Name = "bVaultOk";
+            this.bVaultOk.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVaultOk.Size = new System.Drawing.Size(32, 30);
+            this.bVaultOk.TabIndex = 30;
+            this.toolTipMain.SetToolTip(this.bVaultOk, "Back");
+            this.bVaultOk.UseCompatibleTextRendering = true;
+            this.bVaultOk.UseVisualStyleBackColor = true;
+            this.bVaultOk.Click += new System.EventHandler(this.bVaultOk_Click);
+            // 
+            // bVaultDelete
+            // 
+            this.bVaultDelete.Enabled = false;
+            this.bVaultDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVaultDelete.Image = global::AutoPuTTY.Properties.Resources.icondelete;
+            this.bVaultDelete.Location = new System.Drawing.Point(65, 198);
+            this.bVaultDelete.Margin = new System.Windows.Forms.Padding(0);
+            this.bVaultDelete.Name = "bVaultDelete";
+            this.bVaultDelete.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVaultDelete.Size = new System.Drawing.Size(32, 30);
+            this.bVaultDelete.TabIndex = 29;
+            this.toolTipMain.SetToolTip(this.bVaultDelete, "Delete");
+            this.bVaultDelete.UseCompatibleTextRendering = true;
+            this.bVaultDelete.UseVisualStyleBackColor = true;
+            this.bVaultDelete.Click += new System.EventHandler(this.bVaultDelete_Click);
+            // 
+            // bVaultAdd
+            // 
+            this.bVaultAdd.Enabled = false;
+            this.bVaultAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVaultAdd.Image = global::AutoPuTTY.Properties.Resources.iconadd;
+            this.bVaultAdd.Location = new System.Drawing.Point(33, 198);
+            this.bVaultAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.bVaultAdd.Name = "bVaultAdd";
+            this.bVaultAdd.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVaultAdd.Size = new System.Drawing.Size(32, 30);
+            this.bVaultAdd.TabIndex = 28;
+            this.toolTipMain.SetToolTip(this.bVaultAdd, "Add");
+            this.bVaultAdd.UseCompatibleTextRendering = true;
+            this.bVaultAdd.UseVisualStyleBackColor = true;
+            this.bVaultAdd.Click += new System.EventHandler(this.bVaultAdd_Click);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label4.Location = new System.Drawing.Point(2, 95);
+            this.label4.Margin = new System.Windows.Forms.Padding(0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(126, 2);
+            this.label4.TabIndex = 26;
+            // 
+            // tbVaultPriv
+            // 
+            this.tbVaultPriv.Location = new System.Drawing.Point(2, 98);
+            this.tbVaultPriv.Name = "tbVaultPriv";
+            this.tbVaultPriv.Size = new System.Drawing.Size(126, 20);
+            this.tbVaultPriv.TabIndex = 27;
+            this.tbVaultPriv.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
+            // 
+            // lVaultPriv
+            // 
+            this.lVaultPriv.AutoSize = true;
+            this.lVaultPriv.Location = new System.Drawing.Point(3, 81);
+            this.lVaultPriv.Name = "lVaultPriv";
+            this.lVaultPriv.Size = new System.Drawing.Size(60, 13);
+            this.lVaultPriv.TabIndex = 25;
+            this.lVaultPriv.Text = "Private key";
+            this.toolTipMain.SetToolTip(this.lVaultPriv, "Copy path to clipboard");
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label3.Location = new System.Drawing.Point(2, 56);
+            this.label3.Margin = new System.Windows.Forms.Padding(0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(126, 2);
+            this.label3.TabIndex = 23;
+            // 
+            // tbVaultPass
+            // 
+            this.tbVaultPass.Location = new System.Drawing.Point(2, 59);
+            this.tbVaultPass.Name = "tbVaultPass";
+            this.tbVaultPass.Size = new System.Drawing.Size(126, 20);
+            this.tbVaultPass.TabIndex = 24;
+            this.tbVaultPass.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
+            // 
+            // lVaultPass
+            // 
+            this.lVaultPass.AutoSize = true;
+            this.lVaultPass.Location = new System.Drawing.Point(3, 42);
+            this.lVaultPass.Name = "lVaultPass";
+            this.lVaultPass.Size = new System.Drawing.Size(53, 13);
+            this.lVaultPass.TabIndex = 22;
+            this.lVaultPass.Text = "Password";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label2.Location = new System.Drawing.Point(2, 17);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(126, 2);
+            this.label2.TabIndex = 20;
+            // 
+            // tbVaultName
+            // 
+            this.tbVaultName.Location = new System.Drawing.Point(2, 20);
+            this.tbVaultName.Name = "tbVaultName";
+            this.tbVaultName.Size = new System.Drawing.Size(126, 20);
+            this.tbVaultName.TabIndex = 21;
+            this.tbVaultName.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
+            // 
+            // lVaultName
+            // 
+            this.lVaultName.AutoSize = true;
+            this.lVaultName.Location = new System.Drawing.Point(3, 3);
+            this.lVaultName.Name = "lVaultName";
+            this.lVaultName.Size = new System.Drawing.Size(60, 13);
+            this.lVaultName.TabIndex = 19;
+            this.lVaultName.Text = "Vault name";
+            // 
+            // bVaultModify
+            // 
+            this.bVaultModify.Enabled = false;
+            this.bVaultModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bVaultModify.Image = global::AutoPuTTY.Properties.Resources.iconmodify;
+            this.bVaultModify.Location = new System.Drawing.Point(1, 198);
+            this.bVaultModify.Margin = new System.Windows.Forms.Padding(0);
+            this.bVaultModify.Name = "bVaultModify";
+            this.bVaultModify.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.bVaultModify.Size = new System.Drawing.Size(32, 30);
+            this.bVaultModify.TabIndex = 18;
+            this.toolTipMain.SetToolTip(this.bVaultModify, "Modify");
+            this.bVaultModify.UseCompatibleTextRendering = true;
+            this.bVaultModify.UseVisualStyleBackColor = true;
+            this.bVaultModify.Click += new System.EventHandler(this.bVaultModify_Click);
+            // 
+            // lUsedBy
+            // 
+            this.lUsedBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lUsedBy.Location = new System.Drawing.Point(3, 120);
+            this.lUsedBy.Name = "lUsedBy";
+            this.lUsedBy.Size = new System.Drawing.Size(124, 13);
+            this.lUsedBy.TabIndex = 31;
+            this.lUsedBy.Text = "Used by # servers";
+            this.lUsedBy.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lUsedBy.Visible = false;
+            // 
+            // bCopyVaultName
+            // 
+            this.bCopyVaultName.BackColor = System.Drawing.Color.Transparent;
+            this.bCopyVaultName.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bCopyVaultName.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
+            this.bCopyVaultName.Location = new System.Drawing.Point(106, 2);
+            this.bCopyVaultName.Margin = new System.Windows.Forms.Padding(0);
+            this.bCopyVaultName.Name = "bCopyVaultName";
+            this.bCopyVaultName.Size = new System.Drawing.Size(22, 15);
+            this.bCopyVaultName.TabIndex = 24;
+            this.bCopyVaultName.TabStop = false;
+            this.toolTipMain.SetToolTip(this.bCopyVaultName, "Copy name to clipboard");
+            this.bCopyVaultName.EnabledChanged += new System.EventHandler(this.bCopy_EnabledChanged);
+            this.bCopyVaultName.Click += new System.EventHandler(this.bCopyVaultName_Click);
+            this.bCopyVaultName.MouseEnter += new System.EventHandler(this.bIconCopy_MouseEnter);
+            this.bCopyVaultName.MouseLeave += new System.EventHandler(this.bIconCopy_MouseLeave);
             // 
             // bEdit
             // 
@@ -509,240 +745,6 @@
             this.cbVault.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
             this.cbVault.SelectedIndexChanged += new System.EventHandler(this.tbServer_TextChanged);
             // 
-            // pVault
-            // 
-            this.pVault.Controls.Add(this.bVCopyPriv);
-            this.pVault.Controls.Add(this.bVCopyPass);
-            this.pVault.Controls.Add(this.bVOk);
-            this.pVault.Controls.Add(this.bVDelete);
-            this.pVault.Controls.Add(this.bVAdd);
-            this.pVault.Controls.Add(this.label4);
-            this.pVault.Controls.Add(this.tbVPriv);
-            this.pVault.Controls.Add(this.singleClickLabel3);
-            this.pVault.Controls.Add(this.label3);
-            this.pVault.Controls.Add(this.tbVPass);
-            this.pVault.Controls.Add(this.singleClickLabel2);
-            this.pVault.Controls.Add(this.label2);
-            this.pVault.Controls.Add(this.tbVName);
-            this.pVault.Controls.Add(this.singleClickLabel1);
-            this.pVault.Controls.Add(this.bVModify);
-            this.pVault.Controls.Add(this.lUsedBy);
-            this.pVault.Controls.Add(this.bVCopyName);
-            this.pVault.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pVault.Location = new System.Drawing.Point(0, 0);
-            this.pVault.Name = "pVault";
-            this.pVault.Size = new System.Drawing.Size(130, 229);
-            this.pVault.TabIndex = 23;
-            this.pVault.Visible = false;
-            // 
-            // bVCopyPriv
-            // 
-            this.bVCopyPriv.BackColor = System.Drawing.Color.Transparent;
-            this.bVCopyPriv.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.bVCopyPriv.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
-            this.bVCopyPriv.Location = new System.Drawing.Point(106, 80);
-            this.bVCopyPriv.Margin = new System.Windows.Forms.Padding(0);
-            this.bVCopyPriv.Name = "bVCopyPriv";
-            this.bVCopyPriv.Size = new System.Drawing.Size(22, 15);
-            this.bVCopyPriv.TabIndex = 33;
-            this.bVCopyPriv.TabStop = false;
-            this.bVCopyPriv.EnabledChanged += new System.EventHandler(this.bCopy_EnabledChanged);
-            this.bVCopyPriv.Click += new System.EventHandler(this.bVCopyPriv_Click);
-            this.bVCopyPriv.MouseEnter += new System.EventHandler(this.bIconCopy_MouseEnter);
-            this.bVCopyPriv.MouseLeave += new System.EventHandler(this.bIconCopy_MouseLeave);
-            // 
-            // bVCopyPass
-            // 
-            this.bVCopyPass.BackColor = System.Drawing.Color.Transparent;
-            this.bVCopyPass.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.bVCopyPass.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
-            this.bVCopyPass.Location = new System.Drawing.Point(106, 41);
-            this.bVCopyPass.Margin = new System.Windows.Forms.Padding(0);
-            this.bVCopyPass.Name = "bVCopyPass";
-            this.bVCopyPass.Size = new System.Drawing.Size(22, 15);
-            this.bVCopyPass.TabIndex = 32;
-            this.bVCopyPass.TabStop = false;
-            this.toolTipMain.SetToolTip(this.bVCopyPass, "Copy password to clipboard");
-            this.bVCopyPass.EnabledChanged += new System.EventHandler(this.bCopy_EnabledChanged);
-            this.bVCopyPass.Click += new System.EventHandler(this.bVCopyPass_Click);
-            this.bVCopyPass.MouseEnter += new System.EventHandler(this.bIconCopy_MouseEnter);
-            this.bVCopyPass.MouseLeave += new System.EventHandler(this.bIconCopy_MouseLeave);
-            // 
-            // bVOk
-            // 
-            this.bVOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bVOk.Image = global::AutoPuTTY.Properties.Resources.ok;
-            this.bVOk.Location = new System.Drawing.Point(97, 198);
-            this.bVOk.Margin = new System.Windows.Forms.Padding(0);
-            this.bVOk.Name = "bVOk";
-            this.bVOk.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bVOk.Size = new System.Drawing.Size(32, 30);
-            this.bVOk.TabIndex = 30;
-            this.toolTipMain.SetToolTip(this.bVOk, "Back");
-            this.bVOk.UseCompatibleTextRendering = true;
-            this.bVOk.UseVisualStyleBackColor = true;
-            this.bVOk.Click += new System.EventHandler(this.bVOk_Click);
-            // 
-            // bVDelete
-            // 
-            this.bVDelete.Enabled = false;
-            this.bVDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bVDelete.Image = global::AutoPuTTY.Properties.Resources.icondelete;
-            this.bVDelete.Location = new System.Drawing.Point(65, 198);
-            this.bVDelete.Margin = new System.Windows.Forms.Padding(0);
-            this.bVDelete.Name = "bVDelete";
-            this.bVDelete.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bVDelete.Size = new System.Drawing.Size(32, 30);
-            this.bVDelete.TabIndex = 29;
-            this.toolTipMain.SetToolTip(this.bVDelete, "Delete");
-            this.bVDelete.UseCompatibleTextRendering = true;
-            this.bVDelete.UseVisualStyleBackColor = true;
-            this.bVDelete.Click += new System.EventHandler(this.bVDelete_Click);
-            // 
-            // bVAdd
-            // 
-            this.bVAdd.Enabled = false;
-            this.bVAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bVAdd.Image = global::AutoPuTTY.Properties.Resources.iconadd;
-            this.bVAdd.Location = new System.Drawing.Point(33, 198);
-            this.bVAdd.Margin = new System.Windows.Forms.Padding(0);
-            this.bVAdd.Name = "bVAdd";
-            this.bVAdd.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bVAdd.Size = new System.Drawing.Size(32, 30);
-            this.bVAdd.TabIndex = 28;
-            this.toolTipMain.SetToolTip(this.bVAdd, "Add");
-            this.bVAdd.UseCompatibleTextRendering = true;
-            this.bVAdd.UseVisualStyleBackColor = true;
-            this.bVAdd.Click += new System.EventHandler(this.bVAdd_Click);
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label4.Location = new System.Drawing.Point(2, 95);
-            this.label4.Margin = new System.Windows.Forms.Padding(0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(126, 2);
-            this.label4.TabIndex = 26;
-            // 
-            // tbVPriv
-            // 
-            this.tbVPriv.Location = new System.Drawing.Point(2, 98);
-            this.tbVPriv.Name = "tbVPriv";
-            this.tbVPriv.Size = new System.Drawing.Size(126, 20);
-            this.tbVPriv.TabIndex = 27;
-            this.tbVPriv.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
-            // 
-            // singleClickLabel3
-            // 
-            this.singleClickLabel3.AutoSize = true;
-            this.singleClickLabel3.Location = new System.Drawing.Point(3, 81);
-            this.singleClickLabel3.Name = "singleClickLabel3";
-            this.singleClickLabel3.Size = new System.Drawing.Size(60, 13);
-            this.singleClickLabel3.TabIndex = 25;
-            this.singleClickLabel3.Text = "Private key";
-            this.toolTipMain.SetToolTip(this.singleClickLabel3, "Copy path to clipboard");
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label3.Location = new System.Drawing.Point(2, 56);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(126, 2);
-            this.label3.TabIndex = 23;
-            // 
-            // tbVPass
-            // 
-            this.tbVPass.Location = new System.Drawing.Point(2, 59);
-            this.tbVPass.Name = "tbVPass";
-            this.tbVPass.Size = new System.Drawing.Size(126, 20);
-            this.tbVPass.TabIndex = 24;
-            this.tbVPass.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
-            // 
-            // singleClickLabel2
-            // 
-            this.singleClickLabel2.AutoSize = true;
-            this.singleClickLabel2.Location = new System.Drawing.Point(3, 42);
-            this.singleClickLabel2.Name = "singleClickLabel2";
-            this.singleClickLabel2.Size = new System.Drawing.Size(53, 13);
-            this.singleClickLabel2.TabIndex = 22;
-            this.singleClickLabel2.Text = "Password";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label2.Location = new System.Drawing.Point(2, 17);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(126, 2);
-            this.label2.TabIndex = 20;
-            // 
-            // tbVName
-            // 
-            this.tbVName.Location = new System.Drawing.Point(2, 20);
-            this.tbVName.Name = "tbVName";
-            this.tbVName.Size = new System.Drawing.Size(126, 20);
-            this.tbVName.TabIndex = 21;
-            this.tbVName.TextChanged += new System.EventHandler(this.tbVName_TextChanged);
-            // 
-            // singleClickLabel1
-            // 
-            this.singleClickLabel1.AutoSize = true;
-            this.singleClickLabel1.Location = new System.Drawing.Point(3, 3);
-            this.singleClickLabel1.Name = "singleClickLabel1";
-            this.singleClickLabel1.Size = new System.Drawing.Size(60, 13);
-            this.singleClickLabel1.TabIndex = 19;
-            this.singleClickLabel1.Text = "Vault name";
-            // 
-            // bVModify
-            // 
-            this.bVModify.Enabled = false;
-            this.bVModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bVModify.Image = global::AutoPuTTY.Properties.Resources.iconmodify;
-            this.bVModify.Location = new System.Drawing.Point(1, 198);
-            this.bVModify.Margin = new System.Windows.Forms.Padding(0);
-            this.bVModify.Name = "bVModify";
-            this.bVModify.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.bVModify.Size = new System.Drawing.Size(32, 30);
-            this.bVModify.TabIndex = 18;
-            this.toolTipMain.SetToolTip(this.bVModify, "Modify");
-            this.bVModify.UseCompatibleTextRendering = true;
-            this.bVModify.UseVisualStyleBackColor = true;
-            this.bVModify.Click += new System.EventHandler(this.bVModify_Click);
-            // 
-            // lUsedBy
-            // 
-            this.lUsedBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lUsedBy.Location = new System.Drawing.Point(3, 120);
-            this.lUsedBy.Name = "lUsedBy";
-            this.lUsedBy.Size = new System.Drawing.Size(124, 13);
-            this.lUsedBy.TabIndex = 31;
-            this.lUsedBy.Text = "Used by # servers";
-            this.lUsedBy.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // bVCopyName
-            // 
-            this.bVCopyName.BackColor = System.Drawing.Color.Transparent;
-            this.bVCopyName.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.bVCopyName.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
-            this.bVCopyName.Location = new System.Drawing.Point(106, 2);
-            this.bVCopyName.Margin = new System.Windows.Forms.Padding(0);
-            this.bVCopyName.Name = "bVCopyName";
-            this.bVCopyName.Size = new System.Drawing.Size(22, 15);
-            this.bVCopyName.TabIndex = 24;
-            this.bVCopyName.TabStop = false;
-            this.toolTipMain.SetToolTip(this.bVCopyName, "Copy name to clipboard");
-            this.bVCopyName.EnabledChanged += new System.EventHandler(this.bCopy_EnabledChanged);
-            this.bVCopyName.Click += new System.EventHandler(this.bVCopyName_Click);
-            this.bVCopyName.MouseEnter += new System.EventHandler(this.bIconCopy_MouseEnter);
-            this.bVCopyName.MouseLeave += new System.EventHandler(this.bIconCopy_MouseLeave);
-            // 
             // notifyIcon
             // 
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
@@ -894,6 +896,7 @@
             this.pFindToogle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pFindToogle.Controls.Add(this.lResults);
             this.pFindToogle.Controls.Add(this.bClose);
             this.pFindToogle.Controls.Add(this.tbFilter);
             this.pFindToogle.Controls.Add(this.cbCase);
@@ -902,6 +905,16 @@
             this.pFindToogle.Name = "pFindToogle";
             this.pFindToogle.Size = new System.Drawing.Size(131, 24);
             this.pFindToogle.TabIndex = 9;
+            // 
+            // lResults
+            // 
+            this.lResults.AutoSize = true;
+            this.lResults.Location = new System.Drawing.Point(266, 5);
+            this.lResults.Name = "lResults";
+            this.lResults.Size = new System.Drawing.Size(47, 13);
+            this.lResults.TabIndex = 26;
+            this.lResults.Text = "Result #";
+            this.lResults.Visible = false;
             // 
             // bClose
             // 
@@ -1302,17 +1315,17 @@
             this.Resize += new System.EventHandler(this.mainForm_Resize);
             this.pConfig.ResumeLayout(false);
             this.pConfig.PerformLayout();
+            this.pVault.ResumeLayout(false);
+            this.pVault.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bCopyVaultPriv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bCopyVaultPass)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bCopyVaultName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyPass)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyHost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCopyUser)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEye)).EndInit();
-            this.pVault.ResumeLayout(false);
-            this.pVault.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bVCopyPriv)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bVCopyPass)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bVCopyName)).EndInit();
             this.tlMain.ResumeLayout(false);
             this.tlLeft.ResumeLayout(false);
             this.lbServerSep.ResumeLayout(false);
@@ -1401,32 +1414,33 @@
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.ListBox lbVault;
         private System.Windows.Forms.Panel pVault;
-        private System.Windows.Forms.Button bVOk;
-        private System.Windows.Forms.Button bVDelete;
-        private System.Windows.Forms.Button bVAdd;
+        private System.Windows.Forms.Button bVaultOk;
+        private System.Windows.Forms.Button bVaultDelete;
+        private System.Windows.Forms.Button bVaultAdd;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbVPriv;
-        private SingleClickLabel singleClickLabel3;
+        private System.Windows.Forms.TextBox tbVaultPriv;
+        private SingleClickLabel lVaultPriv;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tbVPass;
-        private SingleClickLabel singleClickLabel2;
+        private System.Windows.Forms.TextBox tbVaultPass;
+        private SingleClickLabel lVaultPass;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbVName;
-        private SingleClickLabel singleClickLabel1;
-        private System.Windows.Forms.Button bVModify;
-        private System.Windows.Forms.Label lUsedBy;
-        private System.Windows.Forms.PictureBox bVCopyName;
-        private System.Windows.Forms.PictureBox bVCopyPass;
+        private System.Windows.Forms.TextBox tbVaultName;
+        private SingleClickLabel lVaultName;
+        private System.Windows.Forms.Button bVaultModify;
+        private System.Windows.Forms.PictureBox bCopyVaultName;
+        private System.Windows.Forms.PictureBox bCopyVaultPass;
         private System.Windows.Forms.PictureBox bCopyPass;
         private System.Windows.Forms.PictureBox bCopyHost;
         private System.Windows.Forms.PictureBox bCopyName;
         private System.Windows.Forms.PictureBox bCopyUser;
-        private System.Windows.Forms.PictureBox bVCopyPriv;
+        private System.Windows.Forms.PictureBox bCopyVaultPriv;
         public System.Windows.Forms.ToolTip toolTipMain;
         private System.Windows.Forms.ContextMenu cmVault;
         private System.Windows.Forms.Panel panelUpdate;
         private System.Windows.Forms.LinkLabel liAboutUpdate;
         private SingleClickLabel tAboutSep;
+        private SingleClickLabel lResults;
+        private SingleClickLabel lUsedBy;
     }
 }
 

@@ -431,7 +431,7 @@ namespace AutoPuTTY
                         recryptpopup.Text = "Removing" + recryptpopup.Text;
                         recryptpopup.ShowDialog(this);
 
-                        mainform.XmlDropConfig("passwordmd5");
+                        mainform.XmlDropNode("Config", new ArrayList { "passwordmd5" });
 
                         Settings.Default.passwordmd5 = "";
                         Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
