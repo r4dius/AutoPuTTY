@@ -68,10 +68,12 @@ namespace AutoPuTTY
             string cfgpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace("file:\\", "");
             string userpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            if (File.Exists(cfgpath + "\\" + Settings.Default.cfgfilepath)) {
+            if (File.Exists(cfgpath + "\\" + Settings.Default.cfgfilepath))
+            {
                 Settings.Default.cfgpath = cfgpath + "\\" + Settings.Default.cfgfilepath;
             }
-            else if (File.Exists(userpath + "\\" + Settings.Default.cfgfilepath)) {
+            else if (File.Exists(userpath + "\\" + Settings.Default.cfgfilepath))
+            {
                 Settings.Default.cfgpath = userpath + "\\" + Settings.Default.cfgfilepath;
             }
             else
@@ -311,9 +313,10 @@ namespace AutoPuTTY
 
             using (HttpClient client = new HttpClient())
             {
-                //try
-                //{
-                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("product", ProductName)); // set your own values here
+                try
+                {
+                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("product",
+                        ProductName)); // set your own values here
 
                     Debug.WriteLine(ProductName);
                     HttpResponseMessage response = await client.GetAsync(url);
@@ -328,7 +331,7 @@ namespace AutoPuTTY
                         Console.WriteLine(tag);
                         Console.WriteLine(version);
 
-                    tAboutVersion.AutoSize = true;
+                        tAboutVersion.AutoSize = true;
                         if (tag > 0.1)
                         {
                             Debug.WriteLine("5");
@@ -341,11 +344,11 @@ namespace AutoPuTTY
                             liAboutUpdate.Text = "no update available";
                         }
                     }
-               // }
-                //catch (Exception ex)
-                //{
-                //    liAboutUpdate.Text = "couldn't check for update";
-                //}
+                }
+                catch (Exception ex)
+                {
+                    liAboutUpdate.Text = "couldn't check for update";
+                }
             }
             UpdateVersionPosition();
         }
@@ -1075,28 +1078,6 @@ namespace AutoPuTTY
             return str;
         }
 
-        private void SetWindowSize(string size, string position)
-        {
-            string[] _size = size.Split('x');
-            string[] _position = position.Split('x');
-
-            if (_size.Length == 2)
-            {
-                int size_w = Convert.ToInt32(_size[0]);
-                int size_h = Convert.ToInt32(_size[1]);
-
-                if (size_w > 0 && size_h > 0) Size = new Size(size_w, size_h);
-            }
-
-            if (_position.Length == 2)
-            {
-                int position_x = Convert.ToInt32(_position[0]);
-                int position_y = Convert.ToInt32(_position[1]);
-
-                if (position_x >= 0 && position_y >= 0) Location = new Point(position_x, position_y);
-            }
-        }
-
         private void TooglePassword(bool state)
         {
             if (state)
@@ -1758,7 +1739,7 @@ namespace AutoPuTTY
             }
 
             int count = lbServer.Items.Count;
-            if(search != "")
+            if (search != "")
             {
                 lResults.Text = "Found " + count.ToString() + " result" + (count > 1 ? "s" : "");
                 lResults.Visible = true;

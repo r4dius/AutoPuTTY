@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
-using System.Security.Permissions;
+﻿using System.Security.Permissions;
+using System.Windows.Forms;
 
 namespace AutoPuTTY
 {
