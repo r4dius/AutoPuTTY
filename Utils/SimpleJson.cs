@@ -495,9 +495,6 @@ namespace SimpleJson
         private const int TOKEN_NULL = 11;
         private const int BUILDER_CAPACITY = 2000;
 
-        private static readonly char[] EscapeTable;
-        private static readonly char[] EscapeCharacters = new char[] { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
-
         /// <summary>
         /// Parses the string json into a value
         /// </summary>

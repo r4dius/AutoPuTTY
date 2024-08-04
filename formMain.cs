@@ -1,5 +1,4 @@
 ﻿using AutoPuTTY.Properties;
-using SimpleJson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,16 +29,16 @@ namespace AutoPuTTY
 {
     public partial class formMain : Form
     {
-        public bool passwordrequired;
-        public const int IDM_ABOUT = 1000;
-        public const int IDM_OPTIONS = 900;
-        public const int MF_BYPOSITION = 0x400;
-        public const int MF_SEPARATOR = 0x800;
-        public const int SW_RESTORE = 9;
-        public const int SW_SHOW = 5;
-        public const int WM_SYSCOMMAND = 0x112;
-        public string[] types = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SCP)", "WinSCP (SFTP)", "WinSCP (FTP)" };
-        public string[] _types;
+        private bool passwordrequired;
+        private const int IDM_ABOUT = 1000;
+        private const int IDM_OPTIONS = 900;
+        private const int MF_BYPOSITION = 0x400;
+        private const int MF_SEPARATOR = 0x800;
+        private const int SW_RESTORE = 9;
+        private const int SW_SHOW = 5;
+        private const int WM_SYSCOMMAND = 0x112;
+        private string[] types = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SCP)", "WinSCP (SFTP)", "WinSCP (FTP)" };
+        private string[] _types;
         public static XmlDocument xmlconfig = new XmlDocument();
         private const int tbfilterwidth = 145;
         private const int pfindwidth = 250;

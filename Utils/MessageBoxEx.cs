@@ -119,7 +119,7 @@ namespace AutoPuTTY
 
         private static void Initialize()
         {
-            _hookProc = new HookProc(MessageBoxHookProc);
+            _hookProc = MessageBoxHookProc;
             _hHook = IntPtr.Zero;
             if (_hHook != IntPtr.Zero)
             {
