@@ -21,7 +21,6 @@ namespace Fusionbird.FusionToolkit
         #region Fields
 
         private Rectangle ChannelBounds;
-        private TrackBarOwnerDrawParts m_OwnerDrawParts;
         private Rectangle ThumbBounds;
         private int ThumbState;
 
@@ -71,7 +70,7 @@ namespace Fusionbird.FusionToolkit
                         {
                             Graphics graphics = Graphics.FromHdc(nmcustomdraw.hdc);
                             PaintEventArgs e = new PaintEventArgs(graphics, Bounds);
-                            e.Graphics.TranslateTransform((0 - Left), (0 - Top));
+                            e.Graphics.TranslateTransform(0 - Left, 0 - Top);
                             InvokePaintBackground(Parent, e);
                             InvokePaint(Parent, e);
                             SolidBrush brush = new SolidBrush(BackColor);
@@ -94,21 +93,7 @@ namespace Fusionbird.FusionToolkit
                             if (nmcustomdraw.dwItemSpec.ToInt32() == 2)
                             {
                                 ThumbBounds = nmcustomdraw.rc.ToRectangle();
-                                if (Enabled)
-                                {
-                                    if (nmcustomdraw.uItemState == NativeMethods.CustomDrawItemState.CDIS_SELECTED)
-                                    {
-                                        ThumbState = 3;
-                                    }
-                                    else
-                                    {
-                                        ThumbState = 1;
-                                    }
-                                }
-                                else
-                                {
-                                    ThumbState = 5;
-                                }
+                                ThumbState = Enabled ? nmcustomdraw.uItemState == NativeMethods.CustomDrawItemState.CDIS_SELECTED ? 3 : 1 : 5;
                                 OnDrawThumb(nmcustomdraw.hdc);
                             }
                             else if (nmcustomdraw.dwItemSpec.ToInt32() == 3)
@@ -142,9 +127,9 @@ namespace Fusionbird.FusionToolkit
             RectangleF innerTickRect;
             int numofTicks = (Maximum / TickFrequency) - 1;
             Pen tickPen = new Pen(color);
-            RectangleF endTickRRect = new RectangleF((ChannelBounds.Left + (ThumbBounds.Width / 2)), (ThumbBounds.Top - 5), 0f, 3f);
-            RectangleF endTickLRect = new RectangleF(((ChannelBounds.Right - (ThumbBounds.Width / 2)) - 1), (ThumbBounds.Top - 5), 0f, 3f);
-            float tickPitch = (endTickLRect.Right - endTickRRect.Left) / ((numofTicks + 1));
+            RectangleF endTickRRect = new RectangleF(ChannelBounds.Left + (ThumbBounds.Width / 2), ThumbBounds.Top - 5, 0f, 3f);
+            RectangleF endTickLRect = new RectangleF(ChannelBounds.Right - (ThumbBounds.Width / 2) - 1, ThumbBounds.Top - 5, 0f, 3f);
+            float tickPitch = (endTickLRect.Right - endTickRRect.Left) / (numofTicks + 1);
             // Draw upper (top) ticks
             if (TickStyle != TickStyle.BottomRight)
             {
@@ -163,8 +148,8 @@ namespace Fusionbird.FusionToolkit
                     innerTickRect.Offset(tickPitch, 0f);
                 }
             }
-            endTickRRect.Offset(0f, (ThumbBounds.Height + 6));
-            endTickLRect.Offset(0f, (ThumbBounds.Height + 6));
+            endTickRRect.Offset(0f, ThumbBounds.Height + 6);
+            endTickLRect.Offset(0f, ThumbBounds.Height + 6);
             // Draw lower (bottom) ticks
             if (TickStyle != TickStyle.TopLeft)
             {
@@ -196,9 +181,9 @@ namespace Fusionbird.FusionToolkit
             RectangleF innerTickRect;
             int numOfTicks = (Maximum / TickFrequency) - 1;
             Pen tickPen = new Pen(color);
-            RectangleF endTickBottomRect = new RectangleF((ThumbBounds.Left - 5), ((ChannelBounds.Bottom - (ThumbBounds.Height / 2)) - 1), 3f, 0f);
-            RectangleF endTickTopRect = new RectangleF((ThumbBounds.Left - 5), (ChannelBounds.Top + (ThumbBounds.Height / 2)), 3f, 0f);
-            float y = (endTickTopRect.Bottom - endTickBottomRect.Top) / ((numOfTicks + 1));
+            RectangleF endTickBottomRect = new RectangleF(ThumbBounds.Left - 5, ChannelBounds.Bottom - (ThumbBounds.Height / 2) - 1, 3f, 0f);
+            RectangleF endTickTopRect = new RectangleF(ThumbBounds.Left - 5, ChannelBounds.Top + (ThumbBounds.Height / 2), 3f, 0f);
+            float y = (endTickTopRect.Bottom - endTickBottomRect.Top) / (numOfTicks + 1);
             // Draw left-hand ticks
             if (TickStyle != TickStyle.BottomRight)
             {
@@ -217,8 +202,8 @@ namespace Fusionbird.FusionToolkit
                     innerTickRect.Offset(0f, y);
                 }
             }
-            endTickBottomRect.Offset((ThumbBounds.Width + 6), 0f);
-            endTickTopRect.Offset((ThumbBounds.Width + 6), 0f);
+            endTickBottomRect.Offset(ThumbBounds.Width + 6, 0f);
+            endTickTopRect.Offset(ThumbBounds.Width + 6, 0f);
             // Draw right-hand ticks
             if (TickStyle != TickStyle.TopLeft)
             {
@@ -249,9 +234,9 @@ namespace Fusionbird.FusionToolkit
             Point[] points = new Point[6]
                                  {
                                      new Point(ThumbBounds.Left + (ThumbBounds.Width/2), ThumbBounds.Bottom - 1),
-                                     new Point(ThumbBounds.Left, (ThumbBounds.Bottom - (ThumbBounds.Width/2)) - 1), ThumbBounds.Location,
+                                     new Point(ThumbBounds.Left, ThumbBounds.Bottom - (ThumbBounds.Width/2) - 1), ThumbBounds.Location,
                                      new Point(ThumbBounds.Right - 1, ThumbBounds.Top),
-                                     new Point(ThumbBounds.Right - 1, (ThumbBounds.Bottom - (ThumbBounds.Width/2)) - 1),
+                                     new Point(ThumbBounds.Right - 1, ThumbBounds.Bottom - (ThumbBounds.Width/2) - 1),
                                      new Point(ThumbBounds.Left + (ThumbBounds.Width/2), ThumbBounds.Bottom - 1)
                                  };
             GraphicsPath path = new GraphicsPath();
@@ -345,9 +330,9 @@ namespace Fusionbird.FusionToolkit
                                  {
                                      new Point(ThumbBounds.Left, ThumbBounds.Bottom - 1),
                                      new Point(ThumbBounds.Left, ThumbBounds.Top),
-                                     new Point((ThumbBounds.Right - (ThumbBounds.Height/2)) - 1, ThumbBounds.Top),
+                                     new Point(ThumbBounds.Right - (ThumbBounds.Height/2) - 1, ThumbBounds.Top),
                                      new Point(ThumbBounds.Right - 1, ThumbBounds.Top + (ThumbBounds.Height/2)),
-                                     new Point((ThumbBounds.Right - (ThumbBounds.Height/2)) - 1, ThumbBounds.Bottom - 1),
+                                     new Point(ThumbBounds.Right - (ThumbBounds.Height/2) - 1, ThumbBounds.Bottom - 1),
                                      new Point(ThumbBounds.Left, ThumbBounds.Bottom - 1)
                                  };
             GraphicsPath path = new GraphicsPath();
@@ -605,11 +590,7 @@ namespace Fusionbird.FusionToolkit
         [Description("Gets/sets the trackbar parts that will be OwnerDrawn.")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [Editor(typeof(TrackDrawModeEditor), typeof(UITypeEditor))]
-        public TrackBarOwnerDrawParts OwnerDrawParts
-        {
-            get { return m_OwnerDrawParts; }
-            set { m_OwnerDrawParts = value; }
-        }
+        public TrackBarOwnerDrawParts OwnerDrawParts { get; set; }
 
         #endregion
     }
@@ -632,9 +613,11 @@ namespace Fusionbird.FusionToolkit
             {
                 return value;
             }
-            CheckedListBox control = new CheckedListBox();
-            control.BorderStyle = BorderStyle.None;
-            control.CheckOnClick = true;
+            CheckedListBox control = new CheckedListBox
+            {
+                BorderStyle = BorderStyle.None,
+                CheckOnClick = true
+            };
             control.Items.Add("Ticks", (((FusionTrackBar)context.Instance).OwnerDrawParts & TrackBarOwnerDrawParts.Ticks) == TrackBarOwnerDrawParts.Ticks);
             control.Items.Add("Thumb", (((FusionTrackBar)context.Instance).OwnerDrawParts & TrackBarOwnerDrawParts.Thumb) == TrackBarOwnerDrawParts.Thumb);
             control.Items.Add("Channel", (((FusionTrackBar)context.Instance).OwnerDrawParts & TrackBarOwnerDrawParts.Channel) == TrackBarOwnerDrawParts.Channel);
@@ -663,8 +646,6 @@ namespace Fusionbird.FusionToolkit
         #region Fields
 
         private Rectangle _bounds;
-        private Graphics _graphics;
-        private TrackBarItemState _state;
 
         #endregion
 
@@ -672,9 +653,9 @@ namespace Fusionbird.FusionToolkit
 
         public TrackBarDrawItemEventArgs(Graphics graphics, Rectangle bounds, TrackBarItemState state)
         {
-            _graphics = graphics;
+            Graphics = graphics;
             _bounds = bounds;
-            _state = state;
+            State = state;
         }
 
         #endregion
@@ -684,35 +665,17 @@ namespace Fusionbird.FusionToolkit
         /// <summary>
         /// Gets the bounds
         /// </summary>
-        public Rectangle Bounds
-        {
-            get
-            {
-                return _bounds;
-            }
-        }
+        public Rectangle Bounds => _bounds;
 
         /// <summary>
         /// Gets the graphics context
         /// </summary>
-        public Graphics Graphics
-        {
-            get
-            {
-                return _graphics;
-            }
-        }
+        public Graphics Graphics { get; }
 
         /// <summary>
         /// Gets the state of the item
         /// </summary>
-        public TrackBarItemState State
-        {
-            get
-            {
-                return _state;
-            }
-        }
+        public TrackBarItemState State { get; }
 
         #endregion
     }

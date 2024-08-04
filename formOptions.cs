@@ -41,8 +41,8 @@ namespace AutoPuTTY
                 else cbGPassword.Checked = false;
                 cbGMulti.Checked = Settings.Default.multicolumn;
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
-                cbGSize.Checked = (_size.Length == 2 ? true : false);
-                cbGPosition.Checked = (_position.Length == 2 ? true : false);
+                cbGSize.Checked = _size.Length == 2;
+                cbGPosition.Checked = _position.Length == 2;
                 cbGMinimize.Checked = Settings.Default.minimize;
                 cbGTooltips.Checked = Settings.Default.tooltips;
 
@@ -80,8 +80,7 @@ namespace AutoPuTTY
         {
             importpopup.ToggleDuplicateWarning(true, "Duplicate found: " + n);
             lock (locker) while (importreplace == "" && !importcancel) Monitor.Wait(locker);
-            if (importreplace == "replace") return true;
-            return false;
+            return importreplace == "replace";
         }
 
         private void ImportList(string f)
@@ -92,10 +91,10 @@ namespace AutoPuTTY
             importcancel = false;
             importempty = false;
             string line;
-            int c_add = 0;
-            int c_replace = 0;
-            int c_skip = 0;
-            int c_total = 0;
+            int count_add = 0;
+            int count_replace = 0;
+            int count_skip = 0;
+            int count = 0;
 
             // Read the import file line by line.
 
@@ -108,14 +107,14 @@ namespace AutoPuTTY
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(file);
 
-            string[] args = new string[] { "import", c_total + " / " + lines.Count, c_add.ToString(), c_replace.ToString(), c_skip.ToString() };
-            bwProgress.ReportProgress(((int)((double)c_total / (double)lines.Count * 100)), args);
+            string[] args = new string[] { "import", count + " / " + lines.Count, count_add.ToString(), count_replace.ToString(), count_skip.ToString() };
+            bwProgress.ReportProgress((int)(count / (double)lines.Count * 100), args);
 
             for (int i = 0; i < lines.Count && !importcancel; i++)
             {
                 //cancel = bwProgress.CancellationPending;
                 //if (cancel) break;
-                c_total++;
+                count++;
                 line = lines[i].ToString();
 
                 ArrayList listarray = new ArrayList();
@@ -170,7 +169,7 @@ namespace AutoPuTTY
                     {
                         if (cbGSkip.Checked) //skip
                         {
-                            c_skip++;
+                            count_skip++;
                         }
                         else //replace
                         {
@@ -191,31 +190,31 @@ namespace AutoPuTTY
                                     mainform.lbServer.Items.Remove(_name);
                                     mainform.lbServer.Items.Add(_name);
                                 }
-                                c_replace++;
+                                count_replace++;
                             }
                             else //cancel or skip
                             {
-                                if (!importcancel) c_skip++;
-                                else c_total--;
+                                if (!importcancel) count_skip++;
+                                else count--;
                             }
                         }
                     }
                     else //add
                     {
-                        if (xmldoc.DocumentElement != null) xmldoc.DocumentElement.InsertAfter(newserver, xmldoc.DocumentElement.LastChild);
+                        xmldoc.DocumentElement?.InsertAfter(newserver, xmldoc.DocumentElement.LastChild);
                         if (mainform.lbServer.InvokeRequired) Invoke(new MethodInvoker(delegate { mainform.lbServer.Items.Add(_name); }));
                         else mainform.lbServer.Items.Add(_name);
-                        c_add++;
+                        count_add++;
                     }
                 }
-                args = new string[] { "import", c_total + " / " + lines.Count, c_add.ToString(), c_replace.ToString(), c_skip.ToString() };
-                bwProgress.ReportProgress(((int)((double)c_total / (double)lines.Count * 100)), args);
+                args = new string[] { "import", count + " / " + lines.Count, count_add.ToString(), count_replace.ToString(), count_skip.ToString() };
+                bwProgress.ReportProgress((int)(count / (double)lines.Count * 100), args);
             }
             xmldoc.Save(file);
 #if DEBUG
             Debug.WriteLine("Import duration :" + (DateTime.Now - time));
 #endif
-            if (!importcancel && (c_add + c_replace + c_skip) < 1) importempty = true;
+            if (!importcancel && (count_add + count_replace + count_skip) < 1) importempty = true;
         }
 
         private void RecryptList(string newpass)
@@ -280,7 +279,7 @@ namespace AutoPuTTY
                     }
 
                     string[] args = new string[] { "recrypt", count + " / " + (mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) };
-                    bwProgress.ReportProgress(((int)((double)count / (double)(mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) * 100)), args);
+                    bwProgress.ReportProgress((int)(count / (double)(mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) * 100), args);
                 }
 
             xmlnodes = formMain.xmlconfig.SelectNodes("/List/Vault");
@@ -328,7 +327,7 @@ namespace AutoPuTTY
                     }
 
                     string[] args = new string[] { "recrypt", count + " / " + (mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) };
-                    bwProgress.ReportProgress(((int)((double)count / (double)(mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) * 100)), args);
+                    bwProgress.ReportProgress((int)(count / (double)(mainform.lbServer.Items.Count + mainform.lbVault.Items.Count) * 100), args);
                 }
 
             formMain.xmlconfig.Save(Settings.Default.cfgpath);
@@ -339,9 +338,11 @@ namespace AutoPuTTY
 
         private void bGImport_Click(object sender, EventArgs e)
         {
-            OpenFileDialog browseFile = new OpenFileDialog();
-            browseFile.Title = "Select server list";
-            browseFile.Filter = "TXT File (*.txt)|*.txt";
+            OpenFileDialog browseFile = new OpenFileDialog
+            {
+                Title = "Select server list",
+                Filter = "TXT File (*.txt)|*.txt"
+            };
 
             if (browseFile.ShowDialog() == DialogResult.OK)
             {
@@ -453,8 +454,7 @@ namespace AutoPuTTY
 
         private void cbGPosition_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbGPosition.Checked) Settings.Default.position = mainform.Left + "x" + mainform.Top;
-            else Settings.Default.position = "";
+            Settings.Default.position = cbGPosition.Checked ? mainform.Left + "x" + mainform.Top : "";
             if (!firstread) mainform.XmlSetConfig("position", Settings.Default.position.ToString());
         }
 
@@ -465,8 +465,7 @@ namespace AutoPuTTY
 
         private void cbGSize_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbGSize.Checked) Settings.Default.size = mainform.Size.Width + "x" + mainform.Size.Height;
-            else Settings.Default.size = "";
+            Settings.Default.size = cbGSize.Checked ? mainform.Size.Width + "x" + mainform.Size.Height : "";
             if (!firstread) mainform.XmlSetConfig("size", Settings.Default.size.ToString());
         }
 
@@ -515,15 +514,16 @@ namespace AutoPuTTY
 
         private void tbGPassword_TextChanged(object sender, EventArgs e)
         {
-            if (tbGPassword.Text == "" || tbGConfirm.Text == "") bGPassword.Enabled = false;
-            else bGPassword.Enabled = true;
+            bGPassword.Enabled = tbGPassword.Text != "" && tbGConfirm.Text != "";
         }
 
         private void bPuTTYExecute_Click(object sender, EventArgs e)
         {
-            OpenFileDialog browseFile = new OpenFileDialog();
-            browseFile.Title = "Select commands file";
-            browseFile.Filter = "TXT File (*.txt)|*.txt";
+            OpenFileDialog browseFile = new OpenFileDialog
+            {
+                Title = "Select commands file",
+                Filter = "TXT File (*.txt)|*.txt"
+            };
 
             if (browseFile.ShowDialog() == DialogResult.OK)
             {
@@ -534,9 +534,11 @@ namespace AutoPuTTY
 
         private void bPuTTYKey_Click(object sender, EventArgs e)
         {
-            OpenFileDialog browseFile = new OpenFileDialog();
-            browseFile.Title = "Select private key file";
-            browseFile.Filter = "PuTTY private key files (*.ppk)|*.ppk|All files (*.*)|*.*";
+            OpenFileDialog browseFile = new OpenFileDialog
+            {
+                Title = "Select private key file",
+                Filter = "PuTTY private key files (*.ppk)|*.ppk|All files (*.*)|*.*"
+            };
 
             if (browseFile.ShowDialog() == DialogResult.OK)
             {
@@ -553,9 +555,11 @@ namespace AutoPuTTY
 
         public void bPuTTYPath_Click(object sender, EventArgs e)
         {
-            OpenFileDialog browseFile = new OpenFileDialog();
-            browseFile.Title = "Select PuTTY executable";
-            browseFile.Filter = "EXE File (*.exe)|*.exe";
+            OpenFileDialog browseFile = new OpenFileDialog
+            {
+                Title = "Select PuTTY executable",
+                Filter = "EXE File (*.exe)|*.exe"
+            };
 
             if (browseFile.ShowDialog() == DialogResult.OK)
             {
@@ -625,8 +629,10 @@ namespace AutoPuTTY
 
         private void bRDKeep_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            folderBrowserDialog.Description = "Select .rdp files path";
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog
+            {
+                Description = "Select .rdp files path"
+            };
             DialogResult result = folderBrowserDialog.ShowDialog();
 
             if (result == DialogResult.OK)
@@ -644,9 +650,11 @@ namespace AutoPuTTY
 
         public void bRDPath_Click(object sender, EventArgs e)
         {
-            OpenFileDialog browseFile = new OpenFileDialog();
-            browseFile.Title = "Select Remote Desktop executable";
-            browseFile.Filter = "EXE File (*.exe)|*.exe";
+            OpenFileDialog browseFile = new OpenFileDialog
+            {
+                Title = "Select Remote Desktop executable",
+                Filter = "EXE File (*.exe)|*.exe"
+            };
 
             if (browseFile.ShowDialog() == DialogResult.OK)
             {
@@ -675,12 +683,12 @@ namespace AutoPuTTY
 
             foreach (string width in size)
             {
-                int num;
-                if (Int32.TryParse(width.Trim(), out num)) arraylist.Add(width.Trim());
+                if (Int32.TryParse(width.Trim(), out _)) arraylist.Add(width.Trim());
             }
 
-            if (arraylist.Count == 2 || cbRDSize.Text.Trim() == cbRDSize.Items[cbRDSize.Items.Count - 1].ToString()) Settings.Default.rdsize = cbRDSize.Text.Trim();
-            else Settings.Default.rdsize = "";
+            Settings.Default.rdsize = arraylist.Count == 2 || cbRDSize.Text.Trim() == cbRDSize.Items[cbRDSize.Items.Count - 1].ToString()
+                ? cbRDSize.Text.Trim()
+                : "";
             if (!firstread) mainform.XmlSetConfig("rdsize", Settings.Default.rdsize);
         }
 
@@ -710,8 +718,10 @@ namespace AutoPuTTY
 
         private void bVNCKeep_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            folderBrowserDialog.Description = "Select .vnc files path";
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog
+            {
+                Description = "Select .vnc files path"
+            };
             DialogResult result = folderBrowserDialog.ShowDialog();
 
             if (result == DialogResult.OK)
@@ -729,9 +739,11 @@ namespace AutoPuTTY
 
         public void bVNCPath_Click(object sender, EventArgs e)
         {
-            OpenFileDialog browseFile = new OpenFileDialog();
-            browseFile.Title = "Select VNC Viewer executable";
-            browseFile.Filter = "EXE File (*.exe)|*.exe";
+            OpenFileDialog browseFile = new OpenFileDialog
+            {
+                Title = "Select VNC Viewer executable",
+                Filter = "EXE File (*.exe)|*.exe"
+            };
 
             if (browseFile.ShowDialog() == DialogResult.OK)
             {
@@ -767,9 +779,11 @@ namespace AutoPuTTY
 
         private void bWSCPKey_Click(object sender, EventArgs e)
         {
-            OpenFileDialog browseFile = new OpenFileDialog();
-            browseFile.Title = "Select private key file";
-            browseFile.Filter = "PuTTY private key files (*.ppk)|*.ppk|All files (*.*)|*.*";
+            OpenFileDialog browseFile = new OpenFileDialog
+            {
+                Title = "Select private key file",
+                Filter = "PuTTY private key files (*.ppk)|*.ppk|All files (*.*)|*.*"
+            };
 
             if (browseFile.ShowDialog() == DialogResult.OK)
             {
@@ -786,9 +800,11 @@ namespace AutoPuTTY
 
         public void bWSCPPath_Click(object sender, EventArgs e)
         {
-            OpenFileDialog browseFile = new OpenFileDialog();
-            browseFile.Title = "Select WinSCP executable";
-            browseFile.Filter = "EXE File (*.exe)|*.exe";
+            OpenFileDialog browseFile = new OpenFileDialog
+            {
+                Title = "Select WinSCP executable",
+                Filter = "EXE File (*.exe)|*.exe"
+            };
 
             if (browseFile.ShowDialog() == DialogResult.OK)
             {

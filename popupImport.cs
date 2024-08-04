@@ -53,40 +53,38 @@ namespace AutoPuTTY
             }
         }
 
-        private void SwitchDuplicateWarning(bool s)
+        private void SwitchDuplicateWarning(bool state)
         {
             if (bReplace.InvokeRequired) Invoke(new MethodInvoker(delegate
             {
-                if (s) Height = oheight + pWarning.Height;
-                else Height = oheight;
-                pWarning.Visible = s;
-                bReplace.Enabled = s;
-                bSkip.Enabled = s;
+                Height = state ? oheight + pWarning.Height : oheight;
+                pWarning.Visible = state;
+                bReplace.Enabled = state;
+                bSkip.Enabled = state;
             }));
             else
             {
-                if (s) Height = oheight + pWarning.Height;
-                else Height = oheight;
-                pWarning.Visible = s;
-                bReplace.Enabled = s;
-                bSkip.Enabled = s;
+                Height = state ? oheight + pWarning.Height : oheight;
+                pWarning.Visible = state;
+                bReplace.Enabled = state;
+                bSkip.Enabled = state;
             }
         }
 
-        public void ToggleDuplicateWarning(bool s, string n)
+        public void ToggleDuplicateWarning(bool state, string count)
         {
             if (lWarning.InvokeRequired) Invoke(new MethodInvoker(delegate
             {
-                lWarning.Text = n;
+                lWarning.Text = count;
             }));
             else
             {
-                lWarning.Text = n;
+                lWarning.Text = count;
             }
-            SwitchDuplicateWarning(s);
+            SwitchDuplicateWarning(state);
         }
 
-        private void SwitchEmptyWarning(string n)
+        private void SwitchEmptyWarning(string count)
         {
             if (pWarning.InvokeRequired) Invoke(new MethodInvoker(delegate
             {
@@ -95,7 +93,7 @@ namespace AutoPuTTY
                     Height = oheight + pWarning.Height;
                     pWarning.Visible = true;
                 }
-                lWarning.Text = n;
+                lWarning.Text = count;
             }));
             else
             {
@@ -104,7 +102,7 @@ namespace AutoPuTTY
                     Height = oheight + pWarning.Height;
                     pWarning.Visible = true;
                 }
-                lWarning.Text = n;
+                lWarning.Text = count;
             }
         }
 

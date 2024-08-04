@@ -9,7 +9,7 @@ namespace AutoPuTTY
     {
         private const int CRYPTPROTECT_UI_FORBIDDEN = 0x1;
         // Wrapper for the NULL handle or pointer.
-        static private IntPtr NullPtr = ((IntPtr)((int)(0)));
+        private static IntPtr NullPtr = (IntPtr)0;
         // Wrapper for DPAPI CryptProtectData function.
         [DllImport("crypt32.dll", SetLastError = true,
         CharSet = CharSet.Auto)]

@@ -20,19 +20,16 @@ namespace AutoPuTTY
             // revert it
             rawKey = FixDESBug(rawKey);
             byte[] Passwd_Bytes = new byte[8];
-            if (passwd.Length >= 8)
-            {
-                Encoding.ASCII.GetBytes(passwd, 0, 8, Passwd_Bytes, 0);
-            }
-            else
-            {
-                Encoding.ASCII.GetBytes(passwd, 0, passwd.Length, Passwd_Bytes, 0);
-            }
+            _ = passwd.Length >= 8
+                ? Encoding.ASCII.GetBytes(passwd, 0, 8, Passwd_Bytes, 0)
+                : Encoding.ASCII.GetBytes(passwd, 0, passwd.Length, Passwd_Bytes, 0);
 
             // VNC uses DES, not 3DES as written in some documentation
-            DES des = new DESCryptoServiceProvider();
-            des.Padding = PaddingMode.None;
-            des.Mode = CipherMode.ECB;
+            DES des = new DESCryptoServiceProvider
+            {
+                Padding = PaddingMode.None,
+                Mode = CipherMode.ECB
+            };
 
             ICryptoTransform enc = des.CreateEncryptor(rawKey, null);
 
