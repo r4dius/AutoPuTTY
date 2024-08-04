@@ -1,5 +1,5 @@
 ﻿using AutoPuTTY.Properties;
-using Octokit;
+using SimpleJson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -17,6 +19,7 @@ using System.Web;
 using System.Windows.Forms;
 using System.Xml;
 using ComboBox = System.Windows.Forms.ComboBox;
+using File = System.IO.File;
 using Label = System.Windows.Forms.Label;
 using ListBox = System.Windows.Forms.ListBox;
 using MenuItem = System.Windows.Forms.MenuItem;
@@ -300,30 +303,50 @@ namespace AutoPuTTY
 
         private async void UpdateCheck()
         {
+            string url = "https://api.github.com/repos/r4dius/AutoPuTTY/releases/latest";
+            double version = Convert.ToDouble(Info.version);
+            double tag;
+
             liAboutUpdate.Text = "checking for update";
             UpdateVersionPosition();
 
-            double version = Convert.ToDouble(Info.version);
-            double number;
-            try
+            using (HttpClient client = new HttpClient())
             {
-                var github = new GitHubClient(new ProductHeaderValue("AutoPuTTY"));
-                var release = await github.Repository.Release.GetLatest("r4dius", "AutoPuTTY");
-                Double.TryParse(release.TagName, out number);
-                tAboutVersion.AutoSize = true;
-                if (number > version)
-                {
-                    updatelink = release.HtmlUrl.ToString();
-                    liAboutUpdate.Text = "update available v" + number;
-                }
-                else
-                {
-                    liAboutUpdate.Text = "no update available";
-                }
-            }
-            catch
-            {
-                liAboutUpdate.Text = "couldn't check for update";
+                //try
+                //{
+                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("product", ProductName)); // set your own values here
+
+                    Debug.WriteLine(ProductName);
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    string data = await response.Content.ReadAsStringAsync();
+                    if (data != null)
+                    {
+                        dynamic json = SimpleJson.SimpleJson.DeserializeObject(data);
+                        Console.WriteLine(data);
+                        tag = Convert.ToDouble(json.tag_name);
+
+                        Console.WriteLine(tag);
+                        Console.WriteLine(version);
+
+                    tAboutVersion.AutoSize = true;
+                        if (tag > 0.1)
+                        {
+                            Debug.WriteLine("5");
+                            updatelink = json.html_url;
+                            liAboutUpdate.Text = "update available v" + tag;
+                        }
+                        else
+                        {
+                            Debug.WriteLine("6");
+                            liAboutUpdate.Text = "no update available";
+                        }
+                    }
+               // }
+                //catch (Exception ex)
+                //{
+                //    liAboutUpdate.Text = "couldn't check for update";
+                //}
             }
             UpdateVersionPosition();
         }
