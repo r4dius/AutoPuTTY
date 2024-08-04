@@ -12,6 +12,7 @@ namespace AutoPuTTY
         private static IWin32Window _owner;
         private static HookProc _hookProc;
         private static IntPtr _hHook;
+        /*
         public static DialogResult Show(string text)
         {
             Initialize();
@@ -60,12 +61,14 @@ namespace AutoPuTTY
             Initialize();
             return MessageBox.Show(owner, text, caption, buttons);
         }
+        */
         public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
             _owner = owner;
             Initialize();
             return MessageBox.Show(owner, text, caption, buttons, icon);
         }
+        /*
         public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defButton)
         {
             _owner = owner;
@@ -78,6 +81,7 @@ namespace AutoPuTTY
             Initialize();
             return MessageBox.Show(owner, text, caption, buttons, icon, defButton, options);
         }
+        */
 
         public delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
         public delegate void TimerProc(IntPtr hWnd, uint uMsg, UIntPtr nIDEvent, uint dwTime);
