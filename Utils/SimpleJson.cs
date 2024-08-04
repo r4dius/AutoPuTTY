@@ -96,15 +96,6 @@ namespace SimpleJson
         /// </summary>
         /// <param name="capacity">The capacity of the json array.</param>
         public JsonArray(int capacity) : base(capacity) { }
-
-        /// <summary>
-        /// The json representation of the array.
-        /// </summary>
-        /// <returns>The json representation of the array.</returns>
-        public override string ToString()
-        {
-            return SimpleJson.SerializeObject(this) ?? string.Empty;
-        }
     }
 
     /// <summary>
@@ -334,17 +325,6 @@ namespace SimpleJson
             return _members.GetEnumerator();
         }
 
-        /// <summary>
-        /// Returns a json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// A json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </returns>
-        public override string ToString()
-        {
-            return SimpleJson.SerializeObject(this);
-        }
-
 #if SIMPLE_JSON_DYNAMIC
         /// <summary>
         /// Provides implementation for type conversion operations. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations that convert an object from one type to another.
@@ -517,19 +497,6 @@ namespace SimpleJson
 
         private static readonly char[] EscapeTable;
         private static readonly char[] EscapeCharacters = new char[] { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
-        private static readonly string EscapeCharactersString = new string(EscapeCharacters);
-
-        static SimpleJson()
-        {
-            EscapeTable = new char[93];
-            EscapeTable['"']  = '"';
-            EscapeTable['\\'] = '\\';
-            EscapeTable['\b'] = 'b';
-            EscapeTable['\f'] = 'f';
-            EscapeTable['\n'] = 'n';
-            EscapeTable['\r'] = 'r';
-            EscapeTable['\t'] = 't';
-        }
 
         /// <summary>
         /// Parses the string json into a value
@@ -571,106 +538,7 @@ namespace SimpleJson
 
             return success;
         }
-
-        public static object DeserializeObject(string json, Type type, IJsonSerializerStrategy jsonSerializerStrategy)
-        {
-            object jsonObject = DeserializeObject(json);
-            return type == null || jsonObject != null && ReflectionUtils.IsAssignableFrom(jsonObject.GetType(), type)
-                       ? jsonObject
-                       : (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
-        }
-
-        public static object DeserializeObject(string json, Type type)
-        {
-            return DeserializeObject(json, type, null);
-        }
-
-        public static T DeserializeObject<T>(string json, IJsonSerializerStrategy jsonSerializerStrategy)
-        {
-            return (T)DeserializeObject(json, typeof(T), jsonSerializerStrategy);
-        }
-
-        public static T DeserializeObject<T>(string json)
-        {
-            return (T)DeserializeObject(json, typeof(T), null);
-        }
-
-        /// <summary>
-        /// Converts a IDictionary&lt;string,object> / IList&lt;object> object into a JSON string
-        /// </summary>
-        /// <param name="json">A IDictionary&lt;string,object> / IList&lt;object></param>
-        /// <param name="jsonSerializerStrategy">Serializer strategy to use</param>
-        /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
-        public static string SerializeObject(object json, IJsonSerializerStrategy jsonSerializerStrategy)
-        {
-            StringBuilder builder = new StringBuilder(BUILDER_CAPACITY);
-            bool success = SerializeValue(jsonSerializerStrategy, json, builder);
-            return (success ? builder.ToString() : null);
-        }
-
-        public static string SerializeObject(object json)
-        {
-            return SerializeObject(json, CurrentJsonSerializerStrategy);
-        }
-
-        public static string EscapeToJavascriptString(string jsonString)
-        {
-            if (string.IsNullOrEmpty(jsonString))
-                return jsonString;
-
-            StringBuilder sb = new StringBuilder();
-            char c;
-
-            for (int i = 0; i < jsonString.Length; )
-            {
-                c = jsonString[i++];
-
-                if (c == '\\')
-                {
-                    int remainingLength = jsonString.Length - i;
-                    if (remainingLength >= 2)
-                    {
-                        char lookahead = jsonString[i];
-                        if (lookahead == '\\')
-                        {
-                            sb.Append('\\');
-                            ++i;
-                        }
-                        else if (lookahead == '"')
-                        {
-                            sb.Append("\"");
-                            ++i;
-                        }
-                        else if (lookahead == 't')
-                        {
-                            sb.Append('\t');
-                            ++i;
-                        }
-                        else if (lookahead == 'b')
-                        {
-                            sb.Append('\b');
-                            ++i;
-                        }
-                        else if (lookahead == 'n')
-                        {
-                            sb.Append('\n');
-                            ++i;
-                        }
-                        else if (lookahead == 'r')
-                        {
-                            sb.Append('\r');
-                            ++i;
-                        }
-                    }
-                }
-                else
-                {
-                    sb.Append(c);
-                }
-            }
-            return sb.ToString();
-        }
-
+        
         static IDictionary<string, object> ParseObject(char[] json, ref int index, ref bool success)
         {
             IDictionary<string, object> table = new JsonObject();
@@ -1002,180 +870,6 @@ namespace SimpleJson
                 }
             }
             return TOKEN_NONE;
-        }
-
-        static bool SerializeValue(IJsonSerializerStrategy jsonSerializerStrategy, object value, StringBuilder builder)
-        {
-            bool success = true;
-            string stringValue = value as string;
-            if (stringValue != null)
-                success = SerializeString(stringValue, builder);
-            else
-            {
-                IDictionary<string, object> dict = value as IDictionary<string, object>;
-                if (dict != null)
-                {
-                    success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
-                }
-                else
-                {
-                    IDictionary<string, string> stringDictionary = value as IDictionary<string, string>;
-                    if (stringDictionary != null)
-                    {
-                        success = SerializeObject(jsonSerializerStrategy, stringDictionary.Keys, stringDictionary.Values, builder);
-                    }
-                    else
-                    {
-                        IEnumerable enumerableValue = value as IEnumerable;
-                        if (enumerableValue != null)
-                            success = SerializeArray(jsonSerializerStrategy, enumerableValue, builder);
-                        else if (IsNumeric(value))
-                            success = SerializeNumber(value, builder);
-                        else if (value is bool)
-                            builder.Append((bool)value ? "true" : "false");
-                        else if (value == null)
-                            builder.Append("null");
-                        else
-                        {
-                            object serializedObject;
-                            success = jsonSerializerStrategy.TrySerializeNonPrimitiveObject(value, out serializedObject);
-                            if (success)
-                                SerializeValue(jsonSerializerStrategy, serializedObject, builder);
-                        }
-                    }
-                }
-            }
-            return success;
-        }
-
-        static bool SerializeObject(IJsonSerializerStrategy jsonSerializerStrategy, IEnumerable keys, IEnumerable values, StringBuilder builder)
-        {
-            builder.Append("{");
-            IEnumerator ke = keys.GetEnumerator();
-            IEnumerator ve = values.GetEnumerator();
-            bool first = true;
-            while (ke.MoveNext() && ve.MoveNext())
-            {
-                object key = ke.Current;
-                object value = ve.Current;
-                if (!first)
-                    builder.Append(",");
-                string stringKey = key as string;
-                if (stringKey != null)
-                    SerializeString(stringKey, builder);
-                else
-                    if (!SerializeValue(jsonSerializerStrategy, value, builder)) return false;
-                builder.Append(":");
-                if (!SerializeValue(jsonSerializerStrategy, value, builder))
-                    return false;
-                first = false;
-            }
-            builder.Append("}");
-            return true;
-        }
-
-        static bool SerializeArray(IJsonSerializerStrategy jsonSerializerStrategy, IEnumerable anArray, StringBuilder builder)
-        {
-            builder.Append("[");
-            bool first = true;
-            foreach (object value in anArray)
-            {
-                if (!first)
-                    builder.Append(",");
-                if (!SerializeValue(jsonSerializerStrategy, value, builder))
-                    return false;
-                first = false;
-            }
-            builder.Append("]");
-            return true;
-        }
-
-        static bool SerializeString(string aString, StringBuilder builder)
-        {
-            // Happy path if there's nothing to be escaped. IndexOfAny is highly optimized (and unmanaged)
-            if (aString.IndexOfAny(EscapeCharacters) == -1)
-            {
-                builder.Append('"');
-                builder.Append(aString);
-                builder.Append('"');
-
-                return true;
-            }
-
-            builder.Append('"');
-            int safeCharacterCount = 0;
-            char[] charArray = aString.ToCharArray();
-
-            for (int i = 0; i < charArray.Length; i++)
-            {
-                char c = charArray[i];
-
-                // Non ascii characters are fine, buffer them up and send them to the builder
-                // in larger chunks if possible. The escape table is a 1:1 translation table
-                // with \0 [default(char)] denoting a safe character.
-                if (c >= EscapeTable.Length || EscapeTable[c] == default(char))
-                {
-                    safeCharacterCount++;
-                }
-                else
-                {
-                    if (safeCharacterCount > 0)
-                    {
-                        builder.Append(charArray, i - safeCharacterCount, safeCharacterCount);
-                        safeCharacterCount = 0;
-                    }
-
-                    builder.Append('\\');
-                    builder.Append(EscapeTable[c]);
-                }
-            }
-
-            if (safeCharacterCount > 0)
-            {
-                builder.Append(charArray, charArray.Length - safeCharacterCount, safeCharacterCount);
-            }
-
-            builder.Append('"');
-            return true;
-        }
-
-        static bool SerializeNumber(object number, StringBuilder builder)
-        {
-            if (number is long)
-                builder.Append(((long)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is ulong)
-                builder.Append(((ulong)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is int)
-                builder.Append(((int)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is uint)
-                builder.Append(((uint)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is decimal)
-                builder.Append(((decimal)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is float)
-                builder.Append(((float)number).ToString(CultureInfo.InvariantCulture));
-            else
-                builder.Append(Convert.ToDouble(number, CultureInfo.InvariantCulture).ToString("r", CultureInfo.InvariantCulture));
-            return true;
-        }
-
-        /// <summary>
-        /// Determines if a given object is numeric in any way
-        /// (can be integer, double, null, etc).
-        /// </summary>
-        static bool IsNumeric(object value)
-        {
-            if (value is sbyte) return true;
-            if (value is byte) return true;
-            if (value is short) return true;
-            if (value is ushort) return true;
-            if (value is int) return true;
-            if (value is uint) return true;
-            if (value is long) return true;
-            if (value is ulong) return true;
-            if (value is float) return true;
-            if (value is double) return true;
-            if (value is decimal) return true;
-            return false;
         }
 
         private static IJsonSerializerStrategy _currentJsonSerializerStrategy;
@@ -1625,19 +1319,6 @@ namespace SimpleJson
             }
 #endif
 
-            public static Attribute GetAttribute(MemberInfo info, Type type)
-            {
-#if SIMPLE_JSON_TYPEINFO
-                if (info == null || type == null || !info.IsDefined(type))
-                    return null;
-                return info.GetCustomAttribute(type);
-#else
-                if (info == null || type == null || !Attribute.IsDefined(info, type))
-                    return null;
-                return Attribute.GetCustomAttribute(info, type);
-#endif
-            }
-
             public static Type GetGenericListElementType(Type type)
             {
                 IEnumerable<Type> interfaces;
@@ -1655,20 +1336,6 @@ namespace SimpleJson
                     }
                 }
                 return GetGenericTypeArguments(type)[0];
-            }
-
-            public static Attribute GetAttribute(Type objectType, Type attributeType)
-            {
-
-#if SIMPLE_JSON_TYPEINFO
-                if (objectType == null || attributeType == null || !objectType.GetTypeInfo().IsDefined(attributeType))
-                    return null;
-                return objectType.GetTypeInfo().GetCustomAttribute(attributeType);
-#else
-                if (objectType == null || attributeType == null || !Attribute.IsDefined(objectType, attributeType))
-                    return null;
-                return Attribute.GetCustomAttribute(objectType, attributeType);
-#endif
             }
 
             public static Type[] GetGenericTypeArguments(Type type)
@@ -1812,15 +1479,6 @@ namespace SimpleJson
 #endif
             }
 
-            public static ConstructorDelegate GetContructor(ConstructorInfo constructorInfo)
-            {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
-                return GetConstructorByReflection(constructorInfo);
-#else
-                return GetConstructorByExpression(constructorInfo);
-#endif
-            }
-
             public static ConstructorDelegate GetContructor(Type type, params Type[] argsType)
             {
 #if SIMPLE_JSON_NO_LINQ_EXPRESSION
@@ -1829,18 +1487,7 @@ namespace SimpleJson
                 return GetConstructorByExpression(type, argsType);
 #endif
             }
-
-            public static ConstructorDelegate GetConstructorByReflection(ConstructorInfo constructorInfo)
-            {
-                return delegate(object[] args) { return constructorInfo.Invoke(args); };
-            }
-
-            public static ConstructorDelegate GetConstructorByReflection(Type type, params Type[] argsType)
-            {
-                ConstructorInfo constructorInfo = GetConstructorInfo(type, argsType);
-                return constructorInfo == null ? null : GetConstructorByReflection(constructorInfo);
-            }
-
+            
 #if !SIMPLE_JSON_NO_LINQ_EXPRESSION
 
             public static ConstructorDelegate GetConstructorByExpression(ConstructorInfo constructorInfo)
@@ -1888,17 +1535,6 @@ namespace SimpleJson
 #endif
             }
 
-            public static GetDelegate GetGetMethodByReflection(PropertyInfo propertyInfo)
-            {
-                MethodInfo methodInfo = GetGetterMethodInfo(propertyInfo);
-                return delegate(object source) { return methodInfo.Invoke(source, EmptyObjects); };
-            }
-
-            public static GetDelegate GetGetMethodByReflection(FieldInfo fieldInfo)
-            {
-                return delegate(object source) { return fieldInfo.GetValue(source); };
-            }
-
 #if !SIMPLE_JSON_NO_LINQ_EXPRESSION
 
             public static GetDelegate GetGetMethodByExpression(PropertyInfo propertyInfo)
@@ -1936,17 +1572,6 @@ namespace SimpleJson
 #else
                 return GetSetMethodByExpression(fieldInfo);
 #endif
-            }
-
-            public static SetDelegate GetSetMethodByReflection(PropertyInfo propertyInfo)
-            {
-                MethodInfo methodInfo = GetSetterMethodInfo(propertyInfo);
-                return delegate(object source, object value) { methodInfo.Invoke(source, new object[] { value }); };
-            }
-
-            public static SetDelegate GetSetMethodByReflection(FieldInfo fieldInfo)
-            {
-                return delegate(object source, object value) { fieldInfo.SetValue(source, value); };
             }
 
 #if !SIMPLE_JSON_NO_LINQ_EXPRESSION
