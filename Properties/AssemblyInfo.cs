@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AutoPuTTY")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Litrux")]
+[assembly: AssemblyCompany("r4dius")]
 [assembly: AssemblyProduct("AutoPuTTY")]
-[assembly: AssemblyCopyright("Copyright © Litrux 2024")]
+[assembly: AssemblyCopyright("Copyright © r4dius 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
