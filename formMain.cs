@@ -102,7 +102,7 @@ namespace AutoPuTTY
 
             InitializeComponent();
 
-            tAboutVersion.Text = "v" + Info.version;
+            taAboutVersion.Text = "v" + Info.version;
             UpdateReset();
 
             //clone types array to have a sorted version
@@ -161,10 +161,10 @@ namespace AutoPuTTY
             InsertMenu(sysMenuHandle, 5, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
             InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
 
-            toolTipMain.Active = Settings.Default.tooltips;
+            ttMain.Active = Settings.Default.tooltips;
 
-            notifyIcon.Visible = Settings.Default.minimize;
-            notifyIcon.ContextMenu = cmSystray;
+            noIcon.Visible = Settings.Default.minimize;
+            noIcon.ContextMenu = cmSystray;
 
             lbServer.MultiColumn = Settings.Default.multicolumn;
             lbServer.ColumnWidth = Settings.Default.multicolumnwidth * 10;
@@ -211,7 +211,7 @@ namespace AutoPuTTY
                 Index = i++,
                 Text = "Delete"
             };
-            deletemenu.Click += mDeleteServer;
+            deletemenu.Click += meDeleteServer;
             cmServer.MenuItems.Add(deletemenu);
             sepmenu = new MenuItem
             {
@@ -232,7 +232,7 @@ namespace AutoPuTTY
                 Index = i++,
                 Text = "Delete"
             };
-            deletevaultmenu.Click += mDeleteVault;
+            deletevaultmenu.Click += meDeleteVault;
             cmVault.MenuItems.Add(deletevaultmenu);
 
             AutoSize = false;
@@ -252,7 +252,7 @@ namespace AutoPuTTY
             if (Settings.Default.passwordmd5.Trim() != "")
             {
                 PasswordRequired = true;
-                pbPassEye.Image = IconEyeHover;
+                piPassEye.Image = IconEyeHover;
                 BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
                 ShowTableLayoutPanel(tlPassword);
             }
@@ -280,7 +280,7 @@ namespace AutoPuTTY
                 {
                     case IDM_ABOUT:
                         ShowTableLayoutPanel(tlAbout);
-                        bAboutOK.Focus();
+                        buAboutOK.Focus();
                         return;
                     default:
                         break;
@@ -299,7 +299,7 @@ namespace AutoPuTTY
             buCopyName.Enabled = false;
             buCopyHost.Enabled = false;
             buCopyUser.Enabled = false;
-            bCopyPass.Enabled = false;
+            buCopyPass.Enabled = false;
             buCopyVault.Enabled = false;
             bCopyVaultName.Enabled = false;
             bCopyVaultPass.Enabled = false;
@@ -346,7 +346,7 @@ namespace AutoPuTTY
                         Debug.WriteLine(Tag);
                         Debug.WriteLine(Version);
 
-                        tAboutVersion.AutoSize = true;
+                        taAboutVersion.AutoSize = true;
                         if (Tag > Version)
                         {
                             Debug.WriteLine("5");
@@ -370,10 +370,10 @@ namespace AutoPuTTY
 
         private void UpdateVersionPosition()
         {
-            int VersionTextWidth = tAboutVersion.Width + tAboutSep.Width + liAboutUpdate.Width;
-            tAboutVersion.Left = (panelUpdate.Width / 2) - (VersionTextWidth / 2);
-            tAboutSep.Left = tAboutVersion.Left + tAboutVersion.Width;
-            liAboutUpdate.Left = tAboutSep.Left + tAboutSep.Width;
+            int VersionTextWidth = taAboutVersion.Width + taAboutSeparator.Width + liAboutUpdate.Width;
+            taAboutVersion.Left = (paUpdate.Width / 2) - (VersionTextWidth / 2);
+            taAboutSeparator.Left = taAboutVersion.Left + taAboutVersion.Width;
+            liAboutUpdate.Left = taAboutSeparator.Left + taAboutSeparator.Width;
         }
 
         private void UpdateReset()
@@ -1012,14 +1012,14 @@ namespace AutoPuTTY
         private void SwitchSearch(bool status)
         {
             // reset the search input text
-            if (status && !pFindToogle.Visible) tbFilter.Text = "";
+            if (status && !paFindToogle.Visible) tbFilter.Text = "";
             // show the "search" form
             tlLeft.RowStyles[1].Height = status ? 25 : 0;
-            pFindToogle.Visible = status;
+            paFindToogle.Visible = status;
             // focus the filter input
             tbFilter.Focus();
             // pressed ctrl + F twice, select the search input text so we can search again over last one
-            if (status && pFindToogle.Visible && tbFilter.Text != "") tbFilter.SelectAll();
+            if (status && paFindToogle.Visible && tbFilter.Text != "") tbFilter.SelectAll();
         }
 
         private void SwitchSearchShow(object sender, EventArgs e)
@@ -1081,13 +1081,13 @@ namespace AutoPuTTY
             if (state)
             {
                 buEye.Image = IconEyeShowHover;
-                toolTipMain.SetToolTip(buEye, "Show password");
+                ttMain.SetToolTip(buEye, "Show password");
                 tbPass.PasswordChar = '●';
             }
             else
             {
                 buEye.Image = IconEyeHideHover;
-                toolTipMain.SetToolTip(buEye, "Hide password");
+                ttMain.SetToolTip(buEye, "Hide password");
                 tbPass.PasswordChar = '\0';
             }
         }
@@ -1297,7 +1297,7 @@ namespace AutoPuTTY
 
         }
 
-        private void bAdd_Click(object sender, EventArgs e)
+        private void buAdd_Click(object sender, EventArgs e)
         {
             if (tbName.Text.Trim() != "" && tbHost.Text.Trim() != "")
             {
@@ -1345,7 +1345,7 @@ namespace AutoPuTTY
                 lbServer.Items.Add(tbName.Text);
                 lbServer.SelectedItems.Clear();
                 lbServer.SelectedItem = tbName.Text;
-                if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
+                if (paFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
                 buModify.Enabled = false;
                 buAdd.Enabled = false;
                 buDelete.Enabled = true;
@@ -1357,7 +1357,7 @@ namespace AutoPuTTY
             }
         }
 
-        private void bModify_Click(object sender, EventArgs e)
+        private void buModify_Click(object sender, EventArgs e)
         {
             XmlConfig.Load(Settings.Default.cfgpath);
 
@@ -1403,56 +1403,56 @@ namespace AutoPuTTY
             lbServer.Items.Add(tbName.Text);
             lbServer.SelectedItems.Clear();
             lbServer.SelectedItem = tbName.Text;
-            if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
+            if (paFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
             buModify.Enabled = false;
             buAdd.Enabled = false;
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
         }
 
-        private void bEye_Click(object sender, EventArgs e)
+        private void buEye_Click(object sender, EventArgs e)
         {
             TooglePassword(!(tbPass.PasswordChar == '●'));
         }
 
-        private void bEdit_MouseEnter(object sender, EventArgs e)
+        private void buEdit_MouseEnter(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             icon.Image = IconEditHover;
         }
 
-        private void bEdit_MouseLeave(object sender, EventArgs e)
+        private void buEdit_MouseLeave(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             icon.Image = Resources.iconedit;
         }
 
-        private void bEye_MouseEnter(object sender, EventArgs e)
+        private void buEye_MouseEnter(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             icon.Image = tbPass.PasswordChar == '●' ? IconEyeShowHover : IconEyeHideHover;
         }
 
-        private void bEye_MouseLeave(object sender, EventArgs e)
+        private void buEye_MouseLeave(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             icon.Image = tbPass.PasswordChar == '●' ? Resources.iconeyeshow : (Image)Resources.iconeyehide;
         }
 
-        private void bCopy_MouseEnter(object sender, EventArgs e)
+        private void buCopy_MouseEnter(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             if (!icon.Enabled) return;
             icon.Image = IconCopyHover;
         }
 
-        private void bCopy_MouseLeave(object sender, EventArgs e)
+        private void buCopy_MouseLeave(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             if (!icon.Enabled) return;
             icon.Image = Resources.iconcopy;
         }
 
-        private void bDelete_Click(object sender, EventArgs e)
+        private void buDelete_Click(object sender, EventArgs e)
         {
             string ConfirmText = "Are you sure you want to delete the selected item ?";
             if (MessageBoxEx.Show(this, ConfirmText, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
@@ -1469,7 +1469,7 @@ namespace AutoPuTTY
             }
         }
 
-        private void bOptions_Click(object sender, EventArgs e)
+        private void buOptions_Click(object sender, EventArgs e)
         {
             using (FormOptions FormOptions = new FormOptions(this))
             {
@@ -1477,7 +1477,7 @@ namespace AutoPuTTY
             }
         }
 
-        private void bSearchClose_Click(object sender, EventArgs e)
+        private void piClose_Click(object sender, EventArgs e)
         {
             string Selected = "";
             if (lbServer.SelectedItem != null) Selected = lbServer.SelectedItem.ToString();
@@ -1495,25 +1495,25 @@ namespace AutoPuTTY
         }
 
         // "search" form change close button image on mouse down
-        private void bSearchClose_MouseDown(object sender, MouseEventArgs e)
+        private void piClose_MouseDown(object sender, MouseEventArgs e)
         {
             piClose.Image = Resources.closed;
         }
 
         // "search" form change close button image on mouse hover
-        private void bSearchClose_MouseEnter(object sender, EventArgs e)
+        private void piClose_MouseEnter(object sender, EventArgs e)
         {
             piClose.Image = Resources.closeh;
         }
 
         // "search" form change close button image on mouse leave
-        private void bSearchClose_MouseLeave(object sender, EventArgs e)
+        private void piClose_MouseLeave(object sender, EventArgs e)
         {
             piClose.Image = Resources.close;
         }
 
         // check "search" case censitive box
-        private void cbSearchCase_CheckedChanged(object sender, EventArgs e)
+        private void piClose_CheckedChanged(object sender, EventArgs e)
         {
             if (tbFilter.Text != "") tbSearch_Changed(sender, e);
         }
@@ -1537,18 +1537,18 @@ namespace AutoPuTTY
             e.DrawFocusRectangle();
         }
 
-        private void mDeleteServer(object sender, EventArgs e)
+        private void meDeleteServer(object sender, EventArgs e)
         {
-            mDelete_Click(lbServer, e);
+            meDelete_Click(lbServer, e);
         }
 
-        private void mDeleteVault(object sender, EventArgs e)
+        private void meDeleteVault(object sender, EventArgs e)
         {
-            mDelete_Click(lbVault, e);
+            meDelete_Click(lbVault, e);
         }
 
         // delete multiple confirmation menu
-        private void mDelete_Click(object sender, EventArgs e)
+        private void meDelete_Click(object sender, EventArgs e)
         {
             ListBox List = (ListBox)sender;
 
@@ -1717,12 +1717,12 @@ namespace AutoPuTTY
             int Count = lbServer.Items.Count;
             if (search != "")
             {
-                lResults.Text = "Found " + Count + " result" + (Count > 1 ? "s" : "");
-                lResults.Visible = true;
+                laResults.Text = "Found " + Count + " result" + (Count > 1 ? "s" : "");
+                laResults.Visible = true;
             }
             else
             {
-                lResults.Visible = false;
+                laResults.Visible = false;
             }
 
             Filter = false;
@@ -1802,7 +1802,7 @@ namespace AutoPuTTY
             }
             if (e.KeyCode == Keys.Delete)
             {
-                mDelete_Click(sender, e);
+                meDelete_Click(sender, e);
             }
             if (e.KeyCode == Keys.A && e.Control)
             {
@@ -1882,12 +1882,12 @@ namespace AutoPuTTY
             }
             else if (e.KeyCode == Keys.O && e.Control)
             {
-                bOptions_Click(sender, e);
+                buOptions_Click(sender, e);
             }
             if (e.KeyCode == Keys.Escape)
             {
-                if (tlAbout.Visible) bAboutOK_Click(sender, e);
-                else bSearchClose_Click(sender, e);
+                if (tlAbout.Visible) buAboutOK_Click(sender, e);
+                else piClose_Click(sender, e);
             }
         }
 
@@ -1921,7 +1921,7 @@ namespace AutoPuTTY
             }
 
             tbFilter.Width = tlLeft.Width - tbFilter.Left < FilterWidth ? tlLeft.Width - tbFilter.Left : FilterWidth;
-            cbCase.TabStop = pFindToogle.Width >= FindWidth;
+            cbCase.TabStop = paFindToogle.Width >= FindWidth;
         }
 
         private void formMain_ResizeEnd(object sender, EventArgs e)
@@ -2045,7 +2045,7 @@ namespace AutoPuTTY
                         {
                             TextBoxVal = Decrypt(GetServer["Password"]);
                         }
-                        bCopyPass.Enabled = TextBox.Text.Trim() != "";
+                        buCopyPass.Enabled = TextBox.Text.Trim() != "";
                         break;
                 }
 
@@ -2098,7 +2098,7 @@ namespace AutoPuTTY
         private void tbSearch_Changed(object sender, EventArgs e)
         {
             string Selected = "";
-            if (pFindToogle.Visible)
+            if (paFindToogle.Visible)
             {
                 if (lbServer.SelectedItem != null)
                 {
@@ -2123,7 +2123,7 @@ namespace AutoPuTTY
             if (e.KeyChar == (char)27)
             {
                 e.Handled = true;
-                bSearchClose_Click(sender, e);
+                piClose_Click(sender, e);
             }
         }
 
@@ -2132,7 +2132,7 @@ namespace AutoPuTTY
             Process.Start(liAboutWebsite.Text);
         }
 
-        private void bAboutOK_Click(object sender, EventArgs e)
+        private void buAboutOK_Click(object sender, EventArgs e)
         {
             if (UpdateLink == "")
             {
@@ -2176,7 +2176,7 @@ namespace AutoPuTTY
             tbPassPassword.Focus();
         }
 
-        private void pPasswordBack_Click(object sender, EventArgs e)
+        private void piPasswordBack_Click(object sender, EventArgs e)
         {
             tbPassFake_Click(sender, e);
         }
@@ -2204,13 +2204,13 @@ namespace AutoPuTTY
             {
                 // prevent annoying beep when empty
                 e.SuppressKeyPress = true;
-                bPassOK_Click(this, new EventArgs());
+                buPassOK_Click(this, new EventArgs());
             }
             if (e.KeyCode == Keys.Tab)
             {
                 // prevent annoying beep when empty
                 e.SuppressKeyPress = true;
-                bPassOK.Focus();
+                buPassOK.Focus();
             }
         }
 
@@ -2221,13 +2221,13 @@ namespace AutoPuTTY
                 tbPassPassword.Text = "Password";
                 tbPassPassword.ForeColor = Color.Gray;
                 tbPassPassword.PasswordChar = '\0';
-                pbPassEye.Visible = false;
+                piPassEye.Visible = false;
             }
         }
 
         private void tbPassPassword_TextChanged(object sender, EventArgs e)
         {
-            pbPassEye.Visible = tbPassPassword.Text != "" && (tbPassPassword.Text != "Password" || tbPassPassword.ForeColor != Color.Gray);
+            piPassEye.Visible = tbPassPassword.Text != "" && (tbPassPassword.Text != "Password" || tbPassPassword.ForeColor != Color.Gray);
         }
 
         private void pbPassEye_MouseDown(object sender, MouseEventArgs e)
@@ -2242,19 +2242,19 @@ namespace AutoPuTTY
 
         private void pbPassEye_MouseEnter(object sender, EventArgs e)
         {
-            pbPassEye.Image = Resources.eye;
+            piPassEye.Image = Resources.eye;
         }
 
         private void pbPassEye_MouseLeave(object sender, EventArgs e)
         {
-            pbPassEye.Image = IconEyeHover;
+            piPassEye.Image = IconEyeHover;
         }
 
-        private void bPassOK_Click(object sender, EventArgs e)
+        private void buPassOK_Click(object sender, EventArgs e)
         {
             if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
             {
-                lPassMessage.Text = "Try to filling a password...";
+                laPassMessage.Text = "Try to filling a password...";
                 tbPassPassword_Enter(sender, e);
             }
             else
@@ -2274,28 +2274,28 @@ namespace AutoPuTTY
                 switch (Tries)
                 {
                     case 1:
-                        lPassMessage.Text = "You failed again, looks like you lost it...";
+                        laPassMessage.Text = "You failed again, looks like you lost it...";
                         break;
                     case 2:
-                        lPassMessage.Text = "You'll have to restart from scratch...";
+                        laPassMessage.Text = "You'll have to restart from scratch...";
                         break;
                     case 3:
-                        lPassMessage.Text = "Ahahahah :)";
+                        laPassMessage.Text = "Ahahahah :)";
                         break;
                     case 4:
-                        lPassMessage.Text = "Still not good...";
+                        laPassMessage.Text = "Still not good...";
                         break;
                     case 5:
-                        lPassMessage.Text = "You're screwed :/";
+                        laPassMessage.Text = "You're screwed :/";
                         break;
                     case 6:
-                        lPassMessage.Text = "Are you drunk ?";
+                        laPassMessage.Text = "Are you drunk ?";
                         break;
                     case 7:
-                        lPassMessage.Text = "You should close...";
+                        laPassMessage.Text = "You should close...";
                         break;
                     default:
-                        lPassMessage.Text = "You failed, try again...";
+                        laPassMessage.Text = "You failed, try again...";
                         break;
                 }
                 Tries++;
@@ -2348,7 +2348,7 @@ namespace AutoPuTTY
 
         #endregion
 
-        private void lPass_Click(object sender, EventArgs e)
+        private void laPass_Click(object sender, EventArgs e)
         {
             Label label = (Label)sender;
             if (label.Text == "Password")
@@ -2366,13 +2366,13 @@ namespace AutoPuTTY
         private void SwitchPassword(bool state)
         {
             laPass.Text = state ? "Vault" : "Password";
-            toolTipMain.SetToolTip(laPass, "Switch to " + (state ? "password" : "vault"));
-            tbPass.Visible = !state;
-            cbVault.Visible = state;
-            bCopyPass.Visible = !state;
-            buCopyVault.Visible = state;
-            buEye.Visible = !state;
-            buEdit.Visible = state;
+            ttMain.SetToolTip(laPass, "Switch to " + (state ? "password" : "vault"));
+            tbPass.Visible = tbPass.Enabled = !state;
+            cbVault.Visible = cbVault.Enabled = state;
+            buCopyPass.Visible = buCopyPass.Enabled = !state;
+            buCopyVault.Visible = buCopyVault.Enabled = state;
+            buEye.Visible = buEye.Enabled = !state;
+            buEdit.Visible = buEdit.Enabled = state;
         }
 
         private void SwitchVault(bool show)
@@ -2387,17 +2387,13 @@ namespace AutoPuTTY
                 lbVault.SendToBack();
                 paVault.SendToBack();
             }
-            lbServer.Visible = !show;
-            lbVault.Visible = show;
-            lbServer.Enabled = !show;
-            lbVault.Enabled = show;
-            //pVault.Visible = show;
-            paVault.Visible = show;
-            //pVault.Enabled = show;
-            paVault.Enabled = show;
+            lbServer.Visible = lbServer.Enabled = !show;
+            lbVault.Visible = lbVault.Enabled = show;
+            paServer.Visible = paServer.Enabled = !show;
+            paVault.Visible = paVault.Enabled = show;
         }
 
-        private void bEdit_Click(object sender, EventArgs e)
+        private void buEdit_Click(object sender, EventArgs e)
         {
             SwitchVault(true);
         }
@@ -2410,8 +2406,8 @@ namespace AutoPuTTY
             }
             if (Remove || lbVault.SelectedItem == null)
             {
-                lUsedBy.Visible = false;
-                bVaultDelete.Enabled = false;
+                laUsedBy.Visible = false;
+                buVaultDelete.Enabled = false;
                 return;
             }
             IndexChanged = true;
@@ -2427,18 +2423,18 @@ namespace AutoPuTTY
             tbVaultPass.Text = Decrypt(GetVault["Password"]);
             tbVaultPriv.Text = Decrypt(GetVault["PrivateKey"]);
 
-            bVaultAdd.Enabled = false;
-            bVaultModify.Enabled = false;
-            bVaultDelete.Enabled = true;
+            buVaultAdd.Enabled = false;
+            buVaultModify.Enabled = false;
+            buVaultDelete.Enabled = true;
 
             int Count = XmlConfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(GetVault["Name"]) + "]").Count;
-            lUsedBy.Visible = true;
-            lUsedBy.Text = "Used by " + Count + " server" + (Count > 1 ? "s" : "");
+            laUsedBy.Visible = true;
+            laUsedBy.Text = "Used by " + Count + " server" + (Count > 1 ? "s" : "");
 
             IndexChanged = false;
         }
 
-        private void bVaultOk_Click(object sender, EventArgs e)
+        private void buVaultOk_Click(object sender, EventArgs e)
         {
             SwitchVault(false);
         }
@@ -2500,25 +2496,25 @@ namespace AutoPuTTY
                 if (tbVaultName.Text != lbVault.SelectedItem.ToString())
                 {
                     //if new name doesn't exist in list, modify or add
-                    bVaultModify.Enabled = XmlGetVault(tbVaultName.Text.Trim()).Count <= 0;
-                    bVaultAdd.Enabled = XmlGetVault(tbVaultName.Text.Trim()).Count <= 0;
+                    buVaultModify.Enabled = XmlGetVault(tbVaultName.Text.Trim()).Count <= 0;
+                    buVaultAdd.Enabled = XmlGetVault(tbVaultName.Text.Trim()).Count <= 0;
                 }
                 //changed other stuff
                 else
                 {
-                    bVaultModify.Enabled = true;
-                    bVaultAdd.Enabled = false;
+                    buVaultModify.Enabled = true;
+                    buVaultAdd.Enabled = false;
                 }
             }
             //create new item
             else
             {
-                bVaultModify.Enabled = false;
-                bVaultAdd.Enabled = tbVaultName.Text.Trim() != "" && XmlGetVault(tbVaultName.Text.Trim()).Count < 1;
+                buVaultModify.Enabled = false;
+                buVaultAdd.Enabled = tbVaultName.Text.Trim() != "" && XmlGetVault(tbVaultName.Text.Trim()).Count < 1;
             }
         }
 
-        private void bVaultAdd_Click(object sender, EventArgs e)
+        private void buVaultAdd_Click(object sender, EventArgs e)
         {
             if (tbVaultName.Text.Trim() != "")
             {
@@ -2554,9 +2550,9 @@ namespace AutoPuTTY
                 lbVault.SelectedItems.Clear();
                 lbVault.SelectedItem = tbVaultName.Text;
 
-                bVaultModify.Enabled = false;
-                bVaultAdd.Enabled = false;
-                bVaultDelete.Enabled = true;
+                buVaultModify.Enabled = false;
+                buVaultAdd.Enabled = false;
+                buVaultDelete.Enabled = true;
 
                 BeginInvoke(new InvokeDelegate(lbVault.Focus));
             }
@@ -2565,13 +2561,13 @@ namespace AutoPuTTY
                 MessageError(this, "No name ?\nTry again ...");
             }
 
-            if (pFindToogle.Visible)
+            if (paFindToogle.Visible)
             {
                 tbSearch_Changed(new object(), new EventArgs());
             }
         }
 
-        private void bVaultModify_Click(object sender, EventArgs e)
+        private void buVaultModify_Click(object sender, EventArgs e)
         {
             XmlConfig.Load(Settings.Default.cfgpath);
 
@@ -2627,17 +2623,17 @@ namespace AutoPuTTY
             }
             lbVault.SelectedItems.Clear();
             lbVault.SelectedItem = tbVaultName.Text;
-            bVaultModify.Enabled = false;
-            bVaultAdd.Enabled = false;
+            buVaultModify.Enabled = false;
+            buVaultAdd.Enabled = false;
             BeginInvoke(new InvokeDelegate(lbVault.Focus));
 
-            if (pFindToogle.Visible)
+            if (paFindToogle.Visible)
             {
                 tbSearch_Changed(new object(), new EventArgs());
             }
         }
 
-        private void bVaultDelete_Click(object sender, EventArgs e)
+        private void buVaultDelete_Click(object sender, EventArgs e)
         {
             string ConfirmText = "Are you sure you want to delete the selected item ?";
             if (MessageBoxEx.Show(this, ConfirmText, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
@@ -2668,27 +2664,27 @@ namespace AutoPuTTY
             cbVault.Items.Remove(e.Control.Name);
         }
 
-        private void bCopyName_Click(object sender, EventArgs e)
+        private void buCopyName_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbName.Text);
         }
 
-        private void bCopyHost_Click(object sender, EventArgs e)
+        private void buCopyHost_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbHost.Text);
         }
 
-        private void bCopyUser_Click(object sender, EventArgs e)
+        private void buCopyUser_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbUser.Text);
         }
 
-        private void bCopyPass_Click(object sender, EventArgs e)
+        private void buCopyPass_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbPass.Text);
         }
 
-        private void bCopyVault_Click(object sender, EventArgs e)
+        private void buCopyVault_Click(object sender, EventArgs e)
         {
             if (cbVault.SelectedItem != null)
             {
@@ -2698,22 +2694,22 @@ namespace AutoPuTTY
             }
         }
 
-        private void bCopyVaultName_Click(object sender, EventArgs e)
+        private void buCopyVaultName_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbVaultName.Text);
         }
 
-        private void bCopyVaultPass_Click(object sender, EventArgs e)
+        private void buCopyVaultPass_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbVaultPass.Text);
         }
 
-        private void bCopyVaultPriv_Click(object sender, EventArgs e)
+        private void buCopyVaultPriv_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbVaultPriv.Text);
         }
 
-        private void bCopy_EnabledChanged(object sender, EventArgs e)
+        private void buCopy_EnabledChanged(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             icon.Image = icon.Enabled ? Resources.iconcopy : IconCopyHover;

@@ -398,7 +398,7 @@ namespace AutoPuTTY
         {
             Settings.Default.minimize = cbGMinimize.Checked;
             if (!FirstRead) FormMain.XmlSetConfig("minimize", Settings.Default.minimize.ToString());
-            FormMain.notifyIcon.Visible = Settings.Default.minimize;
+            FormMain.noIcon.Visible = Settings.Default.minimize;
         }
 
         private void cbGMulti_CheckedChanged(object sender, EventArgs e)
@@ -893,7 +893,7 @@ namespace AutoPuTTY
         {
             Settings.Default.tooltips = cbGTooltips.Checked;
             if (!FirstRead) FormMain.XmlSetConfig("tooltips", Settings.Default.tooltips.ToString());
-            FormMain.toolTipMain.Active = Settings.Default.tooltips;
+            FormMain.ttMain.Active = Settings.Default.tooltips;
             tooltipOptions.Active = Settings.Default.tooltips;
         }
     }
