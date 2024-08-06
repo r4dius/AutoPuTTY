@@ -385,13 +385,13 @@ namespace AutoPuTTY
         private static bool IsValidPosition(int x, int y, int width, int height)
         {
             // Get the screen the window is currently on
-            Screen screen = Screen.FromPoint(new Point(x, y));
+            Screen Screen = Screen.FromPoint(new Point(x, y));
 
             // Check if the window is completely inside the screen bounds
-            return x >= screen.Bounds.Left &&
-                y >= screen.Bounds.Top &&
-                x + width <= screen.Bounds.Right &&
-                y + height <= screen.Bounds.Bottom;
+            return x >= Screen.Bounds.Left &&
+                y >= Screen.Bounds.Top &&
+                x + width <= Screen.Bounds.Right &&
+                y + height <= Screen.Bounds.Bottom;
         }
 
         public static void OpenAtSavedPosition(Form form)
@@ -725,7 +725,7 @@ namespace AutoPuTTY
                                 if (Host != "") VncFile.WriteLine("host=" + Host.Trim());
                                 if (Port != "") VncFile.WriteLine("port=" + Port.Trim());
                                 if (User != "") VncFile.WriteLine("username=" + User);
-                                if (Pass != "") VncFile.WriteLine("password=" + cryptVNC.EncryptPassword(Pass));
+                                if (Pass != "") VncFile.WriteLine("password=" + CryptVNC.EncryptPassword(Pass));
                                 VncFile.WriteLine("[Options]");
                                 if (Settings.Default.vncfullscreen) VncFile.WriteLine("fullscreen=1");
                                 if (Settings.Default.vncviewonly)
@@ -1564,7 +1564,7 @@ namespace AutoPuTTY
                 if (MessageBoxEx.Show(this, ConfirmText, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     Remove = true;
-                    while (Count > 0)
+                    while (List.SelectedItems.Count > 0)
                     {
                         Items.Add(List.SelectedItem.ToString());
                         if (List.Name == "lbVault")

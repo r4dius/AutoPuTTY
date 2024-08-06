@@ -109,7 +109,7 @@
     <Compile Include="formOptions.Designer.cs">
       <DependentUpon>formOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\cryptDPAPI.cs" />
+    <Compile Include="Utils\CryptDPAPI.cs" />
     <Compile Include="formMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,7 +160,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Utils\cryptVNC.cs" />
+    <Compile Include="Utils\CryptVNC.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\iconmodify.png" />

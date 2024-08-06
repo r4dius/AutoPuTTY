@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AutoPuTTY
 {
-    class cryptVNC
+    class CryptVNC
     {
         public static string EncryptPassword(string passwd)
         {
