@@ -511,13 +511,13 @@ namespace AutoPuTTY
             DirectorySecurity AccessControlList = Directory.GetAccessControl(path);
             AuthorizationRuleCollection AccessRules = AccessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
 
-            foreach (FileSystemAccessRule Rule in AccessRules)
+            foreach (FileSystemAccessRule rule in AccessRules)
             {
-                if ((FileSystemRights.Write & Rule.FileSystemRights) != FileSystemRights.Write) continue;
+                if ((FileSystemRights.Write & rule.FileSystemRights) != FileSystemRights.Write) continue;
 
-                if (Rule.AccessControlType == AccessControlType.Allow)
+                if (rule.AccessControlType == AccessControlType.Allow)
                     WriteAllow = true;
-                else if (Rule.AccessControlType == AccessControlType.Deny)
+                else if (rule.AccessControlType == AccessControlType.Deny)
                     WriteDeny = true;
             }
 
@@ -540,9 +540,9 @@ namespace AutoPuTTY
                     if (MessageBoxEx.Show(this, "Are you sure you want to connect to the " + lbServer.SelectedItems.Count + " selected items ?", "Connection confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK) return;
                 }
 
-                foreach (object Item in lbServer.SelectedItems)
+                foreach (object item in lbServer.SelectedItems)
                 {
-                    IDictionary<string, string> GetServer = XmlGetServer(Item.ToString());
+                    IDictionary<string, string> GetServer = XmlGetServer(item.ToString());
 
                     string[] SpecialChars = { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
                     string[] PathSearch = { "/", "\\\\" };
@@ -1033,10 +1033,10 @@ namespace AutoPuTTY
             if (input.Contains("'"))
             {
                 string[] InputSplit = input.Split('\'');
-                foreach (string Input in InputSplit)
+                foreach (string split in InputSplit)
                 {
                     if (Result != "") Result += ",\"'\",";
-                    Result += "'" + Input + "'";
+                    Result += "'" + split + "'";
                 }
                 Result = "concat(" + Result + ")";
             }
@@ -1153,9 +1153,9 @@ namespace AutoPuTTY
                     XmlNodeList ServerNodes = XmlConfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(item) + "]");
                     if (ServerNodes != null)
                     {
-                        foreach (XmlNode XmlNode in ServerNodes)
+                        foreach (XmlNode servernode in ServerNodes)
                         {
-                            XmlNode.InnerText = string.Empty;
+                            servernode.InnerText = string.Empty;
                         }
                     }
                 }
@@ -1184,24 +1184,24 @@ namespace AutoPuTTY
             XmlNode ServerNode = XmlConfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(name) + "]");
             if (ServerNode != null)
             {
-                foreach (XmlElement ChildNode in ServerNode.ChildNodes)
+                foreach (XmlElement childnode in ServerNode.ChildNodes)
                 {
-                    switch (ChildNode.Name)
+                    switch (childnode.Name)
                     {
                         case "Host":
-                            Host = ChildNode.InnerText;
+                            Host = childnode.InnerText;
                             break;
                         case "User":
-                            User = ChildNode.InnerText;
+                            User = childnode.InnerText;
                             break;
                         case "Password":
-                            Pass = ChildNode.InnerText;
+                            Pass = childnode.InnerText;
                             break;
                         case "Vault":
-                            Vault = ChildNode.InnerText;
+                            Vault = childnode.InnerText;
                             break;
                         case "Type":
-                            Int32.TryParse(ChildNode.InnerText, out Type);
+                            Int32.TryParse(childnode.InnerText, out Type);
                             break;
                     }
                 }
@@ -1699,9 +1699,9 @@ namespace AutoPuTTY
             ListItems.AddRange(lbServer.Items);
             lbServer.Items.Clear();
 
-            foreach (string ListItem in ListItems)
+            foreach (string item in ListItems)
             {
-                string Item = ListItem;
+                string Item = item;
                 if (!cbCase.Checked)
                 {
                     search = search.ToLower();
@@ -1710,7 +1710,7 @@ namespace AutoPuTTY
 
                 if (Item.IndexOf(search) >= 0 || search == "")
                 {
-                    lbServer.Items.Add(ListItem);
+                    lbServer.Items.Add(item);
                 }
             }
 
@@ -1761,17 +1761,17 @@ namespace AutoPuTTY
             cbType.BackColor = SystemColors.Window;
             cbVault.BackColor = SystemColors.Window;
 
-            IDictionary<string, string> server = XmlGetServer(lbServer.SelectedItem.ToString());
-            Debug.WriteLine(server);
+            IDictionary<string, string> GetServer = XmlGetServer(lbServer.SelectedItem.ToString());
+            Debug.WriteLine(GetServer);
 
-            tbName.Text = server["Name"];
-            tbHost.Text = Decrypt(server["Host"]);
-            tbUser.Text = Decrypt(server["User"]);
-            tbPass.Text = Decrypt(server["Password"]);
-            if (server["Vault"].Trim() != "" && cbVault.Items.Contains(server["Vault"]))
+            tbName.Text = GetServer["Name"];
+            tbHost.Text = Decrypt(GetServer["Host"]);
+            tbUser.Text = Decrypt(GetServer["User"]);
+            tbPass.Text = Decrypt(GetServer["Password"]);
+            if (GetServer["Vault"].Trim() != "" && cbVault.Items.Contains(GetServer["Vault"]))
             {
                 SwitchPassword(true);
-                cbVault.SelectedItem = server["Vault"];
+                cbVault.SelectedItem = GetServer["Vault"];
             }
             else
             {
@@ -1781,7 +1781,7 @@ namespace AutoPuTTY
                     cbVault.SelectedIndex = 0;
                 }
             }
-            cbType.SelectedItem = Types[Convert.ToInt32(server["Type"])];
+            cbType.SelectedItem = Types[Convert.ToInt32(GetServer["Type"])];
             //SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
             laUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
 
@@ -2306,16 +2306,16 @@ namespace AutoPuTTY
         {
             TableLayoutPanel[] PanelList = { tlAbout, tlMain, tlPassword };
 
-            foreach (TableLayoutPanel Panel in PanelList)
+            foreach (TableLayoutPanel panel in PanelList)
             {
-                if (Panel.Name == tlPanel.Name)
+                if (panel.Name == tlPanel.Name)
                 {
                     tlPanel.BringToFront();
                     tlPanel.Visible = true;
                 }
                 else
                 {
-                    Panel.Visible = false;
+                    panel.Visible = false;
                 }
             }
         }

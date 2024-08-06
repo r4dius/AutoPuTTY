@@ -120,7 +120,7 @@ namespace AutoPuTTY
                 ArrayList ListArray = new ArrayList();
                 string[] Split = Line.Split('	');
 
-                foreach (string Arg in Split) ListArray.Add(Arg.Trim());
+                foreach (string arg in Split) ListArray.Add(arg.Trim());
 
                 if (ListArray.Count > 1)
                 {
@@ -228,7 +228,7 @@ namespace AutoPuTTY
             FormMain.XmlConfig.Load(Settings.Default.cfgpath);
 
             XmlNodeList XmlNodes = FormMain.XmlConfig.SelectNodes("/List/Server");
-            if (XmlNodes != null) foreach (XmlNode XmlNode in XmlNodes)
+            if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
                 {
                     Count++;
                     string Host = "";
@@ -236,21 +236,21 @@ namespace AutoPuTTY
                     string Pass = "";
                     int Type = 0;
 
-                    foreach (XmlElement ChildNode in XmlNode.ChildNodes)
+                    foreach (XmlElement childnode in node.ChildNodes)
                     {
-                        switch (ChildNode.Name)
+                        switch (childnode.Name)
                         {
                             case "Host":
-                                Host = FormMain.Decrypt(ChildNode.InnerText);
+                                Host = FormMain.Decrypt(childnode.InnerText);
                                 break;
                             case "User":
-                                User = FormMain.Decrypt(ChildNode.InnerText);
+                                User = FormMain.Decrypt(childnode.InnerText);
                                 break;
                             case "Password":
-                                Pass = FormMain.Decrypt(ChildNode.InnerText);
+                                Pass = FormMain.Decrypt(childnode.InnerText);
                                 break;
                             case "Type":
-                                Int32.TryParse(ChildNode.InnerText, out Type);
+                                Int32.TryParse(childnode.InnerText, out Type);
                                 break;
                         }
                     }
@@ -261,7 +261,7 @@ namespace AutoPuTTY
                     XmlElement UserXml = FormMain.XmlConfig.CreateElement("User");
                     XmlElement PassXml = FormMain.XmlConfig.CreateElement("Password");
                     XmlElement TypeXml = FormMain.XmlConfig.CreateElement("Type");
-                    NameXml.Value = XmlNode.Attributes[0].Value;
+                    NameXml.Value = node.Attributes[0].Value;
                     ServerXml.SetAttributeNode(NameXml);
                     ServerXml.AppendChild(HostXml);
                     ServerXml.AppendChild(UserXml);
@@ -272,7 +272,7 @@ namespace AutoPuTTY
                     PassXml.InnerText = FormMain.Encrypt(Pass, newpass);
                     TypeXml.InnerText = Type.ToString();
 
-                    XmlNodeList ServerNodes = FormMain.XmlConfig.SelectNodes("//Server[@Name=" + FormMain.ParseXpathString(XmlNode.Attributes[0].Value) + "]");
+                    XmlNodeList ServerNodes = FormMain.XmlConfig.SelectNodes("//Server[@Name=" + FormMain.ParseXpathString(node.Attributes[0].Value) + "]");
                     if (FormMain.XmlConfig.DocumentElement != null)
                     {
                         if (ServerNodes != null) FormMain.XmlConfig.DocumentElement.ReplaceChild(ServerXml, ServerNodes[0]);
@@ -283,13 +283,13 @@ namespace AutoPuTTY
                 }
 
             XmlNodes = FormMain.XmlConfig.SelectNodes("/List/Vault");
-            if (XmlNodes != null) foreach (XmlNode XmlNode in XmlNodes)
+            if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
                 {
                     Count++;
                     string _pass = "";
                     string _priv = "";
 
-                    foreach (XmlElement childnode in XmlNode.ChildNodes)
+                    foreach (XmlElement childnode in node.ChildNodes)
                     {
                         switch (childnode.Name)
                         {
@@ -304,7 +304,7 @@ namespace AutoPuTTY
 
                     XmlElement ServerXml = FormMain.XmlConfig.CreateElement("Vault");
                     XmlAttribute NameXml = FormMain.XmlConfig.CreateAttribute("Name");
-                    NameXml.Value = XmlNode.Attributes[0].Value;
+                    NameXml.Value = node.Attributes[0].Value;
                     ServerXml.SetAttributeNode(NameXml);
 
                     if (_pass != "")
@@ -320,7 +320,7 @@ namespace AutoPuTTY
                         ServerXml.AppendChild(PrivXml);
                     }
 
-                    XmlNodeList VaultNodes = FormMain.XmlConfig.SelectNodes("//Vault[@Name=" + FormMain.ParseXpathString(XmlNode.Attributes[0].Value) + "]");
+                    XmlNodeList VaultNodes = FormMain.XmlConfig.SelectNodes("//Vault[@Name=" + FormMain.ParseXpathString(node.Attributes[0].Value) + "]");
                     if (FormMain.XmlConfig.DocumentElement != null)
                     {
                         if (VaultNodes != null) FormMain.XmlConfig.DocumentElement.ReplaceChild(ServerXml, VaultNodes[0]);
