@@ -21,15 +21,15 @@ namespace AutoPuTTY
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static readonly Mutex mutex = new Mutex(true, "Local\\AutoPuTTY");
+        static readonly Mutex Mutex = new Mutex(true, "Local\\AutoPuTTY");
         [STAThread]
         static void Main()
         {
-            if (mutex.WaitOne(TimeSpan.Zero, true))
+            if (Mutex.WaitOne(TimeSpan.Zero, true))
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new formMain());
+                Application.Run(new FormMain());
             }
             else
             {

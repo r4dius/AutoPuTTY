@@ -126,36 +126,6 @@ namespace SimpleJson
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="JsonObject"/>.
-        /// </summary>
-        /// <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> implementation to use when comparing keys, or null to use the default <see cref="T:System.Collections.Generic.EqualityComparer`1"/> for the type of the key.</param>
-        public JsonObject(IEqualityComparer<string> comparer)
-        {
-            _members = new Dictionary<string, object>(comparer);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="System.Object"/> at the specified index.
-        /// </summary>
-        /// <value></value>
-        public object this[int index]
-        {
-            get { return GetAtIndex(_members, index); }
-        }
-
-        internal static object GetAtIndex(IDictionary<string, object> obj, int index)
-        {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
-            if (index >= obj.Count)
-                throw new ArgumentOutOfRangeException("index");
-            int i = 0;
-            foreach (KeyValuePair<string, object> o in obj)
-                if (i++ == index) return o.Value;
-            return null;
-        }
-
-        /// <summary>
         /// Adds the specified key.
         /// </summary>
         /// <param name="key">The key.</param>

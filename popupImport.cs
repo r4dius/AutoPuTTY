@@ -4,124 +4,127 @@ using System.Windows.Forms;
 
 namespace AutoPuTTY
 {
-    public partial class popupImport : Form
+    public partial class PopupImport : Form
     {
-        public formOptions optionsform;
-        private readonly int oheight;
+        public FormOptions FormOptions;
+        private readonly int OriginalHeight;
 
-        public popupImport(formOptions form)
+        public PopupImport(FormOptions form)
         {
-            optionsform = form;
+            FormOptions = form;
             InitializeComponent();
 
-            oheight = Height;
+            OriginalHeight = Height;
         }
 
         private void formClosing(object sender, FormClosingEventArgs e)
         {
             bCancel_Click(sender, e);
-            if (e.CloseReason != CloseReason.UserClosing && bCancel.Text == "Cancel") e.Cancel = true;
+            if (e.CloseReason != CloseReason.UserClosing && buCancel.Text == "Cancel") e.Cancel = true;
         }
 
         private void bCancel_Click(object sender, EventArgs e)
         {
-            optionsform.importcancel = true;
-            lock (optionsform.locker)
+            FormOptions.ImportCancel = true;
+            lock (FormOptions.Locker)
             {
-                Monitor.Pulse(optionsform.locker);
+                Monitor.Pulse(FormOptions.Locker);
             }
-            optionsform.bwProgress.CancelAsync();
+            FormOptions.backgroundProgress.CancelAsync();
         }
 
         private void bReplace_Click(object sender, EventArgs e)
         {
             SwitchDuplicateWarning(false);
-            optionsform.importreplace = "replace";
-            lock (optionsform.locker)
+            FormOptions.ImportReplace = "replace";
+            lock (FormOptions.Locker)
             {
-                Monitor.Pulse(optionsform.locker);
+                Monitor.Pulse(FormOptions.Locker);
             }
         }
 
         private void bSkip_Click(object sender, EventArgs e)
         {
             SwitchDuplicateWarning(false);
-            optionsform.importreplace = "skip";
-            lock (optionsform.locker)
+            FormOptions.ImportReplace = "skip";
+            lock (FormOptions.Locker)
             {
-                Monitor.Pulse(optionsform.locker);
+                Monitor.Pulse(FormOptions.Locker);
             }
         }
 
         private void SwitchDuplicateWarning(bool state)
         {
-            if (bReplace.InvokeRequired) Invoke(new MethodInvoker(delegate
+            if (buReplace.InvokeRequired) Invoke(new MethodInvoker(delegate
             {
-                Height = state ? oheight + pWarning.Height : oheight;
-                pWarning.Visible = state;
-                bReplace.Enabled = state;
-                bSkip.Enabled = state;
+                Height = state ? OriginalHeight + paWarning.Height : OriginalHeight;
+                paWarning.Visible = state;
+                buReplace.Enabled = state;
+                buSkip.Enabled = state;
             }));
             else
             {
-                Height = state ? oheight + pWarning.Height : oheight;
-                pWarning.Visible = state;
-                bReplace.Enabled = state;
-                bSkip.Enabled = state;
+                Height = state ? OriginalHeight + paWarning.Height : OriginalHeight;
+                paWarning.Visible = state;
+                buReplace.Enabled = state;
+                buSkip.Enabled = state;
             }
         }
 
-        public void ToggleDuplicateWarning(bool state, string count)
+        public void ToggleDuplicateWarning(bool state, string message)
         {
-            if (lWarning.InvokeRequired) Invoke(new MethodInvoker(delegate
+            if (laWarning.InvokeRequired) Invoke(new MethodInvoker(delegate
             {
-                lWarning.Text = count;
+                laWarning.Text = message;
             }));
             else
             {
-                lWarning.Text = count;
+                laWarning.Text = message;
             }
             SwitchDuplicateWarning(state);
         }
 
-        private void SwitchEmptyWarning(string count)
+        private void SwitchEmptyWarning(string message)
         {
-            if (pWarning.InvokeRequired) Invoke(new MethodInvoker(delegate
+            if (paWarning.InvokeRequired) Invoke(new MethodInvoker(delegate
             {
-                if (!pWarning.Visible)
+                if (!paWarning.Visible)
                 {
-                    Height = oheight + pWarning.Height;
-                    pWarning.Visible = true;
+                    Height = OriginalHeight + paWarning.Height;
+                    paWarning.Visible = true;
                 }
-                lWarning.Text = count;
+                laWarning.Text = message;
             }));
             else
             {
-                if (!pWarning.Visible)
+                if (!paWarning.Visible)
                 {
-                    Height = oheight + pWarning.Height;
-                    pWarning.Visible = true;
+                    Height = OriginalHeight + paWarning.Height;
+                    paWarning.Visible = true;
                 }
-                lWarning.Text = count;
+                laWarning.Text = message;
             }
         }
 
         public void ImportProgress(string[] args)
         {
             if (Convert.ToInt32(args[0]) < 0) args[0] = "0";
-            pbProgress.Value = Convert.ToInt32(args[0]);
-            lProgressValue.Text = args[1];
-            lAddedValue.Text = args[2];
-            lReplacedValue.Text = args[3];
-            lSkippedValue.Text = args[4];
+            prImport.Value = Convert.ToInt32(args[0]);
+            laProcessedCount.Text = args[1];
+            laAddedCount.Text = args[2];
+            laReplacedCount.Text = args[3];
+            laSkippedCount.Text = args[4];
         }
 
         public void ImportComplete()
         {
-            Text = optionsform.importcancel ? "Import cancelled" : "Import complete";
-            bCancel.Text = "OK";
-            bCancel.DialogResult = DialogResult.Cancel;
-            if (optionsform.importempty) SwitchEmptyWarning("No entry found in file");
+            Text = "Import " + (FormOptions.ImportCancel ? "cancelled" : "complete");
+            buCancel.Text = "OK";
+            buCancel.DialogResult = DialogResult.Cancel;
+            if (FormOptions.ImportEmpty)
+            {
+                SwitchEmptyWarning("No entry found in file");
+            }
             else SwitchDuplicateWarning(false);
         }
     }

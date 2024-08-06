@@ -27,9 +27,9 @@ using TextBox = System.Windows.Forms.TextBox;
 
 namespace AutoPuTTY
 {
-    public partial class formMain : Form
+    public partial class FormMain : Form
     {
-        private bool passwordrequired;
+        private bool PasswordRequired;
         private const int IDM_ABOUT = 1000;
         private const int IDM_OPTIONS = 900;
         private const int MF_BYPOSITION = 0x400;
@@ -37,28 +37,28 @@ namespace AutoPuTTY
         private const int SW_RESTORE = 9;
         private const int SW_SHOW = 5;
         private const int WM_SYSCOMMAND = 0x112;
-        private string[] types = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SCP)", "WinSCP (SFTP)", "WinSCP (FTP)" };
-        private string[] _types;
-        public static XmlDocument xmlconfig = new XmlDocument();
-        private const int tbfilterwidth = 145;
-        private const int pfindwidth = 250;
-        private bool indexchanged;
-        private bool filter;
-        private bool selectall;
-        private bool remove;
-        private double unixtime;
-        private double oldunixtime;
-        private int tries;
-        private string keysearch = "";
-        private string laststate = "normal";
-        private string updatelink = "";
-        private Image iconedithover;
-        private Image iconcopyhover;
-        private Image iconeyeshowhover;
-        private Image iconeyehidehover;
-        private Image iconeyehover;
+        private string[] TypeList = { "PuTTY", "Remote Desktop", "VNC", "WinSCP (SCP)", "WinSCP (SFTP)", "WinSCP (FTP)" };
+        private string[] Types;
+        public static XmlDocument XmlConfig = new XmlDocument();
+        private const int FilterWidth = 145;
+        private const int FindWidth = 250;
+        private bool IndexChanged;
+        private bool Filter;
+        private bool SelectAll;
+        private bool Remove;
+        private double UnixTime;
+        private double OldUnixTime;
+        private int Tries;
+        private string KeySearch = "";
+        private string LastState = "normal";
+        private string UpdateLink = "";
+        private Image IconEditHover;
+        private Image IconCopyHover;
+        private Image IconEyeShowHover;
+        private Image IconEyeHideHover;
+        private Image IconEyeHover;
 
-        public formMain()
+        public FormMain()
         {
 #if DEBUG
             DateTime time = DateTime.Now;
@@ -93,7 +93,7 @@ namespace AutoPuTTY
                         }
                         catch (UnauthorizedAccessException)
                         {
-                            Error(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
+                            MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
                             Environment.Exit(-1);
                         }
                     }
@@ -106,22 +106,22 @@ namespace AutoPuTTY
             UpdateReset();
 
             //clone types array to have a sorted version
-            _types = (string[])types.Clone();
-            Array.Sort(_types);
+            Types = (string[])TypeList.Clone();
+            Array.Sort(Types);
 
             SwitchSearch(false);
-            foreach (string type in _types)
+            foreach (string type in Types)
             {
                 cbType.Items.Add(type);
             }
 
             try
             {
-                xmlconfig.Load(Settings.Default.cfgpath);
+                XmlConfig.Load(Settings.Default.cfgpath);
             }
             catch
             {
-                Error(this, "\"" + Settings.Default.cfgpath + "\" file is corrupt, delete it and try again.");
+                MessageError(this, "\"" + Settings.Default.cfgpath + "\" file is corrupt, delete it and try again.");
                 Environment.Exit(-1);
             }
 
@@ -169,11 +169,11 @@ namespace AutoPuTTY
             lbServer.MultiColumn = Settings.Default.multicolumn;
             lbServer.ColumnWidth = Settings.Default.multicolumnwidth * 10;
 
-            iconedithover = ImageOpacity.Set(Resources.iconedit, (float)0.5);
-            iconcopyhover = ImageOpacity.Set(Resources.iconcopy, (float)0.5);
-            iconeyeshowhover = ImageOpacity.Set(Resources.iconeyeshow, (float)0.5);
-            iconeyehidehover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
-            iconeyehover = ImageOpacity.Set(Resources.eye, (float)0.5);
+            IconEditHover = ImageOpacity.Set(Resources.iconedit, (float)0.5);
+            IconCopyHover = ImageOpacity.Set(Resources.iconcopy, (float)0.5);
+            IconEyeShowHover = ImageOpacity.Set(Resources.iconeyeshow, (float)0.5);
+            IconEyeHideHover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
+            IconEyeHover = ImageOpacity.Set(Resources.eye, (float)0.5);
 
             int i = 0;
             MenuItem connectmenu = new MenuItem
@@ -189,14 +189,14 @@ namespace AutoPuTTY
                 Index = i++
             };
             cmServer.MenuItems.Add(sepmenu);
-            foreach (string type in _types)
+            foreach (string type in Types)
             {
                 MenuItem listmenu = new MenuItem
                 {
                     Index = i++,
                     Text = type
                 };
-                string _type = Array.IndexOf(types, type).ToString();
+                string _type = Array.IndexOf(TypeList, type).ToString();
                 listmenu.Click += delegate { Connect(_type); };
                 cmServer.MenuItems.Add(listmenu);
             }
@@ -251,8 +251,8 @@ namespace AutoPuTTY
             }
             if (Settings.Default.passwordmd5.Trim() != "")
             {
-                passwordrequired = true;
-                pbPassEye.Image = iconeyehover;
+                PasswordRequired = true;
+                pbPassEye.Image = IconEyeHover;
                 BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
                 ShowTableLayoutPanel(tlPassword);
             }
@@ -295,11 +295,12 @@ namespace AutoPuTTY
 
         private void Startup()
         {
-            passwordrequired = false;
-            bCopyName.Enabled = false;
-            bCopyHost.Enabled = false;
-            bCopyUser.Enabled = false;
+            PasswordRequired = false;
+            buCopyName.Enabled = false;
+            buCopyHost.Enabled = false;
+            buCopyUser.Enabled = false;
             bCopyPass.Enabled = false;
+            buCopyVault.Enabled = false;
             bCopyVaultName.Enabled = false;
             bCopyVaultPass.Enabled = false;
             bCopyVaultPriv.Enabled = false;
@@ -319,39 +320,38 @@ namespace AutoPuTTY
 
         private async void UpdateCheck()
         {
-            string url = "https://api.github.com/repos/r4dius/AutoPuTTY/releases/latest";
-            double version = Convert.ToDouble(Info.version);
-            double tag;
+            string Url = "https://api.github.com/repos/r4dius/AutoPuTTY/releases/latest";
+            double Version = Convert.ToDouble(Info.version);
+            double Tag;
 
             liAboutUpdate.Text = "checking for update";
             UpdateVersionPosition();
 
-            using (HttpClient client = new HttpClient())
+            using (HttpClient Client = new HttpClient())
             {
                 try
                 {
-                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("product",
-                        ProductName)); // set your own values here
+                    Client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("product", ProductName)); // set your own values here
 
                     Debug.WriteLine(ProductName);
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    response.EnsureSuccessStatusCode();
-                    string data = await response.Content.ReadAsStringAsync();
-                    if (data != null)
+                    HttpResponseMessage Response = await Client.GetAsync(Url);
+                    Response.EnsureSuccessStatusCode();
+                    string Data = await Response.Content.ReadAsStringAsync();
+                    if (Data != null)
                     {
-                        dynamic json = SimpleJson.SimpleJson.DeserializeObject(data);
-                        Debug.WriteLine(data);
-                        tag = Convert.ToDouble(json.tag_name);
+                        dynamic Json = SimpleJson.SimpleJson.DeserializeObject(Data);
+                        Debug.WriteLine(Data);
+                        Tag = Convert.ToDouble(Json.tag_name);
 
-                        Debug.WriteLine(tag);
-                        Debug.WriteLine(version);
+                        Debug.WriteLine(Tag);
+                        Debug.WriteLine(Version);
 
                         tAboutVersion.AutoSize = true;
-                        if (tag > version)
+                        if (Tag > Version)
                         {
                             Debug.WriteLine("5");
-                            updatelink = json.html_url;
-                            liAboutUpdate.Text = "update available v" + tag;
+                            UpdateLink = Json.html_url;
+                            liAboutUpdate.Text = "update available v" + Tag;
                         }
                         else
                         {
@@ -370,8 +370,8 @@ namespace AutoPuTTY
 
         private void UpdateVersionPosition()
         {
-            int versiontextwidth = tAboutVersion.Width + tAboutSep.Width + liAboutUpdate.Width;
-            tAboutVersion.Left = (panelUpdate.Width / 2) - (versiontextwidth / 2);
+            int VersionTextWidth = tAboutVersion.Width + tAboutSep.Width + liAboutUpdate.Width;
+            tAboutVersion.Left = (panelUpdate.Width / 2) - (VersionTextWidth / 2);
             tAboutSep.Left = tAboutVersion.Left + tAboutVersion.Width;
             liAboutUpdate.Left = tAboutSep.Left + tAboutSep.Width;
         }
@@ -396,82 +396,82 @@ namespace AutoPuTTY
 
         public static void OpenAtSavedPosition(Form form)
         {
-            int left = 0;
-            int top = 0;
-            int width = form.Size.Width;
-            int height = form.Size.Height;
-            int borderwidth = (form.DesktopBounds.Width - form.ClientSize.Width) / 2;
-            //int titleheight = form.DesktopBounds.Height - form.ClientSize.Height - borderwidth;
+            int Left = 0;
+            int Top = 0;
+            int Width = form.Size.Width;
+            int Height = form.Size.Height;
+            int BorderWidth = (form.DesktopBounds.Width - form.ClientSize.Width) / 2;
+            //int TitleHeight = form.DesktopBounds.Height - form.ClientSize.Height - borderwidth;
 
             if (Settings.Default.position == "" && Settings.Default.size == "")
             {
                 // no position saved, center form on primary screen
-                left = (Screen.PrimaryScreen.WorkingArea.Width - width) / 2;
-                top = (Screen.PrimaryScreen.WorkingArea.Height - height) / 2;
+                Left = (Screen.PrimaryScreen.WorkingArea.Width - Width) / 2;
+                Top = (Screen.PrimaryScreen.WorkingArea.Height - Height) / 2;
             }
             else
             {
                 if (Settings.Default.size != "")
                 {
-                    string[] _size = Settings.Default.size.Split('x');
-                    if (_size.Length == 2)
+                    string[] Size = Settings.Default.size.Split('x');
+                    if (Size.Length == 2)
                     {
-                        width = Convert.ToInt32(_size[0]);
-                        height = Convert.ToInt32(_size[1]);
+                        Width = Convert.ToInt32(Size[0]);
+                        Height = Convert.ToInt32(Size[1]);
                     }
                 }
 
                 if (Settings.Default.position != "")
                 {
-                    string[] _position = Settings.Default.position.Split('x');
-                    if (_position.Length == 2)
+                    string[] Position = Settings.Default.position.Split('x');
+                    if (Position.Length == 2)
                     {
-                        left = Convert.ToInt32(_position[0]);
-                        top = Convert.ToInt32(_position[1]);
+                        Left = Convert.ToInt32(Position[0]);
+                        Top = Convert.ToInt32(Position[1]);
                     }
                 }
                 else
                 {
                     // no position saved, center form on primary screen
-                    left = (Screen.PrimaryScreen.WorkingArea.Width - width) / 2;
-                    top = (Screen.PrimaryScreen.WorkingArea.Height - height) / 2;
+                    Left = (Screen.PrimaryScreen.WorkingArea.Width - Width) / 2;
+                    Top = (Screen.PrimaryScreen.WorkingArea.Height - Height) / 2;
                 }
 
                 // Check if the saved position is valid (not out of bounds)
-                if (!IsValidPosition(left, top, width, height))
+                if (!IsValidPosition(Left, Top, Width, Height))
                 {
                     Debug.WriteLine("notvalid 1");
                     // If the saved position is out of bounds, center the form on the screen it's on
-                    Screen screen = Screen.FromPoint(new Point(left + borderwidth, top));
+                    Screen screen = Screen.FromPoint(new Point(Left + BorderWidth, Top));
                     Debug.WriteLine(screen);
-                    if (width - (borderwidth * 2) > screen.WorkingArea.Width)
+                    if (Width - (BorderWidth * 2) > screen.WorkingArea.Width)
                     {
-                        width = screen.WorkingArea.Width + (borderwidth * 2);
+                        Width = screen.WorkingArea.Width + (BorderWidth * 2);
                         Debug.WriteLine("do 1");
                     }
-                    if (height - borderwidth > screen.WorkingArea.Height)
+                    if (Height - BorderWidth > screen.WorkingArea.Height)
                     {
-                        height = screen.WorkingArea.Height + borderwidth;
+                        Height = screen.WorkingArea.Height + BorderWidth;
                         Debug.WriteLine("do 2");
                     }
-                    if (left + borderwidth < screen.WorkingArea.X)
+                    if (Left + BorderWidth < screen.WorkingArea.X)
                     {
-                        left = screen.WorkingArea.X;
+                        Left = screen.WorkingArea.X;
                         Debug.WriteLine("do 3");
                     }
-                    if (top < screen.WorkingArea.Y)
+                    if (Top < screen.WorkingArea.Y)
                     {
-                        top = screen.WorkingArea.Y;
+                        Top = screen.WorkingArea.Y;
                         Debug.WriteLine("do 4");
                     }
-                    if (left + width - borderwidth > screen.WorkingArea.Width)
+                    if (Left + Width - BorderWidth > screen.WorkingArea.Width)
                     {
-                        left = screen.WorkingArea.X + screen.WorkingArea.Width - width + borderwidth;
+                        Left = screen.WorkingArea.X + screen.WorkingArea.Width - Width + BorderWidth;
                         Debug.WriteLine("do 5");
                     }
-                    if (top + height - borderwidth > screen.WorkingArea.Height)
+                    if (Top + Height - BorderWidth > screen.WorkingArea.Height)
                     {
-                        top = screen.WorkingArea.Y + screen.WorkingArea.Height - height + borderwidth;
+                        Top = screen.WorkingArea.Y + screen.WorkingArea.Height - Height + BorderWidth;
                         Debug.WriteLine("do 6");
                     }
                     Debug.WriteLine(screen);
@@ -479,12 +479,12 @@ namespace AutoPuTTY
                 else
                 {
                     // Check if the window is larger than the screen
-                    Screen screen = Screen.FromPoint(new Point(left + borderwidth, top));
-                    if (width > screen.WorkingArea.Width || height > screen.WorkingArea.Height)
+                    Screen Screen = Screen.FromPoint(new Point(Left + BorderWidth, Top));
+                    if (Width > Screen.WorkingArea.Width || Height > Screen.WorkingArea.Height)
                     {
                         // Shrink the window to fit within the screen bounds
-                        width = Math.Min(width, screen.WorkingArea.Width);
-                        height = Math.Min(height, screen.WorkingArea.Height);
+                        Width = Math.Min(Width, Screen.WorkingArea.Width);
+                        Height = Math.Min(Height, Screen.WorkingArea.Height);
 
                         Debug.WriteLine("size 1");
                     }
@@ -493,40 +493,40 @@ namespace AutoPuTTY
                     if (!IsValidPosition(form.Left, form.Top, form.Width, form.Height))
                     {
                         // Move the window back into the screen bounds
-                        left = Math.Max(screen.WorkingArea.Left, Math.Min(form.Left, screen.WorkingArea.Right - form.Width));
-                        top = Math.Max(screen.WorkingArea.Top, Math.Min(form.Top, screen.WorkingArea.Bottom - form.Height));
+                        Left = Math.Max(Screen.WorkingArea.Left, Math.Min(form.Left, Screen.WorkingArea.Right - form.Width));
+                        Top = Math.Max(Screen.WorkingArea.Top, Math.Min(form.Top, Screen.WorkingArea.Bottom - form.Height));
                         Debug.WriteLine("notvalid 2");
                     }
                 }
             }
 
-            form.DesktopBounds = new Rectangle(left, top, width, height);
+            form.DesktopBounds = new Rectangle(Left, Top, Width, Height);
             if (Settings.Default.position != "" && Settings.Default.maximized) form.WindowState = FormWindowState.Maximized;
         }
 
         private static bool CheckWriteAccess(string path)
         {
-            bool writeAllow = false;
-            bool writeDeny = false;
-            DirectorySecurity accessControlList = Directory.GetAccessControl(path);
-            AuthorizationRuleCollection accessRules = accessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
+            bool WriteAllow = false;
+            bool WriteDeny = false;
+            DirectorySecurity AccessControlList = Directory.GetAccessControl(path);
+            AuthorizationRuleCollection AccessRules = AccessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
 
-            foreach (FileSystemAccessRule rule in accessRules)
+            foreach (FileSystemAccessRule Rule in AccessRules)
             {
-                if ((FileSystemRights.Write & rule.FileSystemRights) != FileSystemRights.Write) continue;
+                if ((FileSystemRights.Write & Rule.FileSystemRights) != FileSystemRights.Write) continue;
 
-                if (rule.AccessControlType == AccessControlType.Allow)
-                    writeAllow = true;
-                else if (rule.AccessControlType == AccessControlType.Deny)
-                    writeDeny = true;
+                if (Rule.AccessControlType == AccessControlType.Allow)
+                    WriteAllow = true;
+                else if (Rule.AccessControlType == AccessControlType.Deny)
+                    WriteDeny = true;
             }
 
-            return writeAllow && !writeDeny;
+            return WriteAllow && !WriteDeny;
         }
 
         public void Connect(string type)
         {
-            Debug.WriteLine("Connect : type - " + type + " " + (type != "-1" ? types[Convert.ToInt16(type)] : ""));
+            Debug.WriteLine("Connect : type - " + type + " " + (type != "-1" ? TypeList[Convert.ToInt16(type)] : ""));
 
             // browsing files with OpenFileDialog() fucks with CurrentDirectory, lets fix it
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -540,137 +540,132 @@ namespace AutoPuTTY
                     if (MessageBoxEx.Show(this, "Are you sure you want to connect to the " + lbServer.SelectedItems.Count + " selected items ?", "Connection confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK) return;
                 }
 
-                foreach (object item in lbServer.SelectedItems)
+                foreach (object Item in lbServer.SelectedItems)
                 {
-                    IDictionary<string, string> server = XmlGetServer(item.ToString());
+                    IDictionary<string, string> GetServer = XmlGetServer(Item.ToString());
 
-                    string[] f = { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
-                    string[] ps = { "/", "\\\\" };
-                    string[] pr = { "\\", "\\" };
-                    string[] _temp;
-                    string winscpprot = "sftp://";
-                    string _host = Decrypt(server["Host"]);
-                    string _user = Decrypt(server["User"]);
-                    string _pass = Decrypt(server["Password"]);
-                    string _vault = server["Vault"];
-                    string _type = type == "-1" ? server["Type"] : type;
-                    string proxy = "";
-                    string proxyuser = "";
-                    string proxypass = "";
-                    string proxyhost = "";
-                    string proxyport = "";
-                    string _userfromproxy = "";
-                    string _vaultprivatekey = "";
+                    string[] SpecialChars = { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
+                    string[] PathSearch = { "/", "\\\\" };
+                    string[] PathReplace = { "\\", "\\" };
+                    string[] UserTemp;
+                    string WinscpProt = "sftp://";
+                    string Host = Decrypt(GetServer["Host"]);
+                    string User = Decrypt(GetServer["User"]);
+                    string Pass = Decrypt(GetServer["Password"]);
+                    string Vault = GetServer["Vault"];
+                    string Type = type == "-1" ? GetServer["Type"] : type;
+                    string Proxy = "";
+                    string ProxyUser = "";
+                    string ProxyPass = "";
+                    string ProxyHost = "";
+                    string ProxyPort = "";
+                    string UserFromProxy = "";
+                    string VaultPrivateKey = "";
 
-                    if (_vault.Trim() != "")
+                    if (Vault.Trim() != "")
                     {
-                        IDictionary<string, string> vault = XmlGetVault(_vault);
-                        _pass = Decrypt(vault["Password"]);
-                        _vaultprivatekey = Decrypt(vault["PrivateKey"]);
+                        IDictionary<string, string> GetVault = XmlGetVault(Vault);
+                        Pass = Decrypt(GetVault["Password"]);
+                        VaultPrivateKey = Decrypt(GetVault["PrivateKey"]);
                     }
 
                     //SSH Jump
-                    if (_user.Contains("#"))
+                    if (User.Contains("#"))
                     {
-                        _temp = _user.Split('#');
-                        _userfromproxy = _temp[_temp.Length - 1];
-                        Array.Resize(ref _temp, _temp.Length - 1);
-                        proxy = String.Join("", _temp);
+                        UserTemp = User.Split('#');
+                        UserFromProxy = UserTemp[UserTemp.Length - 1];
+                        Array.Resize(ref UserTemp, UserTemp.Length - 1);
+                        Proxy = String.Join("", UserTemp);
 
-                        if (proxy.Contains("@"))
+                        if (Proxy.Contains("@"))
                         {
-                            _temp = proxy.Split('@');
-                            proxyhost = _temp[_temp.Length - 1];
-                            Array.Resize(ref _temp, _temp.Length - 1);
-                            proxyuser = String.Join("@", _temp);
+                            UserTemp = Proxy.Split('@');
+                            ProxyHost = UserTemp[UserTemp.Length - 1];
+                            Array.Resize(ref UserTemp, UserTemp.Length - 1);
+                            ProxyUser = String.Join("@", UserTemp);
 
-                            if (proxyuser.Contains(":"))
+                            if (ProxyUser.Contains(":"))
                             {
-                                _temp = proxyuser.Split(':');
-                                proxyuser = _temp[0];
-                                _temp = _temp.Skip(1).ToArray();
-                                proxypass = String.Join(":", _temp);
+                                UserTemp = ProxyUser.Split(':');
+                                ProxyUser = UserTemp[0];
+                                UserTemp = UserTemp.Skip(1).ToArray();
+                                ProxyPass = String.Join(":", UserTemp);
                             }
                         }
                         else
                         {
                             // no proxy username
-                            proxyhost = proxy;
+                            ProxyHost = Proxy;
                         }
 
-                        if (proxyhost.Split(':').Length > 1)
+                        if (ProxyHost.Split(':').Length > 1)
                         {
-                            proxyport = proxyhost.Split(':')[1];
-                            proxyhost = proxyhost.Split(':')[0];
+                            ProxyPort = ProxyHost.Split(':')[1];
+                            ProxyHost = ProxyHost.Split(':')[0];
                         }
                     }
 
-                    switch (_type)
+                    switch (Type)
                     {
                         case "1": //RDP
-                            string[] rdpextractpath = ExtractFilePath(Settings.Default.rdpath);
-                            string rdpath = rdpextractpath[0];
-                            string rdpargs = rdpextractpath[1];
+                            string[] RdExtractPath = ExtractFilePath(Settings.Default.rdpath);
+                            string RdPath = RdExtractPath[0];
+                            string RdArgs = RdExtractPath[1];
 
-                            if (File.Exists(rdpath))
+                            if (File.Exists(RdPath))
                             {
-                                Mstscpw mstscpw = new Mstscpw();
-                                string rdppass = mstscpw.encryptpw(_pass);
+                                Mstscpw Mstscpw = new Mstscpw();
+                                string RdPass = Mstscpw.encryptpw(Pass);
+                                string[] RdSize = Settings.Default.rdsize.Split('x');
 
-                                ArrayList arraylist = new ArrayList();
-                                string[] size = Settings.Default.rdsize.Split('x');
-
-                                string rdpout = "";
-                                if (Settings.Default.rdfilespath != "" && ReplaceA(ps, pr, Settings.Default.rdfilespath) != "\\")
+                                string RdOut = "";
+                                if (Settings.Default.rdfilespath != "" && ReplacePath(PathSearch, PathReplace, Settings.Default.rdfilespath) != "\\")
                                 {
-                                    rdpout = ReplaceA(ps, pr, Settings.Default.rdfilespath + "\\");
+                                    RdOut = ReplacePath(PathSearch, PathReplace, Settings.Default.rdfilespath + "\\");
 
                                     try
                                     {
-                                        Directory.CreateDirectory(rdpout);
+                                        Directory.CreateDirectory(RdOut);
                                     }
                                     catch
                                     {
                                         MessageBoxEx.Show(this, "Output path for generated \".rdp\" connection files doesn't exist.\nFiles will be generated in the current path.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                        rdpout = "";
+                                        RdOut = "";
                                     }
                                 }
 
-                                foreach (string width in size)
+                                TextWriter RdFile = new StreamWriter(RdOut + ReplaceSpecial(SpecialChars, GetServer["Name"]) + ".rdp");
+                                if (Settings.Default.rdsize == "Fullscreen" || Settings.Default.rdsize == "Full screen") RdFile.WriteLine("screen mode id:i:2");
+                                else RdFile.WriteLine("screen mode id:i:1");
+                                if (RdSize.Length == 2)
                                 {
-                                    int num;
-                                    if (Int32.TryParse(width.Trim(), out num)) arraylist.Add(width.Trim());
+                                    if (Int32.TryParse(RdSize[0].Trim(), out _) && Int32.TryParse(RdSize[1].Trim(), out _))
+                                    {
+                                        RdFile.WriteLine("desktopwidth:i:" + RdSize[0].Trim());
+                                        RdFile.WriteLine("desktopheight:i:" + RdSize[1].Trim());
+                                    }
                                 }
-
-                                TextWriter rdpfile = new StreamWriter(rdpout + ReplaceU(f, server["Name"]) + ".rdp");
-                                if (Settings.Default.rdsize == "Full screen") rdpfile.WriteLine("screen mode id:i:2");
-                                else rdpfile.WriteLine("screen mode id:i:1");
-                                if (arraylist.Count == 2)
+                                if (Host != "") RdFile.WriteLine("full address:s:" + Host);
+                                if (User != "")
                                 {
-                                    rdpfile.WriteLine("desktopwidth:i:" + arraylist[0]);
-                                    rdpfile.WriteLine("desktopheight:i:" + arraylist[1]);
+                                    RdFile.WriteLine("username:s:" + User);
+                                    if (Pass != "") RdFile.WriteLine("password 51:b:" + RdPass);
                                 }
-                                if (_host != "") rdpfile.WriteLine("full address:s:" + _host);
-                                if (_user != "")
-                                {
-                                    rdpfile.WriteLine("username:s:" + _user);
-                                    if (_pass != "") rdpfile.WriteLine("password 51:b:" + rdppass);
-                                }
-                                if (Settings.Default.rddrives) rdpfile.WriteLine("redirectdrives:i:1");
-                                if (Settings.Default.rdadmin) rdpfile.WriteLine("administrative session:i:1");
-                                if (Settings.Default.rdspan) rdpfile.WriteLine("use multimon:i:1");
-                                rdpfile.Close();
+                                if (Settings.Default.rddrives) RdFile.WriteLine("redirectdrives:i:1");
+                                if (Settings.Default.rdadmin) RdFile.WriteLine("administrative session:i:1");
+                                if (Settings.Default.rdspan) RdFile.WriteLine("use multimon:i:1");
+                                RdFile.Close();
 
-                                Process myProc = new Process();
-                                myProc.StartInfo.FileName = rdpath;
-                                myProc.StartInfo.Arguments = "\"" + rdpout + ReplaceU(f, server["Name"]) + ".rdp\"";
-                                if (rdpargs != "") myProc.StartInfo.Arguments += " " + rdpargs;
+                                Process Proc = new Process();
+                                Proc.StartInfo.FileName = RdPath;
+                                Proc.StartInfo.Arguments = "\"" + RdOut + ReplaceSpecial(SpecialChars, GetServer["Name"]) + ".rdp\"";
+                                if (RdArgs != "") Proc.StartInfo.Arguments += " " + RdArgs;
 
-                                Debug.WriteLine(myProc.StartInfo.FileName + myProc.StartInfo.FileName.IndexOf('"') + File.Exists(myProc.StartInfo.FileName));
+                                Debug.WriteLine(Proc.StartInfo.FileName + Proc.StartInfo.FileName.IndexOf('"') + File.Exists(Proc.StartInfo.FileName));
 
                                 try
                                 {
-                                    myProc.Start();
+                                    Proc.Start();
                                 }
                                 catch (System.ComponentModel.Win32Exception)
                                 {
@@ -679,83 +674,80 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBoxEx.Show(this, "Could not find file \"" + rdpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                if (MessageBoxEx.Show(this, "Could not find file \"" + RdPath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                                 {
-                                    using (formOptions optionsform = new formOptions(this))
+                                    using (FormOptions FormOptions = new FormOptions(this))
                                     {
-                                        optionsform.bRDPath_Click(type);
+                                        FormOptions.bRDPath_Click(type);
                                     }
                                 }
                             }
                             break;
                         case "2": //VNC
-                            string[] vncextractpath = ExtractFilePath(Settings.Default.vncpath);
-                            string vncpath = vncextractpath[0];
-                            string vncargs = vncextractpath[1];
+                            string[] VncExtractPath = ExtractFilePath(Settings.Default.vncpath);
+                            string VncPath = VncExtractPath[0];
+                            string VncArgs = VncExtractPath[1];
 
-                            if (File.Exists(vncpath))
+                            if (File.Exists(VncPath))
                             {
-                                string host;
-                                string port;
-                                string[] hostport = _host.Split(':');
-                                int split = hostport.Length;
+                                string Port;
+                                string[] HostPort = Host.Split(':');
 
-                                if (split == 2)
+                                if (HostPort.Length == 2)
                                 {
-                                    host = hostport[0];
-                                    port = hostport[1];
+                                    Host = HostPort[0];
+                                    Port = HostPort[1];
                                 }
                                 else
                                 {
-                                    host = _host;
-                                    port = "5900";
+                                    Port = "5900";
                                 }
 
-                                string vncout = "";
+                                string VncOut = "";
 
-                                if (Settings.Default.vncfilespath != "" && ReplaceA(ps, pr, Settings.Default.vncfilespath) != "\\")
+                                if (Settings.Default.vncfilespath != "" && ReplacePath(PathSearch, PathReplace, Settings.Default.vncfilespath) != "\\")
                                 {
-                                    vncout = ReplaceA(ps, pr, Settings.Default.vncfilespath + "\\");
+                                    VncOut = ReplacePath(PathSearch, PathReplace, Settings.Default.vncfilespath + "\\");
 
                                     try
                                     {
-                                        Directory.CreateDirectory(vncout);
+                                        Directory.CreateDirectory(VncOut);
                                     }
                                     catch
                                     {
                                         MessageBoxEx.Show(this, "Output path for generated \".vnc\" connection files doesn't exist.\nFiles will be generated in the current path.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                        vncout = "";
+                                        VncOut = "";
                                     }
                                 }
 
-                                TextWriter vncfile = new StreamWriter(vncout + ReplaceU(f, server["Name"]) + ".vnc");
-                                vncfile.WriteLine("[Connection]");
-                                if (host != "") vncfile.WriteLine("host=" + host.Trim());
-                                if (port != "") vncfile.WriteLine("port=" + port.Trim());
-                                if (_user != "") vncfile.WriteLine("username=" + _user);
-                                if (_pass != "") vncfile.WriteLine("password=" + cryptVNC.EncryptPassword(_pass));
-                                vncfile.WriteLine("[Options]");
-                                if (Settings.Default.vncfullscreen) vncfile.WriteLine("fullscreen=1");
+                                TextWriter VncFile = new StreamWriter(VncOut + ReplaceSpecial(SpecialChars, GetServer["Name"]) + ".vnc");
+                                VncFile.WriteLine("[Connection]");
+                                if (Host != "") VncFile.WriteLine("host=" + Host.Trim());
+                                if (Port != "") VncFile.WriteLine("port=" + Port.Trim());
+                                if (User != "") VncFile.WriteLine("username=" + User);
+                                if (Pass != "") VncFile.WriteLine("password=" + cryptVNC.EncryptPassword(Pass));
+                                VncFile.WriteLine("[Options]");
+                                if (Settings.Default.vncfullscreen) VncFile.WriteLine("fullscreen=1");
                                 if (Settings.Default.vncviewonly)
                                 {
-                                    vncfile.WriteLine("viewonly=1"); //ultravnc
-                                    vncfile.WriteLine("sendptrevents=0"); //realvnc
-                                    vncfile.WriteLine("sendkeyevents=0"); //realvnc
-                                    vncfile.WriteLine("sendcuttext=0"); //realvnc
-                                    vncfile.WriteLine("acceptcuttext=0"); //realvnc
-                                    vncfile.WriteLine("sharefiles=0"); //realvnc
+                                    VncFile.WriteLine("viewonly=1"); //ultravnc
+                                    VncFile.WriteLine("sendptrevents=0"); //realvnc
+                                    VncFile.WriteLine("sendkeyevents=0"); //realvnc
+                                    VncFile.WriteLine("sendcuttext=0"); //realvnc
+                                    VncFile.WriteLine("acceptcuttext=0"); //realvnc
+                                    VncFile.WriteLine("sharefiles=0"); //realvnc
                                 }
 
-                                if (_pass != "" && _pass.Length > 8) vncfile.WriteLine("protocol3.3=1"); // fuckin vnc 4.0 auth
-                                vncfile.Close();
+                                if (Pass != "" && Pass.Length > 8) VncFile.WriteLine("protocol3.3=1"); // fuckin vnc 4.0 auth
+                                VncFile.Close();
 
-                                Process myProc = new Process();
-                                myProc.StartInfo.FileName = Settings.Default.vncpath;
-                                myProc.StartInfo.Arguments = "-config \"" + vncout + ReplaceU(f, server["Name"]) + ".vnc\"";
-                                if (vncargs != "") myProc.StartInfo.Arguments += " " + vncargs;
+                                Process Proc = new Process();
+                                Proc.StartInfo.FileName = Settings.Default.vncpath;
+                                Proc.StartInfo.Arguments = "-config \"" + VncOut + ReplaceSpecial(SpecialChars, GetServer["Name"]) + ".vnc\"";
+                                if (VncArgs != "") Proc.StartInfo.Arguments += " " + VncArgs;
                                 try
                                 {
-                                    myProc.Start();
+                                    Proc.Start();
                                 }
                                 catch (System.ComponentModel.Win32Exception)
                                 {
@@ -764,81 +756,78 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBoxEx.Show(this, "Could not find file \"" + vncpath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                if (MessageBoxEx.Show(this, "Could not find file \"" + VncPath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                                 {
-                                    using (formOptions optionsform = new formOptions(this))
+                                    using (FormOptions FormOptions = new FormOptions(this))
                                     {
-                                        optionsform.bVNCPath_Click(type);
+                                        FormOptions.bVNCPath_Click(type);
                                     }
                                 }
                             }
                             break;
                         case "3": //WinSCP (SCP)
-                            winscpprot = "scp://";
+                            WinscpProt = "scp://";
                             goto case "4";
                         case "4": //WinSCP (SFTP)
-                            string[] winscpextractpath = ExtractFilePath(Settings.Default.winscppath);
-                            string winscppath = winscpextractpath[0];
-                            string winscpargs = winscpextractpath[1];
-                            string[] s = { "%", " ", "+", "/", "@", "\"", ":", ";" };
+                            string[] WinscpExtractPath = ExtractFilePath(Settings.Default.winscppath);
+                            string WinscpPath = WinscpExtractPath[0];
+                            string WinscpArgs = WinscpExtractPath[1];
+                            string[] SpecialCharsWinscp = { "%", " ", "+", "/", "@", "\"", ":", ";" };
 
-                            if (File.Exists(winscppath))
+                            if (File.Exists(WinscpPath))
                             {
-                                string host;
-                                string port;
-                                string[] hostport = _host.Split(':');
-                                int split = hostport.Length;
+                                string Port;
+                                string[] HostPort = Host.Split(':');
 
-                                if (split == 2)
+                                if (HostPort.Length == 2)
                                 {
-                                    host = hostport[0];
-                                    port = hostport[1];
+                                    Host = HostPort[0];
+                                    Port = HostPort[1];
                                 }
                                 else
                                 {
-                                    host = _host;
-                                    port = "";
+                                    Port = "";
                                 }
 
-                                Process myProc = new Process();
-                                myProc.StartInfo.FileName = Settings.Default.winscppath;
-                                myProc.StartInfo.Arguments = "";
+                                Process Proc = new Process();
+                                Proc.StartInfo.FileName = Settings.Default.winscppath;
+                                Proc.StartInfo.Arguments = "";
 
-                                myProc.StartInfo.Arguments += winscpprot;
-                                if (_user != "")
+                                Proc.StartInfo.Arguments += WinscpProt;
+                                if (User != "")
                                 {
-                                    if (proxyhost != "") _user = _userfromproxy;
-                                    _user = ReplaceU(s, _user);
-                                    _pass = ReplaceU(s, _pass);
-                                    myProc.StartInfo.Arguments += _user;
-                                    if (_pass != "") myProc.StartInfo.Arguments += ":" + _pass;
-                                    myProc.StartInfo.Arguments += "@";
+                                    if (ProxyHost != "") User = UserFromProxy;
+                                    User = ReplaceSpecial(SpecialCharsWinscp, User);
+                                    Pass = ReplaceSpecial(SpecialCharsWinscp, Pass);
+                                    Proc.StartInfo.Arguments += User;
+                                    if (Pass != "") Proc.StartInfo.Arguments += ":" + Pass;
+                                    Proc.StartInfo.Arguments += "@";
                                 }
-                                if (host != "") myProc.StartInfo.Arguments += HttpUtility.UrlEncode(host);
-                                if (port != "") myProc.StartInfo.Arguments += ":" + port;
-                                if (winscpprot == "ftp://") myProc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
-                                if (_vaultprivatekey != "") myProc.StartInfo.Arguments += " /privatekey=\"" + _vaultprivatekey + "\"";
-                                else if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") myProc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
+                                if (Host != "") Proc.StartInfo.Arguments += HttpUtility.UrlEncode(Host);
+                                if (Port != "") Proc.StartInfo.Arguments += ":" + Port;
+                                if (WinscpProt == "ftp://") Proc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
+                                if (VaultPrivateKey != "") Proc.StartInfo.Arguments += " /privatekey=\"" + VaultPrivateKey + "\"";
+                                else if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") Proc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
 
                                 //SSH Jump
-                                if (proxyhost != "")
+                                if (ProxyHost != "")
                                 {
-                                    _user = _userfromproxy;
-                                    myProc.StartInfo.Arguments += " /rawsettings Tunnel=1 TunnelHostName=" + proxyhost + (proxyuser != "" ? " TunnelUserName=" + proxyuser : "") + " TunnelPortNumber=" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " TunnelPasswordPlain=\"" + ReplaceU(s, proxypass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
+                                    User = UserFromProxy;
+                                    Proc.StartInfo.Arguments += " /rawsettings Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " TunnelPasswordPlain=\"" + ReplaceSpecial(SpecialCharsWinscp, ProxyPass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
 
-                                    Debug.WriteLine("Connect proxy : " + proxy);
-                                    Debug.WriteLine("Connect proxyuser : " + proxyuser);
-                                    Debug.WriteLine("Connect proxypass : " + proxypass + " -> " + ReplaceU(s, proxypass));
-                                    Debug.WriteLine("Connect proxyhost : " + proxyhost);
-                                    Debug.WriteLine("Connect proxyport : " + proxyport);
+                                    Debug.WriteLine("Connect proxy : " + Proxy);
+                                    Debug.WriteLine("Connect proxyuser : " + ProxyUser);
+                                    Debug.WriteLine("Connect proxypass : " + ProxyPass + " -> " + ReplaceSpecial(SpecialCharsWinscp, ProxyPass));
+                                    Debug.WriteLine("Connect proxyhost : " + ProxyHost);
+                                    Debug.WriteLine("Connect proxyport : " + ProxyPort);
                                 }
 
-                                Debug.WriteLine(myProc.StartInfo.Arguments);
+                                Debug.WriteLine(Proc.StartInfo.Arguments);
 
-                                if (winscpargs != "") myProc.StartInfo.Arguments += " " + winscpargs;
+                                if (WinscpArgs != "") Proc.StartInfo.Arguments += " " + WinscpArgs;
                                 try
                                 {
-                                    myProc.Start();
+                                    Proc.Start();
                                 }
                                 catch (System.ComponentModel.Win32Exception)
                                 {
@@ -847,81 +836,78 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBoxEx.Show(this, "Could not find file \"" + winscppath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                if (MessageBoxEx.Show(this, "Could not find file \"" + WinscpPath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                                 {
-                                    using (formOptions optionsform = new formOptions(this))
+                                    using (FormOptions FormOptions = new FormOptions(this))
                                     {
-                                        optionsform.bWSCPPath_Click(type);
+                                        FormOptions.bWSCPPath_Click(type);
                                     }
                                 }
                             }
                             break;
                         case "5": //WinSCP (FTP)
-                            winscpprot = "ftp://";
+                            WinscpProt = "ftp://";
                             goto case "4";
                         default: //PuTTY
-                            string[] puttyextractpath = ExtractFilePath(Settings.Default.puttypath);
-                            string puttypath = puttyextractpath[0];
-                            string puttyargs = puttyextractpath[1];
+                            string[] PuttyExtractPath = ExtractFilePath(Settings.Default.puttypath);
+                            string PuttyPath = PuttyExtractPath[0];
+                            string PuttyArgs = PuttyExtractPath[1];
                             // for some reason you only have to escape \ if it's followed by "
                             // will "fix" up to 3 \ in a password like \\\", then screw you with your maniac passwords
-                            string[] passs = { "\"", "\\\\\"", "\\\\\\\\\"", "\\\\\\\\\\\\\"", };
-                            string[] passr = { "\\\"", "\\\\\\\"", "\\\\\\\\\\\"", "\\\\\\\\\\\\\\\"", };
+                            string[] PassSearch = { "\"", "\\\\\"", "\\\\\\\\\"", "\\\\\\\\\\\\\"", };
+                            string[] PassReplace = { "\\\"", "\\\\\\\"", "\\\\\\\\\\\"", "\\\\\\\\\\\\\\\"", };
 
-                            if (File.Exists(puttypath))
+                            if (File.Exists(PuttyPath))
                             {
-                                string host;
-                                string port;
-                                string[] hostport = _host.Split(':');
-                                int split = hostport.Length;
+                                string Port;
+                                string[] HostPort = Host.Split(':');
 
-                                if (split == 2)
+                                if (HostPort.Length == 2)
                                 {
-                                    host = hostport[0];
-                                    port = hostport[1];
+                                    Host = HostPort[0];
+                                    Port = HostPort[1];
                                 }
                                 else
                                 {
-                                    host = _host;
-                                    port = "";
+                                    Port = "";
                                 }
 
-                                Process myProc = new Process();
-                                myProc.StartInfo.FileName = Settings.Default.puttypath;
-                                myProc.StartInfo.Arguments = "";
+                                Process Proc = new Process();
+                                Proc.StartInfo.FileName = Settings.Default.puttypath;
+                                Proc.StartInfo.Arguments = "";
 
                                 //SSH Jump
-                                if (proxyhost != "")
+                                if (ProxyHost != "")
                                 {
-                                    _user = _userfromproxy;
-                                    myProc.StartInfo.Arguments += " -J " + (proxyuser != "" ? proxyuser + "@" : "") + proxyhost + ":" + (proxyport != "" ? proxyport : "22") + (proxypass != "" ? " -jw \"" + ReplaceA(passs, passr, proxypass) + "\"" : "");
+                                    User = UserFromProxy;
+                                    Proc.StartInfo.Arguments += " -J " + (ProxyUser != "" ? ProxyUser + "@" : "") + ProxyHost + ":" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " -jw \"" + ReplacePath(PassSearch, PassReplace, ProxyPass) + "\"" : "");
 
-                                    Debug.WriteLine("Connect proxy : " + proxy);
-                                    Debug.WriteLine("Connect proxyuser : " + proxyuser);
-                                    Debug.WriteLine("Connect proxypass : " + proxypass + " -> " + ReplaceA(passs, passr, proxypass));
-                                    Debug.WriteLine("Connect proxyhost : " + proxyhost);
-                                    Debug.WriteLine("Connect proxyport : " + proxyport);
+                                    Debug.WriteLine("Connect proxy : " + Proxy);
+                                    Debug.WriteLine("Connect proxyuser : " + ProxyUser);
+                                    Debug.WriteLine("Connect proxypass : " + ProxyPass + " -> " + ReplacePath(PassSearch, PassReplace, ProxyPass));
+                                    Debug.WriteLine("Connect proxyhost : " + ProxyHost);
+                                    Debug.WriteLine("Connect proxyport : " + ProxyPort);
                                 }
 
-                                myProc.StartInfo.Arguments += " -ssh ";
-                                if (_user != "") myProc.StartInfo.Arguments += _user + "@";
-                                if (host != "") myProc.StartInfo.Arguments += host;
-                                if (port != "") myProc.StartInfo.Arguments += " " + port;
-                                if (_user != "" && _pass != "") myProc.StartInfo.Arguments += " -pw \"" + ReplaceA(passs, passr, _pass) + "\"";
-                                if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") myProc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
-                                if (_vaultprivatekey != "") myProc.StartInfo.Arguments += " -i \"" + _vaultprivatekey + "\"";
-                                else if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") myProc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
-                                if (Settings.Default.puttyforward) myProc.StartInfo.Arguments += " -X";
-                                if (puttyargs != "") myProc.StartInfo.Arguments += " " + puttyargs;
+                                Proc.StartInfo.Arguments += " -ssh ";
+                                if (User != "") Proc.StartInfo.Arguments += User + "@";
+                                if (Host != "") Proc.StartInfo.Arguments += Host;
+                                if (Port != "") Proc.StartInfo.Arguments += " " + Port;
+                                if (User != "" && Pass != "") Proc.StartInfo.Arguments += " -pw \"" + ReplacePath(PassSearch, PassReplace, Pass) + "\"";
+                                if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") Proc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
+                                if (VaultPrivateKey != "") Proc.StartInfo.Arguments += " -i \"" + VaultPrivateKey + "\"";
+                                else if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") Proc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
+                                if (Settings.Default.puttyforward) Proc.StartInfo.Arguments += " -X";
+                                if (PuttyArgs != "") Proc.StartInfo.Arguments += " " + PuttyArgs;
 
-                                Debug.WriteLine("Connect user : " + _user);
-                                Debug.WriteLine("Connect pass : " + _pass + " -> " + ReplaceA(passs, passr, _pass));
-                                Debug.WriteLine("Connect host : " + host);
-                                Debug.WriteLine("Connect args : " + myProc.StartInfo.Arguments.Trim());
+                                Debug.WriteLine("Connect user : " + User);
+                                Debug.WriteLine("Connect pass : " + Pass + " -> " + ReplacePath(PassSearch, PassReplace, Pass));
+                                Debug.WriteLine("Connect host : " + Host);
+                                Debug.WriteLine("Connect args : " + Proc.StartInfo.Arguments.Trim());
 
                                 try
                                 {
-                                    myProc.Start();
+                                    Proc.Start();
                                 }
                                 catch (System.ComponentModel.Win32Exception)
                                 {
@@ -930,11 +916,11 @@ namespace AutoPuTTY
                             }
                             else
                             {
-                                if (MessageBoxEx.Show(this, "Could not find file \"" + puttypath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
+                                if (MessageBoxEx.Show(this, "Could not find file \"" + PuttyPath + "\".\nDo you want to change the configuration ?", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
                                 {
-                                    using (formOptions optionsform = new formOptions(this))
+                                    using (FormOptions FormOptions = new FormOptions(this))
                                     {
-                                        optionsform.bPuTTYPath_Click(type);
+                                        FormOptions.bPuTTYPath_Click(type);
                                     }
                                 }
                             }
@@ -944,65 +930,65 @@ namespace AutoPuTTY
             }
         }
 
-        public string Decrypt(string toDecrypt, string key)
+        public string Decrypt(string encrypted, string key)
         {
-            if (toDecrypt == "") return "";
+            if (encrypted == "") return "";
 
-            byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
-            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
+            byte[] EncryptedArray = Convert.FromBase64String(encrypted);
+            MD5CryptoServiceProvider Md5Hash = new MD5CryptoServiceProvider();
+            byte[] KeyArray = Md5Hash.ComputeHash(Encoding.UTF8.GetBytes(key));
 
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider
+            TripleDESCryptoServiceProvider TripleDes = new TripleDESCryptoServiceProvider
             {
-                Key = keyArray,
+                Key = KeyArray,
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
             };
 
-            ICryptoTransform cTransform = tdes.CreateDecryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+            ICryptoTransform CryptoTransform = TripleDes.CreateDecryptor();
+            byte[] Result = CryptoTransform.TransformFinalBlock(EncryptedArray, 0, EncryptedArray.Length);
 
-            hashmd5.Clear();
-            tdes.Clear();
+            Md5Hash.Clear();
+            TripleDes.Clear();
 
-            return Encoding.UTF8.GetString(resultArray);
+            return Encoding.UTF8.GetString(Result);
         }
 
-        public string Decrypt(string toDecrypt)
+        public string Decrypt(string encrypted)
         {
-            return Decrypt(toDecrypt, Settings.Default.cryptokey);
+            return Decrypt(encrypted, Settings.Default.cryptokey);
         }
 
-        public string Encrypt(string toEncrypt, string key)
+        public string Encrypt(string plain, string key)
         {
-            if (toEncrypt == "") return "";
+            if (plain == "") return "";
 
-            byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
-            MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
-            byte[] keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
+            byte[] PlainArray = Encoding.UTF8.GetBytes(plain);
+            MD5CryptoServiceProvider Md5Hash = new MD5CryptoServiceProvider();
+            byte[] KeyArray = Md5Hash.ComputeHash(Encoding.UTF8.GetBytes(key));
 
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider
+            TripleDESCryptoServiceProvider TripleDes = new TripleDESCryptoServiceProvider
             {
-                Key = keyArray,
+                Key = KeyArray,
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
             };
 
-            ICryptoTransform cTransform = tdes.CreateEncryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+            ICryptoTransform CryptoTransform = TripleDes.CreateEncryptor();
+            byte[] Result = CryptoTransform.TransformFinalBlock(PlainArray, 0, PlainArray.Length);
 
-            hashmd5.Clear();
-            tdes.Clear();
+            Md5Hash.Clear();
+            TripleDes.Clear();
 
-            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+            return Convert.ToBase64String(Result, 0, Result.Length);
         }
 
-        public string Encrypt(string toEncrypt)
+        public string Encrypt(string plain)
         {
-            return Encrypt(toEncrypt, Settings.Default.cryptokey);
+            return Encrypt(plain, Settings.Default.cryptokey);
         }
 
-        private void Error(Form form, string message)
+        private void MessageError(Form form, string message)
         {
             MessageBoxEx.Show(form, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -1012,13 +998,13 @@ namespace AutoPuTTY
             //extract file path and arguments
             if (path.IndexOf("\"") == 0)
             {
-                int s = path.Substring(1).IndexOf("\"");
-                return s > 0 ? (new string[] { path.Substring(1, s), path.Substring(s + 2).Trim() }) : (new string[] { path.Substring(1), "" });
+                int Position = path.Substring(1).IndexOf("\"");
+                return Position > 0 ? (new string[] { path.Substring(1, Position), path.Substring(Position + 2).Trim() }) : (new string[] { path.Substring(1), "" });
             }
             else
             {
-                int s = path.Substring(1).IndexOf(" ");
-                return s > 0 ? (new string[] { path.Substring(0, s + 1), path.Substring(s + 2).Trim() }) : (new string[] { path.Substring(0), "" });
+                int Position = path.Substring(1).IndexOf(" ");
+                return Position > 0 ? (new string[] { path.Substring(0, Position + 1), path.Substring(Position + 2).Trim() }) : (new string[] { path.Substring(0), "" });
             }
         }
 
@@ -1043,109 +1029,109 @@ namespace AutoPuTTY
 
         public static string ParseXpathString(string input)
         {
-            string ret = "";
+            string Result = "";
             if (input.Contains("'"))
             {
-                string[] inputstrs = input.Split('\'');
-                foreach (string inputstr in inputstrs)
+                string[] InputSplit = input.Split('\'');
+                foreach (string Input in InputSplit)
                 {
-                    if (ret != "") ret += ",\"'\",";
-                    ret += "'" + inputstr + "'";
+                    if (Result != "") Result += ",\"'\",";
+                    Result += "'" + Input + "'";
                 }
-                ret = "concat(" + ret + ")";
+                Result = "concat(" + Result + ")";
             }
             else
             {
-                ret = "'" + input + "'";
+                Result = "'" + input + "'";
             }
-            return ret;
+            return Result;
         }
 
-        private static string ReplaceA(string[] s, string[] r, string str)
+        private static string ReplacePath(string[] search, string[] replace, string text)
         {
             int i = 0;
-            if (s.Length > 0 && r.Length > 0 && s.Length == r.Length)
+            if (search.Length > 0 && replace.Length > 0 && search.Length == replace.Length)
             {
-                while (i < s.Length)
+                while (i < search.Length)
                 {
-                    str = str.Replace(s[i], r[i]);
+                    text = text.Replace(search[i], replace[i]);
                     i++;
                 }
             }
-            return str;
+            return text;
         }
 
-        private static string ReplaceU(string[] s, string str)
+        private static string ReplaceSpecial(string[] search, string text)
         {
             int i = 0;
-            if (s.Length > 0)
+            if (search.Length > 0)
             {
-                while (i < s.Length)
+                while (i < search.Length)
                 {
-                    str = str.Replace(s[i], Uri.EscapeDataString(s[i]).ToUpper());
+                    text = text.Replace(search[i], Uri.EscapeDataString(search[i]).ToUpper());
                     i++;
                 }
             }
-            str = str.Replace("*", "%2A");
-            return str;
+            text = text.Replace("*", "%2A");
+            return text;
         }
 
         private void TooglePassword(bool state)
         {
             if (state)
             {
-                bEye.Image = iconeyeshowhover;
-                toolTipMain.SetToolTip(bEye, "Show password");
+                buEye.Image = IconEyeShowHover;
+                toolTipMain.SetToolTip(buEye, "Show password");
                 tbPass.PasswordChar = '●';
             }
             else
             {
-                bEye.Image = iconeyehidehover;
-                toolTipMain.SetToolTip(bEye, "Hide password");
+                buEye.Image = IconEyeHideHover;
+                toolTipMain.SetToolTip(buEye, "Hide password");
                 tbPass.PasswordChar = '\0';
             }
         }
 
         public void XmlCreateConfig()
         {
-            XmlDeclaration xmlDeclaration = xmlconfig.CreateXmlDeclaration("1.0", "UTF-8", null);
-            XmlElement root = xmlconfig.DocumentElement;
-            xmlconfig.InsertBefore(xmlDeclaration, root);
-            XmlElement list = xmlconfig.CreateElement(string.Empty, "List", string.Empty);
-            xmlconfig.AppendChild(list);
+            XmlDeclaration XmlDeclaration = XmlConfig.CreateXmlDeclaration("1.0", "UTF-8", null);
+            XmlElement RootXml = XmlConfig.DocumentElement;
+            XmlConfig.InsertBefore(XmlDeclaration, RootXml);
+            XmlElement ListXml = XmlConfig.CreateElement(string.Empty, "List", string.Empty);
+            XmlConfig.AppendChild(ListXml);
             XmlSave();
         }
 
         public string XmlGetConfig(string id)
         {
-            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Config[@ID=" + ParseXpathString(id) + "]");
-            return xmlnode != null ? xmlnode.InnerText : "";
+            XmlNode ConfigNode = XmlConfig.SelectSingleNode("//Config[@ID=" + ParseXpathString(id) + "]");
+            return ConfigNode != null ? ConfigNode.InnerText : "";
         }
 
         public void XmlSave()
         {
             try
             {
-                xmlconfig.Save(Settings.Default.cfgpath);
+                XmlConfig.Save(Settings.Default.cfgpath);
             }
             catch (UnauthorizedAccessException)
             {
-                Error(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+                MessageError(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
             }
         }
 
-        public void XmlSetConfig(string id, string val)
+        public void XmlSetConfig(string id, string value)
         {
-            XmlElement newpath = xmlconfig.CreateElement("Config");
-            XmlAttribute name = xmlconfig.CreateAttribute("ID");
-            name.Value = id;
-            newpath.SetAttributeNode(name);
-            newpath.InnerText = val;
+            XmlElement ConfigXml = XmlConfig.CreateElement("Config");
+            XmlAttribute NameXml = XmlConfig.CreateAttribute("ID");
+            NameXml.Value = id;
+            ConfigXml.SetAttributeNode(NameXml);
+            ConfigXml.InnerText = value;
 
-            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Config[@ID=" + ParseXpathString(id) + "]");
-            _ = xmlnode != null
-                ? xmlconfig.DocumentElement.ReplaceChild(newpath, xmlnode)
-                : xmlconfig.DocumentElement.InsertBefore(newpath, xmlconfig.DocumentElement.FirstChild);
+            XmlNode ConfigNode = XmlConfig.SelectSingleNode("//Config[@ID=" + ParseXpathString(id) + "]");
+            _ = ConfigNode != null
+                ? XmlConfig.DocumentElement.ReplaceChild(ConfigXml, ConfigNode)
+                : XmlConfig.DocumentElement.InsertBefore(ConfigXml, XmlConfig.DocumentElement.FirstChild);
 
             XmlSave();
         }
@@ -1154,22 +1140,22 @@ namespace AutoPuTTY
         {
             foreach (string item in items)
             {
-                string name = node == "Config" ? "ID" : "Name";
-                XmlNode xmlnode = xmlconfig.SelectSingleNode("//" + node + "[@" + name + "=" + ParseXpathString(item) + "]");
-                if (xmlconfig.DocumentElement != null)
+                string Name = node == "Config" ? "ID" : "Name";
+                XmlNode DropNode = XmlConfig.SelectSingleNode("//" + node + "[@" + Name + "=" + ParseXpathString(item) + "]");
+                if (XmlConfig.DocumentElement != null)
                 {
-                    if (xmlnode != null) xmlconfig.DocumentElement.RemoveChild(xmlnode);
+                    if (DropNode != null) XmlConfig.DocumentElement.RemoveChild(DropNode);
                 }
 
                 if (node == "Vault")
                 {
                     // delete vault name for existing servers
-                    XmlNodeList xmlnodes = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(item) + "]");
-                    if (xmlnodes != null)
+                    XmlNodeList ServerNodes = XmlConfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(item) + "]");
+                    if (ServerNodes != null)
                     {
-                        foreach (XmlNode _xmlnode in xmlnodes)
+                        foreach (XmlNode XmlNode in ServerNodes)
                         {
-                            _xmlnode.InnerText = string.Empty;
+                            XmlNode.InnerText = string.Empty;
                         }
                     }
                 }
@@ -1180,94 +1166,94 @@ namespace AutoPuTTY
 
         public IDictionary<string, string> XmlGetServer(string name)
         {
-            IDictionary<string, string> server = new Dictionary<string, string>();
+            IDictionary<string, string> Server = new Dictionary<string, string>();
 
             if (!File.Exists(Settings.Default.cfgpath))
             {
-                return server;
+                return Server;
             }
 
-            string host = "";
-            string user = "";
-            string pass = "";
-            string vault = "";
-            int type = 0;
+            string Host = "";
+            string User = "";
+            string Pass = "";
+            string Vault = "";
+            int Type = 0;
 
-            xmlconfig.Load(Settings.Default.cfgpath);
+            XmlConfig.Load(Settings.Default.cfgpath);
 
-            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(name) + "]");
-            if (xmlnode != null)
+            XmlNode ServerNode = XmlConfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(name) + "]");
+            if (ServerNode != null)
             {
-                foreach (XmlElement childnode in xmlnode.ChildNodes)
+                foreach (XmlElement ChildNode in ServerNode.ChildNodes)
                 {
-                    switch (childnode.Name)
+                    switch (ChildNode.Name)
                     {
                         case "Host":
-                            host = childnode.InnerText;
+                            Host = ChildNode.InnerText;
                             break;
                         case "User":
-                            user = childnode.InnerText;
+                            User = ChildNode.InnerText;
                             break;
                         case "Password":
-                            pass = childnode.InnerText;
+                            Pass = ChildNode.InnerText;
                             break;
                         case "Vault":
-                            vault = childnode.InnerText;
+                            Vault = ChildNode.InnerText;
                             break;
                         case "Type":
-                            Int32.TryParse(childnode.InnerText, out type);
+                            Int32.TryParse(ChildNode.InnerText, out Type);
                             break;
                     }
                 }
 
-                server.Add("Name", name);
-                server.Add("Host", host);
-                server.Add("User", user);
-                server.Add("Password", pass);
-                server.Add("Vault", vault);
-                server.Add("Type", type.ToString());
+                Server.Add("Name", name);
+                Server.Add("Host", Host);
+                Server.Add("User", User);
+                Server.Add("Password", Pass);
+                Server.Add("Vault", Vault);
+                Server.Add("Type", Type.ToString());
             }
 
-            return server;
+            return Server;
         }
 
         public IDictionary<string, string> XmlGetVault(string name)
         {
-            IDictionary<string, string> vault = new Dictionary<string, string>();
+            IDictionary<string, string> Vault = new Dictionary<string, string>();
 
             if (!File.Exists(Settings.Default.cfgpath))
             {
-                return vault;
+                return Vault;
             }
 
-            string pass = "";
-            string priv = "";
+            string Pass = "";
+            string Priv = "";
 
-            xmlconfig.Load(Settings.Default.cfgpath);
+            XmlConfig.Load(Settings.Default.cfgpath);
 
-            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Vault[@Name=" + ParseXpathString(name) + "]");
-            if (xmlnode != null)
+            XmlNode VaultNode = XmlConfig.SelectSingleNode("//Vault[@Name=" + ParseXpathString(name) + "]");
+            if (VaultNode != null)
             {
-                foreach (XmlElement childnode in xmlnode.ChildNodes)
+                foreach (XmlElement childnode in VaultNode.ChildNodes)
                 {
                     switch (childnode.Name)
                     {
                         case "Password":
-                            pass = childnode.InnerText;
+                            Pass = childnode.InnerText;
                             break;
                         case "PrivateKey":
-                            priv = childnode.InnerText;
+                            Priv = childnode.InnerText;
                             break;
                     }
                 }
             }
-            else return vault;
+            else return Vault;
 
-            vault.Add("Name", name);
-            vault.Add("Password", pass);
-            vault.Add("PrivateKey", priv);
+            Vault.Add("Name", name);
+            Vault.Add("Password", Pass);
+            Vault.Add("PrivateKey", Priv);
 
-            return vault;
+            return Vault;
         }
 
         internal void XmlToList(string node, ListBox list)
@@ -1277,26 +1263,26 @@ namespace AutoPuTTY
 
             if (File.Exists(Settings.Default.cfgpath))
             {
-                xmlconfig.Load(Settings.Default.cfgpath);
+                XmlConfig.Load(Settings.Default.cfgpath);
 
-                //XmlNodeList xmlnode = xmlconfig.GetElementsByTagName(node);
-                XmlNodeList xmlnode = xmlconfig.SelectNodes("/List/" + node);
-                for (int i = 0; i < xmlnode.Count; i++)
+                //XmlNodeList ListNodes = XmlConfig.GetElementsByTagName(node);
+                XmlNodeList ListNodes = XmlConfig.SelectNodes("/List/" + node);
+                for (int i = 0; i < ListNodes.Count; i++)
                 {
-                    if (!list.Items.Contains(xmlnode[i].Attributes[0].Value))
+                    if (!list.Items.Contains(ListNodes[i].Attributes[0].Value))
                     {
-                        list.Items.Add(xmlnode[i].Attributes[0].Value);
+                        list.Items.Add(ListNodes[i].Attributes[0].Value);
                         if (node == "Vault")
                         {
-                            Debug.WriteLine("Add cbVault " + xmlnode[i].Attributes[0].Value);
-                            cbVault.Items.Add(xmlnode[i].Attributes[0].Value);
+                            Debug.WriteLine("Add cbVault " + ListNodes[i].Attributes[0].Value);
+                            cbVault.Items.Add(ListNodes[i].Attributes[0].Value);
                         }
                     }
                 }
             }
             else
             {
-                Error(this, "\"" + Settings.Default.cfgpath + "\" file not found.");
+                MessageError(this, "\"" + Settings.Default.cfgpath + "\" file not found.");
             }
         }
 
@@ -1315,35 +1301,35 @@ namespace AutoPuTTY
         {
             if (tbName.Text.Trim() != "" && tbHost.Text.Trim() != "")
             {
-                xmlconfig.Load(Settings.Default.cfgpath);
+                XmlConfig.Load(Settings.Default.cfgpath);
 
-                XmlElement newserver = xmlconfig.CreateElement("Server");
-                XmlAttribute name = xmlconfig.CreateAttribute("Name");
-                XmlElement host = xmlconfig.CreateElement("Host");
-                XmlElement user = xmlconfig.CreateElement("User");
-                XmlElement pass = xmlconfig.CreateElement("Password");
-                XmlElement vault = xmlconfig.CreateElement("Vault");
-                XmlElement type = xmlconfig.CreateElement("Type");
-                name.Value = tbName.Text.Trim();
-                host.InnerText = Encrypt(tbHost.Text.Trim());
-                user.InnerText = Encrypt(tbUser.Text);
-                if (lPass.Text == "Password")
+                XmlElement ServerXml = XmlConfig.CreateElement("Server");
+                XmlAttribute NameXml = XmlConfig.CreateAttribute("Name");
+                XmlElement HostXml = XmlConfig.CreateElement("Host");
+                XmlElement UserXml = XmlConfig.CreateElement("User");
+                XmlElement PassXml = XmlConfig.CreateElement("Password");
+                XmlElement VaultXml = XmlConfig.CreateElement("Vault");
+                XmlElement TypeXml = XmlConfig.CreateElement("Type");
+                NameXml.Value = tbName.Text.Trim();
+                HostXml.InnerText = Encrypt(tbHost.Text.Trim());
+                UserXml.InnerText = Encrypt(tbUser.Text);
+                if (laPass.Text == "Password")
                 {
-                    pass.InnerText = Encrypt(tbPass.Text);
+                    PassXml.InnerText = Encrypt(tbPass.Text);
                 }
                 else
                 {
-                    vault.InnerText = cbVault.Text;
+                    VaultXml.InnerText = cbVault.Text;
                 }
-                type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
-                newserver.SetAttributeNode(name);
-                newserver.AppendChild(host);
-                newserver.AppendChild(user);
-                newserver.AppendChild(pass);
-                newserver.AppendChild(vault);
-                newserver.AppendChild(type);
+                TypeXml.InnerText = Array.IndexOf(TypeList, cbType.Text).ToString();
+                ServerXml.SetAttributeNode(NameXml);
+                ServerXml.AppendChild(HostXml);
+                ServerXml.AppendChild(UserXml);
+                ServerXml.AppendChild(PassXml);
+                ServerXml.AppendChild(VaultXml);
+                ServerXml.AppendChild(TypeXml);
 
-                _ = (xmlconfig.DocumentElement?.InsertAfter(newserver, xmlconfig.DocumentElement.LastChild));
+                _ = (XmlConfig.DocumentElement?.InsertAfter(ServerXml, XmlConfig.DocumentElement.LastChild));
 
                 XmlSave();
 
@@ -1360,66 +1346,66 @@ namespace AutoPuTTY
                 lbServer.SelectedItems.Clear();
                 lbServer.SelectedItem = tbName.Text;
                 if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
-                bModify.Enabled = false;
-                bAdd.Enabled = false;
-                bDelete.Enabled = true;
+                buModify.Enabled = false;
+                buAdd.Enabled = false;
+                buDelete.Enabled = true;
                 BeginInvoke(new InvokeDelegate(lbServer.Focus));
             }
             else
             {
-                Error(this, "No name ?\nNo hostname ??\nTry again ...");
+                MessageError(this, "No name ?\nNo hostname ??\nTry again ...");
             }
         }
 
         private void bModify_Click(object sender, EventArgs e)
         {
-            xmlconfig.Load(Settings.Default.cfgpath);
+            XmlConfig.Load(Settings.Default.cfgpath);
 
-            XmlElement newserver = xmlconfig.CreateElement("Server");
-            XmlAttribute name = xmlconfig.CreateAttribute("Name");
-            name.Value = tbName.Text.Trim();
-            newserver.SetAttributeNode(name);
+            XmlElement ServerXml = XmlConfig.CreateElement("Server");
+            XmlAttribute NameXml = XmlConfig.CreateAttribute("Name");
+            NameXml.Value = tbName.Text.Trim();
+            ServerXml.SetAttributeNode(NameXml);
 
-            XmlElement host = xmlconfig.CreateElement("Host");
-            XmlElement user = xmlconfig.CreateElement("User");
-            XmlElement pass = xmlconfig.CreateElement("Password");
-            XmlElement vault = xmlconfig.CreateElement("Vault");
-            XmlElement type = xmlconfig.CreateElement("Type");
-            host.InnerText = Encrypt(tbHost.Text.Trim());
-            user.InnerText = Encrypt(tbUser.Text);
-            if (lPass.Text == "Password")
+            XmlElement HostXml = XmlConfig.CreateElement("Host");
+            XmlElement UserXml = XmlConfig.CreateElement("User");
+            XmlElement PassXml = XmlConfig.CreateElement("Password");
+            XmlElement VaultXml = XmlConfig.CreateElement("Vault");
+            XmlElement TypeXml = XmlConfig.CreateElement("Type");
+            HostXml.InnerText = Encrypt(tbHost.Text.Trim());
+            UserXml.InnerText = Encrypt(tbUser.Text);
+            if (laPass.Text == "Password")
             {
-                pass.InnerText = Encrypt(tbPass.Text);
+                PassXml.InnerText = Encrypt(tbPass.Text);
             }
             else
             {
-                vault.InnerText = cbVault.Text;
+                VaultXml.InnerText = cbVault.Text;
             }
-            type.InnerText = Array.IndexOf(types, cbType.Text).ToString();
-            newserver.AppendChild(host);
-            newserver.AppendChild(user);
-            newserver.AppendChild(pass);
-            newserver.AppendChild(vault);
-            newserver.AppendChild(type);
+            TypeXml.InnerText = Array.IndexOf(TypeList, cbType.Text).ToString();
+            ServerXml.AppendChild(HostXml);
+            ServerXml.AppendChild(UserXml);
+            ServerXml.AppendChild(PassXml);
+            ServerXml.AppendChild(VaultXml);
+            ServerXml.AppendChild(TypeXml);
 
-            XmlNode xmlnode = xmlconfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(lbServer.SelectedItem.ToString()) + "]");
-            if (xmlconfig.DocumentElement != null)
+            XmlNode ServerNode = XmlConfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(lbServer.SelectedItem.ToString()) + "]");
+            if (XmlConfig.DocumentElement != null)
             {
-                if (xmlnode != null) xmlconfig.DocumentElement.ReplaceChild(newserver, xmlnode);
+                if (ServerNode != null) XmlConfig.DocumentElement.ReplaceChild(ServerXml, ServerNode);
             }
 
             XmlSave();
 
-            remove = true;
+            Remove = true;
             lbServer.Items.RemoveAt(lbServer.Items.IndexOf(lbServer.SelectedItem));
-            remove = false;
+            Remove = false;
             tbName.Text = tbName.Text.Trim();
             lbServer.Items.Add(tbName.Text);
             lbServer.SelectedItems.Clear();
             lbServer.SelectedItem = tbName.Text;
             if (pFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
-            bModify.Enabled = false;
-            bAdd.Enabled = false;
+            buModify.Enabled = false;
+            buAdd.Enabled = false;
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
         }
 
@@ -1428,38 +1414,38 @@ namespace AutoPuTTY
             TooglePassword(!(tbPass.PasswordChar == '●'));
         }
 
-        private void bIconEdit_MouseEnter(object sender, EventArgs e)
+        private void bEdit_MouseEnter(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
-            icon.Image = iconedithover;
+            icon.Image = IconEditHover;
         }
 
-        private void bIconEdit_MouseLeave(object sender, EventArgs e)
+        private void bEdit_MouseLeave(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             icon.Image = Resources.iconedit;
         }
 
-        private void bIconEye_MouseEnter(object sender, EventArgs e)
+        private void bEye_MouseEnter(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
-            icon.Image = tbPass.PasswordChar == '●' ? iconeyeshowhover : iconeyehidehover;
+            icon.Image = tbPass.PasswordChar == '●' ? IconEyeShowHover : IconEyeHideHover;
         }
 
-        private void bIconEye_MouseLeave(object sender, EventArgs e)
+        private void bEye_MouseLeave(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             icon.Image = tbPass.PasswordChar == '●' ? Resources.iconeyeshow : (Image)Resources.iconeyehide;
         }
 
-        private void bIconCopy_MouseEnter(object sender, EventArgs e)
+        private void bCopy_MouseEnter(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             if (!icon.Enabled) return;
-            icon.Image = iconcopyhover;
+            icon.Image = IconCopyHover;
         }
 
-        private void bIconCopy_MouseLeave(object sender, EventArgs e)
+        private void bCopy_MouseLeave(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
             if (!icon.Enabled) return;
@@ -1468,15 +1454,15 @@ namespace AutoPuTTY
 
         private void bDelete_Click(object sender, EventArgs e)
         {
-            string confirmtxt = "Are you sure you want to delete the selected item ?";
-            if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            string ConfirmText = "Are you sure you want to delete the selected item ?";
+            if (MessageBoxEx.Show(this, ConfirmText, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 if (lbServer.SelectedItems.Count > 0)
                 {
                     XmlDropNode("Server", new ArrayList { lbServer.SelectedItems[0].ToString() });
-                    remove = true;
+                    Remove = true;
                     lbServer.Items.Remove(lbServer.SelectedItems[0].ToString());
-                    remove = false;
+                    Remove = false;
                     lbServer.SelectedItems.Clear();
                     tbServer_TextChanged(this, e);
                 }
@@ -1485,22 +1471,22 @@ namespace AutoPuTTY
 
         private void bOptions_Click(object sender, EventArgs e)
         {
-            using (formOptions optionsform = new formOptions(this))
+            using (FormOptions FormOptions = new FormOptions(this))
             {
-                optionsform.ShowDialog(this);
+                FormOptions.ShowDialog(this);
             }
         }
 
         private void bSearchClose_Click(object sender, EventArgs e)
         {
-            string selected = "";
-            if (lbServer.SelectedItem != null) selected = lbServer.SelectedItem.ToString();
+            string Selected = "";
+            if (lbServer.SelectedItem != null) Selected = lbServer.SelectedItem.ToString();
             SwitchSearch(false);
             if (tbFilter.Text == "") return;
             XmlToServer();
-            if (lbServer.Items.Count > 0 && lbServer.Items.Contains(selected))
+            if (lbServer.Items.Count > 0 && lbServer.Items.Contains(Selected))
             {
-                lbServer.SelectedItem = selected;
+                lbServer.SelectedItem = Selected;
             }
             else
             {
@@ -1511,19 +1497,19 @@ namespace AutoPuTTY
         // "search" form change close button image on mouse down
         private void bSearchClose_MouseDown(object sender, MouseEventArgs e)
         {
-            bClose.Image = Resources.closed;
+            piClose.Image = Resources.closed;
         }
 
         // "search" form change close button image on mouse hover
         private void bSearchClose_MouseEnter(object sender, EventArgs e)
         {
-            bClose.Image = Resources.closeh;
+            piClose.Image = Resources.closeh;
         }
 
         // "search" form change close button image on mouse leave
         private void bSearchClose_MouseLeave(object sender, EventArgs e)
         {
-            bClose.Image = Resources.close;
+            piClose.Image = Resources.close;
         }
 
         // check "search" case censitive box
@@ -1534,19 +1520,19 @@ namespace AutoPuTTY
 
         private void cbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
+            laUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
             tbServer_TextChanged(sender, e);
         }
 
         private void comboBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            int index = e.Index >= 0 ? e.Index : -1;
-            Brush brush = ((e.State & DrawItemState.Selected) > 0) ? SystemBrushes.HighlightText : new SolidBrush(((ComboBox)sender).ForeColor);
+            int Index = e.Index >= 0 ? e.Index : -1;
+            Brush Brush = ((e.State & DrawItemState.Selected) > 0) ? SystemBrushes.HighlightText : new SolidBrush(((ComboBox)sender).ForeColor);
             e.DrawBackground();
-            if (index != -1)
+            if (Index != -1)
             {
-                StringFormat format = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center };
-                e.Graphics.DrawString(((ComboBox)sender).Items[index].ToString(), e.Font, brush, e.Bounds, format);
+                StringFormat Format = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center };
+                e.Graphics.DrawString(((ComboBox)sender).Items[Index].ToString(), e.Font, Brush, e.Bounds, Format);
             }
             e.DrawFocusRectangle();
         }
@@ -1564,42 +1550,42 @@ namespace AutoPuTTY
         // delete multiple confirmation menu
         private void mDelete_Click(object sender, EventArgs e)
         {
-            ListBox list = (ListBox)sender;
+            ListBox List = (ListBox)sender;
 
-            int count = list.SelectedItems.Count;
-            if (count > 0)
+            int Count = List.SelectedItems.Count;
+            if (Count > 0)
             {
-                ArrayList items = new ArrayList();
-                string confirmtxt = "Are you sure you want to delete the selected item ?";
-                if (count > 1)
+                ArrayList Items = new ArrayList();
+                string ConfirmText = "Are you sure you want to delete the selected item ?";
+                if (Count > 1)
                 {
-                    confirmtxt = "Are you sure you want to delete the " + count + " selected items ?";
+                    ConfirmText = "Are you sure you want to delete the " + Count + " selected items ?";
                 }
-                if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                if (MessageBoxEx.Show(this, ConfirmText, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
-                    remove = true;
-                    while (count > 0)
+                    Remove = true;
+                    while (Count > 0)
                     {
-                        items.Add(list.SelectedItem.ToString());
-                        if (list.Name == "lbVault")
+                        Items.Add(List.SelectedItem.ToString());
+                        if (List.Name == "lbVault")
                         {
-                            cbVault.Items.Remove(list.SelectedItem);
+                            cbVault.Items.Remove(List.SelectedItem);
                         }
-                        list.Items.Remove(list.SelectedItem);
+                        List.Items.Remove(List.SelectedItem);
                     }
-                    remove = false;
-                    if (items.Count > 0)
+                    Remove = false;
+                    if (Items.Count > 0)
                     {
-                        if (list.Name == "lbVault")
+                        if (List.Name == "lbVault")
                         {
-                            XmlDropNode("Vault", items);
+                            XmlDropNode("Vault", Items);
                         }
                         else
                         {
-                            XmlDropNode("Server", items);
+                            XmlDropNode("Server", Items);
                         }
                     }
-                    if (list.Name == "lbVault")
+                    if (List.Name == "lbVault")
                     {
                         tbVaultName_TextChanged(this, e);
                     }
@@ -1618,57 +1604,57 @@ namespace AutoPuTTY
 
         private void listBox_ContextMenu(object sender, bool keyboard)
         {
-            ListBox list = (ListBox)sender;
+            ListBox List = (ListBox)sender;
 
-            ContextMenu menu = list.Name == "lbVault" ? cmVault : cmServer;
+            ContextMenu Menu = List.Name == "lbVault" ? cmVault : cmServer;
 
-            if (list.Items.Count > 0)
+            if (List.Items.Count > 0)
             {
-                if (keyboard && list.SelectedItems.Count > 0)
+                if (keyboard && List.SelectedItems.Count > 0)
                 {
-                    contextMenu_Enable(menu, true);
+                    contextMenu_Enable(Menu, true);
                 }
                 else
                 {
-                    int rightindex = list.IndexFromPoint(lbServer.PointToClient(MousePosition));
-                    if (rightindex >= 0)
+                    int RightIndex = List.IndexFromPoint(lbServer.PointToClient(MousePosition));
+                    if (RightIndex >= 0)
                     {
-                        contextMenu_Enable(menu, true);
-                        if (list.GetSelected(rightindex))
+                        contextMenu_Enable(Menu, true);
+                        if (List.GetSelected(RightIndex))
                         {
-                            list.SelectedIndex = rightindex;
+                            List.SelectedIndex = RightIndex;
                         }
                         else
                         {
-                            list.SelectedIndex = -1;
-                            list.SelectedIndex = rightindex;
+                            List.SelectedIndex = -1;
+                            List.SelectedIndex = RightIndex;
                         }
                     }
                     else
                     {
-                        contextMenu_Enable(menu, false);
+                        contextMenu_Enable(Menu, false);
                     }
                 }
             }
-            else contextMenu_Enable(menu, false);
+            else contextMenu_Enable(Menu, false);
 
-            IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
-            ShowWindowAsync(hWnd, SW_SHOW);
+            IntPtr Window = Process.GetCurrentProcess().MainWindowHandle;
+            ShowWindowAsync(Window, SW_SHOW);
 
-            int loop = 0;
+            int Loop = 0;
             while (!Visible)
             {
-                loop++;
+                Loop++;
                 Thread.Sleep(100);
                 Show();
-                if (loop > 10)
+                if (Loop > 10)
                 {
                     //let's crash
-                    Error(this, "Something bad happened");
+                    MessageError(this, "Something bad happened");
                     break;
                 }
             }
-            menu.Show(this, PointToClient(MousePosition));
+            Menu.Show(this, PointToClient(MousePosition));
         }
 
         private void contextMenu_Enable(ContextMenu menu, bool status)
@@ -1691,47 +1677,47 @@ namespace AutoPuTTY
                 return;
             }
             e.DrawBackground();
-            Brush myBrush = Brushes.Black;
-            Rectangle bounds = e.Bounds;
-            if (bounds.X < 1)
+            Brush Brush = Brushes.Black;
+            Rectangle Bounds = e.Bounds;
+            if (Bounds.X < 1)
             {
-                bounds.X = 1;
+                Bounds.X = 1;
             }
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
-                myBrush = Brushes.White;
+                Brush = Brushes.White;
             }
-            e.Graphics.DrawString(lbServer.Items[e.Index].ToString(), e.Font, myBrush, bounds, StringFormat.GenericDefault);
+            e.Graphics.DrawString(lbServer.Items[e.Index].ToString(), e.Font, Brush, Bounds, StringFormat.GenericDefault);
             e.DrawFocusRectangle();
         }
 
         public void lbServer_Filter(string search, string selected)
         {
-            filter = true;
+            Filter = true;
             XmlToServer();
-            ListBox.ObjectCollection itemslist = new ListBox.ObjectCollection(lbServer);
-            itemslist.AddRange(lbServer.Items);
+            ListBox.ObjectCollection ListItems = new ListBox.ObjectCollection(lbServer);
+            ListItems.AddRange(lbServer.Items);
             lbServer.Items.Clear();
 
-            foreach (string item in itemslist)
+            foreach (string ListItem in ListItems)
             {
-                string _item = item;
+                string Item = ListItem;
                 if (!cbCase.Checked)
                 {
                     search = search.ToLower();
-                    _item = _item.ToLower();
+                    Item = Item.ToLower();
                 }
 
-                if (_item.IndexOf(search) >= 0 || search == "")
+                if (Item.IndexOf(search) >= 0 || search == "")
                 {
-                    lbServer.Items.Add(item);
+                    lbServer.Items.Add(ListItem);
                 }
             }
 
-            int count = lbServer.Items.Count;
+            int Count = lbServer.Items.Count;
             if (search != "")
             {
-                lResults.Text = "Found " + count + " result" + (count > 1 ? "s" : "");
+                lResults.Text = "Found " + Count + " result" + (Count > 1 ? "s" : "");
                 lResults.Visible = true;
             }
             else
@@ -1739,8 +1725,8 @@ namespace AutoPuTTY
                 lResults.Visible = false;
             }
 
-            filter = false;
-            if (count > 0)
+            Filter = false;
+            if (Count > 0)
             {
                 if (lbServer.Items.Contains(selected))
                 {
@@ -1756,16 +1742,16 @@ namespace AutoPuTTY
 
         public void lbServer_IndexChanged(object sender, EventArgs e)
         {
-            if (filter || selectall)
+            if (Filter || SelectAll)
             {
                 return;
             }
-            if (remove || lbServer.SelectedItem == null)
+            if (Remove || lbServer.SelectedItem == null)
             {
-                bDelete.Enabled = false;
+                buDelete.Enabled = false;
                 return;
             }
-            indexchanged = true;
+            IndexChanged = true;
 
             //reset colors
             tbName.BackColor = SystemColors.Window;
@@ -1795,20 +1781,20 @@ namespace AutoPuTTY
                     cbVault.SelectedIndex = 0;
                 }
             }
-            cbType.SelectedItem = _types[Convert.ToInt32(server["Type"])];
+            cbType.SelectedItem = Types[Convert.ToInt32(server["Type"])];
             //SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
-            lUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
+            laUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
 
-            bAdd.Enabled = false;
-            bModify.Enabled = false;
-            bDelete.Enabled = true;
+            buAdd.Enabled = false;
+            buModify.Enabled = false;
+            buDelete.Enabled = true;
 
-            indexchanged = false;
+            IndexChanged = false;
         }
 
         protected void listBox_KeyDown(object sender, KeyEventArgs e)
         {
-            ListBox list = (ListBox)sender;
+            ListBox List = (ListBox)sender;
 
             if (e.KeyCode == Keys.Apps)
             {
@@ -1820,60 +1806,60 @@ namespace AutoPuTTY
             }
             if (e.KeyCode == Keys.A && e.Control)
             {
-                for (int i = 0; i < list.Items.Count; i++)
+                for (int i = 0; i < List.Items.Count; i++)
                 {
                     //change index for the first item only
                     if (i > 0)
                     {
-                        selectall = true;
+                        SelectAll = true;
                     }
-                    list.SetSelected(i, true);
+                    List.SetSelected(i, true);
                 }
-                selectall = false;
+                SelectAll = false;
             }
         }
 
         protected void listBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ListBox list = (ListBox)sender;
+            ListBox List = (ListBox)sender;
             e.Handled = true;
 
-            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0);
-            unixtime = Convert.ToInt64(ts.TotalMilliseconds);
+            TimeSpan TimeSpan = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0);
+            UnixTime = Convert.ToInt64(TimeSpan.TotalMilliseconds);
 
-            string key = e.KeyChar.ToString();
+            string Key = e.KeyChar.ToString();
 
-            if (list.Name == "lbServer" && e.KeyChar == (char)Keys.Return)
+            if (List.Name == "lbServer" && e.KeyChar == (char)Keys.Return)
             {
                 Connect("-1");
             }
-            else if (key.Length == 1)
+            else if (Key.Length == 1)
             {
-                if (unixtime - oldunixtime < 1000)
+                if (UnixTime - OldUnixTime < 1000)
                 {
-                    keysearch += e.KeyChar;
+                    KeySearch += e.KeyChar;
                 }
                 else
                 {
-                    keysearch = e.KeyChar.ToString();
+                    KeySearch = e.KeyChar.ToString();
                 }
-                if (list.FindString(keysearch) >= 0)
+                if (List.FindString(KeySearch) >= 0)
                 {
-                    list.SelectedIndex = -1;
-                    list.SelectedIndex = list.FindString(keysearch);
+                    List.SelectedIndex = -1;
+                    List.SelectedIndex = List.FindString(KeySearch);
                 }
                 else
                 {
-                    keysearch = e.KeyChar.ToString();
-                    if (list.FindString(keysearch) >= 0)
+                    KeySearch = e.KeyChar.ToString();
+                    if (List.FindString(KeySearch) >= 0)
                     {
-                        list.SelectedIndex = -1;
-                        list.SelectedIndex = list.FindString(keysearch);
+                        List.SelectedIndex = -1;
+                        List.SelectedIndex = List.FindString(KeySearch);
                     }
                 }
             }
 
-            oldunixtime = unixtime;
+            OldUnixTime = UnixTime;
         }
 
         private void listBox_MouseDown(object sender, MouseEventArgs e)
@@ -1931,11 +1917,11 @@ namespace AutoPuTTY
             }
             else
             {
-                laststate = WindowState.ToString();
+                LastState = WindowState.ToString();
             }
 
-            tbFilter.Width = tlLeft.Width - tbFilter.Left < tbfilterwidth ? tlLeft.Width - tbFilter.Left : tbfilterwidth;
-            cbCase.TabStop = pFindToogle.Width >= pfindwidth;
+            tbFilter.Width = tlLeft.Width - tbFilter.Left < FilterWidth ? tlLeft.Width - tbFilter.Left : FilterWidth;
+            cbCase.TabStop = pFindToogle.Width >= FindWidth;
         }
 
         private void formMain_ResizeEnd(object sender, EventArgs e)
@@ -1963,7 +1949,7 @@ namespace AutoPuTTY
         private void miRestore_Click(object sender, EventArgs e)
         {
             Show();
-            WindowState = laststate == "Maximized" ? FormWindowState.Maximized : FormWindowState.Normal;
+            WindowState = LastState == "Maximized" ? FormWindowState.Maximized : FormWindowState.Normal;
             Activate();
             miRestore.Enabled = false;
         }
@@ -1985,91 +1971,101 @@ namespace AutoPuTTY
 
         private void tbServer_TextChanged(object sender, EventArgs e)
         {
-            ComboBox cbSender = new ComboBox();
-            TextBox tbSender = new TextBox();
-            if (sender is ComboBox) cbSender = (ComboBox)sender;
-            else if (sender is TextBox) tbSender = (TextBox)sender;
+            ComboBox ComboBox = new ComboBox();
+            TextBox TextBox = new TextBox();
+            if (sender is ComboBox) ComboBox = (ComboBox)sender;
+            else if (sender is TextBox) TextBox = (TextBox)sender;
 
-            IDictionary<string, string> server = new Dictionary<string, string>();
-            string tbVal = "";
-            int cbVal = 0;
-            Color normal = SystemColors.Window;
-            Color changed_ok = Color.FromArgb(235, 255, 225);
-            Color changed_error = Color.FromArgb(255, 235, 225);
+            IDictionary<string, string> GetServer = new Dictionary<string, string>();
+            string TextBoxVal = "";
+            int ComboBoxVal = 0;
+            Color Normal = SystemColors.Window;
+            Color ChangedOk = Color.FromArgb(235, 255, 225);
+            Color ChangedError = Color.FromArgb(255, 235, 225);
 
-            if (lbServer.SelectedItem != null) server = XmlGetServer(lbServer.SelectedItem.ToString());
+            if (lbServer.SelectedItem != null) GetServer = XmlGetServer(lbServer.SelectedItem.ToString());
 
             if (sender is ComboBox)
             {
                 if (lbServer.SelectedItem != null)
                 {
-                    switch (cbSender.Name)
+                    switch (ComboBox.Name)
                     {
                         case "cbVault":
-                            cbVal = cbVault.Items.IndexOf(server["Vault"]);
-                            Debug.WriteLine("cbvault cbVal " + cbVal);
+                            ComboBoxVal = cbVault.Items.IndexOf(GetServer["Vault"]);
+                            if (cbVault.Visible)
+                            {
+                                if (GetServer["Vault"] != "")
+                                {
+                                    IDictionary<string, string> GetVault = new Dictionary<string, string>();
+                                    GetVault = XmlGetVault(GetServer["Vault"]);
+                                    buCopyVault.Enabled = Decrypt(GetVault["Password"]) != "";
+                                }
+                                buCopyVault.Enabled = false;
+                            }
+                            Debug.WriteLine("cbvault cbVal " + ComboBoxVal);
                             break;
                         case "cbType":
-                            cbVal = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
+                            ComboBoxVal = Array.IndexOf(Types, TypeList[Convert.ToInt32(GetServer["Type"])]);
                             break;
                     }
                 }
 
-                Debug.WriteLine("cbSender.SelectedIndex " + cbSender.SelectedIndex);
+                Debug.WriteLine("cbSender.SelectedIndex " + ComboBox.SelectedIndex);
 
-                cbSender.BackColor = cbSender.SelectedIndex != cbVal ? changed_ok : normal;
+                ComboBox.BackColor = ComboBox.SelectedIndex != ComboBoxVal ? ChangedOk : Normal;
             }
             else if (sender is TextBox)
             {
-                switch (tbSender.Name)
+                switch (TextBox.Name)
                 {
                     case "tbName":
                         if (lbServer.SelectedItem != null)
                         {
-                            tbVal = server["Name"];
+                            TextBoxVal = GetServer["Name"];
                         }
-                        bCopyName.Enabled = tbSender.Text.Trim() != "";
+                        buCopyName.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbHost":
                         if (lbServer.SelectedItem != null)
                         {
-                            tbVal = Decrypt(server["Host"]);
+                            TextBoxVal = Decrypt(GetServer["Host"]);
                         }
-                        bCopyHost.Enabled = tbSender.Text.Trim() != "";
+                        buCopyHost.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbUser":
                         if (lbServer.SelectedItem != null)
                         {
-                            tbVal = Decrypt(server["User"]);
+                            TextBoxVal = Decrypt(GetServer["User"]);
                         }
-                        bCopyUser.Enabled = tbSender.Text.Trim() != "";
+                        buCopyUser.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbPass":
                         if (lbServer.SelectedItem != null)
                         {
-                            tbVal = Decrypt(server["Password"]);
+                            TextBoxVal = Decrypt(GetServer["Password"]);
                         }
-                        bCopyPass.Enabled = tbSender.Text.Trim() != "";
+                        bCopyPass.Enabled = TextBox.Text.Trim() != "";
                         break;
                 }
 
-                if (tbSender.Name == "tbName" || tbSender.Name == "tbHost")
+                if (TextBox.Name == "tbName" || TextBox.Name == "tbHost")
                 {
-                    tbSender.BackColor = tbSender.Text != tbVal
-                        ? (tbSender.Name == "tbName" && XmlGetServer(tbSender.Text.Trim()).Count > 0) || tbSender.Text.Trim() == ""
-                            ? changed_error
-                            : changed_ok
-                        : normal;
+                    TextBox.BackColor = TextBox.Text != TextBoxVal
+                        ? (TextBox.Name == "tbName" && XmlGetServer(TextBox.Text.Trim()).Count > 0) || TextBox.Text.Trim() == ""
+                            ? ChangedError
+                            : ChangedOk
+                        : Normal;
                 }
 
-                tbSender.BackColor = tbSender.Name == "tbPass"
-                    ? lbServer.SelectedItem != null && cbVault.Items.Contains(server["Vault"]) && tbSender.Text.Trim() == tbVal && tbSender.Text.Trim() == ""
-                        ? changed_ok
-                        : tbSender.Text != tbVal ? changed_ok : normal
-                    : tbSender.Text != tbVal ? changed_ok : normal;
+                TextBox.BackColor = TextBox.Name == "tbPass"
+                    ? lbServer.SelectedItem != null && cbVault.Items.Contains(GetServer["Vault"]) && TextBox.Text.Trim() == TextBoxVal && TextBox.Text.Trim() == ""
+                        ? ChangedOk
+                        : TextBox.Text != TextBoxVal ? ChangedOk : Normal
+                    : TextBox.Text != TextBoxVal ? ChangedOk : Normal;
             }
 
-            if (indexchanged)
+            if (IndexChanged)
             {
                 return;
             }
@@ -2080,35 +2076,35 @@ namespace AutoPuTTY
                 {
                     //changed name
                     //if new name doesn't exist in list, modify or add
-                    bModify.Enabled = XmlGetServer(tbName.Text.Trim()).Count <= 0;
-                    bAdd.Enabled = XmlGetServer(tbName.Text.Trim()).Count <= 0;
+                    buModify.Enabled = XmlGetServer(tbName.Text.Trim()).Count <= 0;
+                    buAdd.Enabled = XmlGetServer(tbName.Text.Trim()).Count <= 0;
                 }
                 else
                 {
                     //changed other stuff
-                    bModify.Enabled = true;
-                    bAdd.Enabled = false;
+                    buModify.Enabled = true;
+                    buAdd.Enabled = false;
                 }
             }
             else
             {
                 //create new item
-                bModify.Enabled = false;
-                bAdd.Enabled = tbName.Text.Trim() != "" && tbHost.Text.Trim() != "" && XmlGetServer(tbName.Text.Trim()).Count < 1;
+                buModify.Enabled = false;
+                buAdd.Enabled = tbName.Text.Trim() != "" && tbHost.Text.Trim() != "" && XmlGetServer(tbName.Text.Trim()).Count < 1;
             }
         }
 
         // update "search"
         private void tbSearch_Changed(object sender, EventArgs e)
         {
-            string selected = "";
+            string Selected = "";
             if (pFindToogle.Visible)
             {
                 if (lbServer.SelectedItem != null)
                 {
-                    selected = lbServer.SelectedItem.ToString();
+                    Selected = lbServer.SelectedItem.ToString();
                 }
-                lbServer_Filter(tbFilter.Text, selected);
+                lbServer_Filter(tbFilter.Text, Selected);
             }
         }
 
@@ -2138,11 +2134,11 @@ namespace AutoPuTTY
 
         private void bAboutOK_Click(object sender, EventArgs e)
         {
-            if (updatelink == "")
+            if (UpdateLink == "")
             {
                 UpdateReset();
             }
-            if (passwordrequired)
+            if (PasswordRequired)
             {
                 ShowTableLayoutPanel(tlPassword);
             }
@@ -2251,7 +2247,7 @@ namespace AutoPuTTY
 
         private void pbPassEye_MouseLeave(object sender, EventArgs e)
         {
-            pbPassEye.Image = iconeyehover;
+            pbPassEye.Image = IconEyeHover;
         }
 
         private void bPassOK_Click(object sender, EventArgs e)
@@ -2275,7 +2271,7 @@ namespace AutoPuTTY
                 tbPassPassword.Text = "";
                 tbPassPassword_Enter(sender, e);
 
-                switch (tries)
+                switch (Tries)
                 {
                     case 1:
                         lPassMessage.Text = "You failed again, looks like you lost it...";
@@ -2302,24 +2298,24 @@ namespace AutoPuTTY
                         lPassMessage.Text = "You failed, try again...";
                         break;
                 }
-                tries++;
+                Tries++;
             }
         }
 
         public void ShowTableLayoutPanel(TableLayoutPanel tlPanel)
         {
-            TableLayoutPanel[] panelList = { tlAbout, tlMain, tlPassword };
+            TableLayoutPanel[] PanelList = { tlAbout, tlMain, tlPassword };
 
-            foreach (TableLayoutPanel panel in panelList)
+            foreach (TableLayoutPanel Panel in PanelList)
             {
-                if (panel.Name == tlPanel.Name)
+                if (Panel.Name == tlPanel.Name)
                 {
                     tlPanel.BringToFront();
                     tlPanel.Visible = true;
                 }
                 else
                 {
-                    panel.Visible = false;
+                    Panel.Visible = false;
                 }
             }
         }
@@ -2328,21 +2324,21 @@ namespace AutoPuTTY
         public string MD5Hash(string input)
         {
             // convert the input string to a byte array and compute the hash.
-            using (MD5 md5Hash = MD5.Create())
+            using (MD5 Md5Hash = MD5.Create())
             {
-                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+                byte[] Data = Md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
 
                 // create a new StringBuilder to collect the bytes and create a string.
-                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder StringBuilder = new StringBuilder();
 
                 // loop through each byte of the hashed data and format each one as a hexadecimal string.
-                for (int i = 0; i < data.Length; i++)
+                for (int i = 0; i < Data.Length; i++)
                 {
-                    stringBuilder.Append(data[i].ToString("x2"));
+                    StringBuilder.Append(Data[i].ToString("x2"));
                 }
 
                 // return the hexadecimal string.
-                return stringBuilder.ToString();
+                return StringBuilder.ToString();
             }
         }
 
@@ -2369,12 +2365,14 @@ namespace AutoPuTTY
 
         private void SwitchPassword(bool state)
         {
-            lPass.Text = state ? "Vault" : "Password";
-            toolTipMain.SetToolTip(lPass, "Switch to " + (state ? "password" : "vault"));
+            laPass.Text = state ? "Vault" : "Password";
+            toolTipMain.SetToolTip(laPass, "Switch to " + (state ? "password" : "vault"));
             tbPass.Visible = !state;
             cbVault.Visible = state;
-            bEye.Visible = !state;
-            bEdit.Visible = state;
+            bCopyPass.Visible = !state;
+            buCopyVault.Visible = state;
+            buEye.Visible = !state;
+            buEdit.Visible = state;
         }
 
         private void SwitchVault(bool show)
@@ -2382,15 +2380,21 @@ namespace AutoPuTTY
             if (show)
             {
                 lbVault.BringToFront();
-                pVault.BringToFront();
+                paVault.BringToFront();
             }
             else
             {
                 lbVault.SendToBack();
-                pVault.SendToBack();
+                paVault.SendToBack();
             }
+            lbServer.Visible = !show;
             lbVault.Visible = show;
-            pVault.Visible = show;
+            lbServer.Enabled = !show;
+            lbVault.Enabled = show;
+            //pVault.Visible = show;
+            paVault.Visible = show;
+            //pVault.Enabled = show;
+            paVault.Enabled = show;
         }
 
         private void bEdit_Click(object sender, EventArgs e)
@@ -2400,38 +2404,38 @@ namespace AutoPuTTY
 
         private void lbVault_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (filter || selectall)
+            if (Filter || SelectAll)
             {
                 return;
             }
-            if (remove || lbVault.SelectedItem == null)
+            if (Remove || lbVault.SelectedItem == null)
             {
                 lUsedBy.Visible = false;
                 bVaultDelete.Enabled = false;
                 return;
             }
-            indexchanged = true;
+            IndexChanged = true;
 
             //reset colors
             tbVaultName.BackColor = SystemColors.Window;
             tbVaultPass.BackColor = SystemColors.Window;
             tbVaultPriv.BackColor = SystemColors.Window;
 
-            IDictionary<string, string> vault = XmlGetVault(lbVault.SelectedItem.ToString());
+            IDictionary<string, string> GetVault = XmlGetVault(lbVault.SelectedItem.ToString());
 
-            tbVaultName.Text = vault["Name"];
-            tbVaultPass.Text = Decrypt(vault["Password"]);
-            tbVaultPriv.Text = Decrypt(vault["PrivateKey"]);
+            tbVaultName.Text = GetVault["Name"];
+            tbVaultPass.Text = Decrypt(GetVault["Password"]);
+            tbVaultPriv.Text = Decrypt(GetVault["PrivateKey"]);
 
             bVaultAdd.Enabled = false;
             bVaultModify.Enabled = false;
             bVaultDelete.Enabled = true;
 
-            int count = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(vault["Name"]) + "]").Count;
+            int Count = XmlConfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(GetVault["Name"]) + "]").Count;
             lUsedBy.Visible = true;
-            lUsedBy.Text = "Used by " + count + " server" + (count > 1 ? "s" : "");
+            lUsedBy.Text = "Used by " + Count + " server" + (Count > 1 ? "s" : "");
 
-            indexchanged = false;
+            IndexChanged = false;
         }
 
         private void bVaultOk_Click(object sender, EventArgs e)
@@ -2441,54 +2445,54 @@ namespace AutoPuTTY
 
         private void tbVaultName_TextChanged(object sender, EventArgs e)
         {
-            TextBox tbSender = new TextBox();
+            TextBox TextBox = new TextBox();
             if (sender is TextBox)
             {
-                tbSender = (TextBox)sender;
+                TextBox = (TextBox)sender;
             }
 
-            IDictionary<string, string> vault = new Dictionary<string, string>();
-            string tbVal = "";
-            Color normal = SystemColors.Window;
-            Color changed_ok = Color.FromArgb(235, 255, 225);
-            Color changed_error = Color.FromArgb(255, 235, 225);
+            IDictionary<string, string> GetVault = new Dictionary<string, string>();
+            string TextBoxVal = "";
+            Color Normal = SystemColors.Window;
+            Color ChangedOk = Color.FromArgb(235, 255, 225);
+            Color ChangedError = Color.FromArgb(255, 235, 225);
 
-            if (lbVault.SelectedItem != null) vault = XmlGetVault(lbVault.SelectedItem.ToString());
+            if (lbVault.SelectedItem != null) GetVault = XmlGetVault(lbVault.SelectedItem.ToString());
 
-            switch (tbSender.Name)
+            switch (TextBox.Name)
             {
                 case "tbVaultName":
                     if (lbVault.SelectedItem != null)
                     {
-                        tbVal = vault["Name"];
+                        TextBoxVal = GetVault["Name"];
                     }
-                    bCopyVaultName.Enabled = tbSender.Text.Trim() != "";
+                    bCopyVaultName.Enabled = TextBox.Text.Trim() != "";
                     break;
                 case "tbVaultPass":
                     if (lbVault.SelectedItem != null)
                     {
-                        tbVal = Decrypt(vault["Password"]);
+                        TextBoxVal = Decrypt(GetVault["Password"]);
                     }
-                    bCopyVaultPass.Enabled = tbSender.Text.Trim() != "";
+                    bCopyVaultPass.Enabled = TextBox.Text.Trim() != "";
                     break;
                 case "tbVaultPriv":
                     if (lbVault.SelectedItem != null)
                     {
-                        tbVal = Decrypt(vault["PrivateKey"]);
+                        TextBoxVal = Decrypt(GetVault["PrivateKey"]);
                     }
-                    bCopyVaultPriv.Enabled = tbSender.Text.Trim() != "";
+                    bCopyVaultPriv.Enabled = TextBox.Text.Trim() != "";
                     break;
             }
 
-            tbSender.BackColor = tbSender.Name == "tbVaultName"
-                ? tbSender.Text != tbVal
-                    ? (tbSender.Name == "tbVaultName" && XmlGetVault(tbSender.Text.Trim()).Count > 0) || tbSender.Text.Trim() == ""
-                        ? changed_error
-                        : changed_ok
-                    : normal
-                : tbSender.Text != tbVal ? changed_ok : normal;
+            TextBox.BackColor = TextBox.Name == "tbVaultName"
+                ? TextBox.Text != TextBoxVal
+                    ? (TextBox.Name == "tbVaultName" && XmlGetVault(TextBox.Text.Trim()).Count > 0) || TextBox.Text.Trim() == ""
+                        ? ChangedError
+                        : ChangedOk
+                    : Normal
+                : TextBox.Text != TextBoxVal ? ChangedOk : Normal;
 
-            if (indexchanged) return;
+            if (IndexChanged) return;
             //modify an existing item
             if (lbVault.SelectedItem != null && tbVaultName.Text.Trim() != "")
             {
@@ -2518,23 +2522,23 @@ namespace AutoPuTTY
         {
             if (tbVaultName.Text.Trim() != "")
             {
-                xmlconfig.Load(Settings.Default.cfgpath);
+                XmlConfig.Load(Settings.Default.cfgpath);
 
-                XmlElement newvault = xmlconfig.CreateElement("Vault");
-                XmlAttribute name = xmlconfig.CreateAttribute("Name");
-                XmlElement pass = xmlconfig.CreateElement("Password");
-                XmlElement priv = xmlconfig.CreateElement("PrivateKey");
-                name.Value = tbVaultName.Text.Trim();
-                pass.InnerText = Encrypt(tbVaultPass.Text);
-                priv.InnerText = Encrypt(tbVaultPriv.Text);
-                newvault.SetAttributeNode(name);
-                newvault.AppendChild(pass);
-                newvault.AppendChild(priv);
+                XmlElement VaultXml = XmlConfig.CreateElement("Vault");
+                XmlAttribute NameXml = XmlConfig.CreateAttribute("Name");
+                XmlElement PassXml = XmlConfig.CreateElement("Password");
+                XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
+                NameXml.Value = tbVaultName.Text.Trim();
+                PassXml.InnerText = Encrypt(tbVaultPass.Text);
+                PrivXml.InnerText = Encrypt(tbVaultPriv.Text);
+                VaultXml.SetAttributeNode(NameXml);
+                VaultXml.AppendChild(PassXml);
+                VaultXml.AppendChild(PrivXml);
 
-                if (xmlconfig.DocumentElement != null)
+                if (XmlConfig.DocumentElement != null)
                 {
-                    XmlNode lastvault = xmlconfig.SelectSingleNode("/List/Vault[last()]");
-                    xmlconfig.DocumentElement.InsertAfter(newvault, lastvault ?? xmlconfig.DocumentElement.LastChild);
+                    XmlNode LastVaultNode = XmlConfig.SelectSingleNode("/List/Vault[last()]");
+                    XmlConfig.DocumentElement.InsertAfter(VaultXml, LastVaultNode ?? XmlConfig.DocumentElement.LastChild);
                 }
 
                 XmlSave();
@@ -2558,7 +2562,7 @@ namespace AutoPuTTY
             }
             else
             {
-                Error(this, "No name ?\nTry again ...");
+                MessageError(this, "No name ?\nTry again ...");
             }
 
             if (pFindToogle.Visible)
@@ -2569,35 +2573,35 @@ namespace AutoPuTTY
 
         private void bVaultModify_Click(object sender, EventArgs e)
         {
-            xmlconfig.Load(Settings.Default.cfgpath);
+            XmlConfig.Load(Settings.Default.cfgpath);
 
-            bool changecb = false;
+            bool ChangeComboBox = false;
 
-            XmlElement newvault = xmlconfig.CreateElement("Vault");
-            XmlAttribute name = xmlconfig.CreateAttribute("Name");
-            XmlElement pass = xmlconfig.CreateElement("Password");
-            XmlElement priv = xmlconfig.CreateElement("PrivateKey");
-            name.Value = tbVaultName.Text.Trim();
-            pass.InnerText = Encrypt(tbVaultPass.Text);
-            priv.InnerText = Encrypt(tbVaultPriv.Text);
-            newvault.SetAttributeNode(name);
-            newvault.AppendChild(pass);
-            newvault.AppendChild(priv);
+            XmlElement VaultXml = XmlConfig.CreateElement("Vault");
+            XmlAttribute NameXml = XmlConfig.CreateAttribute("Name");
+            XmlElement PassXml = XmlConfig.CreateElement("Password");
+            XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
+            NameXml.Value = tbVaultName.Text.Trim();
+            PassXml.InnerText = Encrypt(tbVaultPass.Text);
+            PrivXml.InnerText = Encrypt(tbVaultPriv.Text);
+            VaultXml.SetAttributeNode(NameXml);
+            VaultXml.AppendChild(PassXml);
+            VaultXml.AppendChild(PrivXml);
 
-            XmlNode vaultnode = xmlconfig.SelectSingleNode("//Vault[@Name=" + ParseXpathString(lbVault.SelectedItem.ToString()) + "]");
-            if (xmlconfig.DocumentElement != null)
+            XmlNode VaultNode = XmlConfig.SelectSingleNode("//Vault[@Name=" + ParseXpathString(lbVault.SelectedItem.ToString()) + "]");
+            if (XmlConfig.DocumentElement != null)
             {
-                if (vaultnode != null)
+                if (VaultNode != null)
                 {
-                    xmlconfig.DocumentElement.ReplaceChild(newvault, vaultnode);
+                    XmlConfig.DocumentElement.ReplaceChild(VaultXml, VaultNode);
 
                     // replace vault name for existing servers
-                    XmlNodeList servernodes = xmlconfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(lbVault.SelectedItem.ToString()) + "]");
-                    if (servernodes != null)
+                    XmlNodeList ServerNode = XmlConfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(lbVault.SelectedItem.ToString()) + "]");
+                    if (ServerNode != null)
                     {
-                        foreach (XmlNode servernode in servernodes)
+                        foreach (XmlNode servernode in ServerNode)
                         {
-                            servernode.InnerText = name.Value;
+                            servernode.InnerText = NameXml.Value;
                         }
                     }
                 }
@@ -2607,19 +2611,19 @@ namespace AutoPuTTY
 
             if (lbVault.SelectedItem != null)
             {
-                if ((string)cbVault.SelectedItem == lbVault.SelectedItem.ToString()) changecb = true;
+                if ((string)cbVault.SelectedItem == lbVault.SelectedItem.ToString()) ChangeComboBox = true;
             }
 
-            remove = true;
+            Remove = true;
             cbVault.Items.RemoveAt(lbVault.Items.IndexOf(lbVault.SelectedItem));
             lbVault.Items.RemoveAt(lbVault.Items.IndexOf(lbVault.SelectedItem));
-            remove = false;
+            Remove = false;
             tbVaultName.Text = tbVaultName.Text.Trim();
             lbVault.Items.Add(tbVaultName.Text);
             cbVault.Items.Add(tbVaultName.Text);
-            if (changecb)
+            if (ChangeComboBox)
             {
-                cbVault.SelectedItem = name.Value;
+                cbVault.SelectedItem = NameXml.Value;
             }
             lbVault.SelectedItems.Clear();
             lbVault.SelectedItem = tbVaultName.Text;
@@ -2635,17 +2639,17 @@ namespace AutoPuTTY
 
         private void bVaultDelete_Click(object sender, EventArgs e)
         {
-            string confirmtxt = "Are you sure you want to delete the selected item ?";
-            if (MessageBoxEx.Show(this, confirmtxt, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            string ConfirmText = "Are you sure you want to delete the selected item ?";
+            if (MessageBoxEx.Show(this, ConfirmText, "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 if (lbVault.SelectedItems.Count > 0)
                 {
-                    string vault = lbVault.SelectedItems[0].ToString();
-                    XmlDropNode("Vault", new ArrayList { vault });
-                    remove = true;
-                    cbVault.Items.Remove(vault);
-                    lbVault.Items.Remove(vault);
-                    remove = false;
+                    string Name = lbVault.SelectedItems[0].ToString();
+                    XmlDropNode("Vault", new ArrayList { Name });
+                    Remove = true;
+                    cbVault.Items.Remove(Name);
+                    lbVault.Items.Remove(Name);
+                    Remove = false;
                     lbVault.SelectedItems.Clear();
                     tbVaultName_TextChanged(this, e);
                 }
@@ -2684,6 +2688,16 @@ namespace AutoPuTTY
             System.Windows.Clipboard.SetText(tbPass.Text);
         }
 
+        private void bCopyVault_Click(object sender, EventArgs e)
+        {
+            if (cbVault.SelectedItem != null)
+            {
+                IDictionary<string, string> vault = new Dictionary<string, string>();
+                vault = XmlGetVault(cbVault.SelectedItem.ToString());
+                System.Windows.Clipboard.SetText(Decrypt(vault["Password"]));
+            }
+        }
+
         private void bCopyVaultName_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbVaultName.Text);
@@ -2702,14 +2716,14 @@ namespace AutoPuTTY
         private void bCopy_EnabledChanged(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
-            icon.Image = icon.Enabled ? Resources.iconcopy : iconcopyhover;
+            icon.Image = icon.Enabled ? Resources.iconcopy : IconCopyHover;
         }
 
         private void liUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (updatelink != "")
+            if (UpdateLink != "")
             {
-                Process.Start(updatelink);
+                Process.Start(UpdateLink);
             }
             else
             {
