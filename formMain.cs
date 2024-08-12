@@ -1781,7 +1781,7 @@ namespace AutoPuTTY
                     cbVault.SelectedIndex = 0;
                 }
             }
-            cbType.SelectedItem = Types[Convert.ToInt32(GetServer["Type"])];
+            cbType.SelectedItem = TypeList[Convert.ToInt32(GetServer["Type"])];
             //SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
             laUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
 
@@ -2007,6 +2007,10 @@ namespace AutoPuTTY
                             break;
                         case "cbType":
                             ComboBoxVal = Array.IndexOf(Types, TypeList[Convert.ToInt32(GetServer["Type"])]);
+                            Debug.WriteLine("TypeList[Convert.ToInt32(GetServer[\"Type\"])] " + TypeList[Convert.ToInt32(GetServer["Type"])]);
+                            Debug.WriteLine("GetServer[\"Type\"] " + GetServer["Type"]);
+                            Debug.WriteLine("ComboBoxVal cbVal " + ComboBoxVal);
+                            Debug.WriteLine("ComboBox.SelectedIndex " + ComboBox.SelectedIndex);
                             break;
                     }
                 }
