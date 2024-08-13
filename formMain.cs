@@ -2007,10 +2007,6 @@ namespace AutoPuTTY
                             break;
                         case "cbType":
                             ComboBoxVal = Array.IndexOf(Types, TypeList[Convert.ToInt32(GetServer["Type"])]);
-                            Debug.WriteLine("TypeList[Convert.ToInt32(GetServer[\"Type\"])] " + TypeList[Convert.ToInt32(GetServer["Type"])]);
-                            Debug.WriteLine("GetServer[\"Type\"] " + GetServer["Type"]);
-                            Debug.WriteLine("ComboBoxVal cbVal " + ComboBoxVal);
-                            Debug.WriteLine("ComboBox.SelectedIndex " + ComboBox.SelectedIndex);
                             break;
                     }
                 }
@@ -2050,6 +2046,7 @@ namespace AutoPuTTY
                             TextBoxVal = Decrypt(GetServer["Password"]);
                         }
                         buCopyPass.Enabled = TextBox.Text.Trim() != "";
+                        Debug.WriteLine("buCopyPass " + buCopyPass.Enabled);
                         break;
                 }
 
@@ -2369,32 +2366,49 @@ namespace AutoPuTTY
 
         private void SwitchPassword(bool state)
         {
+            Debug.WriteLine("state " + state);
             laPass.Text = state ? "Vault" : "Password";
             ttMain.SetToolTip(laPass, "Switch to " + (state ? "password" : "vault"));
-            tbPass.Visible = tbPass.Enabled = !state;
-            cbVault.Visible = cbVault.Enabled = state;
-            buCopyPass.Visible = buCopyPass.Enabled = !state;
-            buCopyVault.Visible = buCopyVault.Enabled = state;
-            buEye.Visible = buEye.Enabled = !state;
-            buEdit.Visible = buEdit.Enabled = state;
+            if (state)
+            {
+                cbVault.Visible = cbVault.Enabled = true;
+                buCopyVault.Visible = true;
+                buEdit.Visible = buEdit.Enabled = true;
+                tbPass.Visible = tbPass.Enabled = false;
+                buCopyPass.Visible = false;
+                buEye.Visible = buEye.Enabled = false;
+            }
+            else
+            {
+                tbPass.Visible = tbPass.Enabled = true;
+                buCopyPass.Visible = true;
+                buEye.Visible = buEye.Enabled = true;
+                cbVault.Visible = cbVault.Enabled = false;
+                buCopyVault.Visible = false;
+                buEdit.Visible = buEdit.Enabled = false;
+            }
         }
 
         private void SwitchVault(bool show)
         {
             if (show)
             {
-                lbVault.BringToFront();
+                lbVault.Visible = lbVault.Enabled = true;
+                paVault.Visible = paVault.Enabled = true;
                 paVault.BringToFront();
+                lbServer.Visible = lbServer.Enabled = false;
+                paServer.Visible = paServer.Enabled = false;
+                paServer.SendToBack();
             }
             else
             {
-                lbVault.SendToBack();
+                lbServer.Visible = lbServer.Enabled = true;
+                paServer.Visible = paServer.Enabled = true;
+                paServer.BringToFront();
+                lbVault.Visible = lbVault.Enabled = false;
+                paVault.Visible = paVault.Enabled = false;
                 paVault.SendToBack();
             }
-            lbServer.Visible = lbServer.Enabled = !show;
-            lbVault.Visible = lbVault.Enabled = show;
-            paServer.Visible = paServer.Enabled = !show;
-            paVault.Visible = paVault.Enabled = show;
         }
 
         private void buEdit_Click(object sender, EventArgs e)
