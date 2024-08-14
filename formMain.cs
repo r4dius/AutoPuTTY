@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -300,10 +301,9 @@ namespace AutoPuTTY
             buCopyHost.Enabled = false;
             buCopyUser.Enabled = false;
             buCopyPass.Enabled = false;
-            buCopyVault.Enabled = false;
-            bCopyVaultName.Enabled = false;
-            bCopyVaultPass.Enabled = false;
-            bCopyVaultPriv.Enabled = false;
+            buCopyVaultName.Enabled = false;
+            buCopyVaultPass.Enabled = false;
+            buCopyVaultPriv.Enabled = false;
             ShowTableLayoutPanel(tlMain);
             XmlToServer();
             XmlToVault();
@@ -333,29 +333,22 @@ namespace AutoPuTTY
                 {
                     Client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("product", ProductName)); // set your own values here
 
-                    Debug.WriteLine(ProductName);
                     HttpResponseMessage Response = await Client.GetAsync(Url);
                     Response.EnsureSuccessStatusCode();
                     string Data = await Response.Content.ReadAsStringAsync();
                     if (Data != null)
                     {
                         dynamic Json = SimpleJson.SimpleJson.DeserializeObject(Data);
-                        Debug.WriteLine(Data);
                         Tag = Convert.ToDouble(Json.tag_name);
-
-                        Debug.WriteLine(Tag);
-                        Debug.WriteLine(Version);
 
                         taAboutVersion.AutoSize = true;
                         if (Tag > Version)
                         {
-                            Debug.WriteLine("5");
                             UpdateLink = Json.html_url;
                             liAboutUpdate.Text = "update available v" + Tag;
                         }
                         else
                         {
-                            Debug.WriteLine("6");
                             liAboutUpdate.Text = "no update available";
                         }
                     }
@@ -660,8 +653,6 @@ namespace AutoPuTTY
                                 Proc.StartInfo.FileName = RdPath;
                                 Proc.StartInfo.Arguments = "\"" + RdOut + ReplaceSpecial(SpecialChars, GetServer["Name"]) + ".rdp\"";
                                 if (RdArgs != "") Proc.StartInfo.Arguments += " " + RdArgs;
-
-                                Debug.WriteLine(Proc.StartInfo.FileName + Proc.StartInfo.FileName.IndexOf('"') + File.Exists(Proc.StartInfo.FileName));
 
                                 try
                                 {
@@ -1259,7 +1250,6 @@ namespace AutoPuTTY
         internal void XmlToList(string node, ListBox list)
         {
             list.Items.Clear();
-            Debug.WriteLine("node " + node);
 
             if (File.Exists(Settings.Default.cfgpath))
             {
@@ -1274,7 +1264,6 @@ namespace AutoPuTTY
                         list.Items.Add(ListNodes[i].Attributes[0].Value);
                         if (node == "Vault")
                         {
-                            Debug.WriteLine("Add cbVault " + ListNodes[i].Attributes[0].Value);
                             cbVault.Items.Add(ListNodes[i].Attributes[0].Value);
                         }
                     }
@@ -1762,24 +1751,23 @@ namespace AutoPuTTY
             cbVault.BackColor = SystemColors.Window;
 
             IDictionary<string, string> GetServer = XmlGetServer(lbServer.SelectedItem.ToString());
-            Debug.WriteLine(GetServer);
 
             tbName.Text = GetServer["Name"];
             tbHost.Text = Decrypt(GetServer["Host"]);
             tbUser.Text = Decrypt(GetServer["User"]);
-            tbPass.Text = Decrypt(GetServer["Password"]);
             if (GetServer["Vault"].Trim() != "" && cbVault.Items.Contains(GetServer["Vault"]))
             {
-                SwitchPassword(true);
+                if (!cbVault.Visible)
+                {
+                    cbVault.Visible = true;
+                    SwitchPassword(true);
+                }
                 cbVault.SelectedItem = GetServer["Vault"];
             }
             else
             {
-                SwitchPassword(false);
-                if (cbVault.Items.Count > 0)
-                {
-                    cbVault.SelectedIndex = 0;
-                }
+                if (!tbPass.Visible) SwitchPassword(false);
+                tbPass.Text = Decrypt(GetServer["Password"]);
             }
             cbType.SelectedItem = TypeList[Convert.ToInt32(GetServer["Type"])];
             //SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
@@ -1870,7 +1858,6 @@ namespace AutoPuTTY
 
         private void formMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Debug.WriteLine(WindowState);
             XmlSetConfig("maximized", (WindowState == FormWindowState.Maximized).ToString());
         }
 
@@ -1902,10 +1889,10 @@ namespace AutoPuTTY
             //Debug.WriteLine(SystemParameters.VirtualScreenWidth + "x" + SystemParameters.VirtualScreenHeight);
             _ = Screen.AllScreens;
             Screen.FromControl(this);
-            
-            Debug.WriteLine("string " + Screen.FromControl(this));
-            Debug.WriteLine("working " + Screen.FromControl(this).WorkingArea);
-            Debug.WriteLine("bounds " + Screen.FromControl(this).Bounds);
+
+            //Debug.WriteLine("string " + Screen.FromControl(this));
+            //Debug.WriteLine("working " + Screen.FromControl(this).WorkingArea);
+            //Debug.WriteLine("bounds " + Screen.FromControl(this).Bounds);
         }
 
         private void mainForm_Resize(object sender, EventArgs e)
@@ -1969,6 +1956,12 @@ namespace AutoPuTTY
             }
         }
 
+        private void cbVault_IndexChanged(object sender, EventArgs e)
+        {
+            Debug.WriteLine("cbVault_IndexChanged");
+            tbServer_TextChanged(sender, e);
+        }
+
         private void tbServer_TextChanged(object sender, EventArgs e)
         {
             ComboBox ComboBox = new ComboBox();
@@ -1993,15 +1986,23 @@ namespace AutoPuTTY
                     {
                         case "cbVault":
                             ComboBoxVal = cbVault.Items.IndexOf(GetServer["Vault"]);
-                            if (cbVault.Visible)
+                            Debug.WriteLine("GetServer[\"Vault\"] " + GetServer["Vault"]);
+                            if (ComboBox.Visible)
                             {
+                                Debug.WriteLine("cbVault.Visible " + ComboBox.Visible);
                                 if (GetServer["Vault"] != "")
                                 {
                                     IDictionary<string, string> GetVault = new Dictionary<string, string>();
                                     GetVault = XmlGetVault(GetServer["Vault"]);
-                                    buCopyVault.Enabled = Decrypt(GetVault["Password"]) != "";
+                                    buCopyPass.Enabled = Decrypt(GetVault["Password"]) != "";
                                 }
-                                buCopyVault.Enabled = false;
+                                else
+                                {
+                                    buCopyPass.Enabled = false;
+                                }
+                            } else
+                            {
+                                Debug.WriteLine("cbVault.Visible " + ComboBox.Visible);
                             }
                             Debug.WriteLine("cbvault cbVal " + ComboBoxVal);
                             break;
@@ -2010,8 +2011,6 @@ namespace AutoPuTTY
                             break;
                     }
                 }
-
-                Debug.WriteLine("cbSender.SelectedIndex " + ComboBox.SelectedIndex);
 
                 ComboBox.BackColor = ComboBox.SelectedIndex != ComboBoxVal ? ChangedOk : Normal;
             }
@@ -2041,12 +2040,20 @@ namespace AutoPuTTY
                         buCopyUser.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbPass":
-                        if (lbServer.SelectedItem != null)
+                        if (TextBox.Visible)
                         {
-                            TextBoxVal = Decrypt(GetServer["Password"]);
+                            Debug.WriteLine("tbPass.Visible " + TextBox.Visible);
+                            if (lbServer.SelectedItem != null)
+                            {
+                                TextBoxVal = Decrypt(GetServer["Password"]);
+                            }
+                            buCopyPass.Enabled = TextBox.Text.Trim() != "";
+                            Debug.WriteLine("buCopyPass " + buCopyPass.Enabled);
                         }
-                        buCopyPass.Enabled = TextBox.Text.Trim() != "";
-                        Debug.WriteLine("buCopyPass " + buCopyPass.Enabled);
+                        else
+                        {
+                            Debug.WriteLine("tbPass.Visible " + TextBox.Visible);
+                        }
                         break;
                 }
 
@@ -2366,26 +2373,23 @@ namespace AutoPuTTY
 
         private void SwitchPassword(bool state)
         {
-            Debug.WriteLine("state " + state);
+            Debug.WriteLine("SwitchPassword " + state);
             laPass.Text = state ? "Vault" : "Password";
             ttMain.SetToolTip(laPass, "Switch to " + (state ? "password" : "vault"));
+            ttMain.SetToolTip(buCopyPass, "Copy " + (state ? "vault" : "") + "password to clipboard");
             if (state)
             {
-                cbVault.Visible = cbVault.Enabled = true;
-                buCopyVault.Visible = true;
-                buEdit.Visible = buEdit.Enabled = true;
                 tbPass.Visible = tbPass.Enabled = false;
-                buCopyPass.Visible = false;
                 buEye.Visible = buEye.Enabled = false;
+                cbVault.Visible = cbVault.Enabled = true;
+                buEdit.Visible = buEdit.Enabled = true;
             }
             else
             {
-                tbPass.Visible = tbPass.Enabled = true;
-                buCopyPass.Visible = true;
-                buEye.Visible = buEye.Enabled = true;
                 cbVault.Visible = cbVault.Enabled = false;
-                buCopyVault.Visible = false;
                 buEdit.Visible = buEdit.Enabled = false;
+                tbPass.Visible = tbPass.Enabled = true;
+                buEye.Visible = buEye.Enabled = true;
             }
         }
 
@@ -2480,21 +2484,21 @@ namespace AutoPuTTY
                     {
                         TextBoxVal = GetVault["Name"];
                     }
-                    bCopyVaultName.Enabled = TextBox.Text.Trim() != "";
+                    buCopyVaultName.Enabled = TextBox.Text.Trim() != "";
                     break;
                 case "tbVaultPass":
                     if (lbVault.SelectedItem != null)
                     {
                         TextBoxVal = Decrypt(GetVault["Password"]);
                     }
-                    bCopyVaultPass.Enabled = TextBox.Text.Trim() != "";
+                    buCopyVaultPass.Enabled = TextBox.Text.Trim() != "";
                     break;
                 case "tbVaultPriv":
                     if (lbVault.SelectedItem != null)
                     {
                         TextBoxVal = Decrypt(GetVault["PrivateKey"]);
                     }
-                    bCopyVaultPriv.Enabled = TextBox.Text.Trim() != "";
+                    buCopyVaultPriv.Enabled = TextBox.Text.Trim() != "";
                     break;
             }
 
@@ -2672,13 +2676,11 @@ namespace AutoPuTTY
 
         private void lbVault_ControlAdded(object sender, ControlEventArgs e)
         {
-            Debug.WriteLine("Add cbVault " + "e.Control.Name");
             cbVault.Items.Add(e.Control.Name);
         }
 
         private void lbVault_ControlRemoved(object sender, ControlEventArgs e)
         {
-            Debug.WriteLine("Remove cbVault " + "e.Control.Name");
             cbVault.Items.Remove(e.Control.Name);
         }
 
@@ -2699,7 +2701,19 @@ namespace AutoPuTTY
 
         private void buCopyPass_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbPass.Text);
+            if (cbVault.Visible)
+            {
+                if (cbVault.SelectedItem != null)
+                {
+                    IDictionary<string, string> vault = new Dictionary<string, string>();
+                    vault = XmlGetVault(cbVault.SelectedItem.ToString());
+                    System.Windows.Clipboard.SetText(Decrypt(vault["Password"]));
+                }
+            }
+            else
+            {
+                System.Windows.Clipboard.SetText(tbPass.Text);
+            }
         }
 
         private void buCopyVault_Click(object sender, EventArgs e)
@@ -2743,6 +2757,11 @@ namespace AutoPuTTY
             {
                 UpdateCheck();
             }
+        }
+
+        private void cbVault_VisibleChanged(object sender, EventArgs e)
+        {
+            Debug.WriteLine("cbVault_VisibleChanged " + ((ComboBox)sender).Visible);
         }
     }
 }
