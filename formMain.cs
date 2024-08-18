@@ -44,6 +44,7 @@ namespace AutoPuTTY
         private const int FilterWidth = 145;
         private const int FindWidth = 250;
         private bool IndexChanged;
+        private bool ControlReset;
         private bool Filter;
         private bool SelectAll;
         private bool Remove;
@@ -1759,14 +1760,16 @@ namespace AutoPuTTY
             {
                 if (!cbVault.Visible)
                 {
-                    cbVault.Visible = true;
                     SwitchPassword(true);
                 }
                 cbVault.SelectedItem = GetServer["Vault"];
             }
             else
             {
-                if (!tbPass.Visible) SwitchPassword(false);
+                if (!tbPass.Visible)
+                {
+                    SwitchPassword(false);
+                }
                 tbPass.Text = Decrypt(GetServer["Password"]);
             }
             cbType.SelectedItem = TypeList[Convert.ToInt32(GetServer["Type"])];
@@ -1968,6 +1971,16 @@ namespace AutoPuTTY
             TextBox TextBox = new TextBox();
             if (sender is ComboBox) ComboBox = (ComboBox)sender;
             else if (sender is TextBox) TextBox = (TextBox)sender;
+            if (ControlReset)
+            {
+                if (sender is ComboBox)
+                {
+                    Debug.WriteLine("reset " + ComboBox.Name);
+                }
+                else
+                    Debug.WriteLine("reset " + TextBox.Name);
+                return;
+            }
 
             IDictionary<string, string> GetServer = new Dictionary<string, string>();
             string TextBoxVal = "";
@@ -1987,22 +2000,17 @@ namespace AutoPuTTY
                         case "cbVault":
                             ComboBoxVal = cbVault.Items.IndexOf(GetServer["Vault"]);
                             Debug.WriteLine("GetServer[\"Vault\"] " + GetServer["Vault"]);
-                            if (ComboBox.Visible)
-                            {
+
                                 Debug.WriteLine("cbVault.Visible " + ComboBox.Visible);
-                                if (GetServer["Vault"] != "")
-                                {
-                                    IDictionary<string, string> GetVault = new Dictionary<string, string>();
-                                    GetVault = XmlGetVault(GetServer["Vault"]);
-                                    buCopyPass.Enabled = Decrypt(GetVault["Password"]) != "";
-                                }
-                                else
-                                {
-                                    buCopyPass.Enabled = false;
-                                }
-                            } else
+                            if (GetServer["Vault"] != "")
                             {
-                                Debug.WriteLine("cbVault.Visible " + ComboBox.Visible);
+                                IDictionary<string, string> GetVault = new Dictionary<string, string>();
+                                GetVault = XmlGetVault(GetServer["Vault"]);
+                                buCopyPass.Enabled = Decrypt(GetVault["Password"]) != "";
+                            }
+                            else
+                            {
+                                buCopyPass.Enabled = false;
                             }
                             Debug.WriteLine("cbvault cbVal " + ComboBoxVal);
                             break;
@@ -2040,20 +2048,13 @@ namespace AutoPuTTY
                         buCopyUser.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbPass":
-                        if (TextBox.Visible)
+                        Debug.WriteLine("tbPass.Visible " + TextBox.Visible);
+                        if (lbServer.SelectedItem != null)
                         {
-                            Debug.WriteLine("tbPass.Visible " + TextBox.Visible);
-                            if (lbServer.SelectedItem != null)
-                            {
-                                TextBoxVal = Decrypt(GetServer["Password"]);
-                            }
-                            buCopyPass.Enabled = TextBox.Text.Trim() != "";
-                            Debug.WriteLine("buCopyPass " + buCopyPass.Enabled);
+                            TextBoxVal = Decrypt(GetServer["Password"]);
                         }
-                        else
-                        {
-                            Debug.WriteLine("tbPass.Visible " + TextBox.Visible);
-                        }
+                        buCopyPass.Enabled = TextBox.Text.Trim() != "";
+                        Debug.WriteLine("buCopyPass " + buCopyPass.Enabled);
                         break;
                 }
 
@@ -2379,6 +2380,12 @@ namespace AutoPuTTY
             ttMain.SetToolTip(buCopyPass, "Copy " + (state ? "vault" : "") + "password to clipboard");
             if (state)
             {
+                if (tbPass.Text.Trim() != "")
+                {
+                    ControlReset = true;
+                    tbPass.Text = "";
+                    ControlReset = false;
+                }
                 tbPass.Visible = tbPass.Enabled = false;
                 buEye.Visible = buEye.Enabled = false;
                 cbVault.Visible = cbVault.Enabled = true;
@@ -2386,6 +2393,12 @@ namespace AutoPuTTY
             }
             else
             {
+                if (cbVault.SelectedIndex > 0)
+                {
+                    ControlReset = true;
+                    cbVault.SelectedIndex = 0;
+                    ControlReset = false;
+                }
                 cbVault.Visible = cbVault.Enabled = false;
                 buEdit.Visible = buEdit.Enabled = false;
                 tbPass.Visible = tbPass.Enabled = true;
