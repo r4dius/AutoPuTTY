@@ -302,6 +302,7 @@ namespace AutoPuTTY
             buCopyHost.Enabled = false;
             buCopyUser.Enabled = false;
             buCopyPass.Enabled = false;
+            buCopyVault.Enabled = false;
             buCopyVaultName.Enabled = false;
             buCopyVaultPass.Enabled = false;
             buCopyVaultPriv.Enabled = false;
@@ -520,8 +521,6 @@ namespace AutoPuTTY
 
         public void Connect(string type)
         {
-            Debug.WriteLine("Connect : type - " + type + " " + (type != "-1" ? TypeList[Convert.ToInt16(type)] : ""));
-
             // browsing files with OpenFileDialog() fucks with CurrentDirectory, lets fix it
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -806,15 +805,7 @@ namespace AutoPuTTY
                                 {
                                     User = UserFromProxy;
                                     Proc.StartInfo.Arguments += " /rawsettings Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " TunnelPasswordPlain=\"" + ReplaceSpecial(SpecialCharsWinscp, ProxyPass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
-
-                                    Debug.WriteLine("Connect proxy : " + Proxy);
-                                    Debug.WriteLine("Connect proxyuser : " + ProxyUser);
-                                    Debug.WriteLine("Connect proxypass : " + ProxyPass + " -> " + ReplaceSpecial(SpecialCharsWinscp, ProxyPass));
-                                    Debug.WriteLine("Connect proxyhost : " + ProxyHost);
-                                    Debug.WriteLine("Connect proxyport : " + ProxyPort);
                                 }
-
-                                Debug.WriteLine(Proc.StartInfo.Arguments);
 
                                 if (WinscpArgs != "") Proc.StartInfo.Arguments += " " + WinscpArgs;
                                 try
@@ -873,12 +864,6 @@ namespace AutoPuTTY
                                 {
                                     User = UserFromProxy;
                                     Proc.StartInfo.Arguments += " -J " + (ProxyUser != "" ? ProxyUser + "@" : "") + ProxyHost + ":" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " -jw \"" + ReplacePath(PassSearch, PassReplace, ProxyPass) + "\"" : "");
-
-                                    Debug.WriteLine("Connect proxy : " + Proxy);
-                                    Debug.WriteLine("Connect proxyuser : " + ProxyUser);
-                                    Debug.WriteLine("Connect proxypass : " + ProxyPass + " -> " + ReplacePath(PassSearch, PassReplace, ProxyPass));
-                                    Debug.WriteLine("Connect proxyhost : " + ProxyHost);
-                                    Debug.WriteLine("Connect proxyport : " + ProxyPort);
                                 }
 
                                 Proc.StartInfo.Arguments += " -ssh ";
@@ -891,11 +876,6 @@ namespace AutoPuTTY
                                 else if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") Proc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
                                 if (Settings.Default.puttyforward) Proc.StartInfo.Arguments += " -X";
                                 if (PuttyArgs != "") Proc.StartInfo.Arguments += " " + PuttyArgs;
-
-                                Debug.WriteLine("Connect user : " + User);
-                                Debug.WriteLine("Connect pass : " + Pass + " -> " + ReplacePath(PassSearch, PassReplace, Pass));
-                                Debug.WriteLine("Connect host : " + Host);
-                                Debug.WriteLine("Connect args : " + Proc.StartInfo.Arguments.Trim());
 
                                 try
                                 {
@@ -1961,7 +1941,6 @@ namespace AutoPuTTY
 
         private void cbVault_IndexChanged(object sender, EventArgs e)
         {
-            Debug.WriteLine("cbVault_IndexChanged");
             tbServer_TextChanged(sender, e);
         }
 
@@ -1971,16 +1950,6 @@ namespace AutoPuTTY
             TextBox TextBox = new TextBox();
             if (sender is ComboBox) ComboBox = (ComboBox)sender;
             else if (sender is TextBox) TextBox = (TextBox)sender;
-            if (ControlReset)
-            {
-                if (sender is ComboBox)
-                {
-                    Debug.WriteLine("reset " + ComboBox.Name);
-                }
-                else
-                    Debug.WriteLine("reset " + TextBox.Name);
-                return;
-            }
 
             IDictionary<string, string> GetServer = new Dictionary<string, string>();
             string TextBoxVal = "";
@@ -1999,20 +1968,17 @@ namespace AutoPuTTY
                     {
                         case "cbVault":
                             ComboBoxVal = cbVault.Items.IndexOf(GetServer["Vault"]);
-                            Debug.WriteLine("GetServer[\"Vault\"] " + GetServer["Vault"]);
-
-                                Debug.WriteLine("cbVault.Visible " + ComboBox.Visible);
-                            if (GetServer["Vault"] != "")
+                            Debug.WriteLine("cbVault");
+                            if (ComboBox.Text != "")
                             {
                                 IDictionary<string, string> GetVault = new Dictionary<string, string>();
-                                GetVault = XmlGetVault(GetServer["Vault"]);
-                                buCopyPass.Enabled = Decrypt(GetVault["Password"]) != "";
+                                GetVault = XmlGetVault(ComboBox.Text);
+                                buCopyVault.Enabled = Decrypt(GetVault["Password"]) != "";
                             }
                             else
                             {
-                                buCopyPass.Enabled = false;
+                                buCopyVault.Enabled = false;
                             }
-                            Debug.WriteLine("cbvault cbVal " + ComboBoxVal);
                             break;
                         case "cbType":
                             ComboBoxVal = Array.IndexOf(Types, TypeList[Convert.ToInt32(GetServer["Type"])]);
@@ -2048,13 +2014,11 @@ namespace AutoPuTTY
                         buCopyUser.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbPass":
-                        Debug.WriteLine("tbPass.Visible " + TextBox.Visible);
                         if (lbServer.SelectedItem != null)
                         {
                             TextBoxVal = Decrypt(GetServer["Password"]);
                         }
                         buCopyPass.Enabled = TextBox.Text.Trim() != "";
-                        Debug.WriteLine("buCopyPass " + buCopyPass.Enabled);
                         break;
                 }
 
@@ -2374,10 +2338,8 @@ namespace AutoPuTTY
 
         private void SwitchPassword(bool state)
         {
-            Debug.WriteLine("SwitchPassword " + state);
             laPass.Text = state ? "Vault" : "Password";
             ttMain.SetToolTip(laPass, "Switch to " + (state ? "password" : "vault"));
-            ttMain.SetToolTip(buCopyPass, "Copy " + (state ? "vault" : "") + "password to clipboard");
             if (state)
             {
                 if (tbPass.Text.Trim() != "")
@@ -2386,10 +2348,12 @@ namespace AutoPuTTY
                     tbPass.Text = "";
                     ControlReset = false;
                 }
+                buCopyPass.Visible = false;
                 tbPass.Visible = tbPass.Enabled = false;
                 buEye.Visible = buEye.Enabled = false;
                 cbVault.Visible = cbVault.Enabled = true;
                 buEdit.Visible = buEdit.Enabled = true;
+                buCopyVault.Visible = true;
             }
             else
             {
@@ -2399,10 +2363,12 @@ namespace AutoPuTTY
                     cbVault.SelectedIndex = 0;
                     ControlReset = false;
                 }
+                buCopyVault.Visible = false;
                 cbVault.Visible = cbVault.Enabled = false;
                 buEdit.Visible = buEdit.Enabled = false;
                 tbPass.Visible = tbPass.Enabled = true;
                 buEye.Visible = buEye.Enabled = true;
+                buCopyPass.Visible = true;
             }
         }
 
@@ -2770,11 +2736,6 @@ namespace AutoPuTTY
             {
                 UpdateCheck();
             }
-        }
-
-        private void cbVault_VisibleChanged(object sender, EventArgs e)
-        {
-            Debug.WriteLine("cbVault_VisibleChanged " + ((ComboBox)sender).Visible);
         }
     }
 }
