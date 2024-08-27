@@ -224,6 +224,11 @@ namespace AutoPuTTY
 #endif
             ImportCancel = false;
             int Count = 0;
+            string Host = "";
+            string User = "";
+            string Pass = "";
+            string Priv = "";
+            int Type = 0;
 
             FormMain.XmlConfig.Load(Settings.Default.cfgpath);
 
@@ -231,10 +236,10 @@ namespace AutoPuTTY
             if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
                 {
                     Count++;
-                    string Host = "";
-                    string User = "";
-                    string Pass = "";
-                    int Type = 0;
+                    Host = "";
+                    User = "";
+                    Pass = "";
+                    Type = 0;
 
                     foreach (XmlElement childnode in node.ChildNodes)
                     {
@@ -286,18 +291,18 @@ namespace AutoPuTTY
             if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
                 {
                     Count++;
-                    string _pass = "";
-                    string _priv = "";
+                    Pass = "";
+                    Priv = "";
 
                     foreach (XmlElement childnode in node.ChildNodes)
                     {
                         switch (childnode.Name)
                         {
                             case "Password":
-                                _pass = FormMain.Decrypt(childnode.InnerText);
+                                Pass = FormMain.Decrypt(childnode.InnerText);
                                 break;
                             case "PrivateKey":
-                                _priv = FormMain.Decrypt(childnode.InnerText);
+                                Priv = FormMain.Decrypt(childnode.InnerText);
                                 break;
                         }
                     }
@@ -307,16 +312,16 @@ namespace AutoPuTTY
                     NameXml.Value = node.Attributes[0].Value;
                     ServerXml.SetAttributeNode(NameXml);
 
-                    if (_pass != "")
+                    if (Pass != "")
                     {
                         XmlElement PassXml = FormMain.XmlConfig.CreateElement("Password");
-                        PassXml.InnerText = FormMain.Encrypt(_pass, newpass);
+                        PassXml.InnerText = FormMain.Encrypt(Pass, newpass);
                         ServerXml.AppendChild(PassXml);
                     }
-                    if (_priv != "")
+                    if (Priv != "")
                     {
                         XmlElement PrivXml = FormMain.XmlConfig.CreateElement("PrivateKey");
-                        PrivXml.InnerText = FormMain.Encrypt(_priv, newpass);
+                        PrivXml.InnerText = FormMain.Encrypt(Priv, newpass);
                         ServerXml.AppendChild(PrivXml);
                     }
 
