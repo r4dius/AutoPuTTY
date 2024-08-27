@@ -104,7 +104,7 @@ namespace AutoPuTTY
 
             InitializeComponent();
 
-            taAboutVersion.Text = "v" + Info.version;
+            laAboutVersion.Text = "v" + Info.version;
             UpdateReset();
 
             //clone types array to have a sorted version
@@ -343,7 +343,7 @@ namespace AutoPuTTY
                         dynamic Json = SimpleJson.SimpleJson.DeserializeObject(Data);
                         Tag = Convert.ToDouble(Json.tag_name);
 
-                        taAboutVersion.AutoSize = true;
+                        laAboutVersion.AutoSize = true;
                         if (Tag > Version)
                         {
                             UpdateLink = Json.html_url;
@@ -365,10 +365,10 @@ namespace AutoPuTTY
 
         private void UpdateVersionPosition()
         {
-            int VersionTextWidth = taAboutVersion.Width + taAboutSeparator.Width + liAboutUpdate.Width;
-            taAboutVersion.Left = (paUpdate.Width / 2) - (VersionTextWidth / 2);
-            taAboutSeparator.Left = taAboutVersion.Left + taAboutVersion.Width;
-            liAboutUpdate.Left = taAboutSeparator.Left + taAboutSeparator.Width;
+            int VersionTextWidth = laAboutVersion.Width + laAboutVersionSeparator.Width + liAboutUpdate.Width;
+            laAboutVersion.Left = (paUpdate.Width / 2) - (VersionTextWidth / 2);
+            laAboutVersionSeparator.Left = laAboutVersion.Left + laAboutVersion.Width;
+            liAboutUpdate.Left = laAboutVersionSeparator.Left + laAboutVersionSeparator.Width;
         }
 
         private void UpdateReset()
@@ -2348,12 +2348,12 @@ namespace AutoPuTTY
                     tbPass.Text = "";
                     ControlReset = false;
                 }
-                buCopyPass.Visible = false;
-                tbPass.Visible = tbPass.Enabled = false;
-                buEye.Visible = buEye.Enabled = false;
                 cbVault.Visible = cbVault.Enabled = true;
                 buEdit.Visible = buEdit.Enabled = true;
                 buCopyVault.Visible = true;
+                buCopyPass.Visible = false;
+                tbPass.Visible = tbPass.Enabled = false;
+                buEye.Visible = buEye.Enabled = false;
             }
             else
             {
@@ -2363,12 +2363,12 @@ namespace AutoPuTTY
                     cbVault.SelectedIndex = 0;
                     ControlReset = false;
                 }
-                buCopyVault.Visible = false;
-                cbVault.Visible = cbVault.Enabled = false;
-                buEdit.Visible = buEdit.Enabled = false;
                 tbPass.Visible = tbPass.Enabled = true;
                 buEye.Visible = buEye.Enabled = true;
                 buCopyPass.Visible = true;
+                buCopyVault.Visible = false;
+                cbVault.Visible = cbVault.Enabled = false;
+                buEdit.Visible = buEdit.Enabled = false;
             }
         }
 
@@ -2736,6 +2736,26 @@ namespace AutoPuTTY
             {
                 UpdateCheck();
             }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/r4dius/AutoPuTTY");
+        }
+
+        private void buPuTTYPath_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog FileBrowser = new OpenFileDialog
+            {
+                Title = "Select private key file",
+                Filter = "PuTTY private key files (*.ppk)|*.ppk|All files (*.*)|*.*"
+            };
+
+            if (FileBrowser.ShowDialog() == DialogResult.OK)
+            {
+                tbVaultPriv.Text = FileBrowser.FileName;
+            }
+            else return;
         }
     }
 }
