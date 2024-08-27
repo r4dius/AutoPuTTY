@@ -2279,14 +2279,12 @@ namespace AutoPuTTY
         {
             TableLayoutPanel[] PanelList = { tlAbout, tlMain, tlPassword };
 
+            tlPanel.Visible = true;
+            tlPanel.BringToFront();
+
             foreach (TableLayoutPanel panel in PanelList)
             {
-                if (panel.Name == tlPanel.Name)
-                {
-                    tlPanel.BringToFront();
-                    tlPanel.Visible = true;
-                }
-                else
+                if (panel.Name != tlPanel.Name)
                 {
                     panel.Visible = false;
                 }
@@ -2357,10 +2355,10 @@ namespace AutoPuTTY
             }
             else
             {
-                if (cbVault.SelectedIndex > 0)
+                if (cbVault.SelectedIndex > -1)
                 {
                     ControlReset = true;
-                    cbVault.SelectedIndex = 0;
+                    cbVault.SelectedIndex = -1;
                     ControlReset = false;
                 }
                 tbPass.Visible = tbPass.Enabled = true;
