@@ -31,9 +31,10 @@ namespace AutoPuTTY
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOptions));
             this.panelPuTTY = new System.Windows.Forms.Panel();
+            this.cbPuTTYX11 = new System.Windows.Forms.CheckBox();
+            this.cbPuTTYAgent = new System.Windows.Forms.CheckBox();
             this.laPuTTYSeparator4 = new System.Windows.Forms.Label();
             this.laOther = new System.Windows.Forms.Label();
-            this.cbPuTTYForward = new System.Windows.Forms.CheckBox();
             this.buPuTTYExecute = new System.Windows.Forms.Button();
             this.laPuTTYSeparator2 = new System.Windows.Forms.Label();
             this.cbPuTTYExecute = new System.Windows.Forms.CheckBox();
@@ -149,9 +150,10 @@ namespace AutoPuTTY
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPuTTY.BackColor = System.Drawing.Color.Transparent;
+            this.panelPuTTY.Controls.Add(this.cbPuTTYX11);
+            this.panelPuTTY.Controls.Add(this.cbPuTTYAgent);
             this.panelPuTTY.Controls.Add(this.laPuTTYSeparator4);
             this.panelPuTTY.Controls.Add(this.laOther);
-            this.panelPuTTY.Controls.Add(this.cbPuTTYForward);
             this.panelPuTTY.Controls.Add(this.buPuTTYExecute);
             this.panelPuTTY.Controls.Add(this.laPuTTYSeparator2);
             this.panelPuTTY.Controls.Add(this.cbPuTTYExecute);
@@ -168,6 +170,28 @@ namespace AutoPuTTY
             this.panelPuTTY.Name = "panelPuTTY";
             this.panelPuTTY.Size = new System.Drawing.Size(286, 186);
             this.panelPuTTY.TabIndex = 0;
+            // 
+            // cbPuTTYX11
+            // 
+            this.cbPuTTYX11.AutoSize = true;
+            this.cbPuTTYX11.Location = new System.Drawing.Point(2, 151);
+            this.cbPuTTYX11.Name = "cbPuTTYX11";
+            this.cbPuTTYX11.Size = new System.Drawing.Size(100, 17);
+            this.cbPuTTYX11.TabIndex = 15;
+            this.cbPuTTYX11.Text = "X11 Forwarding";
+            this.cbPuTTYX11.UseVisualStyleBackColor = true;
+            this.cbPuTTYX11.CheckedChanged += new System.EventHandler(this.cbPuTTYX11_CheckedChanged);
+            // 
+            // cbPuTTYAgent
+            // 
+            this.cbPuTTYAgent.AutoSize = true;
+            this.cbPuTTYAgent.Location = new System.Drawing.Point(2, 136);
+            this.cbPuTTYAgent.Name = "cbPuTTYAgent";
+            this.cbPuTTYAgent.Size = new System.Drawing.Size(109, 17);
+            this.cbPuTTYAgent.TabIndex = 14;
+            this.cbPuTTYAgent.Text = "Agent Forwarding";
+            this.cbPuTTYAgent.UseVisualStyleBackColor = true;
+            this.cbPuTTYAgent.CheckedChanged += new System.EventHandler(this.cbPuTTYAgent_CheckedChanged);
             // 
             // laPuTTYSeparator4
             // 
@@ -187,17 +211,6 @@ namespace AutoPuTTY
             this.laOther.Size = new System.Drawing.Size(33, 13);
             this.laOther.TabIndex = 12;
             this.laOther.Text = "Other";
-            // 
-            // cbPuTTYForward
-            // 
-            this.cbPuTTYForward.AutoSize = true;
-            this.cbPuTTYForward.Location = new System.Drawing.Point(2, 136);
-            this.cbPuTTYForward.Name = "cbPuTTYForward";
-            this.cbPuTTYForward.Size = new System.Drawing.Size(100, 17);
-            this.cbPuTTYForward.TabIndex = 14;
-            this.cbPuTTYForward.Text = "X11 Forwarding";
-            this.cbPuTTYForward.UseVisualStyleBackColor = true;
-            this.cbPuTTYForward.CheckedChanged += new System.EventHandler(this.cbPuTTYXforward_CheckedChanged);
             // 
             // buPuTTYExecute
             // 
@@ -364,7 +377,7 @@ namespace AutoPuTTY
             // cbRDSpan
             // 
             this.cbRDSpan.AutoSize = true;
-            this.cbRDSpan.Location = new System.Drawing.Point(2, 167);
+            this.cbRDSpan.Location = new System.Drawing.Point(2, 166);
             this.cbRDSpan.Margin = new System.Windows.Forms.Padding(0);
             this.cbRDSpan.Name = "cbRDSpan";
             this.cbRDSpan.Size = new System.Drawing.Size(158, 17);
@@ -375,7 +388,7 @@ namespace AutoPuTTY
             // cbRDDrives
             // 
             this.cbRDDrives.AutoSize = true;
-            this.cbRDDrives.Location = new System.Drawing.Point(2, 152);
+            this.cbRDDrives.Location = new System.Drawing.Point(2, 151);
             this.cbRDDrives.Margin = new System.Windows.Forms.Padding(0);
             this.cbRDDrives.Name = "cbRDDrives";
             this.cbRDDrives.Size = new System.Drawing.Size(112, 17);
@@ -386,7 +399,7 @@ namespace AutoPuTTY
             // cbRDAdmin
             // 
             this.cbRDAdmin.AutoSize = true;
-            this.cbRDAdmin.Location = new System.Drawing.Point(2, 137);
+            this.cbRDAdmin.Location = new System.Drawing.Point(2, 136);
             this.cbRDAdmin.Margin = new System.Windows.Forms.Padding(0);
             this.cbRDAdmin.Name = "cbRDAdmin";
             this.cbRDAdmin.Size = new System.Drawing.Size(55, 17);
@@ -399,7 +412,7 @@ namespace AutoPuTTY
             this.laRDSeparator4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.laRDSeparator4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.laRDSeparator4.Location = new System.Drawing.Point(2, 135);
+            this.laRDSeparator4.Location = new System.Drawing.Point(2, 134);
             this.laRDSeparator4.Name = "laRDSeparator4";
             this.laRDSeparator4.Size = new System.Drawing.Size(283, 2);
             this.laRDSeparator4.TabIndex = 12;
@@ -407,7 +420,7 @@ namespace AutoPuTTY
             // laRDOther
             // 
             this.laRDOther.AutoSize = true;
-            this.laRDOther.Location = new System.Drawing.Point(3, 121);
+            this.laRDOther.Location = new System.Drawing.Point(3, 120);
             this.laRDOther.Name = "laRDOther";
             this.laRDOther.Size = new System.Drawing.Size(33, 13);
             this.laRDOther.TabIndex = 11;
@@ -1387,7 +1400,7 @@ namespace AutoPuTTY
         public System.ComponentModel.BackgroundWorker backgroundProgress;
         private System.Windows.Forms.Button buOK;
         public System.Windows.Forms.CheckBox cbRDAdmin;
-        public System.Windows.Forms.CheckBox cbPuTTYForward;
+        public System.Windows.Forms.CheckBox cbPuTTYX11;
         private System.Windows.Forms.Label laPuTTYSeparator4;
         private System.Windows.Forms.Label laOther;
         public System.Windows.Forms.CheckBox cbRDSpan;
@@ -1410,6 +1423,7 @@ namespace AutoPuTTY
         private SingleClickLabel laGOther;
         private SingleClickLabel laWSCPOther;
         public System.Windows.Forms.CheckBox cbGTooltips;
+        public System.Windows.Forms.CheckBox cbPuTTYAgent;
     }
 }
 

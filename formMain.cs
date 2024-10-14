@@ -138,6 +138,7 @@ namespace AutoPuTTY
             if (XmlGetConfig("putty") != "") Settings.Default.puttypath = XmlGetConfig("putty");
             if (XmlGetConfig("puttycommand") != "") Settings.Default.puttycommand = XmlGetConfig("puttycommand");
             if (XmlGetConfig("puttyexecute").ToLower() == "true") Settings.Default.puttyexecute = true;
+            if (XmlGetConfig("puttyagent").ToLower() == "true") Settings.Default.puttyagent = true;
             if (XmlGetConfig("puttyforward").ToLower() == "true") Settings.Default.puttyforward = true;
             if (XmlGetConfig("puttykey").ToLower() == "true") Settings.Default.puttykey = true;
             if (XmlGetConfig("puttykeyfile") != "") Settings.Default.puttykeyfilepath = XmlGetConfig("puttykeyfile");
@@ -874,6 +875,7 @@ namespace AutoPuTTY
                                 if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") Proc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
                                 if (VaultPrivateKey != "") Proc.StartInfo.Arguments += " -i \"" + VaultPrivateKey + "\"";
                                 else if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") Proc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
+                                if (Settings.Default.puttyagent) Proc.StartInfo.Arguments += " -A";
                                 if (Settings.Default.puttyforward) Proc.StartInfo.Arguments += " -X";
                                 if (PuttyArgs != "") Proc.StartInfo.Arguments += " " + PuttyArgs;
 

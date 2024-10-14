@@ -190,7 +190,19 @@ namespace AutoPuTTY.Properties {
                 this["puttyexecute"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool puttyagent {
+            get {
+                return ((bool)(this["puttyagent"]));
+            }
+            set {
+                this["puttyagent"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]

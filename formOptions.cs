@@ -51,7 +51,8 @@ namespace AutoPuTTY
                 tbPuTTYExecute.Text = Settings.Default.puttycommand;
                 cbPuTTYKey.Checked = Settings.Default.puttykey;
                 tbPuTTYKey.Text = Settings.Default.puttykeyfilepath;
-                cbPuTTYForward.Checked = Settings.Default.puttyforward;
+                cbPuTTYAgent.Checked = Settings.Default.puttyagent;
+                cbPuTTYX11.Checked = Settings.Default.puttyforward;
 
                 tbRDPath.Text = Settings.Default.rdpath;
                 tbRDKeep.Text = Settings.Default.rdfilespath;
@@ -608,9 +609,15 @@ namespace AutoPuTTY
             }
         }
 
-        private void cbPuTTYXforward_CheckedChanged(object sender, EventArgs e)
+        private void cbPuTTYAgent_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.puttyforward = cbPuTTYForward.Checked;
+            Settings.Default.puttyagent = cbPuTTYAgent.Checked;
+            if (!FirstRead) FormMain.XmlSetConfig("puttyagent", Settings.Default.puttyagent.ToString());
+        }
+
+        private void cbPuTTYX11_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.puttyforward = cbPuTTYX11.Checked;
             if (!FirstRead) FormMain.XmlSetConfig("puttyforward", Settings.Default.puttyforward.ToString());
         }
 
