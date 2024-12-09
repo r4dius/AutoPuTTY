@@ -126,6 +126,7 @@ namespace AutoPuTTY
             this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
             this.buOK = new System.Windows.Forms.Button();
             this.tooltipOptions = new System.Windows.Forms.ToolTip(this.components);
+            this.cbWSCPAgent = new System.Windows.Forms.CheckBox();
             this.panelPuTTY.SuspendLayout();
             this.panelRD.SuspendLayout();
             this.panelVNC.SuspendLayout();
@@ -707,6 +708,7 @@ namespace AutoPuTTY
             this.paWinSCP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.paWinSCP.Controls.Add(this.cbWSCPAgent);
             this.paWinSCP.Controls.Add(this.laWSeparator3);
             this.paWinSCP.Controls.Add(this.laWSCPOther);
             this.paWinSCP.Controls.Add(this.cbWSCPPassive);
@@ -745,10 +747,10 @@ namespace AutoPuTTY
             // cbWSCPPassive
             // 
             this.cbWSCPPassive.AutoSize = true;
-            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 97);
+            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 113);
             this.cbWSCPPassive.Name = "cbWSCPPassive";
             this.cbWSCPPassive.Size = new System.Drawing.Size(143, 17);
-            this.cbWSCPPassive.TabIndex = 10;
+            this.cbWSCPPassive.TabIndex = 11;
             this.cbWSCPPassive.Text = "Passive mode (FTP only)";
             this.cbWSCPPassive.UseVisualStyleBackColor = true;
             this.cbWSCPPassive.CheckedChanged += new System.EventHandler(this.cbWSCPPassive_CheckedChanged);
@@ -1283,6 +1285,17 @@ namespace AutoPuTTY
             this.tooltipOptions.InitialDelay = 200;
             this.tooltipOptions.ReshowDelay = 100;
             // 
+            // cbWSCPAgent
+            // 
+            this.cbWSCPAgent.AutoSize = true;
+            this.cbWSCPAgent.Location = new System.Drawing.Point(2, 97);
+            this.cbWSCPAgent.Name = "cbWSCPAgent";
+            this.cbWSCPAgent.Size = new System.Drawing.Size(109, 17);
+            this.cbWSCPAgent.TabIndex = 10;
+            this.cbWSCPAgent.Text = "Agent Forwarding";
+            this.cbWSCPAgent.UseVisualStyleBackColor = true;
+            this.cbWSCPAgent.CheckedChanged += new System.EventHandler(this.cbWSCPAgent_CheckedChanged);
+            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1424,6 +1437,7 @@ namespace AutoPuTTY
         private SingleClickLabel laWSCPOther;
         public System.Windows.Forms.CheckBox cbGTooltips;
         public System.Windows.Forms.CheckBox cbPuTTYAgent;
+        public System.Windows.Forms.CheckBox cbWSCPAgent;
     }
 }
 

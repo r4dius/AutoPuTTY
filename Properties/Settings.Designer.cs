@@ -406,7 +406,22 @@ namespace AutoPuTTY.Properties {
                 this["winscpkey"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool winscpagent
+        {
+            get
+            {
+                return ((bool)(this["winscpagent"]));
+            }
+            set
+            {
+                this["winscpagent"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]

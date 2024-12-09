@@ -69,6 +69,7 @@ namespace AutoPuTTY
                 tbWSCPPath.Text = Settings.Default.winscppath;
                 cbWSCPKey.Checked = Settings.Default.winscpkey;
                 tbWSCPKey.Text = Settings.Default.winscpkeyfilepath;
+                cbWSCPAgent.Checked = Settings.Default.winscpagent;
                 cbWSCPPassive.Checked = Settings.Default.winscppassive;
             }
 
@@ -835,6 +836,12 @@ namespace AutoPuTTY
                 tbWSCPKey.Enabled = false;
                 buWSCPKey.Enabled = false;
             }
+        }
+
+        private void cbWSCPAgent_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.winscpagent = cbWSCPAgent.Checked;
+            if (!FirstRead) FormMain.XmlSetConfig("winscpagent", Settings.Default.winscpagent.ToString());
         }
 
         private void cbWSCPPassive_CheckedChanged(object sender, EventArgs e)

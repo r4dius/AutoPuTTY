@@ -155,6 +155,7 @@ namespace AutoPuTTY
             if (XmlGetConfig("vncfullscreen").ToLower() == "true") Settings.Default.vncfullscreen = true;
             if (XmlGetConfig("vncviewonly").ToLower() == "true") Settings.Default.vncviewonly = true;
             if (XmlGetConfig("winscp") != "") Settings.Default.winscppath = XmlGetConfig("winscp");
+            if (XmlGetConfig("winscpagent").ToLower() == "true") Settings.Default.winscpagent = true;
             if (XmlGetConfig("winscpkey").ToLower() == "true") Settings.Default.winscpkey = true;
             if (XmlGetConfig("winscpkeyfile") != "") Settings.Default.winscpkeyfilepath = XmlGetConfig("winscpkeyfile");
 
@@ -801,11 +802,18 @@ namespace AutoPuTTY
                                 if (VaultPrivateKey != "") Proc.StartInfo.Arguments += " /privatekey=\"" + VaultPrivateKey + "\"";
                                 else if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") Proc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
 
+                                if (Settings.Default.winscpagent || ProxyHost != "")
+                                {
+                                    Proc.StartInfo.Arguments += " /rawsettings";
+                                }
+
+                                if (Settings.Default.winscpagent) Proc.StartInfo.Arguments += " AgentFwd=1";
+
                                 //SSH Jump
                                 if (ProxyHost != "")
                                 {
                                     User = UserFromProxy;
-                                    Proc.StartInfo.Arguments += " /rawsettings Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " TunnelPasswordPlain=\"" + ReplaceSpecial(SpecialCharsWinscp, ProxyPass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
+                                    Proc.StartInfo.Arguments += " Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " TunnelPasswordPlain=\"" + ReplaceSpecial(SpecialCharsWinscp, ProxyPass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
                                 }
 
                                 if (WinscpArgs != "") Proc.StartInfo.Arguments += " " + WinscpArgs;
