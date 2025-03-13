@@ -14,10 +14,12 @@ using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ComboBox = System.Windows.Forms.ComboBox;
 using File = System.IO.File;
 using Label = System.Windows.Forms.Label;
@@ -128,6 +130,7 @@ namespace AutoPuTTY
             }
 
             cbType.SelectedIndex = 0;
+            if (XmlGetConfig("autohidepassword").ToLower() == "true") Settings.Default.autohidepassword = true;
             if (XmlGetConfig("maximized").ToLower() == "true") Settings.Default.maximized = true;
             if (XmlGetConfig("minimize").ToLower() == "false") Settings.Default.minimize = false;
             if (XmlGetConfig("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
@@ -262,7 +265,11 @@ namespace AutoPuTTY
             }
             else
             {
+#if SECURE
+                StartupSecure();
+#else
                 Startup();
+#endif
             }
 #if DEBUG
             Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
@@ -296,6 +303,41 @@ namespace AutoPuTTY
             }
             base.WndProc(ref m);
         }
+
+#if SECURE
+        internal bool IsPasswordComplex(string password)
+        {
+            if (password.Length < 16)
+                return false;
+
+            bool hasLower = Regex.IsMatch(password, "[a-z]");
+            bool hasUpper = Regex.IsMatch(password, "[A-Z]");
+            bool hasDigit = Regex.IsMatch(password, "\\d");
+            bool hasSpecial = Regex.IsMatch(password, "[^a-zA-Z0-9]");
+
+            return hasLower && hasUpper && hasDigit && hasSpecial;
+        }
+
+        private void StartupSecure()
+        {
+            Startup();
+
+            string message = "For better security, please set a password that's at least 16 characters long, with letters, numbers, symbols, and at least one uppercase letter. Click Cancel to exit.";
+            DialogResult result = MessageBoxEx.Show(this, message, "Password Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.OK)
+            {
+                using (FormOptions FormOptions = new FormOptions(this))
+                {
+                    FormOptions.ShowDialog(this);
+                }
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+        }
+#endif
 
         private void Startup()
         {
@@ -1062,13 +1104,13 @@ namespace AutoPuTTY
         {
             if (state)
             {
-                buEye.Image = IconEyeShowHover;
+                buEye.Image = buEye.ClientRectangle.Contains(buEye.PointToClient(MousePosition)) ? IconEyeShowHover : Resources.iconeyeshow;
                 ttMain.SetToolTip(buEye, "Show password");
                 tbPass.PasswordChar = '●';
             }
             else
             {
-                buEye.Image = IconEyeHideHover;
+                buEye.Image = buEye.ClientRectangle.Contains(buEye.PointToClient(MousePosition)) ? IconEyeHideHover : Resources.iconeyehide;
                 ttMain.SetToolTip(buEye, "Hide password");
                 tbPass.PasswordChar = '\0';
             }
@@ -1415,7 +1457,7 @@ namespace AutoPuTTY
         private void buEye_MouseLeave(object sender, EventArgs e)
         {
             PictureBox icon = (PictureBox)sender;
-            icon.Image = tbPass.PasswordChar == '●' ? Resources.iconeyeshow : (Image)Resources.iconeyehide;
+            icon.Image = tbPass.PasswordChar == '●' ? Resources.iconeyeshow : Resources.iconeyehide;
         }
 
         private void buCopy_MouseEnter(object sender, EventArgs e)
@@ -1732,6 +1774,11 @@ namespace AutoPuTTY
                 return;
             }
             IndexChanged = true;
+
+            if (Settings.Default.autohidepassword && tbPass.PasswordChar != '●')
+            {
+                TooglePassword(!(tbPass.PasswordChar == '●'));
+            }
 
             //reset colors
             tbName.BackColor = SystemColors.Window;
@@ -2246,8 +2293,12 @@ namespace AutoPuTTY
                 {
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbPassPassword.Text;
-
+#if SECURE
+                    if (IsPasswordComplex(Settings.Default.cryptokey)) Startup();
+                    else StartupSecure();
+#else
                     Startup();
+#endif
                     return;
                 }
 

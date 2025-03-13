@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("r4dius")]
 [assembly: AssemblyProduct("AutoPuTTY")]
-[assembly: AssemblyCopyright("Copyright © r4dius 2024")]
+[assembly: AssemblyCopyright("Copyright © r4dius 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

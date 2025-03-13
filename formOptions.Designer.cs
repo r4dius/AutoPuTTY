@@ -93,8 +93,9 @@ namespace AutoPuTTY
             this.taOptions = new System.Windows.Forms.TabControl();
             this.taGeneral = new System.Windows.Forms.TabPage();
             this.paGeneral = new System.Windows.Forms.Panel();
-            this.cbGTooltips = new System.Windows.Forms.CheckBox();
+            this.cbGHidePassword = new System.Windows.Forms.CheckBox();
             this.cbGMinimize = new System.Windows.Forms.CheckBox();
+            this.cbGTooltips = new System.Windows.Forms.CheckBox();
             this.cbGPosition = new System.Windows.Forms.CheckBox();
             this.cbGSize = new System.Windows.Forms.CheckBox();
             this.laGSeparator6 = new System.Windows.Forms.Label();
@@ -115,6 +116,7 @@ namespace AutoPuTTY
             this.labelGPassword = new AutoPuTTY.SingleClickLabel();
             this.laGSeparator1 = new System.Windows.Forms.Label();
             this.tbGPassword = new System.Windows.Forms.TextBox();
+            this.cbGPassword = new System.Windows.Forms.CheckBox();
             this.paGConfirm = new System.Windows.Forms.Panel();
             this.tbGConfirm = new System.Windows.Forms.TextBox();
             this.laGSeparator2 = new System.Windows.Forms.Label();
@@ -887,8 +889,9 @@ namespace AutoPuTTY
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paGeneral.BackColor = System.Drawing.Color.Transparent;
-            this.paGeneral.Controls.Add(this.cbGTooltips);
+            this.paGeneral.Controls.Add(this.cbGHidePassword);
             this.paGeneral.Controls.Add(this.cbGMinimize);
+            this.paGeneral.Controls.Add(this.cbGTooltips);
             this.paGeneral.Controls.Add(this.cbGPosition);
             this.paGeneral.Controls.Add(this.cbGSize);
             this.paGeneral.Controls.Add(this.laGSeparator6);
@@ -908,6 +911,32 @@ namespace AutoPuTTY
             this.paGeneral.Size = new System.Drawing.Size(286, 189);
             this.paGeneral.TabIndex = 0;
             // 
+            // cbGHidePassword
+            // 
+            this.cbGHidePassword.AutoSize = true;
+            this.cbGHidePassword.Checked = true;
+            this.cbGHidePassword.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGHidePassword.Location = new System.Drawing.Point(2, 174);
+            this.cbGHidePassword.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGHidePassword.Name = "cbGHidePassword";
+            this.cbGHidePassword.Size = new System.Drawing.Size(119, 17);
+            this.cbGHidePassword.TabIndex = 14;
+            this.cbGHidePassword.Text = "Auto-hide password";
+            this.cbGHidePassword.CheckedChanged += new System.EventHandler(this.cbGHidePassword_CheckedChanged);
+            // 
+            // cbGMinimize
+            // 
+            this.cbGMinimize.AutoSize = true;
+            this.cbGMinimize.Checked = true;
+            this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGMinimize.Location = new System.Drawing.Point(152, 159);
+            this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGMinimize.Name = "cbGMinimize";
+            this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
+            this.cbGMinimize.TabIndex = 16;
+            this.cbGMinimize.Text = "Minimize to system tray";
+            this.cbGMinimize.CheckedChanged += new System.EventHandler(this.cbGMinimize_CheckedChanged);
+            // 
             // cbGTooltips
             // 
             this.cbGTooltips.AutoSize = true;
@@ -920,19 +949,6 @@ namespace AutoPuTTY
             this.cbGTooltips.TabIndex = 15;
             this.cbGTooltips.Text = "Show tooltips";
             this.cbGTooltips.CheckedChanged += new System.EventHandler(this.cbGTooltips_CheckedChanged);
-            // 
-            // cbGMinimize
-            // 
-            this.cbGMinimize.AutoSize = true;
-            this.cbGMinimize.Checked = true;
-            this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGMinimize.Location = new System.Drawing.Point(2, 174);
-            this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
-            this.cbGMinimize.Name = "cbGMinimize";
-            this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
-            this.cbGMinimize.TabIndex = 14;
-            this.cbGMinimize.Text = "Minimize to system tray";
-            this.cbGMinimize.CheckedChanged += new System.EventHandler(this.cbGMinimize_CheckedChanged);
             // 
             // cbGPosition
             // 
@@ -1128,6 +1144,7 @@ namespace AutoPuTTY
             this.pGPassword.Controls.Add(this.labelGPassword);
             this.pGPassword.Controls.Add(this.laGSeparator1);
             this.pGPassword.Controls.Add(this.tbGPassword);
+            this.pGPassword.Controls.Add(this.cbGPassword);
             this.pGPassword.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pGPassword.Location = new System.Drawing.Point(0, 0);
             this.pGPassword.Margin = new System.Windows.Forms.Padding(0);
@@ -1168,6 +1185,18 @@ namespace AutoPuTTY
             this.tbGPassword.TextChanged += new System.EventHandler(this.tbGPassword_TextChanged);
             this.tbGPassword.GotFocus += new System.EventHandler(this.tbGPassword_GotFocus);
             this.tbGPassword.LostFocus += new System.EventHandler(this.tbGPassword_LostFocus);
+            // 
+            // cbGPassword
+            // 
+            this.cbGPassword.AutoSize = true;
+            this.cbGPassword.Location = new System.Drawing.Point(2, 0);
+            this.cbGPassword.Name = "cbGPassword";
+            this.cbGPassword.Size = new System.Drawing.Size(72, 17);
+            this.cbGPassword.TabIndex = 0;
+            this.cbGPassword.Text = "Password";
+            this.tooltipOptions.SetToolTip(this.cbGPassword, "Ask for a password on startup and crypt your login list with it");
+            this.cbGPassword.UseVisualStyleBackColor = true;
+            this.cbGPassword.CheckedChanged += new System.EventHandler(this.cbGPassword_CheckedChanged);
             // 
             // paGConfirm
             // 
@@ -1309,9 +1338,7 @@ namespace AutoPuTTY
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
-#if SECURE
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormOptions_FormClosing);
-#endif
             this.panelPuTTY.ResumeLayout(false);
             this.panelPuTTY.PerformLayout();
             this.panelRD.ResumeLayout(false);
@@ -1440,6 +1467,7 @@ namespace AutoPuTTY
         public System.Windows.Forms.CheckBox cbGTooltips;
         public System.Windows.Forms.CheckBox cbPuTTYAgent;
         public System.Windows.Forms.CheckBox cbWSCPAgent;
+        public System.Windows.Forms.CheckBox cbGHidePassword;
     }
 }
 

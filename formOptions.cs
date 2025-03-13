@@ -32,6 +32,11 @@ namespace AutoPuTTY
 #if SECURE
             tbGPassword.Enabled = true;
             tbGConfirm.Enabled = true;
+            cbGPassword.Enabled = false;
+            cbGPassword.Visible = false;
+            labelGPassword.Visible = true;
+#else
+            labelGPassword.Visible = false;
 #endif
 
             if (File.Exists(Settings.Default.cfgpath))
@@ -39,15 +44,14 @@ namespace AutoPuTTY
 #if SECURE
                 if (Settings.Default.passwordmd5.Trim() != "")
                 {
-                    tbGPassword.Text = Settings.Default.passwordmd5;
-                    tbGConfirm.Text = Settings.Default.passwordmd5;
+                    tbGPassword.Text = Settings.Default.cryptokey;
+                    tbGConfirm.Text = Settings.Default.cryptokey;
                 }
 #else
-                labelGPassword.Visible = false;
                 if (Settings.Default.passwordmd5.Trim() != "")
                 {
-                    tbGPassword.Text = Settings.Default.passwordmd5;
-                    tbGConfirm.Text = Settings.Default.passwordmd5;
+                    tbGPassword.Text = Settings.Default.cryptokey;
+                    tbGConfirm.Text = Settings.Default.cryptokey;
                     cbGPassword.Checked = true;
                 }
                 else cbGPassword.Checked = false;
@@ -56,8 +60,9 @@ namespace AutoPuTTY
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
                 cbGSize.Checked = Size.Length == 2;
                 cbGPosition.Checked = Position.Length == 2;
-                cbGMinimize.Checked = Settings.Default.minimize;
+                cbGHidePassword.Checked = Settings.Default.autohidepassword;
                 cbGTooltips.Checked = Settings.Default.tooltips;
+                cbGMinimize.Checked = Settings.Default.minimize;
 
                 tbPuTTYPath.Text = Settings.Default.puttypath;
                 cbPuTTYExecute.Checked = Settings.Default.puttyexecute;
@@ -391,6 +396,12 @@ namespace AutoPuTTY
                 MessageBoxEx.Show(this, "Password confirmation doesn't match", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tbGConfirm.Text = "";
             }
+#if SECURE
+            else if (!FormMain.IsPasswordComplex(tbGPassword.Text))
+            {
+                MessageBoxEx.Show(this, "Your password doesn't meet the required complexity. Please ensure it's at least 16 characters long, with letters, numbers, symbols, and at least one uppercase letter", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+#endif
             else
             {
                 if (FormMain.MD5Hash(tbGPassword.Text) != Settings.Default.passwordmd5)
@@ -430,15 +441,25 @@ namespace AutoPuTTY
             slGMulti.Enabled = Settings.Default.multicolumn;
         }
 
-#if SECURE
         private void FormOptions_FormClosing(object sender, FormClosingEventArgs e)
         {
-            bGPassword_Click(this, e);
-            if (tbGConfirm.Text == "") e.Cancel = true;
+#if SECURE
+            if (FormMain.IsPasswordComplex(Settings.Default.cryptokey)) return;
+            e.Cancel = true;
+
+            string message = "For better security, please set a password that's at least 16 characters long, with letters, numbers, symbols, and at least one uppercase letter. Click Cancel to exit.";
+            DialogResult result = MessageBoxEx.Show(this, message, "Password Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Cancel)
+            {
+                Environment.Exit(0);
+            }
+#endif
         }
-#else
+
         private void cbGPassword_CheckedChanged(object sender, EventArgs e)
         {
+#if !SECURE
             if (cbGPassword.Checked)
             {
                 tbGPassword.Enabled = true;
@@ -477,8 +498,8 @@ namespace AutoPuTTY
                 tbGConfirm.Text = "";
                 buGApply.Enabled = false;
             }
-        }
 #endif
+        }
 
         private void cbGPosition_CheckedChanged(object sender, EventArgs e)
         {
@@ -935,6 +956,12 @@ namespace AutoPuTTY
             if (!FirstRead) FormMain.XmlSetConfig("tooltips", Settings.Default.tooltips.ToString());
             FormMain.ttMain.Active = Settings.Default.tooltips;
             tooltipOptions.Active = Settings.Default.tooltips;
+        }
+
+        private void cbGHidePassword_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.autohidepassword = cbGHidePassword.Checked;
+            if (!FirstRead) FormMain.XmlSetConfig("autohidepassword", Settings.Default.autohidepassword.ToString());
         }
     }
 }
