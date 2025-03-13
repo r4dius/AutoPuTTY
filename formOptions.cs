@@ -474,11 +474,14 @@ namespace AutoPuTTY
 
                     if (Remove == DialogResult.OK)
                     {
-                        string[] Args = { "recrypt", Settings.Default.cryptokeyoriginal };
-                        backgroundProgress.RunWorkerAsync(Args);
-                        PopupRecrypt = new PopupRecrypt(this);
-                        PopupRecrypt.Text = "Removing" + PopupRecrypt.Text;
-                        PopupRecrypt.ShowDialog(this);
+                        if (FormMain.lbServer.Items.Count > 0 || FormMain.lbVault.Items.Count > 0)
+                        {
+                            string[] Args = { "recrypt", Settings.Default.cryptokeyoriginal };
+                            backgroundProgress.RunWorkerAsync(Args);
+                            PopupRecrypt = new PopupRecrypt(this);
+                            PopupRecrypt.Text = "Removing" + PopupRecrypt.Text;
+                            PopupRecrypt.ShowDialog(this);
+                        }
 
                         FormMain.XmlDropNode("Config", new ArrayList { "passwordmd5" });
 
