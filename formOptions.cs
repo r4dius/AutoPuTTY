@@ -29,9 +29,21 @@ namespace AutoPuTTY
 
             string[] Position = Settings.Default.position.Split('x');
             string[] Size = Settings.Default.size.Split('x');
+#if SECURE
+            tbGPassword.Enabled = true;
+            tbGConfirm.Enabled = true;
+#endif
 
             if (File.Exists(Settings.Default.cfgpath))
             {
+#if SECURE
+                if (Settings.Default.passwordmd5.Trim() != "")
+                {
+                    tbGPassword.Text = Settings.Default.passwordmd5;
+                    tbGConfirm.Text = Settings.Default.passwordmd5;
+                }
+#else
+                labelGPassword.Visible = false;
                 if (Settings.Default.passwordmd5.Trim() != "")
                 {
                     tbGPassword.Text = Settings.Default.passwordmd5;
@@ -39,6 +51,7 @@ namespace AutoPuTTY
                     cbGPassword.Checked = true;
                 }
                 else cbGPassword.Checked = false;
+#endif
                 cbGMulti.Checked = Settings.Default.multicolumn;
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
                 cbGSize.Checked = Size.Length == 2;
@@ -417,6 +430,13 @@ namespace AutoPuTTY
             slGMulti.Enabled = Settings.Default.multicolumn;
         }
 
+#if SECURE
+        private void FormOptions_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            bGPassword_Click(this, e);
+            if (tbGConfirm.Text == "") e.Cancel = true;
+        }
+#else
         private void cbGPassword_CheckedChanged(object sender, EventArgs e)
         {
             if (cbGPassword.Checked)
@@ -458,6 +478,7 @@ namespace AutoPuTTY
                 buGApply.Enabled = false;
             }
         }
+#endif
 
         private void cbGPosition_CheckedChanged(object sender, EventArgs e)
         {

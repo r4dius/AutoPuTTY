@@ -76,6 +76,9 @@
   <PropertyGroup>
     <StartupObject>AutoPuTTY.app</StartupObject>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Secure|AnyCPU'">
+    <OutputPath>bin\Secure\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />

@@ -78,6 +78,7 @@ namespace AutoPuTTY
             this.laVNCPath = new AutoPuTTY.SingleClickLabel();
             this.buVNCPath = new System.Windows.Forms.Button();
             this.paWinSCP = new System.Windows.Forms.Panel();
+            this.cbWSCPAgent = new System.Windows.Forms.CheckBox();
             this.laWSeparator3 = new System.Windows.Forms.Label();
             this.laWSCPOther = new AutoPuTTY.SingleClickLabel();
             this.cbWSCPPassive = new System.Windows.Forms.CheckBox();
@@ -111,8 +112,8 @@ namespace AutoPuTTY
             this.buGApply = new System.Windows.Forms.Button();
             this.laGSeparator3 = new System.Windows.Forms.Label();
             this.pGPassword = new System.Windows.Forms.Panel();
+            this.labelGPassword = new AutoPuTTY.SingleClickLabel();
             this.laGSeparator1 = new System.Windows.Forms.Label();
-            this.cbGPassword = new System.Windows.Forms.CheckBox();
             this.tbGPassword = new System.Windows.Forms.TextBox();
             this.paGConfirm = new System.Windows.Forms.Panel();
             this.tbGConfirm = new System.Windows.Forms.TextBox();
@@ -126,7 +127,6 @@ namespace AutoPuTTY
             this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
             this.buOK = new System.Windows.Forms.Button();
             this.tooltipOptions = new System.Windows.Forms.ToolTip(this.components);
-            this.cbWSCPAgent = new System.Windows.Forms.CheckBox();
             this.panelPuTTY.SuspendLayout();
             this.panelRD.SuspendLayout();
             this.panelVNC.SuspendLayout();
@@ -725,6 +725,17 @@ namespace AutoPuTTY
             this.paWinSCP.Size = new System.Drawing.Size(286, 185);
             this.paWinSCP.TabIndex = 0;
             // 
+            // cbWSCPAgent
+            // 
+            this.cbWSCPAgent.AutoSize = true;
+            this.cbWSCPAgent.Location = new System.Drawing.Point(2, 97);
+            this.cbWSCPAgent.Name = "cbWSCPAgent";
+            this.cbWSCPAgent.Size = new System.Drawing.Size(109, 17);
+            this.cbWSCPAgent.TabIndex = 10;
+            this.cbWSCPAgent.Text = "Agent Forwarding";
+            this.cbWSCPAgent.UseVisualStyleBackColor = true;
+            this.cbWSCPAgent.CheckedChanged += new System.EventHandler(this.cbWSCPAgent_CheckedChanged);
+            // 
             // laWSeparator3
             // 
             this.laWSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1114,8 +1125,8 @@ namespace AutoPuTTY
             // 
             // pGPassword
             // 
+            this.pGPassword.Controls.Add(this.labelGPassword);
             this.pGPassword.Controls.Add(this.laGSeparator1);
-            this.pGPassword.Controls.Add(this.cbGPassword);
             this.pGPassword.Controls.Add(this.tbGPassword);
             this.pGPassword.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pGPassword.Location = new System.Drawing.Point(0, 0);
@@ -1123,6 +1134,16 @@ namespace AutoPuTTY
             this.pGPassword.Name = "pGPassword";
             this.pGPassword.Size = new System.Drawing.Size(117, 39);
             this.pGPassword.TabIndex = 0;
+            // 
+            // labelGPassword
+            // 
+            this.labelGPassword.AutoSize = true;
+            this.labelGPassword.Location = new System.Drawing.Point(3, 1);
+            this.labelGPassword.Name = "labelGPassword";
+            this.labelGPassword.Size = new System.Drawing.Size(53, 13);
+            this.labelGPassword.TabIndex = 3;
+            this.labelGPassword.Text = "Password";
+            this.tooltipOptions.SetToolTip(this.labelGPassword, "Ask for a password on startup and crypt your login list with it");
             // 
             // laGSeparator1
             // 
@@ -1133,18 +1154,6 @@ namespace AutoPuTTY
             this.laGSeparator1.Name = "laGSeparator1";
             this.laGSeparator1.Size = new System.Drawing.Size(119, 2);
             this.laGSeparator1.TabIndex = 1;
-            // 
-            // cbGPassword
-            // 
-            this.cbGPassword.AutoSize = true;
-            this.cbGPassword.Location = new System.Drawing.Point(2, 0);
-            this.cbGPassword.Name = "cbGPassword";
-            this.cbGPassword.Size = new System.Drawing.Size(72, 17);
-            this.cbGPassword.TabIndex = 0;
-            this.cbGPassword.Text = "Password";
-            this.tooltipOptions.SetToolTip(this.cbGPassword, "Ask for a password on startup and crypt your login list with it");
-            this.cbGPassword.UseVisualStyleBackColor = true;
-            this.cbGPassword.CheckedChanged += new System.EventHandler(this.cbGPassword_CheckedChanged);
             // 
             // tbGPassword
             // 
@@ -1285,17 +1294,6 @@ namespace AutoPuTTY
             this.tooltipOptions.InitialDelay = 200;
             this.tooltipOptions.ReshowDelay = 100;
             // 
-            // cbWSCPAgent
-            // 
-            this.cbWSCPAgent.AutoSize = true;
-            this.cbWSCPAgent.Location = new System.Drawing.Point(2, 97);
-            this.cbWSCPAgent.Name = "cbWSCPAgent";
-            this.cbWSCPAgent.Size = new System.Drawing.Size(109, 17);
-            this.cbWSCPAgent.TabIndex = 10;
-            this.cbWSCPAgent.Text = "Agent Forwarding";
-            this.cbWSCPAgent.UseVisualStyleBackColor = true;
-            this.cbWSCPAgent.CheckedChanged += new System.EventHandler(this.cbWSCPAgent_CheckedChanged);
-            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1311,6 +1309,9 @@ namespace AutoPuTTY
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
+#if SECURE
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormOptions_FormClosing);
+#endif
             this.panelPuTTY.ResumeLayout(false);
             this.panelPuTTY.PerformLayout();
             this.panelRD.ResumeLayout(false);
@@ -1339,7 +1340,7 @@ namespace AutoPuTTY
 
         }
 
-        #endregion
+#endregion
 
         private System.Windows.Forms.Panel panelPuTTY;
         public System.Windows.Forms.Button buPuTTYExecute;
@@ -1396,6 +1397,7 @@ namespace AutoPuTTY
         private System.Windows.Forms.Button buGImport;
         private System.Windows.Forms.Label laGSeparator4;
         public System.Windows.Forms.CheckBox cbGMulti;
+        private SingleClickLabel labelGPassword;
         private System.Windows.Forms.CheckBox cbGPassword;
         private System.Windows.Forms.TableLayoutPanel tpGPass;
         private System.Windows.Forms.Panel pGPassword;
