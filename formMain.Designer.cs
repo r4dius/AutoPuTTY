@@ -60,6 +60,7 @@
             this.buCopyPass = new System.Windows.Forms.PictureBox();
             this.buCopyVault = new System.Windows.Forms.PictureBox();
             this.paVault = new System.Windows.Forms.Panel();
+            this.buPuTTYPath = new System.Windows.Forms.Button();
             this.buCopyVaultPriv = new System.Windows.Forms.PictureBox();
             this.buCopyVaultPass = new System.Windows.Forms.PictureBox();
             this.buVaultOk = new System.Windows.Forms.Button();
@@ -97,6 +98,8 @@
             this.laFindSeparator = new System.Windows.Forms.Label();
             this.tlAbout = new System.Windows.Forms.TableLayoutPanel();
             this.paAbout = new System.Windows.Forms.Panel();
+            this.laAboutLinksSeparator = new AutoPuTTY.SingleClickLabel();
+            this.liAboutGithub = new System.Windows.Forms.LinkLabel();
             this.paUpdate = new System.Windows.Forms.Panel();
             this.laAboutVersionSeparator = new AutoPuTTY.SingleClickLabel();
             this.liAboutUpdate = new System.Windows.Forms.LinkLabel();
@@ -119,9 +122,8 @@
             this.tbPassFake = new System.Windows.Forms.TextBox();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cmVault = new System.Windows.Forms.ContextMenu();
-            this.liAboutGithub = new System.Windows.Forms.LinkLabel();
-            this.laAboutLinksSeparator = new AutoPuTTY.SingleClickLabel();
-            this.buPuTTYPath = new System.Windows.Forms.Button();
+            this.laAboutS = new AutoPuTTY.SingleClickLabel();
+            this.laPassS = new AutoPuTTY.SingleClickLabel();
             this.paConfig.SuspendLayout();
             this.paServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyHost)).BeginInit();
@@ -575,6 +577,19 @@
             this.paVault.Size = new System.Drawing.Size(130, 228);
             this.paVault.TabIndex = 23;
             this.paVault.Visible = false;
+            // 
+            // buPuTTYPath
+            // 
+            this.buPuTTYPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buPuTTYPath.Location = new System.Drawing.Point(107, 97);
+            this.buPuTTYPath.Margin = new System.Windows.Forms.Padding(0);
+            this.buPuTTYPath.Name = "buPuTTYPath";
+            this.buPuTTYPath.Size = new System.Drawing.Size(22, 22);
+            this.buPuTTYPath.TabIndex = 34;
+            this.buPuTTYPath.Text = "...";
+            this.buPuTTYPath.UseCompatibleTextRendering = true;
+            this.buPuTTYPath.UseVisualStyleBackColor = true;
+            this.buPuTTYPath.Click += new System.EventHandler(this.buPuTTYPath_Click);
             // 
             // buCopyVaultPriv
             // 
@@ -1031,6 +1046,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.paAbout.Controls.Add(this.laAboutS);
             this.paAbout.Controls.Add(this.laAboutLinksSeparator);
             this.paAbout.Controls.Add(this.liAboutGithub);
             this.paAbout.Controls.Add(this.paUpdate);
@@ -1043,6 +1059,39 @@
             this.paAbout.Name = "paAbout";
             this.paAbout.Size = new System.Drawing.Size(261, 228);
             this.paAbout.TabIndex = 0;
+            // 
+            // laAboutLinksSeparator
+            // 
+            this.laAboutLinksSeparator.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laAboutLinksSeparator.AutoSize = true;
+            this.laAboutLinksSeparator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.laAboutLinksSeparator.ForeColor = System.Drawing.Color.White;
+            this.laAboutLinksSeparator.Location = new System.Drawing.Point(168, 119);
+            this.laAboutLinksSeparator.Margin = new System.Windows.Forms.Padding(0);
+            this.laAboutLinksSeparator.Name = "laAboutLinksSeparator";
+            this.laAboutLinksSeparator.Size = new System.Drawing.Size(10, 13);
+            this.laAboutLinksSeparator.TabIndex = 27;
+            this.laAboutLinksSeparator.Text = "-";
+            this.laAboutLinksSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // liAboutGithub
+            // 
+            this.liAboutGithub.ActiveLinkColor = System.Drawing.Color.White;
+            this.liAboutGithub.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.liAboutGithub.AutoSize = true;
+            this.liAboutGithub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.liAboutGithub.DisabledLinkColor = System.Drawing.Color.Transparent;
+            this.liAboutGithub.ForeColor = System.Drawing.Color.White;
+            this.liAboutGithub.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.liAboutGithub.LinkColor = System.Drawing.Color.White;
+            this.liAboutGithub.Location = new System.Drawing.Point(177, 119);
+            this.liAboutGithub.Name = "liAboutGithub";
+            this.liAboutGithub.Size = new System.Drawing.Size(40, 13);
+            this.liAboutGithub.TabIndex = 26;
+            this.liAboutGithub.TabStop = true;
+            this.liAboutGithub.Text = "GitHub";
+            this.liAboutGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.liAboutGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // paUpdate
             // 
@@ -1187,6 +1236,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.paPassword.Controls.Add(this.laPassS);
             this.paPassword.Controls.Add(this.paPassBackRight);
             this.paPassword.Controls.Add(this.paPassBackLeft);
             this.paPassword.Controls.Add(this.laPassMessage);
@@ -1339,51 +1389,37 @@
             this.ttMain.InitialDelay = 200;
             this.ttMain.ReshowDelay = 100;
             // 
-            // liAboutGithub
+            // laAboutS
             // 
-            this.liAboutGithub.ActiveLinkColor = System.Drawing.Color.White;
-            this.liAboutGithub.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.liAboutGithub.AutoSize = true;
-            this.liAboutGithub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.liAboutGithub.DisabledLinkColor = System.Drawing.Color.Transparent;
-            this.liAboutGithub.ForeColor = System.Drawing.Color.White;
-            this.liAboutGithub.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.liAboutGithub.LinkColor = System.Drawing.Color.White;
-            this.liAboutGithub.Location = new System.Drawing.Point(177, 119);
-            this.liAboutGithub.Name = "liAboutGithub";
-            this.liAboutGithub.Size = new System.Drawing.Size(40, 13);
-            this.liAboutGithub.TabIndex = 26;
-            this.liAboutGithub.TabStop = true;
-            this.liAboutGithub.Text = "GitHub";
-            this.liAboutGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.liAboutGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.laAboutS.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laAboutS.AutoSize = true;
+            this.laAboutS.BackColor = System.Drawing.Color.Transparent;
+            this.laAboutS.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.laAboutS.ForeColor = System.Drawing.Color.White;
+            this.laAboutS.Location = new System.Drawing.Point(182, 89);
+            this.laAboutS.Name = "laAboutS";
+            this.laAboutS.Size = new System.Drawing.Size(12, 13);
+            this.laAboutS.TabIndex = 28;
+            this.laAboutS.Text = "s";
+            this.laAboutS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ttMain.SetToolTip(this.laAboutS, "\"s\" is for secure");
+            this.laAboutS.Visible = false;
             // 
-            // laAboutLinksSeparator
+            // laPassS
             // 
-            this.laAboutLinksSeparator.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laAboutLinksSeparator.AutoSize = true;
-            this.laAboutLinksSeparator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.laAboutLinksSeparator.ForeColor = System.Drawing.Color.White;
-            this.laAboutLinksSeparator.Location = new System.Drawing.Point(168, 119);
-            this.laAboutLinksSeparator.Margin = new System.Windows.Forms.Padding(0);
-            this.laAboutLinksSeparator.Name = "laAboutLinksSeparator";
-            this.laAboutLinksSeparator.Size = new System.Drawing.Size(10, 13);
-            this.laAboutLinksSeparator.TabIndex = 27;
-            this.laAboutLinksSeparator.Text = "-";
-            this.laAboutLinksSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // buPuTTYPath
-            // 
-            this.buPuTTYPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buPuTTYPath.Location = new System.Drawing.Point(107, 97);
-            this.buPuTTYPath.Margin = new System.Windows.Forms.Padding(0);
-            this.buPuTTYPath.Name = "buPuTTYPath";
-            this.buPuTTYPath.Size = new System.Drawing.Size(22, 22);
-            this.buPuTTYPath.TabIndex = 34;
-            this.buPuTTYPath.Text = "...";
-            this.buPuTTYPath.UseCompatibleTextRendering = true;
-            this.buPuTTYPath.UseVisualStyleBackColor = true;
-            this.buPuTTYPath.Click += new System.EventHandler(this.buPuTTYPath_Click);
+            this.laPassS.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laPassS.AutoSize = true;
+            this.laPassS.BackColor = System.Drawing.Color.Transparent;
+            this.laPassS.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.laPassS.ForeColor = System.Drawing.Color.White;
+            this.laPassS.Location = new System.Drawing.Point(182, 89);
+            this.laPassS.Name = "laPassS";
+            this.laPassS.Size = new System.Drawing.Size(12, 13);
+            this.laPassS.TabIndex = 32;
+            this.laPassS.Text = "s";
+            this.laPassS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ttMain.SetToolTip(this.laPassS, "\"s\" is for secure");
+            this.laPassS.Visible = false;
             // 
             // FormMain
             // 
@@ -1392,8 +1428,8 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(261, 228);
             this.Controls.Add(this.tlMain);
-            this.Controls.Add(this.tlPassword);
             this.Controls.Add(this.tlAbout);
+            this.Controls.Add(this.tlPassword);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FormMain";
@@ -1539,6 +1575,8 @@
         private SingleClickLabel laAboutLinksSeparator;
         private System.Windows.Forms.LinkLabel liAboutGithub;
         private System.Windows.Forms.Button buPuTTYPath;
+        private SingleClickLabel laAboutS;
+        private SingleClickLabel laPassS;
     }
 }
 

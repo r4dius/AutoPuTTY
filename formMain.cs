@@ -257,6 +257,11 @@ namespace AutoPuTTY
 
             OpenAtSavedPosition(this);
 
+#if SECURE
+            laAboutS.Visible = true;
+            laPassS.Visible = true;
+#endif
+
             // convert old decryptable password to md5 hash
             if (Settings.Default.password.Trim() != "")
             {
