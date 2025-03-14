@@ -399,7 +399,11 @@ namespace AutoPuTTY
 #if SECURE
             else if (!FormMain.IsPasswordComplex(tbGPassword.Text))
             {
-                MessageBoxEx.Show(this, "Your password doesn't meet the required complexity. Please ensure it's at least 16 characters long, with letters, numbers, symbols, and at least one uppercase letter", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string message = "Your password does not meet the required complexity:\n" +
+                                 "- At least 16 characters\n" +
+                                 "- Upper & lower case letters\n" +
+                                 "- At least 1 number & 1 symbol";
+                MessageBoxEx.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 #endif
             else
@@ -447,8 +451,12 @@ namespace AutoPuTTY
             if (FormMain.IsPasswordComplex(Settings.Default.cryptokey)) return;
             e.Cancel = true;
 
-            string message = "For better security, please set a password that's at least 16 characters long, with letters, numbers, symbols, and at least one uppercase letter. Click Cancel to exit.";
-            DialogResult result = MessageBoxEx.Show(this, message, "Password Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            string message = "For better security, set a password with:\n" +
+                             "- At least 16 characters\n" +
+                             "- Upper & lower case letters\n" +
+                             "- At least 1 number & 1 symbol\n\n" +
+                             "Click cancel to exit.";
+            DialogResult result = MessageBoxEx.Show(this, message, "Password required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
             if (result == DialogResult.Cancel)
             {

@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -67,35 +66,46 @@ namespace AutoPuTTY
 #if DEBUG
             DateTime time = DateTime.Now;
 #endif
-
             string cfgpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace("file:\\", "");
-            string userpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string userpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), typeof(FormMain).Namespace);
 
-            if (File.Exists(cfgpath + "\\" + Settings.Default.cfgfilepath))
+            if (File.Exists(Path.Combine(cfgpath, Settings.Default.cfgfilepath)))
             {
-                Settings.Default.cfgpath = cfgpath + "\\" + Settings.Default.cfgfilepath;
+                Settings.Default.cfgpath = Path.Combine(cfgpath, Settings.Default.cfgfilepath);
             }
-            else if (File.Exists(userpath + "\\" + Settings.Default.cfgfilepath))
+            else if (File.Exists(Path.Combine(userpath, Settings.Default.cfgfilepath)))
             {
-                Settings.Default.cfgpath = userpath + "\\" + Settings.Default.cfgfilepath;
+                Settings.Default.cfgpath = Path.Combine(userpath, Settings.Default.cfgfilepath);
             }
             else
             {
                 try
                 {
-                    Settings.Default.cfgpath = cfgpath + "\\" + Settings.Default.cfgfilepath;
+                    Settings.Default.cfgpath = Path.Combine(cfgpath, Settings.Default.cfgfilepath);
                     XmlCreateConfig();
                 }
-                catch (UnauthorizedAccessException)
+                catch (Exception e)
                 {
-                    if (!File.Exists(userpath))
+                    if (!Directory.Exists(userpath))
                     {
                         try
                         {
-                            Settings.Default.cfgpath = userpath + "\\" + Settings.Default.cfgfilepath;
-                            XmlCreateConfig();
+                            Directory.CreateDirectory(userpath);
                         }
-                        catch (UnauthorizedAccessException)
+                        catch (Exception ex)
+                        {
+                            MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
+                            Environment.Exit(-1);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Settings.Default.cfgpath = Path.Combine(userpath, Settings.Default.cfgfilepath);
+                            XmlSave();
+                        }
+                        catch (Exception ex)
                         {
                             MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
                             Environment.Exit(-1);
@@ -132,7 +142,7 @@ namespace AutoPuTTY
             cbType.SelectedIndex = 0;
             if (XmlGetConfig("autohidepassword").ToLower() == "true") Settings.Default.autohidepassword = true;
             if (XmlGetConfig("maximized").ToLower() == "true") Settings.Default.maximized = true;
-            if (XmlGetConfig("minimize").ToLower() == "false") Settings.Default.minimize = false;
+            if (XmlGetConfig("minimize").ToLower() == "true") Settings.Default.minimize = true;
             if (XmlGetConfig("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
             if (XmlGetConfig("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlGetConfig("multicolumnwidth"));
             if (XmlGetConfig("password") != "") Settings.Default.password = XmlGetConfig("password");
@@ -265,10 +275,12 @@ namespace AutoPuTTY
             }
             else
             {
-#if SECURE
-                StartupSecure();
-#else
                 Startup();
+#if SECURE
+                this.BeginInvoke(new Action(() =>
+                {
+                    StartupSecure();
+                }));
 #endif
             }
 #if DEBUG
@@ -320,10 +332,12 @@ namespace AutoPuTTY
 
         private void StartupSecure()
         {
-            Startup();
-
-            string message = "For better security, please set a password that's at least 16 characters long, with letters, numbers, symbols, and at least one uppercase letter. Click Cancel to exit.";
-            DialogResult result = MessageBoxEx.Show(this, message, "Password Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            string message = "For better security, set a password with:\n" +
+                             "- At least 16 characters\n" +
+                             "- Upper & lower case letters\n" +
+                             "- At least 1 number & 1 symbol\n\n" +
+                             "Click cancel to exit.";
+            DialogResult result = MessageBoxEx.Show(this, message, "Password required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
             if (result == DialogResult.OK)
             {
@@ -541,26 +555,6 @@ namespace AutoPuTTY
 
             form.DesktopBounds = new Rectangle(Left, Top, Width, Height);
             if (Settings.Default.position != "" && Settings.Default.maximized) form.WindowState = FormWindowState.Maximized;
-        }
-
-        private static bool CheckWriteAccess(string path)
-        {
-            bool WriteAllow = false;
-            bool WriteDeny = false;
-            DirectorySecurity AccessControlList = Directory.GetAccessControl(path);
-            AuthorizationRuleCollection AccessRules = AccessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
-
-            foreach (FileSystemAccessRule rule in AccessRules)
-            {
-                if ((FileSystemRights.Write & rule.FileSystemRights) != FileSystemRights.Write) continue;
-
-                if (rule.AccessControlType == AccessControlType.Allow)
-                    WriteAllow = true;
-                else if (rule.AccessControlType == AccessControlType.Deny)
-                    WriteDeny = true;
-            }
-
-            return WriteAllow && !WriteDeny;
         }
 
         public void Connect(string type)
@@ -1134,14 +1128,15 @@ namespace AutoPuTTY
 
         public void XmlSave()
         {
-            try
-            {
+            //try
+            //{
                 XmlConfig.Save(Settings.Default.cfgpath);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                MessageError(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    MessageError(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
+            //}
+            
         }
 
         public void XmlSetConfig(string id, string value)
@@ -2293,11 +2288,9 @@ namespace AutoPuTTY
                 {
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbPassPassword.Text;
-#if SECURE
-                    if (IsPasswordComplex(Settings.Default.cryptokey)) Startup();
-                    else StartupSecure();
-#else
                     Startup();
+#if SECURE
+                    if (!IsPasswordComplex(Settings.Default.cryptokey)) StartupSecure();
 #endif
                     return;
                 }

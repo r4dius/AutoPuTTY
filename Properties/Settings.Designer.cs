@@ -25,9 +25,8 @@ namespace AutoPuTTY.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool autohidepassword
-        {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool autohidepassword {
             get {
                 return ((bool)(this["autohidepassword"]));
             }
@@ -110,7 +109,7 @@ namespace AutoPuTTY.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool minimize {
             get {
                 return ((bool)(this["minimize"]));
