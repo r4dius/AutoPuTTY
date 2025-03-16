@@ -4,8 +4,8 @@ AutoPuTTY.4.1.resharper.user
 .vs/*
 bin/*
 obj/*
-putty/Release/*
-putty/x64/*
 Resources/PngOptimizer.exe
-/putty-0.80/x64
-/putty-0.80/.vs
+putty-0.83/x64
+putty-0.83/.vs
+putty-0.83/Release/*
+putty-0.83/doc
