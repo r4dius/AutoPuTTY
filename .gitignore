@@ -8,4 +8,4 @@ Resources/PngOptimizer.exe
 putty-0.83/x64
 putty-0.83/.vs
 putty-0.83/Release/*
-putty-0.83/doc
+NSIS/*.exe
