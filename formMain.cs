@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -147,6 +148,7 @@ namespace AutoPuTTY
             if (XmlGetConfig("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlGetConfig("multicolumnwidth"));
             if (XmlGetConfig("password") != "") Settings.Default.password = XmlGetConfig("password");
             if (XmlGetConfig("passwordmd5") != "") Settings.Default.passwordmd5 = XmlGetConfig("passwordmd5");
+            if (XmlGetConfig("passwordpbk") != "") Settings.Default.passwordpbk = XmlGetConfig("passwordpbk");
             if (XmlGetConfig("position") != "") Settings.Default.position = XmlGetConfig("position");
             if (XmlGetConfig("putty") != "") Settings.Default.puttypath = XmlGetConfig("putty");
             if (XmlGetConfig("puttycommand") != "") Settings.Default.puttycommand = XmlGetConfig("puttycommand");
@@ -177,7 +179,6 @@ namespace AutoPuTTY
 
             InsertMenu(sysMenuHandle, 5, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
             InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
-
             ttMain.Active = Settings.Default.tooltips;
 
             noIcon.Visible = Settings.Default.minimize;
@@ -263,16 +264,8 @@ namespace AutoPuTTY
             //Text += "ˢ";
 #endif
 
-            // convert old decryptable password to md5 hash
-            if (Settings.Default.password.Trim() != "")
-            {
-                Settings.Default.passwordmd5 = MD5Hash(Decrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
-                Settings.Default.password = "";
-
-                XmlSetConfig("passwordmd5", Settings.Default.passwordmd5);
-                XmlDropNode("Config", new ArrayList { "password" });
-            }
-            if (Settings.Default.passwordmd5.Trim() != "")
+            RemovePasswordMethods("password");
+            if (Settings.Default.passwordpbk.Trim() != "" || Settings.Default.passwordmd5.Trim() != "")
             {
                 PasswordRequired = true;
                 piPassEye.Image = IconEyeHover;
@@ -376,6 +369,7 @@ namespace AutoPuTTY
 
         private void Startup()
         {
+            RemovePasswordMethods("passwordmd5");
             PasswordRequired = false;
             buCopyName.Enabled = false;
             buCopyHost.Enabled = false;
@@ -397,6 +391,27 @@ namespace AutoPuTTY
                 lbVault.SelectedIndex = 0;
             }
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
+        }
+
+        private void RemovePasswordMethods(string method)
+        {
+            // convert old passwords to pbkdf2 hash
+            if (method == "password")
+            {
+                if (Settings.Default.password.Trim() == "") return;
+                Settings.Default.passwordpbk = Crypto.HashPassword(Decrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
+                Settings.Default.password = "";
+            }
+
+            if (method == "passwordmd5")
+            {
+                if (Settings.Default.passwordmd5.Trim() == "") return;
+                Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptokey);
+                Settings.Default.passwordmd5 = "";
+            }
+
+            XmlSetConfig("passwordpbk", Settings.Default.passwordpbk);
+            XmlDropNode("Config", new ArrayList { method });
         }
 
         private async void UpdateCheck()
@@ -2305,7 +2320,8 @@ namespace AutoPuTTY
             }
             else
             {
-                if (MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5)
+                if ((Settings.Default.passwordpbk != "" && Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk)) ||
+                    (Settings.Default.passwordmd5 != "" && Crypto.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5))
                 {
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbPassPassword.Text;
@@ -2363,28 +2379,6 @@ namespace AutoPuTTY
                 {
                     panel.Visible = false;
                 }
-            }
-        }
-
-        // thanks chatgpt
-        public string MD5Hash(string input)
-        {
-            // convert the input string to a byte array and compute the hash.
-            using (MD5 Md5Hash = MD5.Create())
-            {
-                byte[] Data = Md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-                // create a new StringBuilder to collect the bytes and create a string.
-                StringBuilder StringBuilder = new StringBuilder();
-
-                // loop through each byte of the hashed data and format each one as a hexadecimal string.
-                for (int i = 0; i < Data.Length; i++)
-                {
-                    StringBuilder.Append(Data[i].ToString("x2"));
-                }
-
-                // return the hexadecimal string.
-                return StringBuilder.ToString();
             }
         }
 

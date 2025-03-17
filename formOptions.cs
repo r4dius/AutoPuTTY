@@ -42,20 +42,16 @@ namespace AutoPuTTY
 
             if (File.Exists(Settings.Default.cfgpath))
             {
+                if (Settings.Default.passwordpbk.Trim() != "")
+                {
+                    tbGPassword.Text = Settings.Default.cryptokey;
+                    tbGConfirm.Text = Settings.Default.cryptokey;
 #if SECURE
-                if (Settings.Default.passwordmd5.Trim() != "")
-                {
-                    tbGPassword.Text = Settings.Default.cryptokey;
-                    tbGConfirm.Text = Settings.Default.cryptokey;
-                }
-#else
-                if (Settings.Default.passwordmd5.Trim() != "")
-                {
-                    tbGPassword.Text = Settings.Default.cryptokey;
-                    tbGConfirm.Text = Settings.Default.cryptokey;
                     cbGPassword.Checked = true;
                 }
                 else cbGPassword.Checked = false;
+#else
+                }
 #endif
                 cbGMulti.Checked = Settings.Default.multicolumn;
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
@@ -421,10 +417,10 @@ namespace AutoPuTTY
 #endif
             else
             {
-                if (FormMain.MD5Hash(tbGPassword.Text) != Settings.Default.passwordmd5)
+                if (!Crypto.VerifyPassword(tbGPassword.Text, Settings.Default.passwordpbk))
                 {
-                    Settings.Default.passwordmd5 = FormMain.MD5Hash(tbGPassword.Text);
-                    FormMain.XmlSetConfig("passwordmd5", Settings.Default.passwordmd5.ToString());
+                    Settings.Default.passwordpbk = Crypto.HashPassword(tbGPassword.Text);
+                    FormMain.XmlSetConfig("passwordpbk", Settings.Default.passwordpbk.ToString());
 
                     if (FormMain.lbServer.Items.Count > 0 || FormMain.lbVault.Items.Count > 0)
                     {

@@ -209,6 +209,21 @@ namespace AutoPuTTY.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string passwordpbk
+        {
+            get
+            {
+                return ((string)(this["passwordpbk"]));
+            }
+            set
+            {
+                this["passwordpbk"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string position
         {
             get

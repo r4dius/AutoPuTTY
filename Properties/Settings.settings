@@ -38,6 +38,9 @@
     <Setting Name="passwordmd5" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="passwordpbk" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="position" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
