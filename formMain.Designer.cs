@@ -98,6 +98,7 @@
             this.laFindSeparator = new System.Windows.Forms.Label();
             this.tlAbout = new System.Windows.Forms.TableLayoutPanel();
             this.paAbout = new System.Windows.Forms.Panel();
+            this.laAboutS = new AutoPuTTY.SingleClickLabel();
             this.laAboutLinksSeparator = new AutoPuTTY.SingleClickLabel();
             this.liAboutGithub = new System.Windows.Forms.LinkLabel();
             this.paUpdate = new System.Windows.Forms.Panel();
@@ -122,7 +123,6 @@
             this.tbPassFake = new System.Windows.Forms.TextBox();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cmVault = new System.Windows.Forms.ContextMenu();
-            this.laAboutS = new AutoPuTTY.SingleClickLabel();
             this.laPassS = new AutoPuTTY.SingleClickLabel();
             this.paConfig.SuspendLayout();
             this.paServer.SuspendLayout();
@@ -1060,6 +1060,22 @@
             this.paAbout.Size = new System.Drawing.Size(261, 228);
             this.paAbout.TabIndex = 0;
             // 
+            // laAboutS
+            // 
+            this.laAboutS.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laAboutS.AutoSize = true;
+            this.laAboutS.BackColor = System.Drawing.Color.Transparent;
+            this.laAboutS.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.laAboutS.ForeColor = System.Drawing.Color.White;
+            this.laAboutS.Location = new System.Drawing.Point(182, 89);
+            this.laAboutS.Name = "laAboutS";
+            this.laAboutS.Size = new System.Drawing.Size(12, 13);
+            this.laAboutS.TabIndex = 28;
+            this.laAboutS.Text = "s";
+            this.laAboutS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ttMain.SetToolTip(this.laAboutS, "\"s\" is for secure");
+            this.laAboutS.Visible = false;
+            // 
             // laAboutLinksSeparator
             // 
             this.laAboutLinksSeparator.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -1388,22 +1404,6 @@
             this.ttMain.AutoPopDelay = 5000;
             this.ttMain.InitialDelay = 200;
             this.ttMain.ReshowDelay = 100;
-            // 
-            // laAboutS
-            // 
-            this.laAboutS.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laAboutS.AutoSize = true;
-            this.laAboutS.BackColor = System.Drawing.Color.Transparent;
-            this.laAboutS.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.laAboutS.ForeColor = System.Drawing.Color.White;
-            this.laAboutS.Location = new System.Drawing.Point(182, 89);
-            this.laAboutS.Name = "laAboutS";
-            this.laAboutS.Size = new System.Drawing.Size(12, 13);
-            this.laAboutS.TabIndex = 28;
-            this.laAboutS.Text = "s";
-            this.laAboutS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ttMain.SetToolTip(this.laAboutS, "\"s\" is for secure");
-            this.laAboutS.Visible = false;
             // 
             // laPassS
             // 

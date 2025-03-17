@@ -260,6 +260,7 @@ namespace AutoPuTTY
 #if SECURE
             laAboutS.Visible = true;
             laPassS.Visible = true;
+            //Text += "ˢ";
 #endif
 
             // convert old decryptable password to md5 hash
@@ -322,17 +323,32 @@ namespace AutoPuTTY
         }
 
 #if SECURE
-        internal bool IsPasswordComplex(string password)
+        internal enum PasswordErrors
         {
+            None = 0,
+            TooShort = 1 << 0,
+            NoLowercase = 1 << 1,
+            NoUppercase = 1 << 2,
+            NoDigit = 1 << 3,
+            NoSpecial = 1 << 4
+        }
+
+        internal PasswordErrors CheckPasswordComplexity(string password)
+        {
+            PasswordErrors errors = PasswordErrors.None;
+
             if (password.Length < 16)
-                return false;
+                errors |= PasswordErrors.TooShort;
+            if (!Regex.IsMatch(password, "[a-z]"))
+                errors |= PasswordErrors.NoLowercase;
+            if (!Regex.IsMatch(password, "[A-Z]"))
+                errors |= PasswordErrors.NoUppercase;
+            if (!Regex.IsMatch(password, "\\d"))
+                errors |= PasswordErrors.NoDigit;
+            if (!Regex.IsMatch(password, "[^a-zA-Z0-9]"))
+                errors |= PasswordErrors.NoSpecial;
 
-            bool hasLower = Regex.IsMatch(password, "[a-z]");
-            bool hasUpper = Regex.IsMatch(password, "[A-Z]");
-            bool hasDigit = Regex.IsMatch(password, "\\d");
-            bool hasSpecial = Regex.IsMatch(password, "[^a-zA-Z0-9]");
-
-            return hasLower && hasUpper && hasDigit && hasSpecial;
+            return errors;
         }
 
         private void StartupSecure()
@@ -346,7 +362,7 @@ namespace AutoPuTTY
 
             if (result == DialogResult.OK)
             {
-                using (FormOptions FormOptions = new FormOptions(this))
+                using (FormOptions FormOptions = new FormOptions(this, focusPassword: true))
                 {
                     FormOptions.ShowDialog(this);
                 }
@@ -396,7 +412,7 @@ namespace AutoPuTTY
             {
                 try
                 {
-                    Client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("product", ProductName)); // set your own values here
+                    Client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("product", ProductName));
 
                     HttpResponseMessage Response = await Client.GetAsync(Url);
                     Response.EnsureSuccessStatusCode();
@@ -2295,7 +2311,7 @@ namespace AutoPuTTY
                     Settings.Default.cryptokey = tbPassPassword.Text;
                     Startup();
 #if SECURE
-                    if (!IsPasswordComplex(Settings.Default.cryptokey)) StartupSecure();
+                    if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) StartupSecure();
 #endif
                     return;
                 }

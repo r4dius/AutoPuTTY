@@ -19,8 +19,9 @@ namespace AutoPuTTY
         public bool ImportEmpty;
         public object Locker = new object();
         public string ImportReplace = "";
+        private bool shouldFocusPassword;
 
-        public FormOptions(FormMain Form)
+        public FormOptions(FormMain Form, bool focusPassword = false)
         {
             FormMain = Form;
             InitializeComponent();
@@ -94,6 +95,16 @@ namespace AutoPuTTY
             tooltipOptions.Active = cbGTooltips.Checked;
             buGApply.Enabled = false;
             FirstRead = false;
+
+            shouldFocusPassword = focusPassword;
+        }
+
+        private void FormOptions_Shown(object sender, EventArgs e)
+        {
+            if (shouldFocusPassword)
+            {
+                tbGPassword.Focus();
+            }
         }
 
         public bool ImportAskDuplicate(string name)
@@ -397,12 +408,14 @@ namespace AutoPuTTY
                 tbGConfirm.Text = "";
             }
 #if SECURE
-            else if (!FormMain.IsPasswordComplex(tbGPassword.Text))
+            else if (FormMain.CheckPasswordComplexity(tbGPassword.Text) != FormMain.PasswordErrors.None)
             {
-                string message = "Your password does not meet the required complexity:\n" +
-                                 "- At least 16 characters\n" +
-                                 "- Upper & lower case letters\n" +
-                                 "- At least 1 number & 1 symbol";
+                FormMain.PasswordErrors complexityErrors = FormMain.CheckPasswordComplexity(tbGPassword.Text);
+
+                string message = "Your password does not meet the required complexity:\n";
+                if ((complexityErrors & FormMain.PasswordErrors.TooShort) != 0) message += "- At least 16 characters\n";
+                if ((complexityErrors & FormMain.PasswordErrors.NoLowercase) != 0 || (complexityErrors & FormMain.PasswordErrors.NoUppercase) != 0) message += "- Upper & lower case letters\n";
+                if ((complexityErrors & FormMain.PasswordErrors.NoDigit) != 0 || (complexityErrors & FormMain.PasswordErrors.NoSpecial) != 0) message += "- At least 1 number & 1 symbol\n";
                 MessageBoxEx.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 #endif
@@ -448,7 +461,7 @@ namespace AutoPuTTY
         private void FormOptions_FormClosing(object sender, FormClosingEventArgs e)
         {
 #if SECURE
-            if (FormMain.IsPasswordComplex(Settings.Default.cryptokey)) return;
+            if (FormMain.CheckPasswordComplexity(Settings.Default.cryptokey) == FormMain.PasswordErrors.None) return;
             e.Cancel = true;
 
             string message = "For better security, set a password with:\n" +
