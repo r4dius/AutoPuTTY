@@ -187,6 +187,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\iconvault.png" />
     <None Include="Resources\ok.png" />
     <None Include="Resources\about.png" />
     <Content Include="Resources\autoputty.ico" />
