@@ -1068,7 +1068,8 @@ namespace AutoPuTTY
             // reset the search input text
             if (status && !paFindToogle.Visible) tbFilter.Text = "";
             // show the "search" form
-            tlLeft.RowStyles[1].Height = status ? 25 : 0;
+            tlLeft.RowStyles[1].Height = status ? 1 : 0;
+            tlLeft.RowStyles[2].Height = status ? 24 : 0;
             paFindToogle.Visible = status;
             // focus the filter input
             tbFilter.Focus();
@@ -2416,7 +2417,6 @@ namespace AutoPuTTY
                     ControlReset = false;
                 }
                 cbVault.Visible = cbVault.Enabled = true;
-                buEdit.Visible = buEdit.Enabled = true;
                 buCopyVault.Visible = true;
                 buCopyPass.Visible = false;
                 tbPass.Visible = tbPass.Enabled = false;
@@ -2435,7 +2435,6 @@ namespace AutoPuTTY
                 buCopyPass.Visible = true;
                 buCopyVault.Visible = false;
                 cbVault.Visible = cbVault.Enabled = false;
-                buEdit.Visible = buEdit.Enabled = false;
             }
         }
 

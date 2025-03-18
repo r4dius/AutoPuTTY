@@ -117,23 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="buVault.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EAAACxABrSO9dQAAAO9JREFUOE+V0r8rhlEYxvHPZLC8Sln8AUpZjFa7ZDBgopTFj9EfYZVV+QOY3979
-        TbKIgZVNEhtCp87Rcff0eHzrTNd13c91n+fQTg9HeMIXPnGO+WhsYgxXOdh0NmMgcpaNbzjEIrZxU7WZ
-        jaHCdPWl1aCNVENOgvbDVjY8RyGzk/X7KBTW/hiQVkn6QxQKU9UKK0GrVzgO2i9OO1ziTAwVFvBetWg6
-        6zFUWMZHNt1hAwO84BIHmIuhQvplqVoK32IiGtpIlUr4GuPR0MZutdtFfsad2QuXM8RoNLXxmIOv1ZD0
-        0jqzhH1M5vr9/zT4BrOUUnkRqfsxAAAAAElFTkSuQmCC
-</value>
-  </data>
   <metadata name="ttMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>433, 17</value>
   </metadata>
   <metadata name="noIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>325, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="noIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAMAEBAQAAEABAAoAQAANgAAABAQAAABAAgAaAUAAF4BAAAQEAAAAQAgAGgEAADGBgAAKAAAABAA
