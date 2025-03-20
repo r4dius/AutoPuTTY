@@ -34,7 +34,7 @@ namespace AutoPuTTY
     {
         private bool PasswordRequired;
         private const int IDM_ABOUT = 1000;
-        private const int IDM_OPTIONS = 900;
+        private const int IDM_LOCK = 1100;
         private const int MF_BYPOSITION = 0x400;
         private const int MF_SEPARATOR = 0x800;
         private const int SW_RESTORE = 9;
@@ -176,9 +176,10 @@ namespace AutoPuTTY
 
             IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
             //It would be better to find the position at run time of the 'Close' item, but...
-
             InsertMenu(sysMenuHandle, 5, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
-            InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
+            InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_LOCK, "Lock\tCtrl+L");
+            InsertMenu(sysMenuHandle, 7, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
+            InsertMenu(sysMenuHandle, 8, MF_BYPOSITION, IDM_ABOUT, "About");
             ttMain.Active = Settings.Default.tooltips;
 
             noIcon.Visible = Settings.Default.minimize;
@@ -192,6 +193,7 @@ namespace AutoPuTTY
             IconEyeShowHover = ImageOpacity.Set(Resources.iconeyeshow, (float)0.5);
             IconEyeHideHover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
             IconEyeHover = ImageOpacity.Set(Resources.eye, (float)0.5);
+            piPassEye.Image = IconEyeHover;
 
             int i = 0;
             MenuItem connectmenu = new MenuItem
@@ -237,6 +239,19 @@ namespace AutoPuTTY
                 Index = i++
             };
             cmServer.MenuItems.Add(sepmenu.CloneMenu());
+            MenuItem lockmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Lock"
+            };
+            lockmenu.Click += meLock;
+            cmServer.MenuItems.Add(lockmenu);
+            sepmenu = new MenuItem
+            {
+                Text = "-",
+                Index = i++
+            };
+            cmServer.MenuItems.Add(sepmenu.CloneMenu());
             MenuItem searchmenu = new MenuItem
             {
                 Index = i++,
@@ -267,10 +282,7 @@ namespace AutoPuTTY
             RemovePasswordMethods("password");
             if (Settings.Default.passwordpbk.Trim() != "" || Settings.Default.passwordmd5.Trim() != "")
             {
-                PasswordRequired = true;
-                piPassEye.Image = IconEyeHover;
-                BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
-                ShowTableLayoutPanel(tlPassword);
+                PasswordRequest();
             }
             else
             {
@@ -290,7 +302,11 @@ namespace AutoPuTTY
         [DllImport("user32.dll")]
         private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
         [DllImport("user32.dll")]
+        private static extern int GetMenuItemCount(IntPtr hMenu);
+        [DllImport("user32.dll")]
         private static extern bool InsertMenu(IntPtr hMenu, Int32 wPosition, Int32 wFlags, Int32 wIDNewItem, string lpNewItem);
+        [DllImport("user32.dll")]
+        private static extern bool DeleteMenu(IntPtr hMenu, int uPosition, uint uFlags);
         [DllImport("user32.dll")]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
@@ -303,6 +319,9 @@ namespace AutoPuTTY
                     case IDM_ABOUT:
                         ShowTableLayoutPanel(tlAbout);
                         buAboutOK.Focus();
+                        return;
+                    case IDM_LOCK:
+                        PasswordRequest();
                         return;
                     default:
                         break;
@@ -324,6 +343,14 @@ namespace AutoPuTTY
             NoUppercase = 1 << 2,
             NoDigit = 1 << 3,
             NoSpecial = 1 << 4
+        }
+
+        private void PasswordRequest()
+        {
+            tbPassPasswordReset();
+            PasswordRequired = true;
+            BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
+            ShowTableLayoutPanel(tlPassword);
         }
 
         internal PasswordErrors CheckPasswordComplexity(string password)
@@ -620,6 +647,7 @@ namespace AutoPuTTY
                     string User = Decrypt(GetServer["User"]);
                     string Pass = Decrypt(GetServer["Password"]);
                     string Vault = GetServer["Vault"];
+                    string PrivateKey = Decrypt(GetServer["PrivateKey"]);
                     string Type = type == "-1" ? GetServer["Type"] : type;
                     string Proxy = "";
                     string ProxyUser = "";
@@ -627,13 +655,12 @@ namespace AutoPuTTY
                     string ProxyHost = "";
                     string ProxyPort = "";
                     string UserFromProxy = "";
-                    string VaultPrivateKey = "";
 
                     if (Vault.Trim() != "")
                     {
                         IDictionary<string, string> GetVault = XmlGetVault(Vault);
                         Pass = Decrypt(GetVault["Password"]);
-                        VaultPrivateKey = Decrypt(GetVault["PrivateKey"]);
+                        PrivateKey = Decrypt(GetVault["PrivateKey"]);
                     }
 
                     //SSH Jump
@@ -871,7 +898,7 @@ namespace AutoPuTTY
                                 if (Host != "") Proc.StartInfo.Arguments += HttpUtility.UrlEncode(Host);
                                 if (Port != "") Proc.StartInfo.Arguments += ":" + Port;
                                 if (WinscpProt == "ftp://") Proc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
-                                if (VaultPrivateKey != "") Proc.StartInfo.Arguments += " /privatekey=\"" + VaultPrivateKey + "\"";
+                                if (PrivateKey != "") Proc.StartInfo.Arguments += " /privatekey=\"" + PrivateKey + "\"";
                                 else if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") Proc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
 
                                 if (Settings.Default.winscpagent || ProxyHost != "")
@@ -953,7 +980,7 @@ namespace AutoPuTTY
                                 if (Port != "") Proc.StartInfo.Arguments += " " + Port;
                                 if (User != "" && Pass != "") Proc.StartInfo.Arguments += " -pw \"" + ReplacePath(PassSearch, PassReplace, Pass) + "\"";
                                 if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") Proc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
-                                if (VaultPrivateKey != "") Proc.StartInfo.Arguments += " -i \"" + VaultPrivateKey + "\"";
+                                if (PrivateKey != "") Proc.StartInfo.Arguments += " -i \"" + PrivateKey + "\"";
                                 else if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") Proc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
                                 if (Settings.Default.puttyagent) Proc.StartInfo.Arguments += " -A";
                                 if (Settings.Default.puttyforward) Proc.StartInfo.Arguments += " -X";
@@ -1233,6 +1260,7 @@ namespace AutoPuTTY
             string User = "";
             string Pass = "";
             string Vault = "";
+            string Priv = "";
             int Type = 0;
 
             XmlConfig.Load(Settings.Default.cfgpath);
@@ -1256,6 +1284,9 @@ namespace AutoPuTTY
                         case "Vault":
                             Vault = childnode.InnerText;
                             break;
+                        case "PrivateKey":
+                            Priv = childnode.InnerText;
+                            break;
                         case "Type":
                             Int32.TryParse(childnode.InnerText, out Type);
                             break;
@@ -1267,6 +1298,7 @@ namespace AutoPuTTY
                 Server.Add("User", User);
                 Server.Add("Password", Pass);
                 Server.Add("Vault", Vault);
+                Server.Add("PrivateKey", Priv);
                 Server.Add("Type", Type.ToString());
             }
 
@@ -1363,6 +1395,7 @@ namespace AutoPuTTY
                 XmlElement UserXml = XmlConfig.CreateElement("User");
                 XmlElement PassXml = XmlConfig.CreateElement("Password");
                 XmlElement VaultXml = XmlConfig.CreateElement("Vault");
+                XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
                 XmlElement TypeXml = XmlConfig.CreateElement("Type");
                 NameXml.Value = tbName.Text.Trim();
                 HostXml.InnerText = Encrypt(tbHost.Text.Trim());
@@ -1375,12 +1408,14 @@ namespace AutoPuTTY
                 {
                     VaultXml.InnerText = cbVault.Text;
                 }
+                PrivXml.InnerText = Encrypt(tbPriv.Text);
                 TypeXml.InnerText = Array.IndexOf(TypeList, cbType.Text).ToString();
                 ServerXml.SetAttributeNode(NameXml);
                 ServerXml.AppendChild(HostXml);
                 ServerXml.AppendChild(UserXml);
                 ServerXml.AppendChild(PassXml);
                 ServerXml.AppendChild(VaultXml);
+                ServerXml.AppendChild(PrivXml);
                 ServerXml.AppendChild(TypeXml);
 
                 _ = (XmlConfig.DocumentElement?.InsertAfter(ServerXml, XmlConfig.DocumentElement.LastChild));
@@ -1393,6 +1428,8 @@ namespace AutoPuTTY
                 tbUser.BackColor = SystemColors.Window;
                 tbPass.BackColor = SystemColors.Window;
                 cbVault.BackColor = SystemColors.Window;
+                tbPass.BackColor = SystemColors.Window;
+                tbPriv.BackColor = SystemColors.Window;
                 cbType.BackColor = SystemColors.Window;
 
                 tbName.Text = tbName.Text.Trim();
@@ -1424,6 +1461,7 @@ namespace AutoPuTTY
             XmlElement UserXml = XmlConfig.CreateElement("User");
             XmlElement PassXml = XmlConfig.CreateElement("Password");
             XmlElement VaultXml = XmlConfig.CreateElement("Vault");
+            XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
             XmlElement TypeXml = XmlConfig.CreateElement("Type");
             HostXml.InnerText = Encrypt(tbHost.Text.Trim());
             UserXml.InnerText = Encrypt(tbUser.Text);
@@ -1435,11 +1473,13 @@ namespace AutoPuTTY
             {
                 VaultXml.InnerText = cbVault.Text;
             }
+            PrivXml.InnerText = Encrypt(tbPriv.Text);
             TypeXml.InnerText = Array.IndexOf(TypeList, cbType.Text).ToString();
             ServerXml.AppendChild(HostXml);
             ServerXml.AppendChild(UserXml);
             ServerXml.AppendChild(PassXml);
             ServerXml.AppendChild(VaultXml);
+            ServerXml.AppendChild(PrivXml);
             ServerXml.AppendChild(TypeXml);
 
             XmlNode ServerNode = XmlConfig.SelectSingleNode("//Server[@Name=" + ParseXpathString(lbServer.SelectedItem.ToString()) + "]");
@@ -1651,6 +1691,11 @@ namespace AutoPuTTY
             }
         }
 
+        private void meLock(object sender, EventArgs e)
+        {
+            PasswordRequest();
+        }
+
         private void listBox_ContextMenu(object sender)
         {
             listBox_ContextMenu(sender, false);
@@ -1819,6 +1864,7 @@ namespace AutoPuTTY
             tbPass.BackColor = SystemColors.Window;
             cbType.BackColor = SystemColors.Window;
             cbVault.BackColor = SystemColors.Window;
+            tbPriv.BackColor = SystemColors.Window;
 
             IDictionary<string, string> GetServer = XmlGetServer(lbServer.SelectedItem.ToString());
 
@@ -1841,6 +1887,7 @@ namespace AutoPuTTY
                 }
                 tbPass.Text = Decrypt(GetServer["Password"]);
             }
+            tbPriv.Text = Decrypt(GetServer["PrivateKey"]);
             cbType.SelectedItem = TypeList[Convert.ToInt32(GetServer["Type"])];
             //SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
             laUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
@@ -1998,10 +2045,20 @@ namespace AutoPuTTY
             }
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.L))
+            {
+                PasswordRequest();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         // systray close click
         private void miClose_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Application.Exit();
+            Application.Exit();
         }
 
         // systray restore click
@@ -2108,6 +2165,12 @@ namespace AutoPuTTY
                             TextBoxVal = Decrypt(GetServer["Password"]);
                         }
                         buCopyPass.Enabled = TextBox.Text.Trim() != "";
+                        break;
+                    case "tbPriv":
+                        if (lbServer.SelectedItem != null)
+                        {
+                            TextBoxVal = Decrypt(GetServer["PrivateKey"]);
+                        }
                         break;
                 }
 
@@ -2219,7 +2282,7 @@ namespace AutoPuTTY
             }
         }
 
-        // get first chat input and send it to the real password textbox
+        // get first char input and send it to the real password textbox
         private void tbPassFake_TextChanged(object sender, EventArgs e)
         {
             if (tbPassFake.Text == "")
@@ -2243,6 +2306,14 @@ namespace AutoPuTTY
             tbPassFake_Click(sender, e);
         }
 
+        private void tbPassPasswordReset()
+        {
+            tbPassPassword.Text = "Password";
+            tbPassPassword.ForeColor = Color.Gray;
+            tbPassPassword.PasswordChar = '\0';
+            piPassEye.Visible = false;
+        }
+
         private void tbPassPassword_Click(object sender, EventArgs e)
         {
             tbPassPassword_Enter(sender, e);
@@ -2250,7 +2321,7 @@ namespace AutoPuTTY
 
         private void tbPassPassword_Enter(object sender, EventArgs e)
         {
-            if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
+            if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray ))
             {
                 tbPassPassword.Text = "";
                 tbPassPassword.ForeColor = Color.Black;
@@ -2280,10 +2351,7 @@ namespace AutoPuTTY
         {
             if (tbPassPassword.Text == "")
             {
-                tbPassPassword.Text = "Password";
-                tbPassPassword.ForeColor = Color.Gray;
-                tbPassPassword.PasswordChar = '\0';
-                piPassEye.Visible = false;
+                tbPassPasswordReset();
             }
         }
 
@@ -2436,6 +2504,8 @@ namespace AutoPuTTY
                 buCopyVault.Visible = false;
                 cbVault.Visible = cbVault.Enabled = false;
             }
+            tbPriv.Enabled = tbPass.Visible;
+            buPriv.Enabled = tbPass.Visible;
         }
 
         private void SwitchVault(bool show)
@@ -2809,7 +2879,7 @@ namespace AutoPuTTY
             Process.Start("https://github.com/r4dius/AutoPuTTY");
         }
 
-        private void buPuTTYPath_Click(object sender, EventArgs e)
+        private void buVaultPriv_Click(object sender, EventArgs e)
         {
             OpenFileDialog FileBrowser = new OpenFileDialog
             {
@@ -2820,6 +2890,21 @@ namespace AutoPuTTY
             if (FileBrowser.ShowDialog() == DialogResult.OK)
             {
                 tbVaultPriv.Text = FileBrowser.FileName;
+            }
+            else return;
+        }
+
+        private void buPriv_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog FileBrowser = new OpenFileDialog
+            {
+                Title = "Select private key file",
+                Filter = "PuTTY private key files (*.ppk)|*.ppk|All files (*.*)|*.*"
+            };
+
+            if (FileBrowser.ShowDialog() == DialogResult.OK)
+            {
+                tbPriv.Text = FileBrowser.FileName;
             }
             else return;
         }
