@@ -333,6 +333,15 @@ namespace AutoPuTTY
             base.WndProc(ref m);
         }
 
+        private void PasswordRequest()
+        {
+            AddLockMenu(false);
+            tbPassPasswordReset();
+            PasswordRequired = true;
+            BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
+            ShowTableLayoutPanel(tlPassword);
+        }
+
 #if SECURE
         internal enum PasswordErrors
         {
@@ -342,15 +351,6 @@ namespace AutoPuTTY
             NoUppercase = 1 << 2,
             NoDigit = 1 << 3,
             NoSpecial = 1 << 4
-        }
-
-        private void PasswordRequest()
-        {
-            AddLockMenu(false);
-            tbPassPasswordReset();
-            PasswordRequired = true;
-            BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
-            ShowTableLayoutPanel(tlPassword);
         }
 
         internal PasswordErrors CheckPasswordComplexity(string password)
@@ -1877,12 +1877,15 @@ namespace AutoPuTTY
 
         public void lbServer_IndexChanged(object sender, EventArgs e)
         {
+            Debug.WriteLine("Index1");
             if (Filter || SelectAll)
             {
+                Debug.WriteLine("Index2");
                 return;
             }
             if (Remove || lbServer.SelectedItem == null)
             {
+                Debug.WriteLine("Index3");
                 buDelete.Enabled = false;
                 return;
             }
@@ -1904,21 +1907,26 @@ namespace AutoPuTTY
 
             IDictionary<string, string> GetServer = XmlGetServer(lbServer.SelectedItem.ToString());
 
+            Debug.WriteLine("Index4");
             tbName.Text = GetServer["Name"];
             tbHost.Text = Decrypt(GetServer["Host"]);
             tbUser.Text = Decrypt(GetServer["User"]);
             if (GetServer["Vault"].Trim() != "" && cbVault.Items.Contains(GetServer["Vault"]))
             {
+                Debug.WriteLine("Index5");
                 if (!cbVault.Visible)
                 {
+                    Debug.WriteLine("1 cbVault.Visible" + cbVault.Visible);
                     SwitchPassword(true);
                 }
                 cbVault.SelectedItem = GetServer["Vault"];
             }
             else
             {
+                Debug.WriteLine("Index6");
                 if (!tbPass.Visible)
                 {
+                    Debug.WriteLine("2 tbPass.Visible" + tbPass.Visible);
                     SwitchPassword(false);
                 }
                 tbPass.Text = Decrypt(GetServer["Password"]);
@@ -2035,7 +2043,7 @@ namespace AutoPuTTY
 
         private void mainForm_Move(object sender, EventArgs e)
         {
-            if (Settings.Default.position != "")
+            if (Settings.Default.position != "" && WindowState == FormWindowState.Normal)
             {
                 Settings.Default.position = DesktopBounds.X + "x" + DesktopBounds.Y;
                 XmlSetConfig("position", Settings.Default.position);
@@ -2074,7 +2082,7 @@ namespace AutoPuTTY
                 XmlSetConfig("size", Settings.Default.size);
             }
 
-            if (Settings.Default.position != "")
+            if (Settings.Default.position != "" && WindowState == FormWindowState.Normal)
             {
                 Settings.Default.position = DesktopBounds.X + "x" + DesktopBounds.Y;
                 XmlSetConfig("position", Settings.Default.position);
@@ -2430,11 +2438,11 @@ namespace AutoPuTTY
                 {
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbPassPassword.Text;
+                    AddLockMenu(true);
                     Startup();
 #if SECURE
                     if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) StartupSecure();
 #endif
-                    AddLockMenu(true);
                     return;
                 }
 

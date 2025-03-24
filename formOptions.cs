@@ -46,13 +46,10 @@ namespace AutoPuTTY
                 {
                     tbGPassword.Text = Settings.Default.cryptokey;
                     tbGConfirm.Text = Settings.Default.cryptokey;
-#if SECURE
+#if !SECURE
                     cbGPassword.Checked = true;
-                }
-                else cbGPassword.Checked = false;
-#else
-                }
 #endif
+                }
                 cbGMulti.Checked = Settings.Default.multicolumn;
                 slGMulti.Value = Convert.ToInt32(Settings.Default.multicolumnwidth);
                 cbGSize.Checked = Size.Length == 2;
@@ -253,6 +250,7 @@ namespace AutoPuTTY
             int Count = 0;
             string Host = "";
             string User = "";
+            string Vault = "";
             string Pass = "";
             string Priv = "";
             int Type = 0;
@@ -265,7 +263,9 @@ namespace AutoPuTTY
                     Count++;
                     Host = "";
                     User = "";
+                    Vault = "";
                     Pass = "";
+                    Priv = "";
                     Type = 0;
 
                     foreach (XmlElement childnode in node.ChildNodes)
@@ -278,8 +278,14 @@ namespace AutoPuTTY
                             case "User":
                                 User = FormMain.Decrypt(childnode.InnerText);
                                 break;
+                            case "Vault":
+                                Vault = childnode.InnerText;
+                                break;
                             case "Password":
                                 Pass = FormMain.Decrypt(childnode.InnerText);
+                                break;
+                            case "PrivateKey":
+                                Priv = FormMain.Decrypt(childnode.InnerText);
                                 break;
                             case "Type":
                                 Int32.TryParse(childnode.InnerText, out Type);
@@ -291,17 +297,23 @@ namespace AutoPuTTY
                     XmlAttribute NameXml = FormMain.XmlConfig.CreateAttribute("Name");
                     XmlElement HostXml = FormMain.XmlConfig.CreateElement("Host");
                     XmlElement UserXml = FormMain.XmlConfig.CreateElement("User");
+                    XmlElement VaultXml = FormMain.XmlConfig.CreateElement("Vault");
                     XmlElement PassXml = FormMain.XmlConfig.CreateElement("Password");
+                    XmlElement PrivXml = FormMain.XmlConfig.CreateElement("PrivateKey");
                     XmlElement TypeXml = FormMain.XmlConfig.CreateElement("Type");
                     NameXml.Value = node.Attributes[0].Value;
                     ServerXml.SetAttributeNode(NameXml);
                     ServerXml.AppendChild(HostXml);
                     ServerXml.AppendChild(UserXml);
+                    ServerXml.AppendChild(VaultXml);
                     ServerXml.AppendChild(PassXml);
+                    ServerXml.AppendChild(PrivXml);
                     ServerXml.AppendChild(TypeXml);
                     HostXml.InnerText = FormMain.Encrypt(Host, newpass);
                     UserXml.InnerText = FormMain.Encrypt(User, newpass);
+                    VaultXml.InnerText = Vault;
                     PassXml.InnerText = FormMain.Encrypt(Pass, newpass);
+                    PrivXml.InnerText = FormMain.Encrypt(Priv, newpass);
                     TypeXml.InnerText = Type.ToString();
 
                     XmlNodeList ServerNodes = FormMain.XmlConfig.SelectNodes("//Server[@Name=" + FormMain.ParseXpathString(node.Attributes[0].Value) + "]");
@@ -485,7 +497,7 @@ namespace AutoPuTTY
             }
             else
             {
-                if (Settings.Default.passwordmd5 != "")
+                if (Settings.Default.passwordpbk.Trim() != "")
                 {
                     DialogResult Remove = MessageBoxEx.Show(this, "This will remove password protection", "Remove password ?", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
@@ -500,9 +512,9 @@ namespace AutoPuTTY
                             PopupRecrypt.ShowDialog(this);
                         }
 
-                        FormMain.XmlDropNode("Config", new ArrayList { "passwordmd5" });
+                        FormMain.XmlDropNode("Config", new ArrayList { "passwordpbk" });
 
-                        Settings.Default.passwordmd5 = "";
+                        Settings.Default.passwordpbk = "";
                         Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
                     }
                     else

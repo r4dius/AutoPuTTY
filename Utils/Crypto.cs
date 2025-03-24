@@ -27,7 +27,7 @@ public static class Crypto
         {
             byte[] hash = pbkdf2.GetBytes(HashSize);
             // Combine iterations, salt, and hash as a single string (Base64-encoded)
-            return $"{Iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
+            return $"{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
         }
     }
 
@@ -36,15 +36,14 @@ public static class Crypto
     {
         // Extract the parts: iterations, salt, and hash
         string[] parts = storedHash.Split('.');
-        if (parts.Length != 3)
+        if (parts.Length != 2)
             return false;
 
-        int iterations = int.Parse(parts[0]);
-        byte[] salt = Convert.FromBase64String(parts[1]);
-        byte[] storedPasswordHash = Convert.FromBase64String(parts[2]);
+        byte[] salt = Convert.FromBase64String(parts[0]);
+        byte[] storedPasswordHash = Convert.FromBase64String(parts[1]);
 
         // Derive the hash from the input password using the same salt and iteration count
-        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256))
+        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256))
         {
             byte[] computedHash = pbkdf2.GetBytes(HashSize);
             return AreHashesEqual(storedPasswordHash, computedHash);
