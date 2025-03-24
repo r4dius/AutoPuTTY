@@ -592,41 +592,32 @@ namespace AutoPuTTY
                 // Check if the saved position is valid (not out of bounds)
                 if (!IsValidPosition(Left, Top, Width, Height))
                 {
-                    Debug.WriteLine("notvalid 1");
                     // If the saved position is out of bounds, center the form on the screen it's on
                     Screen screen = Screen.FromPoint(new Point(Left + BorderWidth, Top));
-                    Debug.WriteLine(screen);
                     if (Width - (BorderWidth * 2) > screen.WorkingArea.Width)
                     {
                         Width = screen.WorkingArea.Width + (BorderWidth * 2);
-                        Debug.WriteLine("do 1");
                     }
                     if (Height - BorderWidth > screen.WorkingArea.Height)
                     {
                         Height = screen.WorkingArea.Height + BorderWidth;
-                        Debug.WriteLine("do 2");
                     }
                     if (Left + BorderWidth < screen.WorkingArea.X)
                     {
                         Left = screen.WorkingArea.X;
-                        Debug.WriteLine("do 3");
                     }
                     if (Top < screen.WorkingArea.Y)
                     {
                         Top = screen.WorkingArea.Y;
-                        Debug.WriteLine("do 4");
                     }
                     if (Left + Width - BorderWidth > screen.WorkingArea.Width)
                     {
                         Left = screen.WorkingArea.X + screen.WorkingArea.Width - Width + BorderWidth;
-                        Debug.WriteLine("do 5");
                     }
                     if (Top + Height - BorderWidth > screen.WorkingArea.Height)
                     {
                         Top = screen.WorkingArea.Y + screen.WorkingArea.Height - Height + BorderWidth;
-                        Debug.WriteLine("do 6");
                     }
-                    Debug.WriteLine(screen);
                 }
                 else
                 {
@@ -637,8 +628,6 @@ namespace AutoPuTTY
                         // Shrink the window to fit within the screen bounds
                         Width = Math.Min(Width, Screen.WorkingArea.Width);
                         Height = Math.Min(Height, Screen.WorkingArea.Height);
-
-                        Debug.WriteLine("size 1");
                     }
 
                     // Check if the window is partially or completely outside the screen bounds after resizing
@@ -647,7 +636,6 @@ namespace AutoPuTTY
                         // Move the window back into the screen bounds
                         Left = Math.Max(Screen.WorkingArea.Left, Math.Min(form.Left, Screen.WorkingArea.Right - form.Width));
                         Top = Math.Max(Screen.WorkingArea.Top, Math.Min(form.Top, Screen.WorkingArea.Bottom - form.Height));
-                        Debug.WriteLine("notvalid 2");
                     }
                 }
             }
@@ -2049,13 +2037,8 @@ namespace AutoPuTTY
                 XmlSetConfig("position", Settings.Default.position);
             }
 
-            //Debug.WriteLine(SystemParameters.VirtualScreenWidth + "x" + SystemParameters.VirtualScreenHeight);
             _ = Screen.AllScreens;
             Screen.FromControl(this);
-
-            //Debug.WriteLine("string " + Screen.FromControl(this));
-            //Debug.WriteLine("working " + Screen.FromControl(this).WorkingArea);
-            //Debug.WriteLine("bounds " + Screen.FromControl(this).Bounds);
         }
 
         private void mainForm_Resize(object sender, EventArgs e)
@@ -2158,7 +2141,6 @@ namespace AutoPuTTY
                     {
                         case "cbVault":
                             ComboBoxVal = cbVault.Items.IndexOf(GetServer["Vault"]);
-                            Debug.WriteLine("cbVault");
                             if (ComboBox.Text != "")
                             {
                                 IDictionary<string, string> GetVault = new Dictionary<string, string>();
