@@ -1,13 +1,17 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Media.Animation;
 
 public static class Crypto
 {
     // Constants for salt and hash sizes (in bytes)
-    private const int SaltSize = 16; // 128-bit salt
+    private const int SaltSize = 32; // 256-bit hash
     private const int HashSize = 32; // 256-bit hash
+    private const int IvByteSize = 16;
     private const int Iterations = 100000; // Number of iterations
+    private const int KeySize = 256;
 
     // Creates a hashed password string in the format: iterations.salt.hash
     public static string HashPassword(string password)
@@ -57,6 +61,106 @@ public static class Crypto
             diff |= (uint)(hash1[i] ^ hash2[i]);
         }
         return diff == 0;
+    }
+
+    /// <summary>
+    /// Encrypts plain text using AES encryption with a passphrase.
+    /// The output is a Base64 string containing the salt, IV, and ciphertext.
+    /// </summary>
+    public static string Encrypt(string plainText, string passphrase)
+    {
+        // Generate a random salt and IV.
+        byte[] saltBytes = GenerateRandomBytes(SaltSize);
+        byte[] ivBytes = GenerateRandomBytes(IvByteSize);
+        byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+
+        // Derive a 256-bit key using PBKDF2.
+        using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA256))
+        {
+            byte[] keyBytes = keyDerivationFunction.GetBytes(KeySize / 8);
+
+            using (var aes = Aes.Create())
+            {
+                aes.KeySize = KeySize;
+                aes.BlockSize = 128;
+                aes.Mode = CipherMode.CBC;
+                aes.Padding = PaddingMode.PKCS7;
+                aes.Key = keyBytes;
+                aes.IV = ivBytes;
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    // Prepend the salt and IV to the output.
+                    memoryStream.Write(saltBytes, 0, saltBytes.Length);
+                    memoryStream.Write(ivBytes, 0, ivBytes.Length);
+
+                    using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+                        cryptoStream.FlushFinalBlock();
+
+                        // Return the combined salt+IV+ciphertext as a Base64 string.
+                        return Convert.ToBase64String(memoryStream.ToArray());
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Decrypts a Base64 string (produced by Encrypt) using the provided passphrase.
+    /// </summary>
+    public static string Decrypt(string cipherText, string passphrase)
+    {
+        byte[] cipherBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
+
+        // Extract the salt, IV, and ciphertext.
+        byte[] saltBytes = new byte[SaltSize];
+        Array.Copy(cipherBytesWithSaltAndIv, 0, saltBytes, 0, SaltSize);
+
+        byte[] ivBytes = new byte[IvByteSize];
+        Array.Copy(cipherBytesWithSaltAndIv, SaltSize, ivBytes, 0, IvByteSize);
+
+        int cipherStartIndex = SaltSize + IvByteSize;
+        int cipherLength = cipherBytesWithSaltAndIv.Length - cipherStartIndex;
+        byte[] cipherBytes = new byte[cipherLength];
+        Array.Copy(cipherBytesWithSaltAndIv, cipherStartIndex, cipherBytes, 0, cipherLength);
+
+        // Derive the key from the passphrase and salt.
+        using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA256))
+        {
+            byte[] keyBytes = keyDerivationFunction.GetBytes(KeySize / 8);
+
+            using (var aes = Aes.Create())
+            {
+                aes.KeySize = KeySize;
+                aes.BlockSize = 128;
+                aes.Mode = CipherMode.CBC;
+                aes.Padding = PaddingMode.PKCS7;
+                aes.Key = keyBytes;
+                aes.IV = ivBytes;
+
+                using (var memoryStream = new MemoryStream(cipherBytes))
+                using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateDecryptor(), CryptoStreamMode.Read))
+                using (var reader = new StreamReader(cryptoStream, Encoding.UTF8))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Generates a specified number of random bytes.
+    /// </summary>
+    private static byte[] GenerateRandomBytes(int size)
+    {
+        byte[] randomBytes = new byte[size];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(randomBytes);
+        }
+        return randomBytes;
     }
 
     public static string MD5Hash(string input)
