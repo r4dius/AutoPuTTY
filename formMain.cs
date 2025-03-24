@@ -10,16 +10,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ComboBox = System.Windows.Forms.ComboBox;
 using File = System.IO.File;
 using Label = System.Windows.Forms.Label;
@@ -177,9 +174,7 @@ namespace AutoPuTTY
             IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
             //It would be better to find the position at run time of the 'Close' item, but...
             InsertMenu(sysMenuHandle, 5, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
-            InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_LOCK, "Lock\tCtrl+L");
-            InsertMenu(sysMenuHandle, 7, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
-            InsertMenu(sysMenuHandle, 8, MF_BYPOSITION, IDM_ABOUT, "About");
+            InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
             ttMain.Active = Settings.Default.tooltips;
 
             noIcon.Visible = Settings.Default.minimize;
@@ -303,12 +298,16 @@ namespace AutoPuTTY
         private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
         [DllImport("user32.dll")]
         private static extern int GetMenuItemCount(IntPtr hMenu);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int GetMenuString(IntPtr hMenu, uint uIDItem, StringBuilder lpString, int nMaxCount, uint uFlag);
         [DllImport("user32.dll")]
         private static extern bool InsertMenu(IntPtr hMenu, Int32 wPosition, Int32 wFlags, Int32 wIDNewItem, string lpNewItem);
         [DllImport("user32.dll")]
         private static extern bool DeleteMenu(IntPtr hMenu, int uPosition, uint uFlags);
         [DllImport("user32.dll")]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetMenuItemID(IntPtr hMenu, int nPos);
 
         protected override void WndProc(ref Message m)
         {
@@ -347,6 +346,7 @@ namespace AutoPuTTY
 
         private void PasswordRequest()
         {
+            AddLockMenu(false);
             tbPassPasswordReset();
             PasswordRequired = true;
             BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
@@ -439,6 +439,42 @@ namespace AutoPuTTY
 
             XmlSetConfig("passwordpbk", Settings.Default.passwordpbk);
             XmlDropNode("Config", new ArrayList { method });
+        }
+
+        public static string GetMenuStringByPosition(IntPtr menuHandle, int position)
+        {
+            StringBuilder text = new StringBuilder(256);
+            int result = GetMenuString(menuHandle, (uint)position, text, text.Capacity, MF_BYPOSITION);
+
+            return result > 0 ? text.ToString() : string.Empty;
+        }
+
+        private void AddLockMenu(bool enable)
+        {
+            IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
+
+            int count = GetMenuItemCount(sysMenuHandle);
+
+
+            if (enable)
+            {
+                if (GetMenuStringByPosition(sysMenuHandle, 6) == "About")
+                {
+                    DeleteMenu(sysMenuHandle, 6, MF_BYPOSITION);
+                    InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_LOCK, "Lock\tCtrl+L");
+                    InsertMenu(sysMenuHandle, 7, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
+                    InsertMenu(sysMenuHandle, 8, MF_BYPOSITION, IDM_ABOUT, "About");
+                }
+            } else
+            {
+                if (GetMenuStringByPosition(sysMenuHandle, 6) == "Lock\tCtrl+L")
+                {
+                    DeleteMenu(sysMenuHandle, 8, MF_BYPOSITION);
+                    DeleteMenu(sysMenuHandle, 7, MF_BYPOSITION);
+                    DeleteMenu(sysMenuHandle, 6, MF_BYPOSITION);
+                    InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
+                }
+            }
         }
 
         private async void UpdateCheck()
@@ -2398,6 +2434,7 @@ namespace AutoPuTTY
 #if SECURE
                     if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) StartupSecure();
 #endif
+                    AddLockMenu(true);
                     return;
                 }
 
