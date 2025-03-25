@@ -411,11 +411,11 @@ namespace AutoPuTTY
             XmlToVault();
             if (lbServer.Items.Count > 0)
             {
-                lbServer.SelectedIndex = 0;
+                BeginInvoke((Action)(() => lbServer.SelectedIndex = 0));
             }
             if (lbVault.Items.Count > 0)
             {
-                lbVault.SelectedIndex = 0;
+                BeginInvoke((Action)(() => lbVault.SelectedIndex = 0));
             }
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
         }
@@ -1895,26 +1895,21 @@ namespace AutoPuTTY
 
             IDictionary<string, string> GetServer = XmlGetServer(lbServer.SelectedItem.ToString());
 
-            Debug.WriteLine("Index4");
             tbName.Text = GetServer["Name"];
             tbHost.Text = Decrypt(GetServer["Host"]);
             tbUser.Text = Decrypt(GetServer["User"]);
             if (GetServer["Vault"].Trim() != "" && cbVault.Items.Contains(GetServer["Vault"]))
             {
-                Debug.WriteLine("Index5");
                 if (!cbVault.Visible)
                 {
-                    Debug.WriteLine("1 cbVault.Visible" + cbVault.Visible);
                     SwitchPassword(true);
                 }
                 cbVault.SelectedItem = GetServer["Vault"];
             }
             else
             {
-                Debug.WriteLine("Index6");
                 if (!tbPass.Visible)
                 {
-                    Debug.WriteLine("2 tbPass.Visible" + tbPass.Visible);
                     SwitchPassword(false);
                 }
                 tbPass.Text = Decrypt(GetServer["Password"]);
@@ -2159,6 +2154,8 @@ namespace AutoPuTTY
                 }
 
                 ComboBox.BackColor = ComboBox.SelectedIndex != ComboBoxVal ? ChangedOk : Normal;
+                Debug.WriteLine(ComboBox.Name);
+                Debug.WriteLine(ComboBox.BackColor);
             }
             else if (sender is TextBox)
             {

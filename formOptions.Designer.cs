@@ -94,6 +94,7 @@ namespace AutoPuTTY
             this.laGSeparator5 = new System.Windows.Forms.Label();
             this.buGImport = new System.Windows.Forms.Button();
             this.laGSeparator4 = new System.Windows.Forms.Label();
+            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.cbGMulti = new System.Windows.Forms.CheckBox();
             this.tpGPass = new System.Windows.Forms.TableLayoutPanel();
             this.paGApply = new System.Windows.Forms.Panel();
@@ -116,7 +117,6 @@ namespace AutoPuTTY
             this.tooltipOptions = new System.Windows.Forms.ToolTip(this.components);
             this.laGOther = new AutoPuTTY.SingleClickLabel();
             this.laGImport = new AutoPuTTY.SingleClickLabel();
-            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
             this.labelGPassword = new AutoPuTTY.SingleClickLabel();
             this.labelGConfirm = new AutoPuTTY.SingleClickLabel();
             this.laPuTTYPath = new AutoPuTTY.SingleClickLabel();
@@ -136,6 +136,7 @@ namespace AutoPuTTY
             this.taOptions.SuspendLayout();
             this.taGeneral.SuspendLayout();
             this.paGeneral.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.tpGPass.SuspendLayout();
             this.paGApply.SuspendLayout();
             this.pGPassword.SuspendLayout();
@@ -144,7 +145,6 @@ namespace AutoPuTTY
             this.taRD.SuspendLayout();
             this.taVNC.SuspendLayout();
             this.taWSCP.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPuTTY
@@ -950,6 +950,23 @@ namespace AutoPuTTY
             this.laGSeparator4.Size = new System.Drawing.Size(283, 2);
             this.laGSeparator4.TabIndex = 2;
             // 
+            // slGMulti
+            // 
+            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.slGMulti.AutoSize = false;
+            this.slGMulti.Enabled = false;
+            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
+            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
+            this.slGMulti.Maximum = 40;
+            this.slGMulti.Minimum = 10;
+            this.slGMulti.Name = "slGMulti";
+            this.slGMulti.Size = new System.Drawing.Size(292, 20);
+            this.slGMulti.TabIndex = 3;
+            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.slGMulti.Value = 15;
+            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
+            // 
             // cbGMulti
             // 
             this.cbGMulti.AutoSize = true;
@@ -967,7 +984,7 @@ namespace AutoPuTTY
             this.tpGPass.ColumnCount = 3;
             this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 53F));
+            this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 54F));
             this.tpGPass.Controls.Add(this.paGApply, 2, 0);
             this.tpGPass.Controls.Add(this.pGPassword, 0, 0);
             this.tpGPass.Controls.Add(this.paGConfirm, 1, 0);
@@ -1012,7 +1029,7 @@ namespace AutoPuTTY
             this.laGSeparator3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.laGSeparator3.Location = new System.Drawing.Point(-2, 15);
             this.laGSeparator3.Name = "laGSeparator3";
-            this.laGSeparator3.Size = new System.Drawing.Size(55, 2);
+            this.laGSeparator3.Size = new System.Drawing.Size(53, 2);
             this.laGSeparator3.TabIndex = 0;
             // 
             // pGPassword
@@ -1083,7 +1100,7 @@ namespace AutoPuTTY
             this.tbGConfirm.Enabled = false;
             this.tbGConfirm.Location = new System.Drawing.Point(2, 18);
             this.tbGConfirm.Name = "tbGConfirm";
-            this.tbGConfirm.Size = new System.Drawing.Size(114, 20);
+            this.tbGConfirm.Size = new System.Drawing.Size(116, 20);
             this.tbGConfirm.TabIndex = 2;
             this.tbGConfirm.UseSystemPasswordChar = true;
             this.tbGConfirm.TextChanged += new System.EventHandler(this.tbGConfirm_TextChanged);
@@ -1097,7 +1114,7 @@ namespace AutoPuTTY
             this.laGSeparator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.laGSeparator2.Location = new System.Drawing.Point(2, 15);
             this.laGSeparator2.Name = "laGSeparator2";
-            this.laGSeparator2.Size = new System.Drawing.Size(119, 2);
+            this.laGSeparator2.Size = new System.Drawing.Size(118, 2);
             this.laGSeparator2.TabIndex = 1;
             // 
             // liGImport
@@ -1120,7 +1137,7 @@ namespace AutoPuTTY
             this.taPuTTY.Controls.Add(this.panelPuTTY);
             this.taPuTTY.Location = new System.Drawing.Point(4, 22);
             this.taPuTTY.Name = "taPuTTY";
-            this.taPuTTY.Size = new System.Drawing.Size(295, 202);
+            this.taPuTTY.Size = new System.Drawing.Size(294, 202);
             this.taPuTTY.TabIndex = 1;
             this.taPuTTY.Text = "PuTTY";
             this.taPuTTY.UseVisualStyleBackColor = true;
@@ -1130,7 +1147,7 @@ namespace AutoPuTTY
             this.taRD.Controls.Add(this.panelRD);
             this.taRD.Location = new System.Drawing.Point(4, 22);
             this.taRD.Name = "taRD";
-            this.taRD.Size = new System.Drawing.Size(295, 202);
+            this.taRD.Size = new System.Drawing.Size(294, 202);
             this.taRD.TabIndex = 2;
             this.taRD.Text = "Remote Desktop";
             this.taRD.UseVisualStyleBackColor = true;
@@ -1140,7 +1157,7 @@ namespace AutoPuTTY
             this.taVNC.Controls.Add(this.panelVNC);
             this.taVNC.Location = new System.Drawing.Point(4, 22);
             this.taVNC.Name = "taVNC";
-            this.taVNC.Size = new System.Drawing.Size(295, 202);
+            this.taVNC.Size = new System.Drawing.Size(294, 202);
             this.taVNC.TabIndex = 3;
             this.taVNC.Text = "VNC";
             this.taVNC.UseVisualStyleBackColor = true;
@@ -1150,7 +1167,7 @@ namespace AutoPuTTY
             this.taWSCP.Controls.Add(this.paWinSCP);
             this.taWSCP.Location = new System.Drawing.Point(4, 22);
             this.taWSCP.Name = "taWSCP";
-            this.taWSCP.Size = new System.Drawing.Size(295, 202);
+            this.taWSCP.Size = new System.Drawing.Size(294, 202);
             this.taWSCP.TabIndex = 4;
             this.taWSCP.Text = "WinSCP";
             this.taWSCP.UseVisualStyleBackColor = true;
@@ -1197,23 +1214,6 @@ namespace AutoPuTTY
             this.laGImport.Size = new System.Drawing.Size(51, 13);
             this.laGImport.TabIndex = 4;
             this.laGImport.Text = "Import list";
-            // 
-            // slGMulti
-            // 
-            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.slGMulti.AutoSize = false;
-            this.slGMulti.Enabled = false;
-            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
-            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
-            this.slGMulti.Maximum = 40;
-            this.slGMulti.Minimum = 10;
-            this.slGMulti.Name = "slGMulti";
-            this.slGMulti.Size = new System.Drawing.Size(292, 20);
-            this.slGMulti.TabIndex = 3;
-            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.slGMulti.Value = 15;
-            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
             // 
             // labelGPassword
             // 
@@ -1353,6 +1353,7 @@ namespace AutoPuTTY
             this.taGeneral.ResumeLayout(false);
             this.paGeneral.ResumeLayout(false);
             this.paGeneral.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.tpGPass.ResumeLayout(false);
             this.tpGPass.PerformLayout();
             this.paGApply.ResumeLayout(false);
@@ -1364,7 +1365,6 @@ namespace AutoPuTTY
             this.taRD.ResumeLayout(false);
             this.taVNC.ResumeLayout(false);
             this.taWSCP.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.ResumeLayout(false);
 
         }
