@@ -445,6 +445,7 @@ namespace AutoPuTTY
 
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbGPassword.Text;
+                    FormMain.AddLockMenu(true);
                 }
                 buGApply.Enabled = false;
             }
@@ -503,6 +504,8 @@ namespace AutoPuTTY
 
                     if (Remove == DialogResult.OK)
                     {
+                        FormMain.XmlRenameNode("Config", "passwordpbk", "oldpasswordpbk");
+
                         if (FormMain.lbServer.Items.Count > 0 || FormMain.lbVault.Items.Count > 0)
                         {
                             string[] Args = { "recrypt", Settings.Default.cryptokeyoriginal };
@@ -512,10 +515,11 @@ namespace AutoPuTTY
                             PopupRecrypt.ShowDialog(this);
                         }
 
-                        FormMain.XmlDropNode("Config", new ArrayList { "passwordpbk" });
+                        FormMain.XmlDropNode("Config", new ArrayList { "oldpasswordpbk" });
 
                         Settings.Default.passwordpbk = "";
                         Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
+                        FormMain.AddLockMenu(false);
                     }
                     else
                     {

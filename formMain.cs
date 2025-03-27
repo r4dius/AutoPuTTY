@@ -191,19 +191,19 @@ namespace AutoPuTTY
             piPassEye.Image = IconEyeHover;
 
             int i = 0;
-            MenuItem connectmenu = new MenuItem
-            {
-                Index = i,
-                Text = "Connect"
-            };
-            connectmenu.Click += lbServer_DoubleClick;
-            cmServer.MenuItems.Add(connectmenu);
             MenuItem sepmenu = new MenuItem
             {
                 Text = "-",
-                Index = i++
             };
-            cmServer.MenuItems.Add(sepmenu);
+            MenuItem connectmenu = new MenuItem
+            {
+                Index = i,
+                Text = "Connect\tEnter"
+            };
+            connectmenu.Click += lbServer_DoubleClick;
+            cmServer.MenuItems.Add(connectmenu);
+            sepmenu.Index++;
+            cmServer.MenuItems.Add(sepmenu.CloneMenu());
             foreach (string type in Types)
             {
                 MenuItem listmenu = new MenuItem
@@ -215,50 +215,38 @@ namespace AutoPuTTY
                 listmenu.Click += delegate { Connect(_type); };
                 cmServer.MenuItems.Add(listmenu);
             }
-            sepmenu = new MenuItem
-            {
-                Text = "-",
-                Index = i++
-            };
+            sepmenu.Index++;
             cmServer.MenuItems.Add(sepmenu.CloneMenu());
             MenuItem deletemenu = new MenuItem
             {
                 Index = i++,
-                Text = "Delete"
+                Text = "Delete..."
             };
             deletemenu.Click += meDeleteServer;
             cmServer.MenuItems.Add(deletemenu);
-            sepmenu = new MenuItem
+            MenuItem searchmenu = new MenuItem
             {
-                Text = "-",
-                Index = i++
+                Index = i++,
+                Text = "Search...\tCtrl+F"
             };
+            searchmenu.Click += SwitchSearchShow;
+            cmServer.MenuItems.Add(searchmenu);
+            sepmenu.Index++;
+            sepmenu.Visible = false;
             cmServer.MenuItems.Add(sepmenu.CloneMenu());
             MenuItem lockmenu = new MenuItem
             {
                 Index = i++,
-                Text = "Lock"
+                Text = "Lock\tCtrl+L",
+                Visible = false
             };
             lockmenu.Click += meLock;
             cmServer.MenuItems.Add(lockmenu);
-            sepmenu = new MenuItem
-            {
-                Text = "-",
-                Index = i++
-            };
-            cmServer.MenuItems.Add(sepmenu.CloneMenu());
-            MenuItem searchmenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Search..."
-            };
-            searchmenu.Click += SwitchSearchShow;
-            cmServer.MenuItems.Add(searchmenu);
 
             MenuItem deletevaultmenu = new MenuItem
             {
                 Index = i++,
-                Text = "Delete"
+                Text = "Delete..."
             };
             deletevaultmenu.Click += meDeleteVault;
             cmVault.MenuItems.Add(deletevaultmenu);
@@ -335,6 +323,7 @@ namespace AutoPuTTY
 
         private void PasswordRequest()
         {
+            if (Settings.Default.passwordpbk == "") return;
             AddLockMenu(false);
             tbPassPasswordReset();
             PasswordRequired = true;
@@ -449,15 +438,15 @@ namespace AutoPuTTY
             return result > 0 ? text.ToString() : string.Empty;
         }
 
-        private void AddLockMenu(bool enable)
+        public void AddLockMenu(bool enable)
         {
             IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
 
             int count = GetMenuItemCount(sysMenuHandle);
 
-
             if (enable)
             {
+                // app menu
                 if (GetMenuStringByPosition(sysMenuHandle, 6) == "About")
                 {
                     DeleteMenu(sysMenuHandle, 6, MF_BYPOSITION);
@@ -475,6 +464,10 @@ namespace AutoPuTTY
                     InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
                 }
             }
+            // right click menu
+            count = cmServer.MenuItems.Count;
+            cmServer.MenuItems[count - 2].Visible = enable;
+            cmServer.MenuItems[count - 1].Visible = enable;
         }
 
         private async void UpdateCheck()
@@ -1260,12 +1253,25 @@ namespace AutoPuTTY
                     XmlNodeList ServerNodes = XmlConfig.SelectNodes("//Server/Vault[text()=" + ParseXpathString(item) + "]");
                     if (ServerNodes != null)
                     {
-                        foreach (XmlNode servernode in ServerNodes)
+                        foreach (XmlNode ServerNode in ServerNodes)
                         {
-                            servernode.InnerText = string.Empty;
+                            ServerNode.InnerText = string.Empty;
                         }
                     }
                 }
+            }
+
+            XmlSave();
+        }
+
+        public void XmlRenameNode(string node, string oldname, string newname)
+        {
+            string Name = node == "Config" ? "ID" : "Name";
+            XmlNode RenameNode = XmlConfig.SelectSingleNode("//" + node + "[@" + Name + "=" + ParseXpathString(oldname) + "]");
+            if (XmlConfig.DocumentElement != null)
+            {
+                XmlDropNode(node, new ArrayList { newname });
+                if (RenameNode != null && RenameNode.Attributes["ID"] != null) RenameNode.Attributes["ID"].Value = newname;
             }
 
             XmlSave();
@@ -1784,7 +1790,10 @@ namespace AutoPuTTY
         {
             for (int i = 0; i < menu.MenuItems.Count; i++)
             {
-                menu.MenuItems[i].Enabled = status;
+                if (!menu.MenuItems[i].Text.StartsWith("Lock") && !menu.MenuItems[i].Text.StartsWith("Search"))
+                {
+                    menu.MenuItems[i].Enabled = status;
+                }
             }
         }
 
