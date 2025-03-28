@@ -195,8 +195,8 @@
     <None Include="Resources\eye.png" />
     <None Include="Resources\iconedit.png" />
     <None Include="Resources\iconcopy.png" />
-    <Content Include="Resources\iconeyehide.png" />
-    <Content Include="Resources\iconeyeshow.png" />
+    <None Include="Resources\iconeyehide.png" />
+    <None Include="Resources\iconeyeshow.png" />
     <None Include="Resources\close.png" />
     <None Include="Resources\closeh.png" />
     <None Include="Resources\closed.png" />
