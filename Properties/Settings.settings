@@ -2,14 +2,17 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AutoPuTTY.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="autohidepassword" Type="System.String" Scope="User">
+    <Setting Name="autohidepassword" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="cfgfilepath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">autoputty.xml</Value>
     </Setting>
     <Setting Name="cfgpath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="cfgfilepath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">autoputty.xml</Value>
+    <Setting Name="cfgversion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="cryptokey" Type="System.String" Scope="User">
       <Value Profile="(Default)">12ùMkldQ%kS2A</Value>
@@ -17,7 +20,7 @@
     <Setting Name="cryptokeyoriginal" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="cryptopasswordkey" Type="System.String" Scope="User">
+    <Setting Name="cryptolegacypassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">;Sk/#µ^éD}=@|</Value>
     </Setting>
     <Setting Name="maximized" Type="System.Boolean" Scope="User">
@@ -88,6 +91,9 @@
     </Setting>
     <Setting Name="tooltips" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="version" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="vncfilespath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

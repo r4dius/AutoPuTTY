@@ -164,6 +164,7 @@ namespace AutoPuTTY
             if (XmlGetConfig("remotedesktop") != "") Settings.Default.rdpath = XmlGetConfig("remotedesktop");
             if (XmlGetConfig("size") != "") Settings.Default.size = XmlGetConfig("size");
             if (XmlGetConfig("tooltips").ToLower() == "false") Settings.Default.tooltips = false;
+            if (XmlGetConfig("version") != "") Settings.Default.vncpath = XmlGetConfig("version");
             if (XmlGetConfig("vnc") != "") Settings.Default.vncpath = XmlGetConfig("vnc");
             if (XmlGetConfig("vncfilespath") != "") Settings.Default.vncfilespath = XmlGetConfig("vncfilespath");
             if (XmlGetConfig("vncfullscreen").ToLower() == "true") Settings.Default.vncfullscreen = true;
@@ -264,7 +265,7 @@ namespace AutoPuTTY
             //Text += "ˢ";
 #endif
 
-            RemovePasswordMethods("password");
+            RemoveLegacy("password");
             if (Settings.Default.passwordpbk.Trim() != "" || Settings.Default.passwordmd5.Trim() != "")
             {
                 PasswordRequest();
@@ -272,13 +273,7 @@ namespace AutoPuTTY
             else
             {
                 Startup();
-#if SECURE
-                BeginInvoke(new Action(() =>
-                {
-                    StartupSecure();
-                }));
-#endif
-                RemovePasswordMethods("passwordmd5");
+                RemoveLegacy("passwordmd5");
             }
 #if DEBUG
             Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
@@ -368,7 +363,7 @@ namespace AutoPuTTY
             return errors;
         }
 
-        private void StartupSecure()
+        private void EnforceComplexPassword()
         {
             string message = "For better security, set a password with:\n" +
                              "- At least 16 characters\n" +
@@ -386,7 +381,7 @@ namespace AutoPuTTY
             }
             else
             {
-                this.Invoke((MethodInvoker)delegate
+                Invoke((MethodInvoker)delegate
                 {
                     Environment.Exit(0);
                 });
@@ -396,7 +391,7 @@ namespace AutoPuTTY
 
         private void Startup()
         {
-            RemovePasswordMethods("passwordmd5");
+            RemoveLegacy("passwordmd5");
             PasswordRequired = false;
             buCopyName.Enabled = false;
             buCopyHost.Enabled = false;
@@ -420,15 +415,22 @@ namespace AutoPuTTY
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
         }
 
-        private void RemovePasswordMethods(string method)
+        private void RemoveLegacy(string method)
         {
             // convert old passwords to pbkdf2 hash
             if (method == "password")
             {
                 if (Settings.Default.password.Trim() == "") return;
-                Settings.Default.passwordpbk = Crypto.HashPassword(Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
+                Settings.Default.passwordpbk = Crypto.HashPassword(Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptolegacypassword));
                 Settings.Default.password = "";
             }
+
+#if SECURE
+            BeginInvoke(new Action(() =>
+            {
+                EnforceComplexPassword();
+            }));
+#endif
 
             if (method == "passwordmd5")
             {
@@ -438,12 +440,12 @@ namespace AutoPuTTY
                 DialogResult result = MessageBoxEx.Show(this, message, "Security update required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (result == DialogResult.OK)
                 {
-                    Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptopasswordkey);
+                    Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptolegacypassword);
                     XmlSetConfig("passwordpbk", Settings.Default.passwordpbk.ToString());
 
                     if (lbServer.Items.Count > 0 || lbVault.Items.Count > 0)
                     {
-                        string[] Args = { "recrypt", Settings.Default.cryptopasswordkey };
+                        string[] Args = { "recrypt", Settings.Default.cryptolegacypassword };
                         backgroundProgress.RunWorkerAsync(Args);
                         PopupRecrypt = new PopupRecrypt(this);
                         PopupRecrypt.Text = "Applying" + PopupRecrypt.Text;
@@ -2406,7 +2408,7 @@ namespace AutoPuTTY
                     AddLockMenu(true);
                     Startup();
 #if SECURE
-                    if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) StartupSecure();
+                    if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) EnforceComplexPassword();
 #endif
                     return;
                 }

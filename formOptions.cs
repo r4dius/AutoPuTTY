@@ -240,6 +240,7 @@ namespace AutoPuTTY
                 Args = new string[] { "import", Count + " / " + Lines.Count, CountAdd.ToString(), CountReplace.ToString(), CountSkip.ToString() };
                 backgroundProgress.ReportProgress((int)(Count / (double)Lines.Count * 100), Args);
             }
+            FormMain.XmlSetConfig("cfgversion", Settings.Default.version);
             XmlConfig.Save(ConfigFile);
 #if DEBUG
             Debug.WriteLine("Import duration :" + (DateTime.Now - time));
@@ -262,6 +263,7 @@ namespace AutoPuTTY
             int Type = 0;
 
             FormMain.XmlConfig.Load(Settings.Default.cfgpath);
+            int version = Convert.ToInt32(Settings.Default.cfgversion);
 
             XmlNodeList XmlNodes = FormMain.XmlConfig.SelectNodes("/List/Server");
             if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
@@ -279,19 +281,19 @@ namespace AutoPuTTY
                         switch (childnode.Name)
                         {
                             case "Host":
-                                Host = Crypto.Decrypt(childnode.InnerText);
+                                Host = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "User":
-                                User = Crypto.Decrypt(childnode.InnerText);
+                                User = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "Vault":
                                 Vault = childnode.InnerText;
                                 break;
                             case "Password":
-                                Pass = Crypto.Decrypt(childnode.InnerText);
+                                Pass = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "PrivateKey":
-                                Priv = Crypto.Decrypt(childnode.InnerText);
+                                Priv = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "Type":
                                 Int32.TryParse(childnode.InnerText, out Type);
@@ -333,7 +335,9 @@ namespace AutoPuTTY
                 }
 
             XmlNodes = FormMain.XmlConfig.SelectNodes("/List/Vault");
-            if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
+            if (XmlNodes != null)
+            {
+                foreach (XmlNode node in XmlNodes)
                 {
                     Count++;
                     Pass = "";
@@ -344,10 +348,10 @@ namespace AutoPuTTY
                         switch (childnode.Name)
                         {
                             case "Password":
-                                Pass = Crypto.Decrypt(childnode.InnerText);
+                                Pass = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "PrivateKey":
-                                Priv = Crypto.Decrypt(childnode.InnerText);
+                                Priv = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
                                 break;
                         }
                     }
@@ -379,7 +383,8 @@ namespace AutoPuTTY
                     string[] Args = new string[] { "recrypt", Count + " / " + (FormMain.lbServer.Items.Count + FormMain.lbVault.Items.Count) };
                     backgroundProgress.ReportProgress((int)(Count / (double)(FormMain.lbServer.Items.Count + FormMain.lbVault.Items.Count) * 100), Args);
                 }
-
+            }
+            FormMain.XmlSetConfig("cfgversion", Settings.Default.version);
             FormMain.XmlConfig.Save(Settings.Default.cfgpath);
 #if DEBUG
             Debug.WriteLine("Encryption duration :" + (DateTime.Now - time));
