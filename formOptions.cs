@@ -6,10 +6,11 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
+using static AutoPuTTY.PopupRecrypt;
 
 namespace AutoPuTTY
 {
-    public partial class FormOptions : Form
+    public partial class FormOptions : Form, IRecryptForm
     {
         public FormMain FormMain;
         public PopupImport PopupImport;
@@ -92,6 +93,11 @@ namespace AutoPuTTY
             shouldFocusPassword = focusPassword;
         }
 
+        public void CancelRecrypt()
+        {
+            backgroundProgress.CancelAsync();
+        }
+
         private void FormOptions_Shown(object sender, EventArgs e)
         {
             if (shouldFocusPassword)
@@ -167,19 +173,19 @@ namespace AutoPuTTY
                     if (Host != "")
                     {
                         XmlElement HostXml = XmlConfig.CreateElement("Host");
-                        HostXml.InnerText = FormMain.Encrypt(Host);
+                        HostXml.InnerText = Crypto.Encrypt(Host);
                         ServerXml.AppendChild(HostXml);
                     }
                     if (User != "")
                     {
                         XmlElement UserXml = XmlConfig.CreateElement("User");
-                        UserXml.InnerText = FormMain.Encrypt(User);
+                        UserXml.InnerText = Crypto.Encrypt(User);
                         ServerXml.AppendChild(UserXml);
                     }
                     if (Pass != "")
                     {
                         XmlElement PassXml = XmlConfig.CreateElement("Password");
-                        PassXml.InnerText = FormMain.Encrypt(Pass);
+                        PassXml.InnerText = Crypto.Encrypt(Pass);
                         ServerXml.AppendChild(PassXml);
                     }
                     if (Type > 0)
@@ -273,19 +279,19 @@ namespace AutoPuTTY
                         switch (childnode.Name)
                         {
                             case "Host":
-                                Host = FormMain.Decrypt(childnode.InnerText);
+                                Host = Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "User":
-                                User = FormMain.Decrypt(childnode.InnerText);
+                                User = Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "Vault":
                                 Vault = childnode.InnerText;
                                 break;
                             case "Password":
-                                Pass = FormMain.Decrypt(childnode.InnerText);
+                                Pass = Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "PrivateKey":
-                                Priv = FormMain.Decrypt(childnode.InnerText);
+                                Priv = Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "Type":
                                 Int32.TryParse(childnode.InnerText, out Type);
@@ -309,11 +315,11 @@ namespace AutoPuTTY
                     ServerXml.AppendChild(PassXml);
                     ServerXml.AppendChild(PrivXml);
                     ServerXml.AppendChild(TypeXml);
-                    HostXml.InnerText = FormMain.Encrypt(Host, newpass);
-                    UserXml.InnerText = FormMain.Encrypt(User, newpass);
+                    HostXml.InnerText = Crypto.Encrypt(Host, newpass);
+                    UserXml.InnerText = Crypto.Encrypt(User, newpass);
                     VaultXml.InnerText = Vault;
-                    PassXml.InnerText = FormMain.Encrypt(Pass, newpass);
-                    PrivXml.InnerText = FormMain.Encrypt(Priv, newpass);
+                    PassXml.InnerText = Crypto.Encrypt(Pass, newpass);
+                    PrivXml.InnerText = Crypto.Encrypt(Priv, newpass);
                     TypeXml.InnerText = Type.ToString();
 
                     XmlNodeList ServerNodes = FormMain.XmlConfig.SelectNodes("//Server[@Name=" + FormMain.ParseXpathString(node.Attributes[0].Value) + "]");
@@ -338,10 +344,10 @@ namespace AutoPuTTY
                         switch (childnode.Name)
                         {
                             case "Password":
-                                Pass = FormMain.Decrypt(childnode.InnerText);
+                                Pass = Crypto.Decrypt(childnode.InnerText);
                                 break;
                             case "PrivateKey":
-                                Priv = FormMain.Decrypt(childnode.InnerText);
+                                Priv = Crypto.Decrypt(childnode.InnerText);
                                 break;
                         }
                     }
@@ -354,13 +360,13 @@ namespace AutoPuTTY
                     if (Pass != "")
                     {
                         XmlElement PassXml = FormMain.XmlConfig.CreateElement("Password");
-                        PassXml.InnerText = FormMain.Encrypt(Pass, newpass);
+                        PassXml.InnerText = Crypto.Encrypt(Pass, newpass);
                         ServerXml.AppendChild(PassXml);
                     }
                     if (Priv != "")
                     {
                         XmlElement PrivXml = FormMain.XmlConfig.CreateElement("PrivateKey");
-                        PrivXml.InnerText = FormMain.Encrypt(Priv, newpass);
+                        PrivXml.InnerText = Crypto.Encrypt(Priv, newpass);
                         ServerXml.AppendChild(PrivXml);
                     }
 

@@ -17,6 +17,7 @@ using System.Threading;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml;
+using static AutoPuTTY.PopupRecrypt;
 using ComboBox = System.Windows.Forms.ComboBox;
 using File = System.IO.File;
 using Label = System.Windows.Forms.Label;
@@ -27,8 +28,9 @@ using TextBox = System.Windows.Forms.TextBox;
 
 namespace AutoPuTTY
 {
-    public partial class FormMain : Form
+    public partial class FormMain : Form, IRecryptForm
     {
+        public PopupRecrypt PopupRecrypt;
         private bool PasswordRequired;
         private const int IDM_ABOUT = 1000;
         private const int IDM_LOCK = 1100;
@@ -271,11 +273,12 @@ namespace AutoPuTTY
             {
                 Startup();
 #if SECURE
-                this.BeginInvoke(new Action(() =>
+                BeginInvoke(new Action(() =>
                 {
                     StartupSecure();
                 }));
 #endif
+                RemovePasswordMethods("passwordmd5");
             }
 #if DEBUG
             Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
@@ -321,9 +324,14 @@ namespace AutoPuTTY
             base.WndProc(ref m);
         }
 
+        public void CancelRecrypt()
+        {
+            backgroundProgress.CancelAsync();
+        }
+
         private void PasswordRequest()
         {
-            if (Settings.Default.passwordpbk == "") return;
+            if (Settings.Default.passwordpbk.Trim() == "" && Settings.Default.passwordmd5.Trim() == "") return;
             AddLockMenu(false);
             tbPassPasswordReset();
             PasswordRequired = true;
@@ -367,7 +375,7 @@ namespace AutoPuTTY
                              "- Upper & lower case letters\n" +
                              "- At least 1 number & 1 symbol\n\n" +
                              "Click cancel to exit.";
-            DialogResult result = MessageBoxEx.Show(this, message, "Password required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            DialogResult result = MessageBoxEx.Show(this, message, "Security update required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
             if (result == DialogResult.OK)
             {
@@ -378,7 +386,10 @@ namespace AutoPuTTY
             }
             else
             {
-                Environment.Exit(0);
+                this.Invoke((MethodInvoker)delegate
+                {
+                    Environment.Exit(0);
+                });
             }
         }
 #endif
@@ -415,17 +426,41 @@ namespace AutoPuTTY
             if (method == "password")
             {
                 if (Settings.Default.password.Trim() == "") return;
-                Settings.Default.passwordpbk = Crypto.HashPassword(Decrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
+                Settings.Default.passwordpbk = Crypto.HashPassword(Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptopasswordkey));
                 Settings.Default.password = "";
             }
 
             if (method == "passwordmd5")
             {
                 if (Settings.Default.passwordmd5.Trim() == "") return;
+                string message = "For better security, your configuration file needs to be re-encrypted.\n" +
+                                 "Click \"OK\" to apply changes or \"Cancel\" to exit.";
+                DialogResult result = MessageBoxEx.Show(this, message, "Security update required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (result == DialogResult.OK)
+                {
+                    Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptopasswordkey);
+                    XmlSetConfig("passwordpbk", Settings.Default.passwordpbk.ToString());
+
+                    if (lbServer.Items.Count > 0 || lbVault.Items.Count > 0)
+                    {
+                        string[] Args = { "recrypt", Settings.Default.cryptopasswordkey };
+                        backgroundProgress.RunWorkerAsync(Args);
+                        PopupRecrypt = new PopupRecrypt(this);
+                        PopupRecrypt.Text = "Applying" + PopupRecrypt.Text;
+                        PopupRecrypt.ShowDialog(this);
+                    }
+                }
+                else
+                {
+                    this.Invoke((MethodInvoker)delegate {
+                        Environment.Exit(0);
+                    });
+                }
                 Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptokey);
                 Settings.Default.passwordmd5 = "";
             }
 
+            if (Settings.Default.passwordpbk.Trim() == "") return;
             XmlSetConfig("passwordpbk", Settings.Default.passwordpbk);
             XmlDropNode("Config", new ArrayList { method });
         }
@@ -660,11 +695,11 @@ namespace AutoPuTTY
                     string[] PathReplace = { "\\", "\\" };
                     string[] UserTemp;
                     string WinscpProt = "sftp://";
-                    string Host = Decrypt(GetServer["Host"]);
-                    string User = Decrypt(GetServer["User"]);
-                    string Pass = Decrypt(GetServer["Password"]);
+                    string Host = Crypto.Decrypt(GetServer["Host"]);
+                    string User = Crypto.Decrypt(GetServer["User"]);
+                    string Pass = Crypto.Decrypt(GetServer["Password"]);
                     string Vault = GetServer["Vault"];
-                    string PrivateKey = Decrypt(GetServer["PrivateKey"]);
+                    string PrivateKey = Crypto.Decrypt(GetServer["PrivateKey"]);
                     string Type = type == "-1" ? GetServer["Type"] : type;
                     string Proxy = "";
                     string ProxyUser = "";
@@ -676,8 +711,8 @@ namespace AutoPuTTY
                     if (Vault.Trim() != "")
                     {
                         IDictionary<string, string> GetVault = XmlGetVault(Vault);
-                        Pass = Decrypt(GetVault["Password"]);
-                        PrivateKey = Decrypt(GetVault["PrivateKey"]);
+                        Pass = Crypto.Decrypt(GetVault["Password"]);
+                        PrivateKey = Crypto.Decrypt(GetVault["PrivateKey"]);
                     }
 
                     //SSH Jump
@@ -1028,64 +1063,6 @@ namespace AutoPuTTY
             }
         }
 
-        public string Decrypt(string encrypted, string key)
-        {
-            if (encrypted == "") return "";
-
-            byte[] EncryptedArray = Convert.FromBase64String(encrypted);
-            MD5CryptoServiceProvider Md5Hash = new MD5CryptoServiceProvider();
-            byte[] KeyArray = Md5Hash.ComputeHash(Encoding.UTF8.GetBytes(key));
-
-            TripleDESCryptoServiceProvider TripleDes = new TripleDESCryptoServiceProvider
-            {
-                Key = KeyArray,
-                Mode = CipherMode.ECB,
-                Padding = PaddingMode.PKCS7
-            };
-
-            ICryptoTransform CryptoTransform = TripleDes.CreateDecryptor();
-            byte[] Result = CryptoTransform.TransformFinalBlock(EncryptedArray, 0, EncryptedArray.Length);
-
-            Md5Hash.Clear();
-            TripleDes.Clear();
-
-            return Encoding.UTF8.GetString(Result);
-        }
-
-        public string Decrypt(string encrypted)
-        {
-            return Decrypt(encrypted, Settings.Default.cryptokey);
-        }
-
-        public string Encrypt(string plain, string key)
-        {
-            if (plain == "") return "";
-
-            byte[] PlainArray = Encoding.UTF8.GetBytes(plain);
-            MD5CryptoServiceProvider Md5Hash = new MD5CryptoServiceProvider();
-            byte[] KeyArray = Md5Hash.ComputeHash(Encoding.UTF8.GetBytes(key));
-
-            TripleDESCryptoServiceProvider TripleDes = new TripleDESCryptoServiceProvider
-            {
-                Key = KeyArray,
-                Mode = CipherMode.ECB,
-                Padding = PaddingMode.PKCS7
-            };
-
-            ICryptoTransform CryptoTransform = TripleDes.CreateEncryptor();
-            byte[] Result = CryptoTransform.TransformFinalBlock(PlainArray, 0, PlainArray.Length);
-
-            Md5Hash.Clear();
-            TripleDes.Clear();
-
-            return Convert.ToBase64String(Result, 0, Result.Length);
-        }
-
-        public string Encrypt(string plain)
-        {
-            return Encrypt(plain, Settings.Default.cryptokey);
-        }
-
         private void MessageError(Form form, string message)
         {
             MessageBoxEx.Show(form, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1428,17 +1405,17 @@ namespace AutoPuTTY
                 XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
                 XmlElement TypeXml = XmlConfig.CreateElement("Type");
                 NameXml.Value = tbName.Text.Trim();
-                HostXml.InnerText = Encrypt(tbHost.Text.Trim());
-                UserXml.InnerText = Encrypt(tbUser.Text);
+                HostXml.InnerText = Crypto.Encrypt(tbHost.Text.Trim());
+                UserXml.InnerText = Crypto.Encrypt(tbUser.Text);
                 if (laPass.Text == "Password")
                 {
-                    PassXml.InnerText = Encrypt(tbPass.Text);
+                    PassXml.InnerText = Crypto.Encrypt(tbPass.Text);
                 }
                 else
                 {
                     VaultXml.InnerText = cbVault.Text;
                 }
-                PrivXml.InnerText = Encrypt(tbPriv.Text);
+                PrivXml.InnerText = Crypto.Encrypt(tbPriv.Text);
                 TypeXml.InnerText = Array.IndexOf(TypeList, cbType.Text).ToString();
                 ServerXml.SetAttributeNode(NameXml);
                 ServerXml.AppendChild(HostXml);
@@ -1493,17 +1470,17 @@ namespace AutoPuTTY
             XmlElement VaultXml = XmlConfig.CreateElement("Vault");
             XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
             XmlElement TypeXml = XmlConfig.CreateElement("Type");
-            HostXml.InnerText = Encrypt(tbHost.Text.Trim());
-            UserXml.InnerText = Encrypt(tbUser.Text);
+            HostXml.InnerText = Crypto.Encrypt(tbHost.Text.Trim());
+            UserXml.InnerText = Crypto.Encrypt(tbUser.Text);
             if (laPass.Text == "Password")
             {
-                PassXml.InnerText = Encrypt(tbPass.Text);
+                PassXml.InnerText = Crypto.Encrypt(tbPass.Text);
             }
             else
             {
                 VaultXml.InnerText = cbVault.Text;
             }
-            PrivXml.InnerText = Encrypt(tbPriv.Text);
+            PrivXml.InnerText = Crypto.Encrypt(tbPriv.Text);
             TypeXml.InnerText = Array.IndexOf(TypeList, cbType.Text).ToString();
             ServerXml.AppendChild(HostXml);
             ServerXml.AppendChild(UserXml);
@@ -1905,8 +1882,8 @@ namespace AutoPuTTY
             IDictionary<string, string> GetServer = XmlGetServer(lbServer.SelectedItem.ToString());
 
             tbName.Text = GetServer["Name"];
-            tbHost.Text = Decrypt(GetServer["Host"]);
-            tbUser.Text = Decrypt(GetServer["User"]);
+            tbHost.Text = Crypto.Decrypt(GetServer["Host"]);
+            tbUser.Text = Crypto.Decrypt(GetServer["User"]);
             if (GetServer["Vault"].Trim() != "" && cbVault.Items.Contains(GetServer["Vault"]))
             {
                 if (!cbVault.Visible)
@@ -1921,9 +1898,9 @@ namespace AutoPuTTY
                 {
                     SwitchPassword(false);
                 }
-                tbPass.Text = Decrypt(GetServer["Password"]);
+                tbPass.Text = Crypto.Decrypt(GetServer["Password"]);
             }
-            tbPriv.Text = Decrypt(GetServer["PrivateKey"]);
+            tbPriv.Text = Crypto.Decrypt(GetServer["PrivateKey"]);
             cbType.SelectedItem = TypeList[Convert.ToInt32(GetServer["Type"])];
             //SelectedIndex = Array.IndexOf(_types, types[Convert.ToInt32(server["Type"])]);
             laUser.Text = cbType.Text == "Remote Desktop" ? "[Domain\\] username" : "Username";
@@ -2149,7 +2126,7 @@ namespace AutoPuTTY
                             {
                                 IDictionary<string, string> GetVault = new Dictionary<string, string>();
                                 GetVault = XmlGetVault(ComboBox.Text);
-                                buCopyVault.Enabled = Decrypt(GetVault["Password"]) != "";
+                                buCopyVault.Enabled = Crypto.Decrypt(GetVault["Password"]) != "";
                             }
                             else
                             {
@@ -2180,28 +2157,28 @@ namespace AutoPuTTY
                     case "tbHost":
                         if (lbServer.SelectedItem != null)
                         {
-                            TextBoxVal = Decrypt(GetServer["Host"]);
+                            TextBoxVal = Crypto.Decrypt(GetServer["Host"]);
                         }
                         buCopyHost.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbUser":
                         if (lbServer.SelectedItem != null)
                         {
-                            TextBoxVal = Decrypt(GetServer["User"]);
+                            TextBoxVal = Crypto.Decrypt(GetServer["User"]);
                         }
                         buCopyUser.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbPass":
                         if (lbServer.SelectedItem != null)
                         {
-                            TextBoxVal = Decrypt(GetServer["Password"]);
+                            TextBoxVal = Crypto.Decrypt(GetServer["Password"]);
                         }
                         buCopyPass.Enabled = TextBox.Text.Trim() != "";
                         break;
                     case "tbPriv":
                         if (lbServer.SelectedItem != null)
                         {
-                            TextBoxVal = Decrypt(GetServer["PrivateKey"]);
+                            TextBoxVal = Crypto.Decrypt(GetServer["PrivateKey"]);
                         }
                         break;
                 }
@@ -2416,7 +2393,7 @@ namespace AutoPuTTY
         {
             if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
             {
-                laPassMessage.Text = "Try to filling a password...";
+                laPassMessage.Text = "Try filling a password...";
                 tbPassPassword_Enter(sender, e);
             }
             else
@@ -2590,8 +2567,8 @@ namespace AutoPuTTY
             IDictionary<string, string> GetVault = XmlGetVault(lbVault.SelectedItem.ToString());
 
             tbVaultName.Text = GetVault["Name"];
-            tbVaultPass.Text = Decrypt(GetVault["Password"]);
-            tbVaultPriv.Text = Decrypt(GetVault["PrivateKey"]);
+            tbVaultPass.Text = Crypto.Decrypt(GetVault["Password"]);
+            tbVaultPriv.Text = Crypto.Decrypt(GetVault["PrivateKey"]);
 
             buVaultAdd.Enabled = false;
             buVaultModify.Enabled = false;
@@ -2637,14 +2614,14 @@ namespace AutoPuTTY
                 case "tbVaultPass":
                     if (lbVault.SelectedItem != null)
                     {
-                        TextBoxVal = Decrypt(GetVault["Password"]);
+                        TextBoxVal = Crypto.Decrypt(GetVault["Password"]);
                     }
                     buCopyVaultPass.Enabled = TextBox.Text.Trim() != "";
                     break;
                 case "tbVaultPriv":
                     if (lbVault.SelectedItem != null)
                     {
-                        TextBoxVal = Decrypt(GetVault["PrivateKey"]);
+                        TextBoxVal = Crypto.Decrypt(GetVault["PrivateKey"]);
                     }
                     buCopyVaultPriv.Enabled = TextBox.Text.Trim() != "";
                     break;
@@ -2695,8 +2672,8 @@ namespace AutoPuTTY
                 XmlElement PassXml = XmlConfig.CreateElement("Password");
                 XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
                 NameXml.Value = tbVaultName.Text.Trim();
-                PassXml.InnerText = Encrypt(tbVaultPass.Text);
-                PrivXml.InnerText = Encrypt(tbVaultPriv.Text);
+                PassXml.InnerText = Crypto.Encrypt(tbVaultPass.Text);
+                PrivXml.InnerText = Crypto.Encrypt(tbVaultPriv.Text);
                 VaultXml.SetAttributeNode(NameXml);
                 VaultXml.AppendChild(PassXml);
                 VaultXml.AppendChild(PrivXml);
@@ -2748,8 +2725,8 @@ namespace AutoPuTTY
             XmlElement PassXml = XmlConfig.CreateElement("Password");
             XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
             NameXml.Value = tbVaultName.Text.Trim();
-            PassXml.InnerText = Encrypt(tbVaultPass.Text);
-            PrivXml.InnerText = Encrypt(tbVaultPriv.Text);
+            PassXml.InnerText = Crypto.Encrypt(tbVaultPass.Text);
+            PrivXml.InnerText = Crypto.Encrypt(tbVaultPriv.Text);
             VaultXml.SetAttributeNode(NameXml);
             VaultXml.AppendChild(PassXml);
             VaultXml.AppendChild(PrivXml);
@@ -2855,7 +2832,7 @@ namespace AutoPuTTY
                 {
                     IDictionary<string, string> vault = new Dictionary<string, string>();
                     vault = XmlGetVault(cbVault.SelectedItem.ToString());
-                    System.Windows.Clipboard.SetText(Decrypt(vault["Password"]));
+                    System.Windows.Clipboard.SetText(Crypto.Decrypt(vault["Password"]));
                 }
             }
             else
@@ -2870,7 +2847,7 @@ namespace AutoPuTTY
             {
                 IDictionary<string, string> vault = new Dictionary<string, string>();
                 vault = XmlGetVault(cbVault.SelectedItem.ToString());
-                System.Windows.Clipboard.SetText(Decrypt(vault["Password"]));
+                System.Windows.Clipboard.SetText(Crypto.Decrypt(vault["Password"]));
             }
         }
 
@@ -2940,6 +2917,172 @@ namespace AutoPuTTY
                 tbPriv.Text = FileBrowser.FileName;
             }
             else return;
+        }
+
+        private void bwProgress_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            object[] Args = (object[])e.Argument;
+            switch ((string)Args[0])
+            {
+                case "recrypt":
+                    RecryptList((string)Args[1]);
+                    break;
+            }
+            e.Result = Args[0];
+        }
+
+        private void bwProgress_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            string[] Args = (string[])e.UserState;
+            switch (Args[0])
+            {
+                case "recrypt":
+                    Args[0] = e.ProgressPercentage.ToString();
+                    PopupRecrypt.RecryptProgress(Args);
+                    break;
+            }
+        }
+
+        private void bwProgress_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            switch ((string)e.Result)
+            {
+                case "recrypt":
+                    PopupRecrypt.RecryptComplete();
+                    break;
+            }
+        }
+
+        private void RecryptList(string newpass)
+        {
+            int Count = 0;
+            string Host = "";
+            string User = "";
+            string Vault = "";
+            string Pass = "";
+            string Priv = "";
+            int Type = 0;
+
+            XmlConfig.Load(Settings.Default.cfgpath);
+
+            XmlNodeList XmlNodes = XmlConfig.SelectNodes("/List/Server");
+            if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
+                {
+                    Count++;
+                    Host = "";
+                    User = "";
+                    Vault = "";
+                    Pass = "";
+                    Priv = "";
+                    Type = 0;
+
+                    foreach (XmlElement childnode in node.ChildNodes)
+                    {
+                        switch (childnode.Name)
+                        {
+                            case "Host":
+                                Host = Legacy.Decrypt(childnode.InnerText);
+                                break;
+                            case "User":
+                                User = Legacy.Decrypt(childnode.InnerText);
+                                break;
+                            case "Vault":
+                                Vault = childnode.InnerText;
+                                break;
+                            case "Password":
+                                Pass = Legacy.Decrypt(childnode.InnerText);
+                                break;
+                            case "PrivateKey":
+                                Priv = Legacy.Decrypt(childnode.InnerText);
+                                break;
+                            case "Type":
+                                Int32.TryParse(childnode.InnerText, out Type);
+                                break;
+                        }
+                    }
+
+                    XmlElement ServerXml = XmlConfig.CreateElement("Server");
+                    XmlAttribute NameXml = XmlConfig.CreateAttribute("Name");
+                    XmlElement HostXml = XmlConfig.CreateElement("Host");
+                    XmlElement UserXml = XmlConfig.CreateElement("User");
+                    XmlElement VaultXml = XmlConfig.CreateElement("Vault");
+                    XmlElement PassXml = XmlConfig.CreateElement("Password");
+                    XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
+                    XmlElement TypeXml = XmlConfig.CreateElement("Type");
+                    NameXml.Value = node.Attributes[0].Value;
+                    ServerXml.SetAttributeNode(NameXml);
+                    ServerXml.AppendChild(HostXml);
+                    ServerXml.AppendChild(UserXml);
+                    ServerXml.AppendChild(VaultXml);
+                    ServerXml.AppendChild(PassXml);
+                    ServerXml.AppendChild(PrivXml);
+                    ServerXml.AppendChild(TypeXml);
+                    HostXml.InnerText = Crypto.Encrypt(Host, newpass);
+                    UserXml.InnerText = Crypto.Encrypt(User, newpass);
+                    VaultXml.InnerText = Vault;
+                    PassXml.InnerText = Crypto.Encrypt(Pass, newpass);
+                    PrivXml.InnerText = Crypto.Encrypt(Priv, newpass);
+                    TypeXml.InnerText = Type.ToString();
+
+                    XmlNodeList ServerNodes = XmlConfig.SelectNodes("//Server[@Name=" + ParseXpathString(node.Attributes[0].Value) + "]");
+                    if (XmlConfig.DocumentElement != null)
+                    {
+                        if (ServerNodes != null) XmlConfig.DocumentElement.ReplaceChild(ServerXml, ServerNodes[0]);
+                    }
+
+                    string[] Args = new string[] { "recrypt", Count + " / " + (lbServer.Items.Count + lbVault.Items.Count) };
+                    backgroundProgress.ReportProgress((int)(Count / (double)(lbServer.Items.Count + lbVault.Items.Count) * 100), Args);
+                }
+
+            XmlNodes = XmlConfig.SelectNodes("/List/Vault");
+            if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
+                {
+                    Count++;
+                    Pass = "";
+                    Priv = "";
+
+                    foreach (XmlElement childnode in node.ChildNodes)
+                    {
+                        switch (childnode.Name)
+                        {
+                            case "Password":
+                                Pass = Legacy.Decrypt(childnode.InnerText);
+                                break;
+                            case "PrivateKey":
+                                Priv = Legacy.Decrypt(childnode.InnerText);
+                                break;
+                        }
+                    }
+
+                    XmlElement ServerXml = XmlConfig.CreateElement("Vault");
+                    XmlAttribute NameXml = XmlConfig.CreateAttribute("Name");
+                    NameXml.Value = node.Attributes[0].Value;
+                    ServerXml.SetAttributeNode(NameXml);
+
+                    if (Pass != "")
+                    {
+                        XmlElement PassXml = XmlConfig.CreateElement("Password");
+                        PassXml.InnerText = Crypto.Encrypt(Pass, newpass);
+                        ServerXml.AppendChild(PassXml);
+                    }
+                    if (Priv != "")
+                    {
+                        XmlElement PrivXml = XmlConfig.CreateElement("PrivateKey");
+                        PrivXml.InnerText = Crypto.Encrypt(Priv, newpass);
+                        ServerXml.AppendChild(PrivXml);
+                    }
+
+                    XmlNodeList VaultNodes = XmlConfig.SelectNodes("//Vault[@Name=" + ParseXpathString(node.Attributes[0].Value) + "]");
+                    if (XmlConfig.DocumentElement != null)
+                    {
+                        if (VaultNodes != null) XmlConfig.DocumentElement.ReplaceChild(ServerXml, VaultNodes[0]);
+                    }
+
+                    string[] Args = new string[] { "recrypt", Count + " / " + (lbServer.Items.Count + lbVault.Items.Count) };
+                    backgroundProgress.ReportProgress((int)(Count / (double)(lbServer.Items.Count + lbVault.Items.Count) * 100), Args);
+                }
+
+            XmlConfig.Save(Settings.Default.cfgpath);
         }
     }
 }

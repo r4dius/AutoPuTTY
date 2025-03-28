@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoPuTTY.Properties;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,7 +10,7 @@ public static class Crypto
     private const int SaltSize = 32; // 256-bit hash
     private const int HashSize = 32; // 256-bit hash
     private const int IvByteSize = 16;
-    private const int Iterations = 100000; // Number of iterations
+    private const int Iterations = 50000; // Number of iterations
     private const int KeySize = 256;
 
     // Creates a hashed password string in the format: iterations.salt.hash
@@ -61,6 +62,11 @@ public static class Crypto
         return diff == 0;
     }
 
+    public static string Encrypt(string plain)
+    {
+        return Encrypt(plain, Settings.Default.cryptokey);
+    }
+
     /// <summary>
     /// Encrypts plain text using AES encryption with a passphrase.
     /// The output is a Base64 string containing the salt, IV, and ciphertext.
@@ -103,6 +109,11 @@ public static class Crypto
                 }
             }
         }
+    }
+
+    public static string Decrypt(string encrypted)
+    {
+        return Decrypt(encrypted, Settings.Default.cryptokey);
     }
 
     /// <summary>

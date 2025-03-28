@@ -129,6 +129,7 @@
             this.tbPassFake = new System.Windows.Forms.TextBox();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cmVault = new System.Windows.Forms.ContextMenu();
+            this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
             this.paConfig.SuspendLayout();
             this.paServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyName)).BeginInit();
@@ -1502,6 +1503,14 @@
             this.ttMain.InitialDelay = 200;
             this.ttMain.ReshowDelay = 100;
             // 
+            // backgroundProgress
+            // 
+            this.backgroundProgress.WorkerReportsProgress = true;
+            this.backgroundProgress.WorkerSupportsCancellation = true;
+            this.backgroundProgress.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwProgress_DoWork);
+            this.backgroundProgress.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwProgress_ProgressChanged);
+            this.backgroundProgress.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwProgress_RunWorkerCompleted);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1662,6 +1671,7 @@
         private System.Windows.Forms.Label laSeparator5;
         private System.Windows.Forms.TextBox tbPriv;
         private SingleClickLabel laPriv;
+        public System.ComponentModel.BackgroundWorker backgroundProgress;
     }
 }
 

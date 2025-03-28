@@ -5,11 +5,11 @@ namespace AutoPuTTY
 {
     public partial class PopupRecrypt : Form
     {
-        public FormOptions FormOptions;
+        public Form _parentForm;
 
-        public PopupRecrypt(FormOptions form)
+        public PopupRecrypt(Form form)
         {
-            FormOptions = form;
+            _parentForm = form;
             InitializeComponent();
         }
 
@@ -21,7 +21,10 @@ namespace AutoPuTTY
 
         private void bOK_Click(object sender, EventArgs e)
         {
-            FormOptions.backgroundProgress.CancelAsync();
+            if (_parentForm is IRecryptForm recryptForm)
+            {
+                recryptForm.CancelRecrypt();
+            }
         }
 
         public void RecryptProgress(string[] args)
@@ -34,6 +37,11 @@ namespace AutoPuTTY
         {
             Text = "Processing complete";
             buOK.Enabled = true;
+        }
+
+        public interface IRecryptForm
+        {
+            void CancelRecrypt();
         }
     }
 }
