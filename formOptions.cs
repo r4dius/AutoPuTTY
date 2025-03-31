@@ -173,19 +173,19 @@ namespace AutoPuTTY
                     if (Host != "")
                     {
                         XmlElement HostXml = XmlConfig.CreateElement("Host");
-                        HostXml.InnerText = Crypto.Encrypt(Host);
+                        HostXml.InnerText = Legacy.Encrypt(Host);
                         ServerXml.AppendChild(HostXml);
                     }
                     if (User != "")
                     {
                         XmlElement UserXml = XmlConfig.CreateElement("User");
-                        UserXml.InnerText = Crypto.Encrypt(User);
+                        UserXml.InnerText = Legacy.Encrypt(User);
                         ServerXml.AppendChild(UserXml);
                     }
                     if (Pass != "")
                     {
                         XmlElement PassXml = XmlConfig.CreateElement("Password");
-                        PassXml.InnerText = Crypto.Encrypt(Pass);
+                        PassXml.InnerText = Legacy.Encrypt(Pass);
                         ServerXml.AppendChild(PassXml);
                     }
                     if (Type > 0)
@@ -241,7 +241,6 @@ namespace AutoPuTTY
                 backgroundProgress.ReportProgress((int)(Count / (double)Lines.Count * 100), Args);
             }
             FormMain.XmlSetConfig("cfgversion", Settings.Default.version);
-            XmlConfig.Save(ConfigFile);
 #if DEBUG
             Debug.WriteLine("Import duration :" + (DateTime.Now - time));
 #endif
@@ -262,7 +261,6 @@ namespace AutoPuTTY
             string Priv = "";
             int Type = 0;
 
-            FormMain.XmlConfig.Load(Settings.Default.cfgpath);
             int version = Convert.ToInt32(Settings.Default.cfgversion);
 
             XmlNodeList XmlNodes = FormMain.XmlConfig.SelectNodes("/List/Server");
@@ -281,19 +279,19 @@ namespace AutoPuTTY
                         switch (childnode.Name)
                         {
                             case "Host":
-                                Host = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
+                                Host = Legacy.Decrypt(childnode.InnerText);
                                 break;
                             case "User":
-                                User = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
+                                User = Legacy.Decrypt(childnode.InnerText);
                                 break;
                             case "Vault":
                                 Vault = childnode.InnerText;
                                 break;
                             case "Password":
-                                Pass = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
+                                Pass = Legacy.Decrypt(childnode.InnerText);
                                 break;
                             case "PrivateKey":
-                                Priv = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
+                                Priv = Legacy.Decrypt(childnode.InnerText);
                                 break;
                             case "Type":
                                 Int32.TryParse(childnode.InnerText, out Type);
@@ -317,11 +315,11 @@ namespace AutoPuTTY
                     ServerXml.AppendChild(PassXml);
                     ServerXml.AppendChild(PrivXml);
                     ServerXml.AppendChild(TypeXml);
-                    HostXml.InnerText = Crypto.Encrypt(Host, newpass);
-                    UserXml.InnerText = Crypto.Encrypt(User, newpass);
+                    HostXml.InnerText = Legacy.Encrypt(Host, newpass);
+                    UserXml.InnerText = Legacy.Encrypt(User, newpass);
                     VaultXml.InnerText = Vault;
-                    PassXml.InnerText = Crypto.Encrypt(Pass, newpass);
-                    PrivXml.InnerText = Crypto.Encrypt(Priv, newpass);
+                    PassXml.InnerText = Legacy.Encrypt(Pass, newpass);
+                    PrivXml.InnerText = Legacy.Encrypt(Priv, newpass);
                     TypeXml.InnerText = Type.ToString();
 
                     XmlNodeList ServerNodes = FormMain.XmlConfig.SelectNodes("//Server[@Name=" + FormMain.ParseXpathString(node.Attributes[0].Value) + "]");
@@ -348,10 +346,10 @@ namespace AutoPuTTY
                         switch (childnode.Name)
                         {
                             case "Password":
-                                Pass = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
+                                Pass = Legacy.Decrypt(childnode.InnerText);
                                 break;
                             case "PrivateKey":
-                                Priv = version < 2 ? Legacy.Decrypt(childnode.InnerText) : Crypto.Decrypt(childnode.InnerText);
+                                Priv = Legacy.Decrypt(childnode.InnerText);
                                 break;
                         }
                     }
@@ -364,13 +362,13 @@ namespace AutoPuTTY
                     if (Pass != "")
                     {
                         XmlElement PassXml = FormMain.XmlConfig.CreateElement("Password");
-                        PassXml.InnerText = Crypto.Encrypt(Pass, newpass);
+                        PassXml.InnerText = Legacy.Encrypt(Pass, newpass);
                         ServerXml.AppendChild(PassXml);
                     }
                     if (Priv != "")
                     {
                         XmlElement PrivXml = FormMain.XmlConfig.CreateElement("PrivateKey");
-                        PrivXml.InnerText = Crypto.Encrypt(Priv, newpass);
+                        PrivXml.InnerText = Legacy.Encrypt(Priv, newpass);
                         ServerXml.AppendChild(PrivXml);
                     }
 
@@ -385,7 +383,6 @@ namespace AutoPuTTY
                 }
             }
             FormMain.XmlSetConfig("cfgversion", Settings.Default.version);
-            FormMain.XmlConfig.Save(Settings.Default.cfgpath);
 #if DEBUG
             Debug.WriteLine("Encryption duration :" + (DateTime.Now - time));
 #endif
