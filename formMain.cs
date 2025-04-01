@@ -20,6 +20,7 @@ using System.Web;
 using System.Windows.Forms;
 using System.Xml;
 using static AutoPuTTY.PopupRecrypt;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using ComboBox = System.Windows.Forms.ComboBox;
 using File = System.IO.File;
 using Label = System.Windows.Forms.Label;
@@ -45,7 +46,6 @@ namespace AutoPuTTY
         private string[] Types;
         public static XmlDocument XmlConfig = new XmlDocument();
         public static XmlDocument XmlData = new XmlDocument();
-        public static XmlDocument XmlList = new XmlDocument();
         private const int FilterWidth = 145;
         private const int FindWidth = 250;
         private bool IndexChanged;
@@ -143,34 +143,171 @@ namespace AutoPuTTY
                 Environment.Exit(-1);
             }
 
+            IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
+            //It would be better to find the position at run time of the 'Close' item, but...
+            InsertMenu(sysMenuHandle, 5, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
+            InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
+            ttMain.Active = Settings.Default.tooltips;
+
+            if (XmlGetHash() != "") Settings.Default.passwordpbk = XmlGetHash();
+
+            // check for newer configuration format
             if (XmlGetNode("/Data") != null)
             {
                 // if user password, request and reset cryptokey
-                if (XmlGetConfig("passwordpbk").Trim() != "")
+                if (Settings.Default.passwordpbk.Trim() != "")
                 {
-                    Settings.Default.passwordpbk = XmlGetHash();
                     PasswordRequest();
                 }
-                time = DateTime.Now;
-                string decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml);
-                Debug.WriteLine("Decrypt Time :" + (DateTime.Now - time));
-                XmlConfig.LoadXml($"<List>{decryptedlist}</List>");
-                Debug.WriteLine(XmlConfig.OuterXml);
             }
             else
             {
                 XmlConfig = XmlData;
-                UpgradeCrypto();
-            }
+                if (XmlGetConfig("password") != "") Settings.Default.password = XmlGetConfig("password");
+                if (XmlGetConfig("passwordmd5") != "") Settings.Default.passwordmd5 = XmlGetConfig("passwordmd5");
 
+                if (Settings.Default.password.Trim() != "" || Settings.Default.passwordmd5.Trim() != "")
+                {
+                    PasswordRequest();
+                }
+                else
+                {
+                    UpgradeCrypto();
+                }
+            }
+#if DEBUG
+            Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
+#endif
+        }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        [DllImport("user32.dll")]
+        private static extern int GetMenuItemCount(IntPtr hMenu);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int GetMenuString(IntPtr hMenu, uint uIDItem, StringBuilder lpString, int nMaxCount, uint uFlag);
+        [DllImport("user32.dll")]
+        private static extern bool InsertMenu(IntPtr hMenu, Int32 wPosition, Int32 wFlags, Int32 wIDNewItem, string lpNewItem);
+        [DllImport("user32.dll")]
+        private static extern bool DeleteMenu(IntPtr hMenu, int uPosition, uint uFlags);
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetMenuItemID(IntPtr hMenu, int nPos);
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_SYSCOMMAND)
+            {
+                switch (m.WParam.ToInt32())
+                {
+                    case IDM_ABOUT:
+                        ShowTableLayoutPanel(tlAbout);
+                        buAboutOK.Focus();
+                        return;
+                    case IDM_LOCK:
+                        PasswordRequest();
+                        return;
+                    default:
+                        break;
+                }
+            }
+            if (m.Msg == NativeMethods.WM_SHOWME)
+            {
+                miRestore_Click(new object(), new EventArgs());
+            }
+            base.WndProc(ref m);
+        }
+
+        public void CancelRecrypt()
+        {
+            backgroundProgress.CancelAsync();
+        }
+
+        private void PasswordRequest()
+        {
+            if (Settings.Default.passwordpbk.Trim() == "" &&
+                Settings.Default.passwordmd5.Trim() == "" &&
+                Settings.Default.password.Trim() == "") return;
+            //AddLockMenu(false);
+            tbPassPasswordReset();
+            PasswordRequired = true;
+            BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
+            ShowTableLayoutPanel(tlPassword);
+            return;
+        }
+
+#if SECURE
+        internal enum PasswordErrors
+        {
+            None = 0,
+            TooShort = 1 << 0,
+            NoLowercase = 1 << 1,
+            NoUppercase = 1 << 2,
+            NoDigit = 1 << 3,
+            NoSpecial = 1 << 4
+        }
+
+        internal PasswordErrors CheckPasswordComplexity(string password)
+        {
+            PasswordErrors errors = PasswordErrors.None;
+
+            if (password.Length < 16)
+                errors |= PasswordErrors.TooShort;
+            if (!Regex.IsMatch(password, "[a-z]"))
+                errors |= PasswordErrors.NoLowercase;
+            if (!Regex.IsMatch(password, "[A-Z]"))
+                errors |= PasswordErrors.NoUppercase;
+            if (!Regex.IsMatch(password, "\\d"))
+                errors |= PasswordErrors.NoDigit;
+            if (!Regex.IsMatch(password, "[^a-zA-Z0-9]"))
+                errors |= PasswordErrors.NoSpecial;
+
+            return errors;
+        }
+
+        private void EnforceComplexPassword()
+        {
+            string message = "For better security, set a password with:\n" +
+                             "- At least 16 characters\n" +
+                             "- Upper & lower case letters\n" +
+                             "- At least 1 number & 1 symbol\n\n" +
+                             "Click cancel to exit.";
+            DialogResult result = MessageBoxEx.Show(this, message, "Security update required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.OK)
+            {
+                using (FormOptions FormOptions = new FormOptions(this, focusPassword: true))
+                {
+                    FormOptions.ShowDialog(this);
+                }
+            }
+            else
+            {
+                Invoke((MethodInvoker)delegate
+                {
+                    Environment.Exit(0);
+                });
+            }
+        }
+#endif
+
+        private void StartupDecrypt ()
+        {
+            string decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml);
+            XmlConfig.LoadXml($"<List>{decryptedlist}</List>");
+
+            Startup();
+        }
+
+        private void Startup()
+        {
             cbType.SelectedIndex = 0;
             if (XmlGetConfig("autohidepassword").ToLower() == "true") Settings.Default.autohidepassword = true;
             if (XmlGetConfig("maximized").ToLower() == "true") Settings.Default.maximized = true;
             if (XmlGetConfig("minimize").ToLower() == "true") Settings.Default.minimize = true;
             if (XmlGetConfig("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
             if (XmlGetConfig("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlGetConfig("multicolumnwidth"));
-            if (XmlGetConfig("password") != "") Settings.Default.password = XmlGetConfig("password");
-            if (XmlGetConfig("passwordmd5") != "") Settings.Default.passwordmd5 = XmlGetConfig("passwordmd5");
             if (XmlGetConfig("position") != "") Settings.Default.position = XmlGetConfig("position");
             if (XmlGetConfig("putty") != "") Settings.Default.puttypath = XmlGetConfig("putty");
             if (XmlGetConfig("puttycommand") != "") Settings.Default.puttycommand = XmlGetConfig("puttycommand");
@@ -196,12 +333,6 @@ namespace AutoPuTTY
             if (XmlGetConfig("winscpagent").ToLower() == "true") Settings.Default.winscpagent = true;
             if (XmlGetConfig("winscpkey").ToLower() == "true") Settings.Default.winscpkey = true;
             if (XmlGetConfig("winscpkeyfile") != "") Settings.Default.winscpkeyfilepath = XmlGetConfig("winscpkeyfile");
-
-            IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
-            //It would be better to find the position at run time of the 'Close' item, but...
-            InsertMenu(sysMenuHandle, 5, MF_BYPOSITION | MF_SEPARATOR, 0, string.Empty);
-            InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
-            ttMain.Active = Settings.Default.tooltips;
 
             noIcon.Visible = Settings.Default.minimize;
             noIcon.ContextMenu = cmSystray;
@@ -287,123 +418,7 @@ namespace AutoPuTTY
             laPassS.Visible = true;
             //Text += "ˢ";
 #endif
-            Startup();
-#if DEBUG
-            Debug.WriteLine("StartUp Time :" + (DateTime.Now - time));
-#endif
-        }
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
-        [DllImport("user32.dll")]
-        private static extern int GetMenuItemCount(IntPtr hMenu);
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern int GetMenuString(IntPtr hMenu, uint uIDItem, StringBuilder lpString, int nMaxCount, uint uFlag);
-        [DllImport("user32.dll")]
-        private static extern bool InsertMenu(IntPtr hMenu, Int32 wPosition, Int32 wFlags, Int32 wIDNewItem, string lpNewItem);
-        [DllImport("user32.dll")]
-        private static extern bool DeleteMenu(IntPtr hMenu, int uPosition, uint uFlags);
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetMenuItemID(IntPtr hMenu, int nPos);
-
-        protected override void WndProc(ref Message m)
-        {
-            if (m.Msg == WM_SYSCOMMAND)
-            {
-                switch (m.WParam.ToInt32())
-                {
-                    case IDM_ABOUT:
-                        ShowTableLayoutPanel(tlAbout);
-                        buAboutOK.Focus();
-                        return;
-                    case IDM_LOCK:
-                        PasswordRequest();
-                        return;
-                    default:
-                        break;
-                }
-            }
-            if (m.Msg == NativeMethods.WM_SHOWME)
-            {
-                miRestore_Click(new object(), new EventArgs());
-            }
-            base.WndProc(ref m);
-        }
-
-        public void CancelRecrypt()
-        {
-            backgroundProgress.CancelAsync();
-        }
-
-        private void PasswordRequest()
-        {
-            if (Settings.Default.passwordpbk.Trim() == "" && Settings.Default.passwordmd5.Trim() == "") return;
-            AddLockMenu(false);
-            tbPassPasswordReset();
-            PasswordRequired = true;
-            BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
-            ShowTableLayoutPanel(tlPassword);
-        }
-
-#if SECURE
-        internal enum PasswordErrors
-        {
-            None = 0,
-            TooShort = 1 << 0,
-            NoLowercase = 1 << 1,
-            NoUppercase = 1 << 2,
-            NoDigit = 1 << 3,
-            NoSpecial = 1 << 4
-        }
-
-        internal PasswordErrors CheckPasswordComplexity(string password)
-        {
-            PasswordErrors errors = PasswordErrors.None;
-
-            if (password.Length < 16)
-                errors |= PasswordErrors.TooShort;
-            if (!Regex.IsMatch(password, "[a-z]"))
-                errors |= PasswordErrors.NoLowercase;
-            if (!Regex.IsMatch(password, "[A-Z]"))
-                errors |= PasswordErrors.NoUppercase;
-            if (!Regex.IsMatch(password, "\\d"))
-                errors |= PasswordErrors.NoDigit;
-            if (!Regex.IsMatch(password, "[^a-zA-Z0-9]"))
-                errors |= PasswordErrors.NoSpecial;
-
-            return errors;
-        }
-
-        private void EnforceComplexPassword()
-        {
-            string message = "For better security, set a password with:\n" +
-                             "- At least 16 characters\n" +
-                             "- Upper & lower case letters\n" +
-                             "- At least 1 number & 1 symbol\n\n" +
-                             "Click cancel to exit.";
-            DialogResult result = MessageBoxEx.Show(this, message, "Security update required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-
-            if (result == DialogResult.OK)
-            {
-                using (FormOptions FormOptions = new FormOptions(this, focusPassword: true))
-                {
-                    FormOptions.ShowDialog(this);
-                }
-            }
-            else
-            {
-                Invoke((MethodInvoker)delegate
-                {
-                    Environment.Exit(0);
-                });
-            }
-        }
-#endif
-
-        private void Startup()
-        {
 //            RemoveLegacy("passwordmd5");
             PasswordRequired = false;
             buCopyName.Enabled = false;
@@ -430,16 +445,6 @@ namespace AutoPuTTY
 
         private void UpgradeCrypto()
         {
-            if (XmlGetConfig("password") != "")
-            {
-                RemoveLegacy("password");
-            }
-            else if (XmlGetConfig("passwordmd5") != "")
-            {
-                Settings.Default.passwordmd5 = XmlGetConfig("passwordmd5");
-                PasswordRequest();
-                RemoveLegacy("passwordmd5");
-            }
             XmlDocument NewXmlConfig = new XmlDocument();
             XmlDeclaration XmlDeclaration = NewXmlConfig.CreateXmlDeclaration("1.0", "UTF-8", null);
             XmlElement RootXml = NewXmlConfig.DocumentElement;
@@ -449,7 +454,9 @@ namespace AutoPuTTY
             {
                 XmlDocument HashXml = new XmlDocument();
                 HashXml.LoadXml($"<Hash>{Settings.Default.passwordpbk}</Hash>");
-                DataXml.AppendChild(HashXml);
+                XmlNode HashNode = HashXml.DocumentElement;
+                XmlNode ImportedNode = NewXmlConfig.ImportNode(HashNode, true);
+                DataXml.AppendChild(ImportedNode);
             }
             XmlNode listNode = XmlGetNode("/List");
             if (listNode != null)
@@ -463,14 +470,16 @@ namespace AutoPuTTY
             XmlConfig.LoadXml(XmlGetNode("/Data/List").OuterXml);
         }
 
-        private void RemoveLegacy(string method)
+        private void RemoveLegacy()
         {
-            // convert old passwords to pbkdf2 hash
-            if (method == "password")
-            {
-                if (Settings.Default.password.Trim() == "") return;
-                Settings.Default.passwordpbk = Crypto.HashPassword(Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptolegacypassword));
+            string method = "";
+            Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptokey);
+            if (Settings.Default.password.Trim() != "") {
                 Settings.Default.password = "";
+                method = "password";
+            } else if (Settings.Default.passwordmd5.Trim() != "") {
+                Settings.Default.passwordmd5 = "";
+                method = "passwordmd5";
             }
 
 #if SECURE
@@ -480,38 +489,7 @@ namespace AutoPuTTY
             }));
 #endif
 
-            if (method == "passwordmd5")
-            {
-                if (Settings.Default.passwordmd5.Trim() == "") return;
-                string message = "For better security, your configuration file needs to be re-encrypted.\n" +
-                                 "Click \"OK\" to apply changes or \"Cancel\" to exit.";
-                DialogResult result = MessageBoxEx.Show(this, message, "Security update required", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (result == DialogResult.OK)
-                {
-                    Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptolegacypassword);
-                    XmlSetConfig("passwordpbk", Settings.Default.passwordpbk.ToString());
-
-                    if (lbServer.Items.Count > 0 || lbVault.Items.Count > 0)
-                    {
-                        string[] Args = { "recrypt", Settings.Default.cryptolegacypassword };
-                        backgroundProgress.RunWorkerAsync(Args);
-                        PopupRecrypt = new PopupRecrypt(this);
-                        PopupRecrypt.Text = "Applying" + PopupRecrypt.Text;
-                        PopupRecrypt.ShowDialog(this);
-                    }
-                }
-                else
-                {
-                    this.Invoke((MethodInvoker)delegate {
-                        Environment.Exit(0);
-                    });
-                }
-                Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptokey);
-                Settings.Default.passwordmd5 = "";
-            }
-
-            if (Settings.Default.passwordpbk.Trim() == "") return;
-            XmlSetConfig("passwordpbk", Settings.Default.passwordpbk);
+            if (method == "") return;
             XmlDropNode("Config", new ArrayList { method });
         }
 
@@ -1155,22 +1133,22 @@ namespace AutoPuTTY
 
         public static string ParseXpathString(string input)
         {
-            string Result = "";
+            string result = "";
             if (input.Contains("'"))
             {
                 string[] InputSplit = input.Split('\'');
                 foreach (string split in InputSplit)
                 {
-                    if (Result != "") Result += ",\"'\",";
-                    Result += "'" + split + "'";
+                    if (result != "") result += ",\"'\",";
+                    result += "'" + split + "'";
                 }
-                Result = "concat(" + Result + ")";
+                result = "concat(" + result + ")";
             }
             else
             {
-                Result = "'" + input + "'";
+                result = "'" + input + "'";
             }
-            return Result;
+            return result;
         }
 
         private static string ReplacePath(string[] search, string[] replace, string text)
@@ -1250,33 +1228,39 @@ namespace AutoPuTTY
 
         public void XmlSave()
         {
-            //try
-            //{
-            DateTime time = DateTime.Now;
             string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
-            Debug.WriteLine("Encrypt Time :" + (DateTime.Now - time));
-            Debug.WriteLine(encryptedlist);
             XmlDocument XmlNewList = new XmlDocument();
-            XmlNewList.LoadXml($"<List>{encryptedlist}</List>");
-            Debug.WriteLine(XmlNewList.OuterXml);
-            XmlNode XmlList = XmlData.SelectSingleNode("/Data/List");
-            Debug.WriteLine(XmlList.OuterXml);
+            XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
+            XmlNode ListNode = XmlData.SelectSingleNode("/Data/List");
             if (XmlData.DocumentElement != null)
             {
-                Debug.WriteLine("not null");
-                if (XmlList != null)
+                if (ListNode != null)
                 {
-                    XmlNode newListNode = XmlNewList.DocumentElement;
-                    XmlNode importedNode = XmlData.ImportNode(newListNode, true);
-                    XmlData.DocumentElement.ReplaceChild(importedNode, XmlList);
+                    // Insert the new <ListNew> node
+                    XmlNode NewListNode = XmlNewList.DocumentElement;
+                    XmlNode ImportedNode = XmlData.ImportNode(NewListNode, true);
+                    XmlData.DocumentElement.AppendChild(ImportedNode); // Append <ListNew>
+                    // Rename original <List> to <ListOld>
+                    XmlElement OldListEl = XmlData.CreateElement("ListOld");
+                    OldListEl.InnerXml = ListNode.InnerXml; // Copy contents
+                    XmlData.DocumentElement.ReplaceChild(OldListEl, ListNode); // Replace <List> with <ListOld>
+                    // Rename <ListNew> to <List>
+                    NewListNode = XmlData.SelectSingleNode("/Data/ListNew");
+                    if (NewListNode != null)
+                    {
+                        XmlElement NewListEl = XmlData.CreateElement("List");
+                        NewListEl.InnerXml = NewListNode.InnerXml; // Copy content
+                        XmlData.DocumentElement.ReplaceChild(NewListEl, NewListNode); // Replace <ListNew> with <List>
+                    }
+                    // Remove <ListOld>
+                    XmlNode DropNode = XmlData.SelectSingleNode("/Data/ListOld");
+                    if (DropNode != null)
+                    {
+                        XmlData.DocumentElement.RemoveChild(DropNode);
+                    }
                 }
             }
             XmlData.Save(Settings.Default.cfgpath);
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageError(this, "Could not write to configuration file :'(\rModifications will not be saved\rPlease check your user permissions.");
-            //}
         }
 
         public void XmlSetConfig(string id, string value)
@@ -2462,12 +2446,25 @@ namespace AutoPuTTY
             else
             {
                 if ((Settings.Default.passwordpbk != "" && Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk)) ||
-                    (Settings.Default.passwordmd5 != "" && Crypto.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5))
+                    (Settings.Default.passwordmd5 != "" && Crypto.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5) ||
+                    (Settings.Default.password != "" && tbPassPassword.Text == Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptolegacypassword)))
                 {
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbPassPassword.Text;
-//                    AddLockMenu(true);
-//                    Startup();
+                    //                    AddLockMenu(true);
+                    //                    Startup();
+
+                    if (Settings.Default.password.Trim() != "")
+                    {
+                        RemoveLegacy();
+                        UpgradeCrypto();
+                        Startup();
+                    }
+                    else
+                    {
+                        StartupDecrypt();
+                    }
+
 #if SECURE
                     if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) EnforceComplexPassword();
 #endif

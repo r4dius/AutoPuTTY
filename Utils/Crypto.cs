@@ -121,9 +121,9 @@ public static class Crypto
     /// <summary>
     /// Decrypts a Base64 string (produced by Encrypt) using the provided passphrase.
     /// </summary>
-    public static string Decrypt(string cipherText, string passphrase)
+    public static string Decrypt(string encrypted, string passphrase)
     {
-        byte[] cipherBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
+        byte[] cipherBytesWithSaltAndIv = Convert.FromBase64String(encrypted);
 
         // Extract the salt, IV, and ciphertext.
         byte[] saltBytes = new byte[SaltSize];
