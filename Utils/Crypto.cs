@@ -72,12 +72,12 @@ public static class Crypto
     /// Encrypts plain text using AES encryption with a passphrase.
     /// The output is a Base64 string containing the salt, IV, and ciphertext.
     /// </summary>
-    public static string Encrypt(string plainText, string passphrase)
+    public static string Encrypt(string plain, string passphrase)
     {
         // Generate a random salt and IV.
         byte[] saltBytes = GenerateRandomBytes(SaltSize);
         byte[] ivBytes = GenerateRandomBytes(IvByteSize);
-        byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+        byte[] plainTextBytes = Encoding.UTF8.GetBytes(plain);
 
         // Derive a 256-bit key using PBKDF2.
         using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA256))

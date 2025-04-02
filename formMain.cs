@@ -133,6 +133,67 @@ namespace AutoPuTTY
                 cbType.Items.Add(type);
             }
 
+            int i = 0;
+            MenuItem sepmenu = new MenuItem
+            {
+                Text = "-",
+            };
+            MenuItem connectmenu = new MenuItem
+            {
+                Index = i,
+                Text = "Connect\tEnter"
+            };
+            connectmenu.Click += lbServer_DoubleClick;
+            cmServer.MenuItems.Add(connectmenu);
+            sepmenu.Index++;
+            cmServer.MenuItems.Add(sepmenu.CloneMenu());
+            foreach (string type in Types)
+            {
+                MenuItem listmenu = new MenuItem
+                {
+                    Index = i++,
+                    Text = type
+                };
+                string _type = Array.IndexOf(TypeList, type).ToString();
+                listmenu.Click += delegate { Connect(_type); };
+                cmServer.MenuItems.Add(listmenu);
+            }
+            sepmenu.Index++;
+            cmServer.MenuItems.Add(sepmenu.CloneMenu());
+            MenuItem deletemenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Delete..."
+            };
+            deletemenu.Click += meDeleteServer;
+            cmServer.MenuItems.Add(deletemenu);
+            MenuItem searchmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Search...\tCtrl+F"
+            };
+            searchmenu.Click += SwitchSearchShow;
+            cmServer.MenuItems.Add(searchmenu);
+            sepmenu.Index++;
+            sepmenu.Visible = false;
+            cmServer.MenuItems.Add(sepmenu.CloneMenu());
+            MenuItem lockmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Lock\tCtrl+L",
+                Visible = false
+            };
+            lockmenu.Click += meLock;
+            cmServer.MenuItems.Add(lockmenu);
+
+            MenuItem deletevaultmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Delete..."
+            };
+            deletevaultmenu.Click += meDeleteVault;
+            cmVault.MenuItems.Add(deletevaultmenu);
+
             try
             {
                 XmlData.Load(Settings.Default.cfgpath);
@@ -149,7 +210,14 @@ namespace AutoPuTTY
             InsertMenu(sysMenuHandle, 6, MF_BYPOSITION, IDM_ABOUT, "About");
             ttMain.Active = Settings.Default.tooltips;
 
-            if (XmlGetHash() != "") Settings.Default.passwordpbk = XmlGetHash();
+            if (XmlGetData("Hash") != "") Settings.Default.passwordpbk = XmlGetData("Hash");
+            if (XmlGetData("Position") != "") Settings.Default.position = XmlGetData("Position");
+            if (XmlGetData("Size") != "") Settings.Default.size = XmlGetData("Size");
+
+            AutoSize = false;
+            MinimumSize = Size;
+
+            OpenAtSavedPosition(this);
 
             // check for newer configuration format
             if (XmlGetNode("/Data") != null)
@@ -165,6 +233,10 @@ namespace AutoPuTTY
                 XmlConfig = XmlData;
                 if (XmlGetConfig("password") != "") Settings.Default.password = XmlGetConfig("password");
                 if (XmlGetConfig("passwordmd5") != "") Settings.Default.passwordmd5 = XmlGetConfig("passwordmd5");
+                if (XmlGetConfig("position") != "") Settings.Default.position = XmlGetConfig("position");
+                if (XmlGetConfig("size") != "") Settings.Default.size = XmlGetConfig("size");
+
+                OpenAtSavedPosition(this);
 
                 if (Settings.Default.password.Trim() != "" || Settings.Default.passwordmd5.Trim() != "")
                 {
@@ -206,7 +278,7 @@ namespace AutoPuTTY
                         buAboutOK.Focus();
                         return;
                     case IDM_LOCK:
-                        PasswordRequest();
+                        Lock();
                         return;
                     default:
                         break;
@@ -308,7 +380,6 @@ namespace AutoPuTTY
             if (XmlGetConfig("minimize").ToLower() == "true") Settings.Default.minimize = true;
             if (XmlGetConfig("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
             if (XmlGetConfig("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlGetConfig("multicolumnwidth"));
-            if (XmlGetConfig("position") != "") Settings.Default.position = XmlGetConfig("position");
             if (XmlGetConfig("putty") != "") Settings.Default.puttypath = XmlGetConfig("putty");
             if (XmlGetConfig("puttycommand") != "") Settings.Default.puttycommand = XmlGetConfig("puttycommand");
             if (XmlGetConfig("puttyexecute").ToLower() == "true") Settings.Default.puttyexecute = true;
@@ -322,7 +393,6 @@ namespace AutoPuTTY
             if (XmlGetConfig("rdsize") != "") Settings.Default.rdsize = XmlGetConfig("rdsize");
             if (XmlGetConfig("rdspan").ToLower() == "true") Settings.Default.rdspan = true;
             if (XmlGetConfig("remotedesktop") != "") Settings.Default.rdpath = XmlGetConfig("remotedesktop");
-            if (XmlGetConfig("size") != "") Settings.Default.size = XmlGetConfig("size");
             if (XmlGetConfig("tooltips").ToLower() == "false") Settings.Default.tooltips = false;
             if (XmlGetConfig("version") != "") Settings.Default.vncpath = XmlGetConfig("version");
             if (XmlGetConfig("vnc") != "") Settings.Default.vncpath = XmlGetConfig("vnc");
@@ -346,72 +416,6 @@ namespace AutoPuTTY
             IconEyeHideHover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
             IconEyeHover = ImageOpacity.Set(Resources.eye, (float)0.5);
             piPassEye.Image = IconEyeHover;
-
-            int i = 0;
-            MenuItem sepmenu = new MenuItem
-            {
-                Text = "-",
-            };
-            MenuItem connectmenu = new MenuItem
-            {
-                Index = i,
-                Text = "Connect\tEnter"
-            };
-            connectmenu.Click += lbServer_DoubleClick;
-            cmServer.MenuItems.Add(connectmenu);
-            sepmenu.Index++;
-            cmServer.MenuItems.Add(sepmenu.CloneMenu());
-            foreach (string type in Types)
-            {
-                MenuItem listmenu = new MenuItem
-                {
-                    Index = i++,
-                    Text = type
-                };
-                string _type = Array.IndexOf(TypeList, type).ToString();
-                listmenu.Click += delegate { Connect(_type); };
-                cmServer.MenuItems.Add(listmenu);
-            }
-            sepmenu.Index++;
-            cmServer.MenuItems.Add(sepmenu.CloneMenu());
-            MenuItem deletemenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Delete..."
-            };
-            deletemenu.Click += meDeleteServer;
-            cmServer.MenuItems.Add(deletemenu);
-            MenuItem searchmenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Search...\tCtrl+F"
-            };
-            searchmenu.Click += SwitchSearchShow;
-            cmServer.MenuItems.Add(searchmenu);
-            sepmenu.Index++;
-            sepmenu.Visible = false;
-            cmServer.MenuItems.Add(sepmenu.CloneMenu());
-            MenuItem lockmenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Lock\tCtrl+L",
-                Visible = false
-            };
-            lockmenu.Click += meLock;
-            cmServer.MenuItems.Add(lockmenu);
-
-            MenuItem deletevaultmenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Delete..."
-            };
-            deletevaultmenu.Click += meDeleteVault;
-            cmVault.MenuItems.Add(deletevaultmenu);
-
-            AutoSize = false;
-            MinimumSize = Size;
-
-            OpenAtSavedPosition(this);
 
 #if SECURE
             laAboutS.Visible = true;
@@ -450,14 +454,32 @@ namespace AutoPuTTY
             XmlElement RootXml = NewXmlConfig.DocumentElement;
             NewXmlConfig.InsertBefore(XmlDeclaration, RootXml);
             XmlElement DataXml = NewXmlConfig.CreateElement(string.Empty, "Data", string.Empty);
+            XmlDocument ImportXml = new XmlDocument();
+
             if (Settings.Default.passwordpbk.Trim() != "")
             {
-                XmlDocument HashXml = new XmlDocument();
-                HashXml.LoadXml($"<Hash>{Settings.Default.passwordpbk}</Hash>");
-                XmlNode HashNode = HashXml.DocumentElement;
-                XmlNode ImportedNode = NewXmlConfig.ImportNode(HashNode, true);
+                ImportXml.LoadXml($"<Hash>{Settings.Default.passwordpbk}</Hash>");
+                XmlNode ImportNode = ImportXml.DocumentElement;
+                XmlNode ImportedNode = NewXmlConfig.ImportNode(ImportNode, true);
                 DataXml.AppendChild(ImportedNode);
             }
+            if(Settings.Default.position.Trim() != "")
+            {
+                ImportXml.LoadXml($"<Position>{Settings.Default.position}</Position>");
+                XmlNode ImportNode = ImportXml.DocumentElement;
+                XmlNode ImportedNode = NewXmlConfig.ImportNode(ImportNode, true);
+                DataXml.AppendChild(ImportedNode);
+                XmlDropNode("Config", new ArrayList { "position" });
+            }
+            if (Settings.Default.size.Trim() != "")
+            {
+                ImportXml.LoadXml($"<Size>{Settings.Default.size}</Size>");
+                XmlNode ImportNode = ImportXml.DocumentElement;
+                XmlNode ImportedNode = NewXmlConfig.ImportNode(ImportNode, true);
+                DataXml.AppendChild(ImportedNode);
+                XmlDropNode("Config", new ArrayList { "size" });
+            }
+
             XmlNode listNode = XmlGetNode("/List");
             if (listNode != null)
             {
@@ -468,6 +490,17 @@ namespace AutoPuTTY
             XmlData = NewXmlConfig;
             Debug.WriteLine(XmlData.OuterXml);
             XmlConfig.LoadXml(XmlGetNode("/Data/List").OuterXml);
+        }
+
+        private void Lock()
+        {
+            ToogleLockMenu(false);
+            /*
+            XmlData.Load(Settings.Default.cfgpath);
+            if (XmlGetData("Hash") != "") Settings.Default.passwordpbk = XmlGetData("Hash");
+            Settings.Default.cryptokey = "";
+            */
+            PasswordRequest();
         }
 
         private void RemoveLegacy()
@@ -501,7 +534,7 @@ namespace AutoPuTTY
             return result > 0 ? text.ToString() : string.Empty;
         }
 
-        public void AddLockMenu(bool enable)
+        public void ToogleLockMenu(bool enable)
         {
             IntPtr sysMenuHandle = GetSystemMenu(Handle, false);
 
@@ -1214,9 +1247,9 @@ namespace AutoPuTTY
             return ConfigNode != null ? ConfigNode.InnerText : "";
         }
 
-        public string XmlGetHash()
+        public string XmlGetData(string node)
         {
-            XmlNode ConfigNode = XmlData.SelectSingleNode("/Data/Hash");
+            XmlNode ConfigNode = XmlGetNode("/Data/" + node);
             return ConfigNode != null ? ConfigNode.InnerText : "";
         }
 
@@ -1228,6 +1261,7 @@ namespace AutoPuTTY
 
         public void XmlSave()
         {
+            if (Settings.Default.cryptokey.Trim() == "") return;
             string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
             XmlDocument XmlNewList = new XmlDocument();
             XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
@@ -1261,6 +1295,17 @@ namespace AutoPuTTY
                 }
             }
             XmlData.Save(Settings.Default.cfgpath);
+        }
+
+        public void XmlSetData(string node, string value)
+        {
+            XmlElement DataXml = XmlData.CreateElement(node);
+            DataXml.InnerText = value;
+
+            XmlNode ConfigNode = XmlData.SelectSingleNode("/Data/" + node);
+            _ = ConfigNode != null
+                ? XmlData.DocumentElement.ReplaceChild(DataXml, ConfigNode)
+                : XmlData.DocumentElement.InsertBefore(DataXml, XmlData.DocumentElement.FirstChild);
         }
 
         public void XmlSetConfig(string id, string value)
@@ -1746,7 +1791,7 @@ namespace AutoPuTTY
 
         private void meLock(object sender, EventArgs e)
         {
-            PasswordRequest();
+            Lock();
         }
 
         private void listBox_ContextMenu(object sender)
@@ -2062,7 +2107,7 @@ namespace AutoPuTTY
             if (Settings.Default.position != "" && WindowState == FormWindowState.Normal)
             {
                 Settings.Default.position = DesktopBounds.X + "x" + DesktopBounds.Y;
-                XmlSetConfig("position", Settings.Default.position);
+                XmlSetData("Position", Settings.Default.position);
             }
 
             _ = Screen.AllScreens;
@@ -2090,13 +2135,13 @@ namespace AutoPuTTY
             if (Settings.Default.size != "")
             {
                 Settings.Default.size = DesktopBounds.Width + "x" + DesktopBounds.Height;
-                XmlSetConfig("size", Settings.Default.size);
+                XmlSetData("Size", Settings.Default.size);
             }
 
             if (Settings.Default.position != "" && WindowState == FormWindowState.Normal)
             {
                 Settings.Default.position = DesktopBounds.X + "x" + DesktopBounds.Y;
-                XmlSetConfig("position", Settings.Default.position);
+                XmlSetData("Position", Settings.Default.position);
             }
         }
 
@@ -2451,17 +2496,17 @@ namespace AutoPuTTY
                 {
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbPassPassword.Text;
-                    //                    AddLockMenu(true);
-                    //                    Startup();
 
                     if (Settings.Default.password.Trim() != "")
                     {
+                        ToogleLockMenu(true);
                         RemoveLegacy();
                         UpgradeCrypto();
                         Startup();
                     }
                     else
                     {
+                        ToogleLockMenu(true);
                         StartupDecrypt();
                     }
 

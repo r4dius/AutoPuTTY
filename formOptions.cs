@@ -453,7 +453,7 @@ namespace AutoPuTTY
 
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbGPassword.Text;
-                    FormMain.AddLockMenu(true);
+                    FormMain.ToogleLockMenu(true);
                 }
                 buGApply.Enabled = false;
             }
@@ -527,7 +527,7 @@ namespace AutoPuTTY
 
                         Settings.Default.passwordpbk = "";
                         Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
-                        FormMain.AddLockMenu(false);
+                        FormMain.ToogleLockMenu(false);
                     }
                     else
                     {
@@ -548,7 +548,7 @@ namespace AutoPuTTY
         private void cbGPosition_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.position = cbGPosition.Checked ? FormMain.Left + "x" + FormMain.Top : "";
-            if (!FirstRead) FormMain.XmlSetConfig("position", Settings.Default.position.ToString());
+            if (!FirstRead) FormMain.XmlSetData("Position", Settings.Default.position.ToString());
         }
 
         private void cbGReplace_CheckedChanged(object sender, EventArgs e)
@@ -559,7 +559,7 @@ namespace AutoPuTTY
         private void cbGSize_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.size = cbGSize.Checked ? FormMain.Size.Width + "x" + FormMain.Size.Height : "";
-            if (!FirstRead) FormMain.XmlSetConfig("size", Settings.Default.size.ToString());
+            if (!FirstRead) FormMain.XmlSetData("Size", Settings.Default.size.ToString());
         }
 
         private void cbGSkip_CheckedChanged(object sender, EventArgs e)
