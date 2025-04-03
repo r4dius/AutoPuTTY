@@ -261,8 +261,6 @@ namespace AutoPuTTY
             string Priv = "";
             int Type = 0;
 
-            int version = Convert.ToInt32(Settings.Default.cfgversion);
-
             XmlNodeList XmlNodes = FormMain.XmlConfig.SelectNodes("/List/Server");
             if (XmlNodes != null) foreach (XmlNode node in XmlNodes)
                 {
@@ -440,7 +438,7 @@ namespace AutoPuTTY
                 if (!Crypto.VerifyPassword(tbGPassword.Text, Settings.Default.passwordpbk))
                 {
                     Settings.Default.passwordpbk = Crypto.HashPassword(tbGPassword.Text);
-                    FormMain.XmlSetConfig("passwordpbk", Settings.Default.passwordpbk.ToString());
+                    FormMain.XmlSetData("Hash", Settings.Default.passwordpbk.ToString());
 
                     if (FormMain.lbServer.Items.Count > 0 || FormMain.lbVault.Items.Count > 0)
                     {
@@ -512,7 +510,7 @@ namespace AutoPuTTY
 
                     if (Remove == DialogResult.OK)
                     {
-                        FormMain.XmlRenameNode("Config", "passwordpbk", "oldpasswordpbk");
+                        FormMain.XmlRenameDataNode("Hash", "HashOld");
 
                         if (FormMain.lbServer.Items.Count > 0 || FormMain.lbVault.Items.Count > 0)
                         {
@@ -523,7 +521,7 @@ namespace AutoPuTTY
                             PopupRecrypt.ShowDialog(this);
                         }
 
-                        FormMain.XmlDropNode("Config", new ArrayList { "oldpasswordpbk" });
+                        FormMain.XmlDropData("HashOld");
 
                         Settings.Default.passwordpbk = "";
                         Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
@@ -548,7 +546,11 @@ namespace AutoPuTTY
         private void cbGPosition_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.position = cbGPosition.Checked ? FormMain.Left + "x" + FormMain.Top : "";
-            if (!FirstRead) FormMain.XmlSetData("Position", Settings.Default.position.ToString());
+            if (!FirstRead)
+            {
+                if (Settings.Default.position != "") FormMain.XmlSetData("Position", Settings.Default.position.ToString());
+                else FormMain.XmlDropData("Position");
+            }
         }
 
         private void cbGReplace_CheckedChanged(object sender, EventArgs e)
@@ -559,7 +561,11 @@ namespace AutoPuTTY
         private void cbGSize_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.size = cbGSize.Checked ? FormMain.Size.Width + "x" + FormMain.Size.Height : "";
-            if (!FirstRead) FormMain.XmlSetData("Size", Settings.Default.size.ToString());
+            if (!FirstRead)
+            {
+                if (Settings.Default.size.ToString() != "") FormMain.XmlSetData("Size", Settings.Default.size.ToString());
+                else FormMain.XmlDropData("Size");
+            }
         }
 
         private void cbGSkip_CheckedChanged(object sender, EventArgs e)

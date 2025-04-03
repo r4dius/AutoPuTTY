@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -51,6 +52,7 @@ namespace AutoPuTTY
         private bool IndexChanged;
         private bool ControlReset;
         private bool Filter;
+        private bool Locked;
         private bool SelectAll;
         private bool Remove;
         private double UnixTime;
@@ -211,6 +213,7 @@ namespace AutoPuTTY
             ttMain.Active = Settings.Default.tooltips;
 
             if (XmlGetData("Hash") != "") Settings.Default.passwordpbk = XmlGetData("Hash");
+            if (XmlGetData("Maximized").ToLower() == "true") Settings.Default.maximized = true;
             if (XmlGetData("Position") != "") Settings.Default.position = XmlGetData("Position");
             if (XmlGetData("Size") != "") Settings.Default.size = XmlGetData("Size");
 
@@ -227,12 +230,17 @@ namespace AutoPuTTY
                 {
                     PasswordRequest();
                 }
+                else
+                {
+                    StartupDecrypt();
+                }
             }
             else
             {
                 XmlConfig = XmlData;
                 if (XmlGetConfig("password") != "") Settings.Default.password = XmlGetConfig("password");
                 if (XmlGetConfig("passwordmd5") != "") Settings.Default.passwordmd5 = XmlGetConfig("passwordmd5");
+                if (XmlGetConfig("maximized").ToLower() == "true") Settings.Default.maximized = true;
                 if (XmlGetConfig("position") != "") Settings.Default.position = XmlGetConfig("position");
                 if (XmlGetConfig("size") != "") Settings.Default.size = XmlGetConfig("size");
 
@@ -245,6 +253,7 @@ namespace AutoPuTTY
                 else
                 {
                     UpgradeCrypto();
+                    Startup();
                 }
             }
 #if DEBUG
@@ -302,6 +311,7 @@ namespace AutoPuTTY
                 Settings.Default.passwordmd5.Trim() == "" &&
                 Settings.Default.password.Trim() == "") return;
             //AddLockMenu(false);
+            Locked = true;
             tbPassPasswordReset();
             PasswordRequired = true;
             BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
@@ -340,6 +350,7 @@ namespace AutoPuTTY
 
         private void EnforceComplexPassword()
         {
+            Locked = false;
             string message = "For better security, set a password with:\n" +
                              "- At least 16 characters\n" +
                              "- Upper & lower case letters\n" +
@@ -364,6 +375,7 @@ namespace AutoPuTTY
         }
 #endif
 
+        // startup for crypted config
         private void StartupDecrypt ()
         {
             string decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml);
@@ -374,9 +386,9 @@ namespace AutoPuTTY
 
         private void Startup()
         {
+            Locked = false;
             cbType.SelectedIndex = 0;
             if (XmlGetConfig("autohidepassword").ToLower() == "true") Settings.Default.autohidepassword = true;
-            if (XmlGetConfig("maximized").ToLower() == "true") Settings.Default.maximized = true;
             if (XmlGetConfig("minimize").ToLower() == "true") Settings.Default.minimize = true;
             if (XmlGetConfig("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
             if (XmlGetConfig("multicolumnwidth") != "") Settings.Default.multicolumnwidth = Convert.ToInt32(XmlGetConfig("multicolumnwidth"));
@@ -423,8 +435,15 @@ namespace AutoPuTTY
             //Text += "ˢ";
 #endif
 
-//            RemoveLegacy("passwordmd5");
             PasswordRequired = false;
+
+#if SECURE
+            BeginInvoke(new Action(() =>
+            {
+                if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) EnforceComplexPassword();
+            }));
+#endif
+
             buCopyName.Enabled = false;
             buCopyHost.Enabled = false;
             buCopyUser.Enabled = false;
@@ -495,11 +514,9 @@ namespace AutoPuTTY
         private void Lock()
         {
             ToogleLockMenu(false);
-            /*
             XmlData.Load(Settings.Default.cfgpath);
             if (XmlGetData("Hash") != "") Settings.Default.passwordpbk = XmlGetData("Hash");
             Settings.Default.cryptokey = "";
-            */
             PasswordRequest();
         }
 
@@ -514,13 +531,6 @@ namespace AutoPuTTY
                 Settings.Default.passwordmd5 = "";
                 method = "passwordmd5";
             }
-
-#if SECURE
-            BeginInvoke(new Action(() =>
-            {
-                EnforceComplexPassword();
-            }));
-#endif
 
             if (method == "") return;
             XmlDropNode("Config", new ArrayList { method });
@@ -1262,50 +1272,42 @@ namespace AutoPuTTY
         public void XmlSave()
         {
             if (Settings.Default.cryptokey.Trim() == "") return;
-            string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
-            XmlDocument XmlNewList = new XmlDocument();
-            XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
-            XmlNode ListNode = XmlData.SelectSingleNode("/Data/List");
-            if (XmlData.DocumentElement != null)
-            {
-                if (ListNode != null)
+            // skip config / crypto when locked as it's not available
+            if (!Locked) {
+                string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
+                XmlDocument XmlNewList = new XmlDocument();
+                XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
+                XmlNode ListNode = XmlData.SelectSingleNode("/Data/List");
+                if (XmlData.DocumentElement != null)
                 {
-                    // Insert the new <ListNew> node
-                    XmlNode NewListNode = XmlNewList.DocumentElement;
-                    XmlNode ImportedNode = XmlData.ImportNode(NewListNode, true);
-                    XmlData.DocumentElement.AppendChild(ImportedNode); // Append <ListNew>
-                    // Rename original <List> to <ListOld>
-                    XmlElement OldListEl = XmlData.CreateElement("ListOld");
-                    OldListEl.InnerXml = ListNode.InnerXml; // Copy contents
-                    XmlData.DocumentElement.ReplaceChild(OldListEl, ListNode); // Replace <List> with <ListOld>
-                    // Rename <ListNew> to <List>
-                    NewListNode = XmlData.SelectSingleNode("/Data/ListNew");
-                    if (NewListNode != null)
+                    if (ListNode != null)
                     {
-                        XmlElement NewListEl = XmlData.CreateElement("List");
-                        NewListEl.InnerXml = NewListNode.InnerXml; // Copy content
-                        XmlData.DocumentElement.ReplaceChild(NewListEl, NewListNode); // Replace <ListNew> with <List>
-                    }
-                    // Remove <ListOld>
-                    XmlNode DropNode = XmlData.SelectSingleNode("/Data/ListOld");
-                    if (DropNode != null)
-                    {
-                        XmlData.DocumentElement.RemoveChild(DropNode);
+                        // Insert the new <ListNew> node
+                        XmlNode NewListNode = XmlNewList.DocumentElement;
+                        XmlNode ImportedNode = XmlData.ImportNode(NewListNode, true);
+                        XmlData.DocumentElement.AppendChild(ImportedNode); // Append <ListNew>
+                        // Rename original <List> to <ListOld>
+                        XmlElement OldListEl = XmlData.CreateElement("ListOld");
+                        OldListEl.InnerXml = ListNode.InnerXml; // Copy contents
+                        XmlData.DocumentElement.ReplaceChild(OldListEl, ListNode); // Replace <List> with <ListOld>
+                        // Rename <ListNew> to <List>
+                        NewListNode = XmlData.SelectSingleNode("/Data/ListNew");
+                        if (NewListNode != null)
+                        {
+                            XmlElement NewListEl = XmlData.CreateElement("List");
+                            NewListEl.InnerXml = NewListNode.InnerXml; // Copy content
+                            XmlData.DocumentElement.ReplaceChild(NewListEl, NewListNode); // Replace <ListNew> with <List>
+                        }
+                        // Remove <ListOld>
+                        XmlNode DropNode = XmlData.SelectSingleNode("/Data/ListOld");
+                        if (DropNode != null)
+                        {
+                            XmlData.DocumentElement.RemoveChild(DropNode);
+                        }
                     }
                 }
             }
             XmlData.Save(Settings.Default.cfgpath);
-        }
-
-        public void XmlSetData(string node, string value)
-        {
-            XmlElement DataXml = XmlData.CreateElement(node);
-            DataXml.InnerText = value;
-
-            XmlNode ConfigNode = XmlData.SelectSingleNode("/Data/" + node);
-            _ = ConfigNode != null
-                ? XmlData.DocumentElement.ReplaceChild(DataXml, ConfigNode)
-                : XmlData.DocumentElement.InsertBefore(DataXml, XmlData.DocumentElement.FirstChild);
         }
 
         public void XmlSetConfig(string id, string value)
@@ -1320,6 +1322,27 @@ namespace AutoPuTTY
             _ = ConfigNode != null
                 ? XmlConfig.DocumentElement.ReplaceChild(ConfigXml, ConfigNode)
                 : XmlConfig.DocumentElement.InsertBefore(ConfigXml, XmlConfig.DocumentElement.FirstChild);
+        }
+
+        public void XmlSetData(string node, string value)
+        {
+            XmlElement DataXml = XmlData.CreateElement(node);
+            DataXml.InnerText = value;
+
+            XmlNode ConfigNode = XmlData.SelectSingleNode("/Data/" + node);
+            _ = ConfigNode != null
+                ? XmlData.DocumentElement.ReplaceChild(DataXml, ConfigNode)
+                : XmlData.DocumentElement.InsertBefore(DataXml, XmlData.DocumentElement.FirstChild);
+        }
+
+        public void XmlDropData(string node)
+        {
+            if (XmlData != null) {
+                XmlNode DropNode = XmlData.SelectSingleNode("/Data/" + node);
+                if (DropNode != null) {
+                    if (DropNode != null) XmlData.DocumentElement.RemoveChild(DropNode);
+                }
+            }
         }
 
         public void XmlDropNode(string node, ArrayList items)
@@ -1346,6 +1369,16 @@ namespace AutoPuTTY
                     }
                 }
             }
+        }
+
+        public void XmlRenameDataNode(string oldname, string newname)
+        {
+            XmlNode oldNode = XmlData.SelectSingleNode($"/Data/{oldname}");
+            if (oldNode == null) return;
+
+            XmlNode newNode = XmlData.CreateElement(newname);
+            newNode.InnerText = oldNode.InnerText;
+            oldNode.ParentNode?.ReplaceChild(newNode, oldNode);
         }
 
         public void XmlRenameNode(string node, string oldname, string newname)
@@ -2081,7 +2114,9 @@ namespace AutoPuTTY
 
         private void formMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            XmlSetConfig("maximized", (WindowState == FormWindowState.Maximized).ToString());
+            bool maximized = WindowState == FormWindowState.Maximized;
+            if (maximized) XmlSetData("Maximized", maximized.ToString());
+            else XmlDropData("Maximized");
             XmlSave();
         }
 
@@ -2497,22 +2532,21 @@ namespace AutoPuTTY
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbPassPassword.Text;
 
-                    if (Settings.Default.password.Trim() != "")
+                    ToogleLockMenu(true);
+                    // handle old config / crypto
+                    if (Settings.Default.password.Trim() != "" ||
+                        Settings.Default.passwordmd5.Trim() != "")
                     {
-                        ToogleLockMenu(true);
                         RemoveLegacy();
                         UpgradeCrypto();
                         Startup();
                     }
+                    // new crypto
                     else
                     {
-                        ToogleLockMenu(true);
                         StartupDecrypt();
                     }
 
-#if SECURE
-                    if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) EnforceComplexPassword();
-#endif
                     return;
                 }
 
