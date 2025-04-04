@@ -451,6 +451,7 @@ namespace AutoPuTTY
 
                     Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbGPassword.Text;
+                    FormMain.RecryptDataList();
                     FormMain.ToogleLockMenu(true);
                 }
                 buGApply.Enabled = false;
@@ -511,7 +512,6 @@ namespace AutoPuTTY
                     if (Remove == DialogResult.OK)
                     {
                         FormMain.XmlRenameDataNode("Hash", "HashOld");
-
                         if (FormMain.lbServer.Items.Count > 0 || FormMain.lbVault.Items.Count > 0)
                         {
                             string[] Args = { "recrypt", Settings.Default.cryptokeyoriginal };
@@ -520,11 +520,10 @@ namespace AutoPuTTY
                             PopupRecrypt.Text = "Removing" + PopupRecrypt.Text;
                             PopupRecrypt.ShowDialog(this);
                         }
-
                         FormMain.XmlDropData("HashOld");
-
                         Settings.Default.passwordpbk = "";
                         Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
+                        FormMain.RecryptDataList();
                         FormMain.ToogleLockMenu(false);
                     }
                     else

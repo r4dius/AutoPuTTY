@@ -515,8 +515,9 @@ namespace AutoPuTTY
         {
             ToogleLockMenu(false);
             XmlData.Load(Settings.Default.cfgpath);
-            if (XmlGetData("Hash") != "") Settings.Default.passwordpbk = XmlGetData("Hash");
-            Settings.Default.cryptokey = "";
+            //if (XmlGetData("Hash") != "") Settings.Default.passwordpbk = XmlGetData("Hash");
+            Settings.Default.passwordpbk = "";
+            Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
             PasswordRequest();
         }
 
@@ -1274,38 +1275,7 @@ namespace AutoPuTTY
             if (Settings.Default.cryptokey.Trim() == "") return;
             // skip config / crypto when locked as it's not available
             if (!Locked) {
-                string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
-                XmlDocument XmlNewList = new XmlDocument();
-                XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
-                XmlNode ListNode = XmlData.SelectSingleNode("/Data/List");
-                if (XmlData.DocumentElement != null)
-                {
-                    if (ListNode != null)
-                    {
-                        // Insert the new <ListNew> node
-                        XmlNode NewListNode = XmlNewList.DocumentElement;
-                        XmlNode ImportedNode = XmlData.ImportNode(NewListNode, true);
-                        XmlData.DocumentElement.AppendChild(ImportedNode); // Append <ListNew>
-                        // Rename original <List> to <ListOld>
-                        XmlElement OldListEl = XmlData.CreateElement("ListOld");
-                        OldListEl.InnerXml = ListNode.InnerXml; // Copy contents
-                        XmlData.DocumentElement.ReplaceChild(OldListEl, ListNode); // Replace <List> with <ListOld>
-                        // Rename <ListNew> to <List>
-                        NewListNode = XmlData.SelectSingleNode("/Data/ListNew");
-                        if (NewListNode != null)
-                        {
-                            XmlElement NewListEl = XmlData.CreateElement("List");
-                            NewListEl.InnerXml = NewListNode.InnerXml; // Copy content
-                            XmlData.DocumentElement.ReplaceChild(NewListEl, NewListNode); // Replace <ListNew> with <List>
-                        }
-                        // Remove <ListOld>
-                        XmlNode DropNode = XmlData.SelectSingleNode("/Data/ListOld");
-                        if (DropNode != null)
-                        {
-                            XmlData.DocumentElement.RemoveChild(DropNode);
-                        }
-                    }
-                }
+                RecryptDataList();
             }
             XmlData.Save(Settings.Default.cfgpath);
         }
@@ -3056,7 +3026,7 @@ namespace AutoPuTTY
             switch ((string)Args[0])
             {
                 case "recrypt":
-                    RecryptList((string)Args[1]);
+                    RecryptConfigList((string)Args[1]);
                     break;
             }
             e.Result = Args[0];
@@ -3084,7 +3054,48 @@ namespace AutoPuTTY
             }
         }
 
-        private void RecryptList(string newpass)
+        public void RecryptDataList()
+        {
+            string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
+            XmlDocument XmlNewList = new XmlDocument();
+            XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
+            XmlNode ListNode = XmlData.SelectSingleNode("/Data/List");
+            if (XmlData.DocumentElement != null)
+            {
+                if (ListNode != null)
+                {
+                    // Insert the new <ListNew> node
+                    XmlNode NewListNode = XmlNewList.DocumentElement;
+                    XmlNode ImportedNode = XmlData.ImportNode(NewListNode, true);
+                    // Append <ListNew>
+                    XmlData.DocumentElement.AppendChild(ImportedNode);
+                    // Rename original <List> to <ListOld>
+                    XmlElement OldListEl = XmlData.CreateElement("ListOld");
+                    // Copy contents
+                    OldListEl.InnerXml = ListNode.InnerXml;
+                    // Replace <List> with <ListOld>
+                    XmlData.DocumentElement.ReplaceChild(OldListEl, ListNode);
+                    // Rename <ListNew> to <List>
+                    NewListNode = XmlData.SelectSingleNode("/Data/ListNew");
+                    if (NewListNode != null)
+                    {
+                        XmlElement NewListEl = XmlData.CreateElement("List");
+                        // Copy content
+                        NewListEl.InnerXml = NewListNode.InnerXml;
+                        // Replace <ListNew> with <List>
+                        XmlData.DocumentElement.ReplaceChild(NewListEl, NewListNode);
+                    }
+                    // Remove <ListOld>
+                    XmlNode DropNode = XmlData.SelectSingleNode("/Data/ListOld");
+                    if (DropNode != null)
+                    {
+                        XmlData.DocumentElement.RemoveChild(DropNode);
+                    }
+                }
+            }
+        }
+
+        private void RecryptConfigList(string newpass)
         {
             int Count = 0;
             string Host = "";
