@@ -253,7 +253,7 @@ namespace AutoPuTTY
                 else
                 {
                     UpgradeCrypto();
-                    Startup();
+                    StartupDecrypt();
                 }
             }
 #if DEBUG
@@ -310,7 +310,6 @@ namespace AutoPuTTY
             if (Settings.Default.passwordpbk.Trim() == "" &&
                 Settings.Default.passwordmd5.Trim() == "" &&
                 Settings.Default.password.Trim() == "") return;
-            //AddLockMenu(false);
             Locked = true;
             tbPassPasswordReset();
             PasswordRequired = true;
@@ -376,7 +375,7 @@ namespace AutoPuTTY
 #endif
 
         // startup for crypted config
-        private void StartupDecrypt ()
+        private void StartupDecrypt()
         {
             string decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml);
             XmlConfig.LoadXml($"<List>{decryptedlist}</List>");
@@ -509,15 +508,17 @@ namespace AutoPuTTY
             XmlData = NewXmlConfig;
             Debug.WriteLine(XmlData.OuterXml);
             XmlConfig.LoadXml(XmlGetNode("/Data/List").OuterXml);
+            RecryptDataList();
         }
 
         private void Lock()
         {
             ToogleLockMenu(false);
             XmlData.Load(Settings.Default.cfgpath);
-            //if (XmlGetData("Hash") != "") Settings.Default.passwordpbk = XmlGetData("Hash");
-            Settings.Default.passwordpbk = "";
+            Debug.WriteLine(XmlData.OuterXml);
+            Settings.Default.passwordpbk = XmlGetData("Hash");
             Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
+            Settings.Default.cryptokeyoriginal = "";
             PasswordRequest();
         }
 
@@ -3056,6 +3057,7 @@ namespace AutoPuTTY
 
         public void RecryptDataList()
         {
+            Debug.WriteLine("recryptdatakey " + Settings.Default.cryptokey);
             string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
             XmlDocument XmlNewList = new XmlDocument();
             XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
