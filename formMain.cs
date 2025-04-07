@@ -2,26 +2,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml;
 using static AutoPuTTY.PopupRecrypt;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using ComboBox = System.Windows.Forms.ComboBox;
 using File = System.IO.File;
 using Label = System.Windows.Forms.Label;
@@ -121,6 +117,12 @@ namespace AutoPuTTY
             }
 
             InitializeComponent();
+            /*
+            DoubleBuffered = true;
+            tlMain.GetType().GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(tlMain, true, null);
+            tlAbout.GetType().GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(tlAbout, true, null);
+            tlPassword.GetType().GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(tlPassword, true, null);
+            */
 
             laAboutVersion.Text = "v" + Info.version;
             UpdateReset();
@@ -377,9 +379,9 @@ namespace AutoPuTTY
 #endif
 
         // startup for crypted config
-        private void StartupDecrypt()
+        private async void StartupDecrypt()
         {
-            string decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml);
+            string decryptedlist = await Task.Run(() => Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml));
             XmlConfig.LoadXml($"<List>{decryptedlist}</List>");
 
             Startup();
@@ -388,7 +390,7 @@ namespace AutoPuTTY
         private void Startup()
         {
             Locked = false;
-            cbType.SelectedIndex = 0;
+            BeginInvoke(new Action(() => cbType.SelectedIndex = 0));
             if (XmlGetConfig("autohidepassword").ToLower() == "true") Settings.Default.autohidepassword = true;
             if (XmlGetConfig("minimize").ToLower() == "true") Settings.Default.minimize = true;
             if (XmlGetConfig("multicolumn").ToLower() == "true") Settings.Default.multicolumn = true;
@@ -429,13 +431,10 @@ namespace AutoPuTTY
             IconEyeHideHover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
             IconEyeHover = ImageOpacity.Set(Resources.eye, (float)0.5);
             piPassEye.Image = IconEyeHover;
-
 #if SECURE
             laAboutS.Visible = true;
             laPassS.Visible = true;
-            //Text += "ˢ";
 #endif
-
             PasswordRequired = false;
 
 #if SECURE
@@ -444,7 +443,6 @@ namespace AutoPuTTY
                 if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) EnforceComplexPassword();
             }));
 #endif
-
             buCopyName.Enabled = false;
             buCopyHost.Enabled = false;
             buCopyUser.Enabled = false;
@@ -465,6 +463,16 @@ namespace AutoPuTTY
                 BeginInvoke((Action)(() => lbVault.SelectedIndex = 0));
             }
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
+            ResetPasswordPanel();
+        }
+
+        private void ResetPasswordPanel()
+        {
+            // reset values
+            Tries = 0;
+            laPassMessage.Text = "Enter valid password or die :)";
+            buPassOK.Enabled = true;
+            pbLoading.Visible = false;
         }
 
         private void UpgradeCrypto()
@@ -508,7 +516,6 @@ namespace AutoPuTTY
             NewXmlConfig.AppendChild(DataXml);
 
             XmlData = NewXmlConfig;
-            Debug.WriteLine(XmlData.OuterXml);
             XmlConfig.LoadXml(XmlGetNode("/Data/List").OuterXml);
             RecryptDataList();
         }
@@ -517,7 +524,6 @@ namespace AutoPuTTY
         {
             ToogleLockMenu(false);
             XmlData.Load(Settings.Default.cfgpath);
-            Debug.WriteLine(XmlData.OuterXml);
             Settings.Default.passwordpbk = XmlGetData("Hash");
             Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
             PasswordRequest();
@@ -1947,15 +1953,12 @@ namespace AutoPuTTY
 
         public void lbServer_IndexChanged(object sender, EventArgs e)
         {
-            Debug.WriteLine("Index1");
             if (Filter || SelectAll)
             {
-                Debug.WriteLine("Index2");
                 return;
             }
             if (Remove || lbServer.SelectedItem == null)
             {
-                Debug.WriteLine("Index3");
                 buDelete.Enabled = false;
                 return;
             }
@@ -2239,8 +2242,6 @@ namespace AutoPuTTY
                 }
 
                 ComboBox.BackColor = ComboBox.SelectedIndex != ComboBoxVal ? ChangedOk : Normal;
-                Debug.WriteLine(ComboBox.Name);
-                Debug.WriteLine(ComboBox.BackColor);
             }
             else if (sender is TextBox)
             {
@@ -2373,11 +2374,15 @@ namespace AutoPuTTY
             }
             if (PasswordRequired)
             {
+                SuspendLayout();
                 ShowTableLayoutPanel(tlPassword);
+                ResumeLayout(true);
             }
             else
             {
+                SuspendLayout();
                 ShowTableLayoutPanel(tlMain);
+                ResumeLayout(true);
             }
         }
 
@@ -2488,7 +2493,112 @@ namespace AutoPuTTY
             piPassEye.Image = IconEyeHover;
         }
 
-        private void buPassOK_Click(object sender, EventArgs e)
+        private static string[] FailedMessages =
+        {
+            "You failed, try again.",
+            "Looks like you lost it.",
+            "You failed successfully.",
+            "You'll have to restart from scratch.",
+            "Ahahahah :)",
+            "Still not good.",
+            "You're screwed :/",
+            "Are you drunk?",
+            "You should close.",
+            "Even my grandma types better.",
+            "Hint: It's not that.",
+            "You sure you're even trying?",
+            "Almost... not.",
+            "You're consistent!",
+            "Still wrong...",
+            "Ouch. Again?",
+            "Give it a real shot.",
+            "You're persistent!",
+            "Nope. Try harder.",
+            "Come on now...",
+            "This is getting sad.",
+            "Maybe take a break.",
+            "You sure about that?",
+            "Still not it.",
+            "Getting colder.",
+            "This isn't it chief.",
+            "Why though?",
+            "Incorrect. Again.",
+            "404: Skill not found.",
+            "You broke it.",
+            "That's adorable.",
+            "One more? For fun?",
+            "You're way off.",
+            "Try Ctrl+Alt+Think.",
+            "Big nope.",
+            "Your keyboard's trolling.",
+            "New record: fail streak!",
+            "That's... creative.",
+            "This isn't guess-the-password.",
+            "Even ChatGPT can't save you.",
+            "How many tries do you need?",
+            "The answer is still 'no'.",
+            "It's okay, not everyone is good at this.",
+            "Don't cry. Yet.",
+            "Well that was pathetic.",
+            "Wrong. Again. Shocked?",
+            "Keep dreaming.",
+            "Close! Just kidding.",
+            "That's not it, Sherlock.",
+            "Your keyboard must hate you.",
+            "It's giving 'I forgot my password'.",
+            "Legend says you're still trying.",
+            "You missed like... everything.",
+            "That password was never correct.",
+            "LOL. Just no.",
+            "You're not even warm.",
+            "Please stop embarrassing us.",
+            "At this point, it's performance art.",
+            "It's a password, not a lottery.",
+            "That's cute. Try again.",
+            "Even autocorrect gave up.",
+            "Did you try 'password123'? Still no.",
+            "Your confidence is admirable.",
+            "Nah.",
+            "Bro.",
+            "You sure you typed anything?",
+            "You're on the wrong planet.",
+            "System laughing internally.",
+            "I'd say 'nice try' but... no.",
+            "Your password's in another castle.",
+            "Please consult your memory.",
+            "Ever considered giving up?",
+            "Wow. That's a new low.",
+            "You're not hacking the Pentagon here.",
+            "Nope. Keep going, champ.",
+            "You're just making it worse.",
+            "Did your cat walk on the keyboard?",
+            "Even brute force would be faster.",
+            "So wrong it hurt.",
+            "Getting worse, impressively.",
+            "Just... why?",
+            "This is comedy gold.",
+            "Ever heard of remembering things?",
+            "Not today.",
+            "One does not simply guess the password.",
+            "You missed it by a few lightyears.",
+            "Just use a sticky note already.",
+            "I'd say \"good effort\" but... nah.",
+            "The Force is not with you.",
+            "That's one way to never log in.",
+            "You had one job.",
+            "This is why we can't have secure things.",
+            "I'm gonna pretend I didn't see that.",
+            "It's like watching someone trip in slow-mo",
+            "Just go outside, touch grass.",
+            "Are you OK? Blink twice.",
+            "I hope you're not paid to do this.",
+            "Give up now, save face.",
+            "Maybe your dog knows the password?",
+            "This isn't the Enigma machine.",
+            "Your next password attempt is sponsored by failure.",
+        };
+
+        private async void buPassOK_Click(object sender, EventArgs e)
         {
             if (tbPassPassword.Text == "" || (tbPassPassword.Text == "Password" && tbPassPassword.ForeColor == Color.Gray))
             {
@@ -2497,13 +2607,15 @@ namespace AutoPuTTY
             }
             else
             {
-                if ((Settings.Default.passwordpbk != "" && Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk)) ||
-                    (Settings.Default.passwordmd5 != "" && Crypto.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5) ||
-                    (Settings.Default.password != "" && tbPassPassword.Text == Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptolegacypassword)))
+                pbLoading.Visible = true;
+                buPassOK.Enabled = false;
+                bool result = await Task.Run(() => VerifyPassword());
+                if (result)
                 {
+                    SuspendLayout();
                     Settings.Default.cryptokey = tbPassPassword.Text;
-
                     ToogleLockMenu(true);
+
                     // handle old config / crypto
                     if (Settings.Default.password.Trim() != "" ||
                         Settings.Default.passwordmd5.Trim() != "")
@@ -2517,46 +2629,39 @@ namespace AutoPuTTY
                     {
                         StartupDecrypt();
                     }
-
                     return;
                 }
 
+                buPassOK.Enabled = true;
+                pbLoading.Visible = false;
                 tbPassPassword.Text = "";
                 tbPassPassword_Enter(sender, e);
 
-                switch (Tries)
+                if (Tries < 4)
                 {
-                    case 1:
-                        laPassMessage.Text = "You failed again, looks like you lost it...";
-                        break;
-                    case 2:
-                        laPassMessage.Text = "You'll have to restart from scratch...";
-                        break;
-                    case 3:
-                        laPassMessage.Text = "Ahahahah :)";
-                        break;
-                    case 4:
-                        laPassMessage.Text = "Still not good...";
-                        break;
-                    case 5:
-                        laPassMessage.Text = "You're screwed :/";
-                        break;
-                    case 6:
-                        laPassMessage.Text = "Are you drunk ?";
-                        break;
-                    case 7:
-                        laPassMessage.Text = "You should close...";
-                        break;
-                    default:
-                        laPassMessage.Text = "You failed, try again...";
-                        break;
+                    laPassMessage.Text = FailedMessages[Tries];
                 }
+                else
+                {
+                    Random rand = new Random();
+                    int index = rand.Next(4, FailedMessages.Length);
+                    laPassMessage.Text = FailedMessages[index];
+                }
+
                 Tries++;
             }
         }
 
+        private bool VerifyPassword()
+        {
+            return (Settings.Default.passwordpbk != "" && Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk)) ||
+                   (Settings.Default.passwordmd5 != "" && Crypto.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5) ||
+                   (Settings.Default.password != "" && tbPassPassword.Text == Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptolegacypassword));
+        }
+
         public void ShowTableLayoutPanel(TableLayoutPanel tlPanel)
         {
+            SuspendLayout();
             TableLayoutPanel[] PanelList = { tlAbout, tlMain, tlPassword };
 
             tlPanel.Visible = true;
@@ -2569,6 +2674,7 @@ namespace AutoPuTTY
                     panel.Visible = false;
                 }
             }
+            ResumeLayout(true);
         }
 
         #region Nested type: InvokeDelegate
@@ -3057,11 +3163,7 @@ namespace AutoPuTTY
 
         public void RecryptDataList()
         {
-            Debug.WriteLine("RecryptDataList");
-            Debug.WriteLine("recryptdatakey " + Settings.Default.cryptokey);
             string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
-            Debug.WriteLine("list " + XmlConfig.SelectSingleNode("/List").InnerXml);
-            Debug.WriteLine("encryptedlist " + encryptedlist);
             XmlDocument XmlNewList = new XmlDocument();
             XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
             XmlNode ListNode = XmlData.SelectSingleNode("/Data/List");

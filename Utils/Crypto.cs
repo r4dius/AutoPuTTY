@@ -11,7 +11,7 @@ public static class Crypto
     private const int SaltSize = 32; // 256-bit hash
     private const int HashSize = 32; // 256-bit hash
     private const int IvByteSize = 16;
-    private const int Iterations = 200000; // Number of iterations
+    private const int Iterations = 300000; // Number of iterations
     private const int KeySize = 256;
 
     // Creates a hashed password string in the format: iterations.salt.hash

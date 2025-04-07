@@ -39,7 +39,6 @@
             this.buPriv = new System.Windows.Forms.Button();
             this.laSeparator5 = new System.Windows.Forms.Label();
             this.tbPriv = new System.Windows.Forms.TextBox();
-            this.laPriv = new AutoPuTTY.SingleClickLabel();
             this.buVault = new System.Windows.Forms.Button();
             this.laSeparator6 = new System.Windows.Forms.Label();
             this.laSeparator4 = new System.Windows.Forms.Label();
@@ -47,17 +46,12 @@
             this.tbUser = new System.Windows.Forms.TextBox();
             this.laSeparator2 = new System.Windows.Forms.Label();
             this.laSeparator1 = new System.Windows.Forms.Label();
-            this.laName = new AutoPuTTY.SingleClickLabel();
-            this.laUser = new AutoPuTTY.SingleClickLabel();
-            this.laPass = new AutoPuTTY.SingleClickLabel();
             this.buModify = new System.Windows.Forms.Button();
             this.buAdd = new System.Windows.Forms.Button();
             this.buDelete = new System.Windows.Forms.Button();
-            this.laType = new AutoPuTTY.SingleClickLabel();
             this.tbName = new System.Windows.Forms.TextBox();
             this.tbHost = new System.Windows.Forms.TextBox();
             this.cbType = new System.Windows.Forms.ComboBox();
-            this.laHost = new AutoPuTTY.SingleClickLabel();
             this.buOptions = new System.Windows.Forms.Button();
             this.buEye = new System.Windows.Forms.PictureBox();
             this.buCopyVault = new System.Windows.Forms.PictureBox();
@@ -71,18 +65,14 @@
             this.buVaultDelete = new System.Windows.Forms.Button();
             this.buVaultAdd = new System.Windows.Forms.Button();
             this.laVaultSeparator3 = new System.Windows.Forms.Label();
-            this.laVaultPriv = new AutoPuTTY.SingleClickLabel();
             this.laVaultSeparator2 = new System.Windows.Forms.Label();
             this.tbVaultPass = new System.Windows.Forms.TextBox();
-            this.laVaultPass = new AutoPuTTY.SingleClickLabel();
             this.laVaultSeparator1 = new System.Windows.Forms.Label();
             this.tbVaultName = new System.Windows.Forms.TextBox();
-            this.laVaultName = new AutoPuTTY.SingleClickLabel();
             this.buVaultModify = new System.Windows.Forms.Button();
             this.buCopyVaultName = new System.Windows.Forms.PictureBox();
             this.buVaultPriv = new System.Windows.Forms.Button();
             this.tbVaultPriv = new System.Windows.Forms.TextBox();
-            this.laUsedBy = new AutoPuTTY.SingleClickLabel();
             this.noIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmSystray = new System.Windows.Forms.ContextMenu();
             this.miRestore = new System.Windows.Forms.MenuItem();
@@ -92,7 +82,6 @@
             this.tlLeft = new System.Windows.Forms.TableLayoutPanel();
             this.paFind = new System.Windows.Forms.Panel();
             this.paFindToogle = new System.Windows.Forms.Panel();
-            this.laResults = new AutoPuTTY.SingleClickLabel();
             this.piClose = new System.Windows.Forms.PictureBox();
             this.tbFilter = new System.Windows.Forms.TextBox();
             this.cbCase = new System.Windows.Forms.CheckBox();
@@ -103,33 +92,45 @@
             this.pSepHorizontal = new System.Windows.Forms.Panel();
             this.tlAbout = new System.Windows.Forms.TableLayoutPanel();
             this.paAbout = new System.Windows.Forms.Panel();
-            this.laAboutS = new AutoPuTTY.SingleClickLabel();
-            this.laAboutLinksSeparator = new AutoPuTTY.SingleClickLabel();
             this.liAboutGithub = new System.Windows.Forms.LinkLabel();
             this.paUpdate = new System.Windows.Forms.Panel();
-            this.laAboutVersionSeparator = new AutoPuTTY.SingleClickLabel();
             this.liAboutUpdate = new System.Windows.Forms.LinkLabel();
-            this.laAboutVersion = new AutoPuTTY.SingleClickLabel();
             this.buAboutOK = new System.Windows.Forms.Button();
             this.piAboutLogo = new System.Windows.Forms.PictureBox();
             this.liAboutWebsite = new System.Windows.Forms.LinkLabel();
-            this.laAboutTitle = new AutoPuTTY.SingleClickLabel();
             this.tlPassword = new System.Windows.Forms.TableLayoutPanel();
             this.paPassword = new System.Windows.Forms.Panel();
-            this.laPassS = new AutoPuTTY.SingleClickLabel();
+            this.pbLoading = new System.Windows.Forms.PictureBox();
             this.paPassBackRight = new System.Windows.Forms.Panel();
             this.buPassOK = new System.Windows.Forms.Button();
             this.paPassBackLeft = new System.Windows.Forms.Panel();
             this.tbPassPassword = new System.Windows.Forms.TextBox();
             this.piPassEye = new System.Windows.Forms.PictureBox();
-            this.laPassMessage = new AutoPuTTY.SingleClickLabel();
             this.piPassLogo = new System.Windows.Forms.PictureBox();
-            this.laPassName = new AutoPuTTY.SingleClickLabel();
             this.tbPassBack = new System.Windows.Forms.TextBox();
             this.tbPassFake = new System.Windows.Forms.TextBox();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cmVault = new System.Windows.Forms.ContextMenu();
             this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
+            this.laPassS = new AutoPuTTY.SingleClickLabel();
+            this.laPassMessage = new AutoPuTTY.SingleClickLabel();
+            this.laPassName = new AutoPuTTY.SingleClickLabel();
+            this.laPriv = new AutoPuTTY.SingleClickLabel();
+            this.laName = new AutoPuTTY.SingleClickLabel();
+            this.laUser = new AutoPuTTY.SingleClickLabel();
+            this.laPass = new AutoPuTTY.SingleClickLabel();
+            this.laType = new AutoPuTTY.SingleClickLabel();
+            this.laHost = new AutoPuTTY.SingleClickLabel();
+            this.laVaultPriv = new AutoPuTTY.SingleClickLabel();
+            this.laVaultPass = new AutoPuTTY.SingleClickLabel();
+            this.laVaultName = new AutoPuTTY.SingleClickLabel();
+            this.laUsedBy = new AutoPuTTY.SingleClickLabel();
+            this.laResults = new AutoPuTTY.SingleClickLabel();
+            this.laAboutS = new AutoPuTTY.SingleClickLabel();
+            this.laAboutLinksSeparator = new AutoPuTTY.SingleClickLabel();
+            this.laAboutVersionSeparator = new AutoPuTTY.SingleClickLabel();
+            this.laAboutVersion = new AutoPuTTY.SingleClickLabel();
+            this.laAboutTitle = new AutoPuTTY.SingleClickLabel();
             this.paConfig.SuspendLayout();
             this.paServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyName)).BeginInit();
@@ -155,6 +156,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.piAboutLogo)).BeginInit();
             this.tlPassword.SuspendLayout();
             this.paPassword.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).BeginInit();
             this.paPassBackRight.SuspendLayout();
             this.paPassBackLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piPassEye)).BeginInit();
@@ -318,15 +320,6 @@
             this.tbPriv.TabIndex = 14;
             this.tbPriv.TextChanged += new System.EventHandler(this.tbServer_TextChanged);
             // 
-            // laPriv
-            // 
-            this.laPriv.AutoSize = true;
-            this.laPriv.Location = new System.Drawing.Point(3, 159);
-            this.laPriv.Name = "laPriv";
-            this.laPriv.Size = new System.Drawing.Size(60, 13);
-            this.laPriv.TabIndex = 12;
-            this.laPriv.Text = "Private key";
-            // 
             // buVault
             // 
             this.buVault.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -406,37 +399,6 @@
             this.laSeparator1.Size = new System.Drawing.Size(148, 2);
             this.laSeparator1.TabIndex = 1;
             // 
-            // laName
-            // 
-            this.laName.AutoSize = true;
-            this.laName.Location = new System.Drawing.Point(3, 3);
-            this.laName.Name = "laName";
-            this.laName.Size = new System.Drawing.Size(35, 13);
-            this.laName.TabIndex = 0;
-            this.laName.Text = "Name";
-            // 
-            // laUser
-            // 
-            this.laUser.AutoSize = true;
-            this.laUser.Location = new System.Drawing.Point(3, 81);
-            this.laUser.Name = "laUser";
-            this.laUser.Size = new System.Drawing.Size(55, 13);
-            this.laUser.TabIndex = 6;
-            this.laUser.Text = "Username";
-            // 
-            // laPass
-            // 
-            this.laPass.AutoSize = true;
-            this.laPass.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.laPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.laPass.Location = new System.Drawing.Point(3, 120);
-            this.laPass.Name = "laPass";
-            this.laPass.Size = new System.Drawing.Size(53, 13);
-            this.laPass.TabIndex = 9;
-            this.laPass.Text = "Password";
-            this.ttMain.SetToolTip(this.laPass, "Switch to vault");
-            this.laPass.Click += new System.EventHandler(this.laPass_Click);
-            // 
             // buModify
             // 
             this.buModify.Enabled = false;
@@ -485,15 +447,6 @@
             this.buDelete.UseVisualStyleBackColor = true;
             this.buDelete.Click += new System.EventHandler(this.buDelete_Click);
             // 
-            // laType
-            // 
-            this.laType.AutoSize = true;
-            this.laType.Location = new System.Drawing.Point(3, 198);
-            this.laType.Name = "laType";
-            this.laType.Size = new System.Drawing.Size(31, 13);
-            this.laType.TabIndex = 16;
-            this.laType.Text = "Type";
-            // 
             // tbName
             // 
             this.tbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -528,15 +481,6 @@
             this.cbType.TabIndex = 18;
             this.cbType.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
             this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
-            // 
-            // laHost
-            // 
-            this.laHost.AutoSize = true;
-            this.laHost.Location = new System.Drawing.Point(3, 42);
-            this.laHost.Name = "laHost";
-            this.laHost.Size = new System.Drawing.Size(82, 13);
-            this.laHost.TabIndex = 3;
-            this.laHost.Text = "Hostname[:port]";
             // 
             // buOptions
             // 
@@ -753,16 +697,6 @@
             this.laVaultSeparator3.Size = new System.Drawing.Size(148, 2);
             this.laVaultSeparator3.TabIndex = 7;
             // 
-            // laVaultPriv
-            // 
-            this.laVaultPriv.AutoSize = true;
-            this.laVaultPriv.Location = new System.Drawing.Point(3, 81);
-            this.laVaultPriv.Name = "laVaultPriv";
-            this.laVaultPriv.Size = new System.Drawing.Size(60, 13);
-            this.laVaultPriv.TabIndex = 6;
-            this.laVaultPriv.Text = "Private key";
-            this.ttMain.SetToolTip(this.laVaultPriv, "Copy path to clipboard");
-            // 
             // laVaultSeparator2
             // 
             this.laVaultSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -781,15 +715,6 @@
             this.tbVaultPass.Size = new System.Drawing.Size(148, 20);
             this.tbVaultPass.TabIndex = 5;
             this.tbVaultPass.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
-            // 
-            // laVaultPass
-            // 
-            this.laVaultPass.AutoSize = true;
-            this.laVaultPass.Location = new System.Drawing.Point(3, 42);
-            this.laVaultPass.Name = "laVaultPass";
-            this.laVaultPass.Size = new System.Drawing.Size(53, 13);
-            this.laVaultPass.TabIndex = 3;
-            this.laVaultPass.Text = "Password";
             // 
             // laVaultSeparator1
             // 
@@ -811,15 +736,6 @@
             this.tbVaultName.Size = new System.Drawing.Size(148, 20);
             this.tbVaultName.TabIndex = 2;
             this.tbVaultName.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
-            // 
-            // laVaultName
-            // 
-            this.laVaultName.AutoSize = true;
-            this.laVaultName.Location = new System.Drawing.Point(3, 3);
-            this.laVaultName.Name = "laVaultName";
-            this.laVaultName.Size = new System.Drawing.Size(60, 13);
-            this.laVaultName.TabIndex = 0;
-            this.laVaultName.Text = "Vault name";
             // 
             // buVaultModify
             // 
@@ -875,17 +791,6 @@
             this.tbVaultPriv.Size = new System.Drawing.Size(118, 20);
             this.tbVaultPriv.TabIndex = 8;
             this.tbVaultPriv.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
-            // 
-            // laUsedBy
-            // 
-            this.laUsedBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.laUsedBy.Location = new System.Drawing.Point(25, 124);
-            this.laUsedBy.Name = "laUsedBy";
-            this.laUsedBy.Size = new System.Drawing.Size(124, 13);
-            this.laUsedBy.TabIndex = 10;
-            this.laUsedBy.Text = "Used by # servers";
-            this.laUsedBy.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.laUsedBy.Visible = false;
             // 
             // noIcon
             // 
@@ -975,16 +880,6 @@
             this.paFindToogle.Name = "paFindToogle";
             this.paFindToogle.Size = new System.Drawing.Size(152, 24);
             this.paFindToogle.TabIndex = 9;
-            // 
-            // laResults
-            // 
-            this.laResults.AutoSize = true;
-            this.laResults.Location = new System.Drawing.Point(266, 5);
-            this.laResults.Name = "laResults";
-            this.laResults.Size = new System.Drawing.Size(47, 13);
-            this.laResults.TabIndex = 26;
-            this.laResults.Text = "Result #";
-            this.laResults.Visible = false;
             // 
             // piClose
             // 
@@ -1142,36 +1037,6 @@
             this.paAbout.Size = new System.Drawing.Size(304, 267);
             this.paAbout.TabIndex = 0;
             // 
-            // laAboutS
-            // 
-            this.laAboutS.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laAboutS.AutoSize = true;
-            this.laAboutS.BackColor = System.Drawing.Color.Transparent;
-            this.laAboutS.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.laAboutS.ForeColor = System.Drawing.Color.White;
-            this.laAboutS.Location = new System.Drawing.Point(204, 108);
-            this.laAboutS.Name = "laAboutS";
-            this.laAboutS.Size = new System.Drawing.Size(12, 13);
-            this.laAboutS.TabIndex = 28;
-            this.laAboutS.Text = "s";
-            this.laAboutS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ttMain.SetToolTip(this.laAboutS, "\"s\" is for secure");
-            this.laAboutS.Visible = false;
-            // 
-            // laAboutLinksSeparator
-            // 
-            this.laAboutLinksSeparator.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laAboutLinksSeparator.AutoSize = true;
-            this.laAboutLinksSeparator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.laAboutLinksSeparator.ForeColor = System.Drawing.Color.White;
-            this.laAboutLinksSeparator.Location = new System.Drawing.Point(190, 138);
-            this.laAboutLinksSeparator.Margin = new System.Windows.Forms.Padding(0);
-            this.laAboutLinksSeparator.Name = "laAboutLinksSeparator";
-            this.laAboutLinksSeparator.Size = new System.Drawing.Size(10, 13);
-            this.laAboutLinksSeparator.TabIndex = 27;
-            this.laAboutLinksSeparator.Text = "-";
-            this.laAboutLinksSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // liAboutGithub
             // 
             this.liAboutGithub.ActiveLinkColor = System.Drawing.Color.White;
@@ -1203,20 +1068,6 @@
             this.paUpdate.Size = new System.Drawing.Size(261, 21);
             this.paUpdate.TabIndex = 25;
             // 
-            // laAboutVersionSeparator
-            // 
-            this.laAboutVersionSeparator.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laAboutVersionSeparator.AutoSize = true;
-            this.laAboutVersionSeparator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.laAboutVersionSeparator.ForeColor = System.Drawing.Color.White;
-            this.laAboutVersionSeparator.Location = new System.Drawing.Point(126, 2);
-            this.laAboutVersionSeparator.Margin = new System.Windows.Forms.Padding(0);
-            this.laAboutVersionSeparator.Name = "laAboutVersionSeparator";
-            this.laAboutVersionSeparator.Size = new System.Drawing.Size(10, 13);
-            this.laAboutVersionSeparator.TabIndex = 26;
-            this.laAboutVersionSeparator.Text = "-";
-            this.laAboutVersionSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // liAboutUpdate
             // 
             this.liAboutUpdate.ActiveLinkColor = System.Drawing.Color.White;
@@ -1237,20 +1088,6 @@
             this.liAboutUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.liAboutUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liUpdate_LinkClicked);
             // 
-            // laAboutVersion
-            // 
-            this.laAboutVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laAboutVersion.AutoSize = true;
-            this.laAboutVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.laAboutVersion.ForeColor = System.Drawing.Color.White;
-            this.laAboutVersion.Location = new System.Drawing.Point(85, 2);
-            this.laAboutVersion.Margin = new System.Windows.Forms.Padding(0);
-            this.laAboutVersion.Name = "laAboutVersion";
-            this.laAboutVersion.Size = new System.Drawing.Size(41, 13);
-            this.laAboutVersion.TabIndex = 24;
-            this.laAboutVersion.Text = "version";
-            this.laAboutVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // buAboutOK
             // 
             this.buAboutOK.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -1268,9 +1105,9 @@
             this.piAboutLogo.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.piAboutLogo.Image = ((System.Drawing.Image)(resources.GetObject("piAboutLogo.Image")));
             this.piAboutLogo.InitialImage = null;
-            this.piAboutLogo.Location = new System.Drawing.Point(22, 53);
+            this.piAboutLogo.Location = new System.Drawing.Point(128, 53);
             this.piAboutLogo.Name = "piAboutLogo";
-            this.piAboutLogo.Size = new System.Drawing.Size(261, 48);
+            this.piAboutLogo.Size = new System.Drawing.Size(48, 48);
             this.piAboutLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.piAboutLogo.TabIndex = 21;
             this.piAboutLogo.TabStop = false;
@@ -1293,19 +1130,6 @@
             this.liAboutWebsite.Text = "https://r4di.us/autoputty";
             this.liAboutWebsite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.liAboutWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liWebsite_LinkClicked);
-            // 
-            // laAboutTitle
-            // 
-            this.laAboutTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laAboutTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.laAboutTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.laAboutTitle.ForeColor = System.Drawing.Color.White;
-            this.laAboutTitle.Location = new System.Drawing.Point(22, 108);
-            this.laAboutTitle.Name = "laAboutTitle";
-            this.laAboutTitle.Size = new System.Drawing.Size(261, 23);
-            this.laAboutTitle.TabIndex = 19;
-            this.laAboutTitle.Text = "AutoPuTTY";
-            this.laAboutTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tlPassword
             // 
@@ -1334,6 +1158,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.paPassword.Controls.Add(this.pbLoading);
             this.paPassword.Controls.Add(this.laPassS);
             this.paPassword.Controls.Add(this.paPassBackRight);
             this.paPassword.Controls.Add(this.paPassBackLeft);
@@ -1348,21 +1173,18 @@
             this.paPassword.Size = new System.Drawing.Size(304, 267);
             this.paPassword.TabIndex = 0;
             // 
-            // laPassS
+            // pbLoading
             // 
-            this.laPassS.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laPassS.AutoSize = true;
-            this.laPassS.BackColor = System.Drawing.Color.Transparent;
-            this.laPassS.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.laPassS.ForeColor = System.Drawing.Color.White;
-            this.laPassS.Location = new System.Drawing.Point(204, 108);
-            this.laPassS.Name = "laPassS";
-            this.laPassS.Size = new System.Drawing.Size(12, 13);
-            this.laPassS.TabIndex = 32;
-            this.laPassS.Text = "s";
-            this.laPassS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ttMain.SetToolTip(this.laPassS, "\"s\" is for secure");
-            this.laPassS.Visible = false;
+            this.pbLoading.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pbLoading.Image = global::AutoPuTTY.Properties.Resources.loading;
+            this.pbLoading.InitialImage = null;
+            this.pbLoading.Location = new System.Drawing.Point(136, 153);
+            this.pbLoading.Name = "pbLoading";
+            this.pbLoading.Size = new System.Drawing.Size(32, 32);
+            this.pbLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbLoading.TabIndex = 33;
+            this.pbLoading.TabStop = false;
+            this.pbLoading.Visible = false;
             // 
             // paPassBackRight
             // 
@@ -1437,41 +1259,17 @@
             this.piPassEye.MouseLeave += new System.EventHandler(this.pbPassEye_MouseLeave);
             this.piPassEye.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbPassEye_MouseUp);
             // 
-            // laPassMessage
-            // 
-            this.laPassMessage.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laPassMessage.ForeColor = System.Drawing.Color.White;
-            this.laPassMessage.Location = new System.Drawing.Point(22, 134);
-            this.laPassMessage.Name = "laPassMessage";
-            this.laPassMessage.Size = new System.Drawing.Size(261, 21);
-            this.laPassMessage.TabIndex = 25;
-            this.laPassMessage.Text = "Enter valid password or die :)";
-            this.laPassMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // piPassLogo
             // 
             this.piPassLogo.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.piPassLogo.Image = ((System.Drawing.Image)(resources.GetObject("piPassLogo.Image")));
             this.piPassLogo.InitialImage = null;
-            this.piPassLogo.Location = new System.Drawing.Point(22, 53);
+            this.piPassLogo.Location = new System.Drawing.Point(128, 53);
             this.piPassLogo.Name = "piPassLogo";
-            this.piPassLogo.Size = new System.Drawing.Size(261, 48);
+            this.piPassLogo.Size = new System.Drawing.Size(48, 48);
             this.piPassLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.piPassLogo.TabIndex = 21;
             this.piPassLogo.TabStop = false;
-            // 
-            // laPassName
-            // 
-            this.laPassName.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.laPassName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.laPassName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.laPassName.ForeColor = System.Drawing.Color.White;
-            this.laPassName.Location = new System.Drawing.Point(22, 108);
-            this.laPassName.Name = "laPassName";
-            this.laPassName.Size = new System.Drawing.Size(261, 23);
-            this.laPassName.TabIndex = 19;
-            this.laPassName.Text = "AutoPuTTY";
-            this.laPassName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tbPassBack
             // 
@@ -1510,6 +1308,224 @@
             this.backgroundProgress.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwProgress_DoWork);
             this.backgroundProgress.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwProgress_ProgressChanged);
             this.backgroundProgress.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwProgress_RunWorkerCompleted);
+            // 
+            // laPassS
+            // 
+            this.laPassS.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laPassS.AutoSize = true;
+            this.laPassS.BackColor = System.Drawing.Color.Transparent;
+            this.laPassS.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.laPassS.ForeColor = System.Drawing.Color.White;
+            this.laPassS.Location = new System.Drawing.Point(204, 108);
+            this.laPassS.Name = "laPassS";
+            this.laPassS.Size = new System.Drawing.Size(12, 13);
+            this.laPassS.TabIndex = 32;
+            this.laPassS.Text = "s";
+            this.laPassS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ttMain.SetToolTip(this.laPassS, "\"s\" is for secure");
+            this.laPassS.Visible = false;
+            // 
+            // laPassMessage
+            // 
+            this.laPassMessage.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laPassMessage.ForeColor = System.Drawing.Color.White;
+            this.laPassMessage.Location = new System.Drawing.Point(22, 134);
+            this.laPassMessage.Name = "laPassMessage";
+            this.laPassMessage.Size = new System.Drawing.Size(261, 21);
+            this.laPassMessage.TabIndex = 25;
+            this.laPassMessage.Text = "Enter valid password or die :)";
+            this.laPassMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // laPassName
+            // 
+            this.laPassName.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laPassName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.laPassName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.laPassName.ForeColor = System.Drawing.Color.White;
+            this.laPassName.Location = new System.Drawing.Point(71, 108);
+            this.laPassName.Name = "laPassName";
+            this.laPassName.Size = new System.Drawing.Size(162, 23);
+            this.laPassName.TabIndex = 19;
+            this.laPassName.Text = "AutoPuTTY";
+            this.laPassName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // laPriv
+            // 
+            this.laPriv.AutoSize = true;
+            this.laPriv.Location = new System.Drawing.Point(3, 159);
+            this.laPriv.Name = "laPriv";
+            this.laPriv.Size = new System.Drawing.Size(60, 13);
+            this.laPriv.TabIndex = 12;
+            this.laPriv.Text = "Private key";
+            // 
+            // laName
+            // 
+            this.laName.AutoSize = true;
+            this.laName.Location = new System.Drawing.Point(3, 3);
+            this.laName.Name = "laName";
+            this.laName.Size = new System.Drawing.Size(35, 13);
+            this.laName.TabIndex = 0;
+            this.laName.Text = "Name";
+            // 
+            // laUser
+            // 
+            this.laUser.AutoSize = true;
+            this.laUser.Location = new System.Drawing.Point(3, 81);
+            this.laUser.Name = "laUser";
+            this.laUser.Size = new System.Drawing.Size(55, 13);
+            this.laUser.TabIndex = 6;
+            this.laUser.Text = "Username";
+            // 
+            // laPass
+            // 
+            this.laPass.AutoSize = true;
+            this.laPass.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.laPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.laPass.Location = new System.Drawing.Point(3, 120);
+            this.laPass.Name = "laPass";
+            this.laPass.Size = new System.Drawing.Size(53, 13);
+            this.laPass.TabIndex = 9;
+            this.laPass.Text = "Password";
+            this.ttMain.SetToolTip(this.laPass, "Switch to vault");
+            this.laPass.Click += new System.EventHandler(this.laPass_Click);
+            // 
+            // laType
+            // 
+            this.laType.AutoSize = true;
+            this.laType.Location = new System.Drawing.Point(3, 198);
+            this.laType.Name = "laType";
+            this.laType.Size = new System.Drawing.Size(31, 13);
+            this.laType.TabIndex = 16;
+            this.laType.Text = "Type";
+            // 
+            // laHost
+            // 
+            this.laHost.AutoSize = true;
+            this.laHost.Location = new System.Drawing.Point(3, 42);
+            this.laHost.Name = "laHost";
+            this.laHost.Size = new System.Drawing.Size(82, 13);
+            this.laHost.TabIndex = 3;
+            this.laHost.Text = "Hostname[:port]";
+            // 
+            // laVaultPriv
+            // 
+            this.laVaultPriv.AutoSize = true;
+            this.laVaultPriv.Location = new System.Drawing.Point(3, 81);
+            this.laVaultPriv.Name = "laVaultPriv";
+            this.laVaultPriv.Size = new System.Drawing.Size(60, 13);
+            this.laVaultPriv.TabIndex = 6;
+            this.laVaultPriv.Text = "Private key";
+            this.ttMain.SetToolTip(this.laVaultPriv, "Copy path to clipboard");
+            // 
+            // laVaultPass
+            // 
+            this.laVaultPass.AutoSize = true;
+            this.laVaultPass.Location = new System.Drawing.Point(3, 42);
+            this.laVaultPass.Name = "laVaultPass";
+            this.laVaultPass.Size = new System.Drawing.Size(53, 13);
+            this.laVaultPass.TabIndex = 3;
+            this.laVaultPass.Text = "Password";
+            // 
+            // laVaultName
+            // 
+            this.laVaultName.AutoSize = true;
+            this.laVaultName.Location = new System.Drawing.Point(3, 3);
+            this.laVaultName.Name = "laVaultName";
+            this.laVaultName.Size = new System.Drawing.Size(60, 13);
+            this.laVaultName.TabIndex = 0;
+            this.laVaultName.Text = "Vault name";
+            // 
+            // laUsedBy
+            // 
+            this.laUsedBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.laUsedBy.Location = new System.Drawing.Point(25, 124);
+            this.laUsedBy.Name = "laUsedBy";
+            this.laUsedBy.Size = new System.Drawing.Size(124, 13);
+            this.laUsedBy.TabIndex = 10;
+            this.laUsedBy.Text = "Used by # servers";
+            this.laUsedBy.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.laUsedBy.Visible = false;
+            // 
+            // laResults
+            // 
+            this.laResults.AutoSize = true;
+            this.laResults.Location = new System.Drawing.Point(266, 5);
+            this.laResults.Name = "laResults";
+            this.laResults.Size = new System.Drawing.Size(47, 13);
+            this.laResults.TabIndex = 26;
+            this.laResults.Text = "Result #";
+            this.laResults.Visible = false;
+            // 
+            // laAboutS
+            // 
+            this.laAboutS.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laAboutS.AutoSize = true;
+            this.laAboutS.BackColor = System.Drawing.Color.Transparent;
+            this.laAboutS.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.laAboutS.ForeColor = System.Drawing.Color.White;
+            this.laAboutS.Location = new System.Drawing.Point(204, 108);
+            this.laAboutS.Name = "laAboutS";
+            this.laAboutS.Size = new System.Drawing.Size(12, 13);
+            this.laAboutS.TabIndex = 28;
+            this.laAboutS.Text = "s";
+            this.laAboutS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ttMain.SetToolTip(this.laAboutS, "\"s\" is for secure");
+            this.laAboutS.Visible = false;
+            // 
+            // laAboutLinksSeparator
+            // 
+            this.laAboutLinksSeparator.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laAboutLinksSeparator.AutoSize = true;
+            this.laAboutLinksSeparator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.laAboutLinksSeparator.ForeColor = System.Drawing.Color.White;
+            this.laAboutLinksSeparator.Location = new System.Drawing.Point(190, 138);
+            this.laAboutLinksSeparator.Margin = new System.Windows.Forms.Padding(0);
+            this.laAboutLinksSeparator.Name = "laAboutLinksSeparator";
+            this.laAboutLinksSeparator.Size = new System.Drawing.Size(10, 13);
+            this.laAboutLinksSeparator.TabIndex = 27;
+            this.laAboutLinksSeparator.Text = "-";
+            this.laAboutLinksSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // laAboutVersionSeparator
+            // 
+            this.laAboutVersionSeparator.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laAboutVersionSeparator.AutoSize = true;
+            this.laAboutVersionSeparator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.laAboutVersionSeparator.ForeColor = System.Drawing.Color.White;
+            this.laAboutVersionSeparator.Location = new System.Drawing.Point(126, 2);
+            this.laAboutVersionSeparator.Margin = new System.Windows.Forms.Padding(0);
+            this.laAboutVersionSeparator.Name = "laAboutVersionSeparator";
+            this.laAboutVersionSeparator.Size = new System.Drawing.Size(10, 13);
+            this.laAboutVersionSeparator.TabIndex = 26;
+            this.laAboutVersionSeparator.Text = "-";
+            this.laAboutVersionSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // laAboutVersion
+            // 
+            this.laAboutVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laAboutVersion.AutoSize = true;
+            this.laAboutVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.laAboutVersion.ForeColor = System.Drawing.Color.White;
+            this.laAboutVersion.Location = new System.Drawing.Point(85, 2);
+            this.laAboutVersion.Margin = new System.Windows.Forms.Padding(0);
+            this.laAboutVersion.Name = "laAboutVersion";
+            this.laAboutVersion.Size = new System.Drawing.Size(41, 13);
+            this.laAboutVersion.TabIndex = 24;
+            this.laAboutVersion.Text = "version";
+            this.laAboutVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // laAboutTitle
+            // 
+            this.laAboutTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.laAboutTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
+            this.laAboutTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.laAboutTitle.ForeColor = System.Drawing.Color.White;
+            this.laAboutTitle.Location = new System.Drawing.Point(71, 108);
+            this.laAboutTitle.Name = "laAboutTitle";
+            this.laAboutTitle.Size = new System.Drawing.Size(162, 23);
+            this.laAboutTitle.TabIndex = 19;
+            this.laAboutTitle.Text = "AutoPuTTY";
+            this.laAboutTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // FormMain
             // 
@@ -1562,6 +1578,7 @@
             this.tlPassword.ResumeLayout(false);
             this.paPassword.ResumeLayout(false);
             this.paPassword.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).EndInit();
             this.paPassBackRight.ResumeLayout(false);
             this.paPassBackLeft.ResumeLayout(false);
             this.paPassBackLeft.PerformLayout();
@@ -1672,6 +1689,7 @@
         private System.Windows.Forms.TextBox tbPriv;
         private SingleClickLabel laPriv;
         public System.ComponentModel.BackgroundWorker backgroundProgress;
+        private System.Windows.Forms.PictureBox pbLoading;
     }
 }
 
