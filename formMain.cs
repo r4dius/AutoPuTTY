@@ -216,6 +216,8 @@ namespace AutoPuTTY
             if (XmlGetData("Maximized").ToLower() == "true") Settings.Default.maximized = true;
             if (XmlGetData("Position") != "") Settings.Default.position = XmlGetData("Position");
             if (XmlGetData("Size") != "") Settings.Default.size = XmlGetData("Size");
+            // do once
+            Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
 
             AutoSize = false;
             MinimumSize = Size;
@@ -518,7 +520,6 @@ namespace AutoPuTTY
             Debug.WriteLine(XmlData.OuterXml);
             Settings.Default.passwordpbk = XmlGetData("Hash");
             Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
-            Settings.Default.cryptokeyoriginal = "";
             PasswordRequest();
         }
 
@@ -2500,7 +2501,6 @@ namespace AutoPuTTY
                     (Settings.Default.passwordmd5 != "" && Crypto.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5) ||
                     (Settings.Default.password != "" && tbPassPassword.Text == Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptolegacypassword)))
                 {
-                    Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbPassPassword.Text;
 
                     ToogleLockMenu(true);
@@ -3057,8 +3057,11 @@ namespace AutoPuTTY
 
         public void RecryptDataList()
         {
+            Debug.WriteLine("RecryptDataList");
             Debug.WriteLine("recryptdatakey " + Settings.Default.cryptokey);
             string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
+            Debug.WriteLine("list " + XmlConfig.SelectSingleNode("/List").InnerXml);
+            Debug.WriteLine("encryptedlist " + encryptedlist);
             XmlDocument XmlNewList = new XmlDocument();
             XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
             XmlNode ListNode = XmlData.SelectSingleNode("/Data/List");

@@ -449,7 +449,6 @@ namespace AutoPuTTY
                         PopupRecrypt.ShowDialog(this);
                     }
 
-                    Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
                     Settings.Default.cryptokey = tbGPassword.Text;
                     FormMain.RecryptDataList();
                     FormMain.ToogleLockMenu(true);

@@ -11,7 +11,7 @@ public static class Crypto
     private const int SaltSize = 32; // 256-bit hash
     private const int HashSize = 32; // 256-bit hash
     private const int IvByteSize = 16;
-    private const int Iterations = 300000; // Number of iterations
+    private const int Iterations = 200000; // Number of iterations
     private const int KeySize = 256;
 
     // Creates a hashed password string in the format: iterations.salt.hash
@@ -25,7 +25,7 @@ public static class Crypto
         }
 
         // Derive the hash
-        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256))
+        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA512))
         {
             byte[] hash = pbkdf2.GetBytes(HashSize);
             // Combine iterations, salt, and hash as a single string (Base64-encoded)
@@ -45,7 +45,7 @@ public static class Crypto
         byte[] storedPasswordHash = Convert.FromBase64String(parts[1]);
 
         // Derive the hash from the input password using the same salt and iteration count
-        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256))
+        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA512))
         {
             byte[] computedHash = pbkdf2.GetBytes(HashSize);
             return AreHashesEqual(storedPasswordHash, computedHash);
@@ -80,7 +80,7 @@ public static class Crypto
         byte[] plainTextBytes = Encoding.UTF8.GetBytes(plain);
 
         // Derive a 256-bit key using PBKDF2.
-        using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA256))
+        using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA512))
         {
             byte[] keyBytes = keyDerivationFunction.GetBytes(KeySize / 8);
 
@@ -110,7 +110,6 @@ public static class Crypto
                 }
             }
         }
-
     }
 
     public static string Decrypt(string encrypted)
@@ -138,7 +137,7 @@ public static class Crypto
         Array.Copy(cipherBytesWithSaltAndIv, cipherStartIndex, cipherBytes, 0, cipherLength);
 
         // Derive the key from the passphrase and salt.
-        using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA256))
+        using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA512))
         {
             byte[] keyBytes = keyDerivationFunction.GetBytes(KeySize / 8);
 
