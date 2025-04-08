@@ -436,7 +436,6 @@ namespace AutoPuTTY
             laPassS.Visible = true;
 #endif
             PasswordRequired = false;
-
 #if SECURE
             BeginInvoke(new Action(() =>
             {
@@ -523,9 +522,11 @@ namespace AutoPuTTY
         private void Lock()
         {
             ToogleLockMenu(false);
+            /*
             XmlData.Load(Settings.Default.cfgpath);
             Settings.Default.passwordpbk = XmlGetData("Hash");
             Settings.Default.cryptokey = Settings.Default.cryptokeyoriginal;
+            */
             PasswordRequest();
         }
 
@@ -1282,9 +1283,9 @@ namespace AutoPuTTY
         {
             if (Settings.Default.cryptokey.Trim() == "") return;
             // skip config / crypto when locked as it's not available
-            if (!Locked) {
-                RecryptDataList();
-            }
+            //if (!Locked) {
+            RecryptDataList();
+            //}
             XmlData.Save(Settings.Default.cfgpath);
         }
 
@@ -2159,7 +2160,7 @@ namespace AutoPuTTY
         {
             if (keyData == (Keys.Control | Keys.L))
             {
-                PasswordRequest();
+                Lock();
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);

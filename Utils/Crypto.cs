@@ -1,6 +1,5 @@
 ﻿using AutoPuTTY.Properties;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,7 +10,7 @@ public static class Crypto
     private const int SaltSize = 32; // 256-bit hash
     private const int HashSize = 32; // 256-bit hash
     private const int IvByteSize = 16;
-    private const int Iterations = 300000; // Number of iterations
+    private const int Iterations = 500000; // Number of iterations
     private const int KeySize = 256;
 
     // Creates a hashed password string in the format: iterations.salt.hash
@@ -29,23 +28,25 @@ public static class Crypto
         {
             byte[] hash = pbkdf2.GetBytes(HashSize);
             // Combine iterations, salt, and hash as a single string (Base64-encoded)
-            return $"{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
+            return $"{Iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
         }
     }
 
     // Verifies a password against the stored hash string.
     public static bool VerifyPassword(string password, string storedHash)
     {
-        // Extract the parts: iterations, salt, and hash
+        // Expect format: iterations.salt.hash
         string[] parts = storedHash.Split('.');
-        if (parts.Length != 2)
+        if (parts.Length != 3)
             return false;
 
-        byte[] salt = Convert.FromBase64String(parts[0]);
-        byte[] storedPasswordHash = Convert.FromBase64String(parts[1]);
+        if (!int.TryParse(parts[0], out int iterations) || iterations <= 0)
+            return false;
 
-        // Derive the hash from the input password using the same salt and iteration count
-        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA512))
+        byte[] salt = Convert.FromBase64String(parts[1]);
+        byte[] storedPasswordHash = Convert.FromBase64String(parts[2]);
+
+        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA512))
         {
             byte[] computedHash = pbkdf2.GetBytes(HashSize);
             return AreHashesEqual(storedPasswordHash, computedHash);
