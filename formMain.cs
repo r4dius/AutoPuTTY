@@ -46,9 +46,8 @@ namespace AutoPuTTY
         private const int FilterWidth = 145;
         private const int FindWidth = 250;
         private bool IndexChanged;
-        private bool ControlReset;
         private bool Filter;
-        private bool Locked;
+        //private bool Locked;
         private bool SelectAll;
         private bool Remove;
         private double UnixTime;
@@ -86,7 +85,7 @@ namespace AutoPuTTY
                     Settings.Default.cfgpath = Path.Combine(cfgpath, Settings.Default.cfgfilepath);
                     XmlCreateConfig();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     if (!Directory.Exists(userpath))
                     {
@@ -94,7 +93,7 @@ namespace AutoPuTTY
                         {
                             Directory.CreateDirectory(userpath);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
                             Environment.Exit(-1);
@@ -107,7 +106,7 @@ namespace AutoPuTTY
                             Settings.Default.cfgpath = Path.Combine(userpath, Settings.Default.cfgfilepath);
                             XmlSave();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
                             Environment.Exit(-1);
@@ -314,7 +313,7 @@ namespace AutoPuTTY
             if (Settings.Default.passwordpbk.Trim() == "" &&
                 Settings.Default.passwordmd5.Trim() == "" &&
                 Settings.Default.password.Trim() == "") return;
-            Locked = true;
+            //Locked = true;
             tbPassPasswordReset();
             PasswordRequired = true;
             BeginInvoke(new InvokeDelegate(tbPassFake.Focus));
@@ -389,7 +388,7 @@ namespace AutoPuTTY
 
         private void Startup()
         {
-            Locked = false;
+            //Locked = false;
             BeginInvoke(new Action(() => cbType.SelectedIndex = 0));
             if (XmlGetConfig("autohidepassword").ToLower() == "true") Settings.Default.autohidepassword = true;
             if (XmlGetConfig("minimize").ToLower() == "true") Settings.Default.minimize = true;
@@ -2700,9 +2699,7 @@ namespace AutoPuTTY
             {
                 if (tbPass.Text.Trim() != "")
                 {
-                    ControlReset = true;
                     tbPass.Text = "";
-                    ControlReset = false;
                 }
                 cbVault.Visible = cbVault.Enabled = true;
                 buCopyVault.Visible = true;
@@ -2714,9 +2711,7 @@ namespace AutoPuTTY
             {
                 if (cbVault.SelectedIndex > -1)
                 {
-                    ControlReset = true;
                     cbVault.SelectedIndex = -1;
-                    ControlReset = false;
                 }
                 tbPass.Visible = tbPass.Enabled = true;
                 buEye.Visible = buEye.Enabled = true;
@@ -3157,10 +3152,12 @@ namespace AutoPuTTY
 
         public void RecryptDataList()
         {
-            string encryptedlist = Crypto.Encrypt(XmlConfig.SelectSingleNode("/List").InnerXml);
+            XmlNode ListNode = XmlConfig.SelectSingleNode("/List");
+            if (ListNode == null) return;
+            string encryptedlist = Crypto.Encrypt(ListNode.InnerXml);
             XmlDocument XmlNewList = new XmlDocument();
             XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
-            XmlNode ListNode = XmlData.SelectSingleNode("/Data/List");
+            ListNode = XmlData.SelectSingleNode("/Data/List");
             if (XmlData.DocumentElement != null)
             {
                 if (ListNode != null)

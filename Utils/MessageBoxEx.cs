@@ -110,6 +110,8 @@ namespace AutoPuTTY
         public static extern int UnhookWindowsHookEx(IntPtr idHook);
         [DllImport("user32.dll")]
         public static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, IntPtr wParam, IntPtr lParam);
+        [DllImport("kernel32.dll")]
+        public static extern uint GetCurrentThreadId();
 
         [StructLayout(LayoutKind.Sequential)]
         public struct CWPRETSTRUCT
@@ -131,7 +133,7 @@ namespace AutoPuTTY
             }
             if (_owner != null)
             {
-                _hHook = SetWindowsHookEx(WH_CALLWNDPROCRET, _hookProc, IntPtr.Zero, AppDomain.GetCurrentThreadId());
+                _hHook = SetWindowsHookEx(WH_CALLWNDPROCRET, _hookProc, IntPtr.Zero, (int)GetCurrentThreadId());
             }
         }
 
