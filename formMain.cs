@@ -2375,15 +2375,11 @@ namespace AutoPuTTY
             }
             if (PasswordRequired)
             {
-                SuspendLayout();
                 ShowTableLayoutPanel(tlPassword);
-                ResumeLayout(true);
             }
             else
             {
-                SuspendLayout();
                 ShowTableLayoutPanel(tlMain);
-                ResumeLayout(true);
             }
         }
 
@@ -2613,7 +2609,6 @@ namespace AutoPuTTY
                 bool result = await Task.Run(() => VerifyPassword());
                 if (result)
                 {
-                    SuspendLayout();
                     Settings.Default.cryptokey = tbPassPassword.Text;
                     ToogleLockMenu(true);
 
@@ -2662,7 +2657,6 @@ namespace AutoPuTTY
 
         public void ShowTableLayoutPanel(TableLayoutPanel tlPanel)
         {
-            SuspendLayout();
             TableLayoutPanel[] PanelList = { tlAbout, tlMain, tlPassword };
 
             tlPanel.Visible = true;
@@ -2675,7 +2669,6 @@ namespace AutoPuTTY
                     panel.Visible = false;
                 }
             }
-            ResumeLayout(true);
         }
 
         #region Nested type: InvokeDelegate
