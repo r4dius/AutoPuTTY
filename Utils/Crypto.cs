@@ -25,6 +25,28 @@ public static class Crypto
     }
 
     /// <summary>
+    /// Derives a key from a password using Argon2id.
+    /// </summary>
+    /// <param name="password">Password to derive from.</param>
+    /// <param name="salt">Salt value.</param>
+    /// <param name="keySize">Length of the key in bytes.</param>
+    /// <returns>Derived key as byte array.</returns>
+    private static byte[] DeriveKey(string password, byte[] salt, int keySize)
+    {
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+
+        var argon2 = new Argon2id(passwordBytes)
+        {
+            Salt = salt,
+            DegreeOfParallelism = Environment.ProcessorCount, // Number of threads to use.
+            Iterations = 4,            // The number of iterations.
+            MemorySize = 64 * 1024     // Memory size in kilobytes (this example uses ~64MB).
+        };
+
+        return argon2.GetBytes(keySize);
+    }
+
+    /// <summary>
     /// Extracts the salt from the combined hash and salt.
     /// </summary>
     /// <param name="hashWithSalt">The combined hash and salt.</param>
@@ -94,21 +116,11 @@ public static class Crypto
         return storedHash == hashedPassword;
     }
 
-    private static byte[] DeriveKey(string password, byte[] salt, int keySize)
-    {
-        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-
-        var argon2 = new Argon2id(passwordBytes)
-        {
-            Salt = salt,
-            DegreeOfParallelism = Environment.ProcessorCount, // Number of threads to use.
-            Iterations = 4,            // The number of iterations.
-            MemorySize = 64 * 1024     // Memory size in kilobytes (this example uses ~64MB).
-        };
-
-        return argon2.GetBytes(keySize);
-    }
-
+    /// <summary>
+    /// Encrypts a string using AES with a key derived from the supplied password.
+    /// </summary>
+    /// <param name="plain">The string to encrypt.</param>
+    /// <returns>The encrypted data as a base64-encoded string.</returns>
     public static string Encrypt(string plain)
     {
         return plain.Trim() != "" ? Encrypt(plain, Settings.Default.cryptokey) : "";
@@ -159,6 +171,11 @@ public static class Crypto
         }
     }
 
+    /// <summary>
+    /// Decrypts a base64-encoded string that was encrypted with the Encrypt method.
+    /// </summary>
+    /// <param name="encrypted">The base64-encoded string to decrypt.</param>
+    /// <returns>The decrypted string.</returns>
     public static string Decrypt(string encrypted)
     {
         return encrypted.Trim() != "" ? Decrypt(encrypted, Settings.Default.cryptokey) : "";
@@ -203,27 +220,6 @@ public static class Crypto
                 // Convert the decrypted data back to a string
                 return Encoding.UTF8.GetString(ms.ToArray());
             }
-        }
-    }
-
-    public static string MD5Hash(string input)
-    {
-        // convert the input string to a byte array and compute the hash.
-        using (MD5 Md5Hash = MD5.Create())
-        {
-            byte[] Data = Md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-            // create a new StringBuilder to collect the bytes and create a string.
-            StringBuilder StringBuilder = new StringBuilder();
-
-            // loop through each byte of the hashed data and format each one as a hexadecimal string.
-            for (int i = 0; i < Data.Length; i++)
-            {
-                StringBuilder.Append(Data[i].ToString("x2"));
-            }
-
-            // return the hexadecimal string.
-            return StringBuilder.ToString();
         }
     }
 }

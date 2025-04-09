@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -331,7 +332,10 @@ namespace AutoPuTTY
             NoDigit = 1 << 3,
             NoSpecial = 1 << 4
         }
-
+        
+        /// <summary>
+        /// Validate password complexity.
+        /// </summary>
         internal PasswordErrors CheckPasswordComplexity(string password)
         {
             PasswordErrors errors = PasswordErrors.None;
@@ -349,10 +353,12 @@ namespace AutoPuTTY
 
             return errors;
         }
-
+        
+        /// <summary>
+        /// Force user to set a complex password.
+        /// </summary>
         private void EnforceComplexPassword()
         {
-            Locked = false;
             string message = "For better security, set a password with:\n" +
                              "- At least 16 characters\n" +
                              "- Upper & lower case letters\n" +
@@ -377,7 +383,9 @@ namespace AutoPuTTY
         }
 #endif
 
-        // startup for crypted config
+        /// <summary>
+        /// Startup for crypted config.
+        /// </summary>
         private async void StartupDecrypt()
         {
             string decryptedlist = await Task.Run(() => Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml));
@@ -386,6 +394,9 @@ namespace AutoPuTTY
             Startup();
         }
 
+        /// <summary>
+        /// Mains startup.
+        /// </summary>
         private void Startup()
         {
             //Locked = false;
@@ -441,6 +452,17 @@ namespace AutoPuTTY
                 if (CheckPasswordComplexity(Settings.Default.cryptokey) != PasswordErrors.None) EnforceComplexPassword();
             }));
 #endif
+            // reset content, required when using Lock()
+            tbName.ResetText();
+            tbHost.ResetText();
+            tbUser.ResetText();
+            tbPass.ResetText();
+            tbPriv.ResetText();
+            cbType.ResetText();
+            tbVaultName.ResetText();
+            tbVaultPass.ResetText();
+            tbVaultPriv.ResetText();
+
             buCopyName.Enabled = false;
             buCopyHost.Enabled = false;
             buCopyUser.Enabled = false;
@@ -464,15 +486,21 @@ namespace AutoPuTTY
             ResetPasswordPanel();
         }
 
+        /// <summary>
+        /// Reset values in password request panel.
+        /// </summary>
         private void ResetPasswordPanel()
         {
-            // reset values
+            // reset paPassword values for Lock()
             Tries = 0;
             laPassMessage.Text = "Enter valid password or die :)";
             buPassOK.Enabled = true;
             pbLoading.Visible = false;
         }
 
+        /// <summary>
+        /// Upgrade old crypto methods from configuration.
+        /// </summary>
         private void UpgradeCrypto()
         {
             XmlDocument NewXmlConfig = new XmlDocument();
@@ -781,11 +809,13 @@ namespace AutoPuTTY
                     string Vault = GetServer["Vault"];
                     string PrivateKey = Legacy.Decrypt(GetServer["PrivateKey"]);
                     string Type = type == "-1" ? GetServer["Type"] : type;
+                    string Pipe = "";
                     string Proxy = "";
                     string ProxyUser = "";
                     string ProxyPass = "";
                     string ProxyHost = "";
                     string ProxyPort = "";
+                    string ProxyPipe = "";
                     string UserFromProxy = "";
 
                     if (Vault.Trim() != "")
@@ -1023,13 +1053,16 @@ namespace AutoPuTTY
                                     if (ProxyHost != "") User = UserFromProxy;
                                     User = ReplaceSpecial(SpecialCharsWinscp, User);
                                     Pass = ReplaceSpecial(SpecialCharsWinscp, Pass);
-                                    Proc.StartInfo.Arguments += User;
-                                    if (Pass != "") Proc.StartInfo.Arguments += ":" + Pass;
-                                    Proc.StartInfo.Arguments += "@";
+                                    Proc.StartInfo.Arguments += User + "@";
                                 }
                                 if (Host != "") Proc.StartInfo.Arguments += HttpUtility.UrlEncode(Host);
                                 if (Port != "") Proc.StartInfo.Arguments += ":" + Port;
                                 if (WinscpProt == "ftp://") Proc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
+                                if (User != "" && Pass != "")
+                                {
+                                    Pipe = Guid.NewGuid().ToString("N");
+                                    Proc.StartInfo.Arguments += $" /passwordsfromfiles /password:\\\\.\\pipe\\{Pipe}";
+                                }
                                 if (PrivateKey != "") Proc.StartInfo.Arguments += " /privatekey=\"" + PrivateKey + "\"";
                                 else if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") Proc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
 
@@ -1050,6 +1083,10 @@ namespace AutoPuTTY
                                 if (WinscpArgs != "") Proc.StartInfo.Arguments += " " + WinscpArgs;
                                 try
                                 {
+                                    if (Pipe != "")
+                                    {
+                                        Task.Run(() => RunNamedPipeServer(Pipe, Pass));
+                                    }
                                     Proc.Start();
                                 }
                                 catch (System.ComponentModel.Win32Exception)
@@ -1103,14 +1140,23 @@ namespace AutoPuTTY
                                 if (ProxyHost != "")
                                 {
                                     User = UserFromProxy;
-                                    Proc.StartInfo.Arguments += " -J " + (ProxyUser != "" ? ProxyUser + "@" : "") + ProxyHost + ":" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " -jw \"" + ReplacePath(PassSearch, PassReplace, ProxyPass) + "\"" : "");
+                                    Proc.StartInfo.Arguments += " -J " + (ProxyUser != "" ? ProxyUser + "@" : "") + ProxyHost + ":" + (ProxyPort != "" ? ProxyPort : "22");
+                                    if (ProxyPass != "")
+                                    {
+                                        ProxyPipe = Guid.NewGuid().ToString("N");
+                                        Proc.StartInfo.Arguments += $" -jwfile \\\\.\\pipe\\{ProxyPipe}";
+                                    }
                                 }
 
                                 Proc.StartInfo.Arguments += " -ssh ";
                                 if (User != "") Proc.StartInfo.Arguments += User + "@";
                                 if (Host != "") Proc.StartInfo.Arguments += Host;
                                 if (Port != "") Proc.StartInfo.Arguments += " " + Port;
-                                if (User != "" && Pass != "") Proc.StartInfo.Arguments += " -pw \"" + ReplacePath(PassSearch, PassReplace, Pass) + "\"";
+                                if (User != "" && Pass != "")
+                                {
+                                    Pipe = Guid.NewGuid().ToString("N");
+                                    Proc.StartInfo.Arguments += $" -pwfile \\\\.\\pipe\\{Pipe}";
+                                }
                                 if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") Proc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
                                 if (PrivateKey != "") Proc.StartInfo.Arguments += " -i \"" + PrivateKey + "\"";
                                 else if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") Proc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
@@ -1120,6 +1166,14 @@ namespace AutoPuTTY
 
                                 try
                                 {
+                                    if (Pipe != "")
+                                    {
+                                        Task.Run(() => RunNamedPipeServer(Pipe, Pass));
+                                    }
+                                    if (ProxyPass != "")
+                                    {
+                                        Task.Run(() => RunNamedPipeServer(ProxyPipe, ProxyPass));
+                                    }
                                     Proc.Start();
                                 }
                                 catch (System.ComponentModel.Win32Exception)
@@ -2650,7 +2704,7 @@ namespace AutoPuTTY
         private bool VerifyPassword()
         {
             return (Settings.Default.passwordpbk != "" && Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk)) ||
-                   (Settings.Default.passwordmd5 != "" && Crypto.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5) ||
+                   (Settings.Default.passwordmd5 != "" && Legacy.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5) ||
                    (Settings.Default.password != "" && tbPassPassword.Text == Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptolegacypassword));
         }
 
@@ -3191,6 +3245,36 @@ namespace AutoPuTTY
                         XmlData.DocumentElement.RemoveChild(DropNode);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Creates a named pipe server that writes the password when a client connects.
+        /// </summary>
+        /// <param name="pipeName">The pipe name (without the \\.\pipe\ prefix).</param>
+        /// <param name="password">The password to send.</param>
+        static void RunNamedPipeServer(string pipeName, string password)
+        {
+            // Create a named pipe server stream that only allows one connection.
+            using (NamedPipeServerStream pipeServer = new NamedPipeServerStream(
+                       pipeName,
+                       PipeDirection.Out,
+                       1,
+                       PipeTransmissionMode.Byte,
+                       PipeOptions.Asynchronous))
+            {
+                Console.WriteLine("Waiting for client (PuTTY) to connect to named pipe...");
+                pipeServer.WaitForConnection();
+                Console.WriteLine("Client connected. Sending password...");
+
+                // Convert the password to bytes and send it.
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+                pipeServer.Write(passwordBytes, 0, passwordBytes.Length);
+                pipeServer.Flush();
+                // Optionally wait until the data has been read completely.
+                pipeServer.WaitForPipeDrain();
+
+                Console.WriteLine("Password sent successfully.");
             }
         }
 

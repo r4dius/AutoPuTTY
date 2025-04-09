@@ -53,6 +53,7 @@ static void cmdline_save_param(CmdlineArg *p, CmdlineArg *value, int pri)
 }
 
 static char *cmdline_password = NULL;
+static char *cmdline_jpassword = NULL;
 
 void cmdline_cleanup(void)
 {
@@ -62,6 +63,12 @@ void cmdline_cleanup(void)
         smemclr(cmdline_password, strlen(cmdline_password));
         sfree(cmdline_password);
         cmdline_password = NULL;
+    }
+	
+    if (cmdline_jpassword) {
+        smemclr(cmdline_jpassword, strlen(cmdline_jpassword));
+        sfree(cmdline_jpassword);
+        cmdline_jpassword = NULL;
     }
 
     for (pri = 0; pri < NPRIORITIES; pri++) {
@@ -975,6 +982,33 @@ int cmdline_process_param(CmdlineArg *arg, CmdlineArg *nextarg,
         UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
         SAVEABLE(1);
         conf_set_str(conf, CONF_proxy_password, value);
+    }
+
+    if (!strcmp(p, "-jwfile")) {
+        RETURN(2);
+        UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+        SAVEABLE(1);
+        /* We delay evaluating this until after the protocol is decided,
+         * so that we can warn if it's of no use with the selected protocol */
+        Filename *fn = cmdline_arg_to_filename(nextarg);
+        FILE *fp = f_open(fn, "r", false);
+        if (!fp) {
+            cmdline_error("unable to open password file '%s'", value);
+        } else {
+            if (cmdline_jpassword) {
+                smemclr(cmdline_jpassword, strlen(cmdline_jpassword));
+                sfree(cmdline_jpassword);
+            }
+
+            cmdline_jpassword = chomp(fgetline(fp));
+            if (!cmdline_jpassword) {
+                cmdline_error("unable to read a password from file '%s'",
+                              value);
+            }
+            fclose(fp);
+			conf_set_str(conf, CONF_proxy_password, cmdline_jpassword);
+        }
+        filename_free(fn);
     }
 
 #ifdef _WINDOWS
