@@ -1,4 +1,5 @@
 ﻿using AutoPuTTY.Properties;
+using Konscious.Security.Cryptography;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -6,62 +7,104 @@ using System.Text;
 
 public static class Crypto
 {
-    // Constants for salt and hash sizes (in bytes)
-    private const int SaltSize = 32; // 256-bit hash
-    private const int HashSize = 32; // 256-bit hash
-    private const int IvByteSize = 16;
-    private const int Iterations = 500000; // Number of iterations
-    private const int KeySize = 256;
+    private const int SaltSize = 16; // The size of the salt (16 bytes)
 
-    // Creates a hashed password string in the format: iterations.salt.hash
-    public static string HashPassword(string password)
+    /// <summary>
+    /// Generates a random salt.
+    /// </summary>
+    /// <returns>A random salt as a byte array.</returns>
+    private static byte[] GenerateSalt()
     {
-        // Generate a random salt
         byte[] salt = new byte[SaltSize];
-        using (var rng = RandomNumberGenerator.Create())
+        using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
         {
             rng.GetBytes(salt);
         }
+        return salt;
+    }
 
-        // Derive the hash
-        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA512))
+    /// <summary>
+    /// Extracts the salt from the combined hash and salt.
+    /// </summary>
+    /// <param name="hashWithSalt">The combined hash and salt.</param>
+    /// <returns>The extracted salt as a byte array.</returns>
+    private static byte[] ExtractSalt(byte[] hashWithSalt)
+    {
+        byte[] salt = new byte[SaltSize];
+        Buffer.BlockCopy(hashWithSalt, 0, salt, 0, SaltSize);
+        return salt;
+    }
+
+    /// <summary>
+    /// Hashes a password using Argon2, embedding the salt within the hashed password.
+    /// </summary>
+    /// <param name="password">The password to hash.</param>
+    /// <param name="storedSalt">The stored salt (optional, only used for verification).</param>
+    /// <returns>The hashed password with the salt embedded as a Base64 string.</returns>
+    public static string HashPassword(string password, byte[] storedSalt = null)
+    {
+        // Convert the password into bytes
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+
+        // Use the provided salt or generate a new one if null
+        byte[] salt = storedSalt ?? GenerateSalt();
+
+        // Argon2id - This is a specific version of Argon2 (you can also use Argon2d or Argon2i)
+        using (var argon2 = new Argon2id(passwordBytes))
         {
-            byte[] hash = pbkdf2.GetBytes(HashSize);
-            // Combine iterations, salt, and hash as a single string (Base64-encoded)
-            return $"{Iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
+            // Set the parameters (adjust these as needed for security/performance)
+            argon2.Salt = salt;
+            argon2.DegreeOfParallelism = Environment.ProcessorCount; // Number of threads
+            argon2.Iterations = 4;                                  // The number of iterations
+            argon2.MemorySize = 128 * 1024;                          // Memory in KB (64MB)
+
+            // Get the resulting hash
+            byte[] hash = argon2.GetBytes(32); // Generate a 32-byte hash (256 bits)
+
+            // Combine the salt and the hash into a single byte array
+            byte[] hashWithSalt = new byte[salt.Length + hash.Length];
+            Buffer.BlockCopy(salt, 0, hashWithSalt, 0, salt.Length);
+            Buffer.BlockCopy(hash, 0, hashWithSalt, salt.Length, hash.Length);
+
+            // Return the result as a Base64 string (combining salt and hash)
+            return Convert.ToBase64String(hashWithSalt);
         }
     }
 
-    // Verifies a password against the stored hash string.
+    /// <summary>
+    /// Verifies the password by comparing it with the stored hash, which contains the salt.
+    /// </summary>
+    /// <param name="password">The password entered by the user.</param>
+    /// <param name="storedHash">The stored hash with the embedded salt.</param>
+    /// <returns>True if the password is correct, false otherwise.</returns>
     public static bool VerifyPassword(string password, string storedHash)
     {
-        // Expect format: iterations.salt.hash
-        string[] parts = storedHash.Split('.');
-        if (parts.Length != 3)
-            return false;
+        // Convert the stored hash from Base64 to byte array
+        byte[] hashWithSalt = Convert.FromBase64String(storedHash);
 
-        if (!int.TryParse(parts[0], out int iterations) || iterations <= 0)
-            return false;
+        // Extract the salt from the stored hash
+        byte[] salt = ExtractSalt(hashWithSalt);
 
-        byte[] salt = Convert.FromBase64String(parts[1]);
-        byte[] storedPasswordHash = Convert.FromBase64String(parts[2]);
+        // Hash the password with the extracted salt
+        string hashedPassword = HashPassword(password, salt);
 
-        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA512))
-        {
-            byte[] computedHash = pbkdf2.GetBytes(HashSize);
-            return AreHashesEqual(storedPasswordHash, computedHash);
-        }
+        // Compare the computed hash with the stored hash
+        return storedHash == hashedPassword;
     }
 
-    // Compares two byte arrays in constant time.
-    private static bool AreHashesEqual(byte[] hash1, byte[] hash2)
+    private static byte[] DeriveKey(string password, byte[] salt, int keySize)
     {
-        uint diff = (uint)hash1.Length ^ (uint)hash2.Length;
-        for (int i = 0; i < hash1.Length && i < hash2.Length; i++)
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+
+        var argon2 = new Argon2id(passwordBytes)
         {
-            diff |= (uint)(hash1[i] ^ hash2[i]);
-        }
-        return diff == 0;
+            Salt = salt,
+            DegreeOfParallelism = Environment.ProcessorCount, // Number of threads to use.
+            Iterations = 4,            // The number of iterations.
+            MemorySize = 64 * 1024     // Memory size in kilobytes (this example uses ~64MB).
+        };
+
+        return argon2.GetBytes(keySize);
     }
 
     public static string Encrypt(string plain)
@@ -70,45 +113,46 @@ public static class Crypto
     }
 
     /// <summary>
-    /// Encrypts plain text using AES encryption with a passphrase.
-    /// The output is a Base64 string containing the salt, IV, and ciphertext.
+    /// Encrypts a string using AES with a key derived from the supplied password.
     /// </summary>
-    public static string Encrypt(string plain, string passphrase)
+    /// <param name="plain">The string to encrypt.</param>
+    /// <param name="password">The password used for key derivation.</param>
+    /// <returns>The encrypted data as a base64-encoded string.</returns>
+    public static string Encrypt(string plain, string password)
     {
-        // Generate a random salt and IV.
-        byte[] saltBytes = GenerateRandomBytes(SaltSize);
-        byte[] ivBytes = GenerateRandomBytes(IvByteSize);
-        byte[] plainTextBytes = Encoding.UTF8.GetBytes(plain);
-
-        // Derive a 256-bit key using PBKDF2.
-        using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA512))
+        using (var aes = new AesManaged())
         {
-            byte[] keyBytes = keyDerivationFunction.GetBytes(KeySize / 8);
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
 
-            using (var aes = Aes.Create())
+            aes.GenerateIV();
+            byte[] iv = aes.IV;
+
+            byte[] salt = new byte[SaltSize];
+            using (var rng = new RNGCryptoServiceProvider())
             {
-                aes.KeySize = KeySize;
-                aes.BlockSize = 128;
-                aes.Mode = CipherMode.CBC;
-                aes.Padding = PaddingMode.PKCS7;
-                aes.Key = keyBytes;
-                aes.IV = ivBytes;
+                rng.GetBytes(salt);
+            }
 
-                using (var memoryStream = new MemoryStream())
+            int keySizeBytes = aes.KeySize / 8;
+            byte[] key = DeriveKey(password, salt, keySizeBytes);
+            aes.Key = key;
+
+            using (var ms = new MemoryStream())
+            {
+                ms.Write(salt, 0, salt.Length);
+                ms.Write(iv, 0, iv.Length);
+
+                using (var cs = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                using (var writer = new StreamWriter(cs))
                 {
-                    // Prepend the salt and IV to the output.
-                    memoryStream.Write(saltBytes, 0, saltBytes.Length);
-                    memoryStream.Write(ivBytes, 0, ivBytes.Length);
-
-                    using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
-                        cryptoStream.FlushFinalBlock();
-
-                        // Return the combined salt+IV+ciphertext as a Base64 string.
-                        return Convert.ToBase64String(memoryStream.ToArray());
-                    }
+                    writer.Write(plain);
                 }
+
+                byte[] encrypted = ms.ToArray();
+
+                // Return the result as a base64-encoded string
+                return Convert.ToBase64String(encrypted);
             }
         }
     }
@@ -119,59 +163,45 @@ public static class Crypto
     }
 
     /// <summary>
-    /// Decrypts a Base64 string (produced by Encrypt) using the provided passphrase.
+    /// Decrypts a base64-encoded string that was encrypted with the Encrypt method.
     /// </summary>
-    public static string Decrypt(string encrypted, string passphrase)
+    /// <param name="encrypted">The base64-encoded string to decrypt.</param>
+    /// <param name="password">The password used for key derivation.</param>
+    /// <returns>The decrypted string.</returns>
+    public static string Decrypt(string encrypted, string password)
     {
-        byte[] cipherBytesWithSaltAndIv = Convert.FromBase64String(encrypted);
+        byte[] cipherData = Convert.FromBase64String(encrypted);
 
-        // Extract the salt, IV, and ciphertext.
-        byte[] saltBytes = new byte[SaltSize];
-        Array.Copy(cipherBytesWithSaltAndIv, 0, saltBytes, 0, SaltSize);
+        byte[] salt = new byte[SaltSize];
+        byte[] iv = new byte[SaltSize];
+        Array.Copy(cipherData, 0, salt, 0, salt.Length);
+        Array.Copy(cipherData, salt.Length, iv, 0, iv.Length);
 
-        byte[] ivBytes = new byte[IvByteSize];
-        Array.Copy(cipherBytesWithSaltAndIv, SaltSize, ivBytes, 0, IvByteSize);
-
-        int cipherStartIndex = SaltSize + IvByteSize;
-        int cipherLength = cipherBytesWithSaltAndIv.Length - cipherStartIndex;
-        byte[] cipherBytes = new byte[cipherLength];
-        Array.Copy(cipherBytesWithSaltAndIv, cipherStartIndex, cipherBytes, 0, cipherLength);
-
-        // Derive the key from the passphrase and salt.
-        using (var keyDerivationFunction = new Rfc2898DeriveBytes(passphrase, saltBytes, Iterations, HashAlgorithmName.SHA512))
+        using (var aes = new AesManaged())
         {
-            byte[] keyBytes = keyDerivationFunction.GetBytes(KeySize / 8);
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
+            aes.IV = iv;
 
-            using (var aes = Aes.Create())
+            int keySizeBytes = aes.KeySize / 8;
+            byte[] key = DeriveKey(password, salt, keySizeBytes);
+            aes.Key = key;
+
+            using (var ms = new MemoryStream())
             {
-                aes.KeySize = KeySize;
-                aes.BlockSize = 128;
-                aes.Mode = CipherMode.CBC;
-                aes.Padding = PaddingMode.PKCS7;
-                aes.Key = keyBytes;
-                aes.IV = ivBytes;
+                int ciphertextOffset = salt.Length + iv.Length;
+                int ciphertextLength = cipherData.Length - ciphertextOffset;
 
-                using (var memoryStream = new MemoryStream(cipherBytes))
-                using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateDecryptor(), CryptoStreamMode.Read))
-                using (var reader = new StreamReader(cryptoStream, Encoding.UTF8))
+                using (var cs = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Write))
                 {
-                    return reader.ReadToEnd();
+                    cs.Write(cipherData, ciphertextOffset, ciphertextLength);
+                    cs.FlushFinalBlock();
                 }
+
+                // Convert the decrypted data back to a string
+                return Encoding.UTF8.GetString(ms.ToArray());
             }
         }
-    }
-
-    /// <summary>
-    /// Generates a specified number of random bytes.
-    /// </summary>
-    private static byte[] GenerateRandomBytes(int size)
-    {
-        byte[] randomBytes = new byte[size];
-        using (var rng = RandomNumberGenerator.Create())
-        {
-            rng.GetBytes(randomBytes);
-        }
-        return randomBytes;
     }
 
     public static string MD5Hash(string input)

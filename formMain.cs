@@ -3154,6 +3154,7 @@ namespace AutoPuTTY
         {
             XmlNode ListNode = XmlConfig.SelectSingleNode("/List");
             if (ListNode == null) return;
+            Debug.WriteLine("list" + ListNode.InnerXml);
             string encryptedlist = Crypto.Encrypt(ListNode.InnerXml);
             XmlDocument XmlNewList = new XmlDocument();
             XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");

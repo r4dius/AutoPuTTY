@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Konscious.Security.Cryptography.Argon2</name>
+    </assembly>
+    <members>
+        <member name="T:Konscious.Security.Cryptography.Argon2">
+            <summary>
+            An implementation of Argon2 https://github.com/P-H-C/phc-winner-argon2
+            </summary>
+        </member>
+        <member name="M:Konscious.Security.Cryptography.Argon2.#ctor(System.Byte[])">
+            <summary>
+            Create an Argon2 for encrypting the given password
+            </summary>
+            <param name="password"></param>
+        </member>
+        <member name="M:Konscious.Security.Cryptography.Argon2.Reset">
+            <summary>
+            Implementation of Reset
+            </summary>
+        </member>
+        <member name="M:Konscious.Security.Cryptography.Argon2.GetBytes(System.Int32)">
+            <summary>
+            Implementation of GetBytes
+            </summary>
+        </member>
+        <member name="M:Konscious.Security.Cryptography.Argon2.GetBytesAsync(System.Int32)">
+            <summary>
+            Implementation of GetBytes
+            </summary>
+        </member>
+        <member name="P:Konscious.Security.Cryptography.Argon2.Salt">
+            <summary>
+            The password hashing salt
+            </summary>
+        </member>
+        <member name="P:Konscious.Security.Cryptography.Argon2.KnownSecret">
+            <summary>
+            An optional secret to use while hashing the Password
+            </summary>
+        </member>
+        <member name="P:Konscious.Security.Cryptography.Argon2.AssociatedData">
+            <summary>
+            Any extra associated data to use while hashing the password
+            </summary>
+        </member>
+        <member name="P:Konscious.Security.Cryptography.Argon2.Iterations">
+            <summary>
+            The number of iterations to apply to the password hash
+            </summary>
+        </member>
+        <member name="P:Konscious.Security.Cryptography.Argon2.MemorySize">
+            <summary>
+            The number of 1kB memory blocks to use while proessing the hash
+            </summary>
+        </member>
+        <member name="P:Konscious.Security.Cryptography.Argon2.DegreeOfParallelism">
+            <summary>
+            The number of lanes to use while processing the hash
+            </summary>
+        </member>
+        <member name="T:Konscious.Security.Cryptography.Argon2d">
+            <summary>
+            An implementation of Argon2 https://github.com/P-H-C/phc-winner-argon2
+            </summary>
+        </member>
+        <member name="M:Konscious.Security.Cryptography.Argon2d.#ctor(System.Byte[])">
+            <summary>
+            Create an Argon2 for encrypting the given password using Argon2d
+            </summary>
+            <param name="password"></param>
+        </member>
+        <member name="T:Konscious.Security.Cryptography.Argon2dCore">
+            <summary>
+            The implementation of Argon2d for use in the crypto library
+            </summary>
+        </member>
+        <member name="T:Konscious.Security.Cryptography.Argon2i">
+            <summary>
+            An implementation of Argon2 https://github.com/P-H-C/phc-winner-argon2
+            </summary>
+        </member>
+        <member name="M:Konscious.Security.Cryptography.Argon2i.#ctor(System.Byte[])">
+            <summary>
+            Create an Argon2 for encrypting the given password using Argon2i
+            </summary>
+            <param name="password"></param>
+        </member>
+        <member name="T:Konscious.Security.Cryptography.Argon2iCore">
+            <summary>
+            The implementation of Argon2i for use in the crypto library
+            </summary>
+        </member>
+        <member name="T:Konscious.Security.Cryptography.Argon2id">
+            <summary>
+            An implementation of Argon2 https://github.com/P-H-C/phc-winner-argon2
+            </summary>
+        </member>
+        <member name="M:Konscious.Security.Cryptography.Argon2id.#ctor(System.Byte[])">
+            <summary>
+            Create an Argon2 for encrypting the given password using Argon2id
+            </summary>
+            <param name="password"></param>
+        </member>
+        <member name="T:Konscious.Security.Cryptography.Argon2idCore">
+            <summary>
+            The implementation of Argon2d for use in the crypto library
+            </summary>
+        </member>
+    </members>
+</doc>
