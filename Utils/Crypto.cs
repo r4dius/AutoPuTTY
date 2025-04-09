@@ -1,6 +1,7 @@
 ﻿using AutoPuTTY.Properties;
 using Konscious.Security.Cryptography;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -79,6 +80,7 @@ public static class Crypto
     /// <returns>True if the password is correct, false otherwise.</returns>
     public static bool VerifyPassword(string password, string storedHash)
     {
+        if (password.Trim() == "" || storedHash.Trim() == "") return false;
         // Convert the stored hash from Base64 to byte array
         byte[] hashWithSalt = Convert.FromBase64String(storedHash);
 
