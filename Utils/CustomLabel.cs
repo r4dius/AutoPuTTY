@@ -3,6 +3,11 @@ using System.Windows.Forms;
 
 namespace AutoPuTTY
 {
+    public class NoFocusLinkLabel : LinkLabel
+    {
+        protected override bool ShowFocusCues => false;
+    }
+
     public class SingleClickLabel : Label
     {
         protected override CreateParams CreateParams

@@ -915,7 +915,7 @@ namespace AutoPuTTY
                                 Process Proc = new Process();
                                 Proc.StartInfo.FileName = RdPath;
                                 Proc.StartInfo.Arguments = "\"" + RdOut + ReplaceSpecial(SpecialChars, GetServer["Name"]) + ".rdp\"";
-                                if (RdArgs != "") Proc.StartInfo.Arguments += " " + RdArgs;
+                                if (RdArgs != "") Proc.StartInfo.Arguments += $" {RdArgs}";
 
                                 try
                                 {
@@ -984,12 +984,12 @@ namespace AutoPuTTY
                                 if (Settings.Default.vncfullscreen) VncFile.WriteLine("fullscreen=1");
                                 if (Settings.Default.vncviewonly)
                                 {
-                                    VncFile.WriteLine("viewonly=1"); //ultravnc
+                                    VncFile.WriteLine("viewonly=1");      //ultravnc
                                     VncFile.WriteLine("sendptrevents=0"); //realvnc
                                     VncFile.WriteLine("sendkeyevents=0"); //realvnc
-                                    VncFile.WriteLine("sendcuttext=0"); //realvnc
+                                    VncFile.WriteLine("sendcuttext=0");   //realvnc
                                     VncFile.WriteLine("acceptcuttext=0"); //realvnc
-                                    VncFile.WriteLine("sharefiles=0"); //realvnc
+                                    VncFile.WriteLine("sharefiles=0");    //realvnc
                                 }
 
                                 if (Pass != "" && Pass.Length > 8) VncFile.WriteLine("protocol3.3=1"); // fuckin vnc 4.0 auth
@@ -998,7 +998,7 @@ namespace AutoPuTTY
                                 Process Proc = new Process();
                                 Proc.StartInfo.FileName = Settings.Default.vncpath;
                                 Proc.StartInfo.Arguments = "-config \"" + VncOut + ReplaceSpecial(SpecialChars, GetServer["Name"]) + ".vnc\"";
-                                if (VncArgs != "") Proc.StartInfo.Arguments += " " + VncArgs;
+                                if (VncArgs != "") Proc.StartInfo.Arguments += $" {VncArgs}";
                                 try
                                 {
                                     Proc.Start();
@@ -1053,10 +1053,10 @@ namespace AutoPuTTY
                                     if (ProxyHost != "") User = UserFromProxy;
                                     User = ReplaceSpecial(SpecialCharsWinscp, User);
                                     Pass = ReplaceSpecial(SpecialCharsWinscp, Pass);
-                                    Proc.StartInfo.Arguments += User + "@";
+                                    Proc.StartInfo.Arguments += $"{User}@";
                                 }
                                 if (Host != "") Proc.StartInfo.Arguments += HttpUtility.UrlEncode(Host);
-                                if (Port != "") Proc.StartInfo.Arguments += ":" + Port;
+                                if (Port != "") Proc.StartInfo.Arguments += $":{Port}";
                                 if (WinscpProt == "ftp://") Proc.StartInfo.Arguments += " /passive=" + (Settings.Default.winscppassive ? "on" : "off");
                                 if (User != "" && Pass != "")
                                 {
@@ -1080,7 +1080,7 @@ namespace AutoPuTTY
                                     Proc.StartInfo.Arguments += " Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " TunnelPasswordPlain=\"" + ReplaceSpecial(SpecialCharsWinscp, ProxyPass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
                                 }
 
-                                if (WinscpArgs != "") Proc.StartInfo.Arguments += " " + WinscpArgs;
+                                if (WinscpArgs != "") Proc.StartInfo.Arguments += $" {WinscpArgs}";
                                 try
                                 {
                                     if (Pipe != "")
@@ -1136,10 +1136,23 @@ namespace AutoPuTTY
                                 Proc.StartInfo.FileName = Settings.Default.puttypath;
                                 Proc.StartInfo.Arguments = "";
 
+                                Proc.StartInfo.Arguments += " -ssh ";
                                 //SSH Jump
                                 if (ProxyHost != "")
                                 {
                                     User = UserFromProxy;
+                                }
+                                if (User != "") Proc.StartInfo.Arguments += $"{User}@";
+                                if (Host != "") Proc.StartInfo.Arguments += Host;
+                                if (Port != "") Proc.StartInfo.Arguments += $" {Port}";
+                                if (User != "" && Pass != "")
+                                {
+                                    Pipe = Guid.NewGuid().ToString("N");
+                                    Proc.StartInfo.Arguments += $" -pwfile \\\\.\\pipe\\{Pipe}";
+                                }
+                                //SSH Jump
+                                if (ProxyHost != "")
+                                {
                                     Proc.StartInfo.Arguments += " -J " + (ProxyUser != "" ? ProxyUser + "@" : "") + ProxyHost + ":" + (ProxyPort != "" ? ProxyPort : "22");
                                     if (ProxyPass != "")
                                     {
@@ -1147,22 +1160,12 @@ namespace AutoPuTTY
                                         Proc.StartInfo.Arguments += $" -jwfile \\\\.\\pipe\\{ProxyPipe}";
                                     }
                                 }
-
-                                Proc.StartInfo.Arguments += " -ssh ";
-                                if (User != "") Proc.StartInfo.Arguments += User + "@";
-                                if (Host != "") Proc.StartInfo.Arguments += Host;
-                                if (Port != "") Proc.StartInfo.Arguments += " " + Port;
-                                if (User != "" && Pass != "")
-                                {
-                                    Pipe = Guid.NewGuid().ToString("N");
-                                    Proc.StartInfo.Arguments += $" -pwfile \\\\.\\pipe\\{Pipe}";
-                                }
                                 if (Settings.Default.puttyexecute && Settings.Default.puttycommand != "") Proc.StartInfo.Arguments += " -m \"" + Settings.Default.puttycommand + "\"";
                                 if (PrivateKey != "") Proc.StartInfo.Arguments += " -i \"" + PrivateKey + "\"";
                                 else if (Settings.Default.puttykey && Settings.Default.puttykeyfilepath != "") Proc.StartInfo.Arguments += " -i \"" + Settings.Default.puttykeyfilepath + "\"";
                                 if (Settings.Default.puttyagent) Proc.StartInfo.Arguments += " -A";
                                 if (Settings.Default.puttyforward) Proc.StartInfo.Arguments += " -X";
-                                if (PuttyArgs != "") Proc.StartInfo.Arguments += " " + PuttyArgs;
+                                if (PuttyArgs != "") Proc.StartInfo.Arguments += $" {PuttyArgs}";
 
                                 try
                                 {
@@ -1569,7 +1572,7 @@ namespace AutoPuTTY
                 NameXml.Value = tbName.Text.Trim();
                 HostXml.InnerText = Legacy.Encrypt(tbHost.Text.Trim());
                 UserXml.InnerText = Legacy.Encrypt(tbUser.Text);
-                if (laPass.Text == "Password")
+                if (liPass.Text == "Password")
                 {
                     PassXml.InnerText = Legacy.Encrypt(tbPass.Text);
                 }
@@ -1630,7 +1633,7 @@ namespace AutoPuTTY
             XmlElement TypeXml = XmlConfig.CreateElement("Type");
             HostXml.InnerText = Legacy.Encrypt(tbHost.Text.Trim());
             UserXml.InnerText = Legacy.Encrypt(tbUser.Text);
-            if (laPass.Text == "Password")
+            if (liPass.Text == "Password")
             {
                 PassXml.InnerText = Legacy.Encrypt(tbPass.Text);
             }
@@ -2745,10 +2748,25 @@ namespace AutoPuTTY
             }
         }
 
+        private void liPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Label label = (Label)sender;
+            if (label.Text == "Password")
+            {
+                SwitchPassword(true);
+                tbServer_TextChanged(cbVault, e);
+            }
+            else
+            {
+                SwitchPassword(false);
+                tbServer_TextChanged(tbPass, e);
+            }
+        }
+
         private void SwitchPassword(bool state)
         {
-            laPass.Text = state ? "Vault" : "Password";
-            ttMain.SetToolTip(laPass, "Switch to " + (state ? "password" : "vault"));
+            liPass.Text = state ? "Vault" : "Password";
+            ttMain.SetToolTip(liPass, "Switch to " + (state ? "password" : "vault"));
             if (state)
             {
                 if (tbPass.Text.Trim() != "")
@@ -3263,18 +3281,15 @@ namespace AutoPuTTY
                        PipeTransmissionMode.Byte,
                        PipeOptions.Asynchronous))
             {
-                Console.WriteLine("Waiting for client (PuTTY) to connect to named pipe...");
+                //Console.WriteLine("Waiting for client to connect to named pipe...");
                 pipeServer.WaitForConnection();
-                Console.WriteLine("Client connected. Sending password...");
+                //Console.WriteLine("Client connected. Sending password...");
 
                 // Convert the password to bytes and send it.
                 byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
                 pipeServer.Write(passwordBytes, 0, passwordBytes.Length);
                 pipeServer.Flush();
-                // Optionally wait until the data has been read completely.
                 pipeServer.WaitForPipeDrain();
-
-                Console.WriteLine("Password sent successfully.");
             }
         }
 
