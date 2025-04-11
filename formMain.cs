@@ -1357,6 +1357,8 @@ namespace AutoPuTTY
             _ = ConfigNode != null
                 ? XmlConfig.DocumentElement.ReplaceChild(ConfigXml, ConfigNode)
                 : XmlConfig.DocumentElement.InsertBefore(ConfigXml, XmlConfig.DocumentElement.FirstChild);
+
+            XmlSave();
         }
 
         public void XmlSetData(string node, string value)
@@ -1404,6 +1406,8 @@ namespace AutoPuTTY
                     }
                 }
             }
+
+            XmlSave();
         }
 
         public void XmlRenameDataNode(string oldname, string newname)
@@ -1591,6 +1595,7 @@ namespace AutoPuTTY
                 ServerXml.AppendChild(TypeXml);
 
                 _ = (XmlConfig.DocumentElement?.InsertAfter(ServerXml, XmlConfig.DocumentElement.LastChild));
+                XmlSave();
 
                 //reset colors
                 tbName.BackColor = SystemColors.Window;
@@ -1655,6 +1660,8 @@ namespace AutoPuTTY
             {
                 if (ServerNode != null) XmlConfig.DocumentElement.ReplaceChild(ServerXml, ServerNode);
             }
+
+            XmlSave();
 
             Remove = true;
             lbServer.Items.RemoveAt(lbServer.Items.IndexOf(lbServer.SelectedItem));
@@ -2959,6 +2966,8 @@ namespace AutoPuTTY
                     XmlConfig.DocumentElement.InsertAfter(VaultXml, LastVaultNode ?? XmlConfig.DocumentElement.LastChild);
                 }
 
+                XmlSave();
+
                 //reset colors
                 tbVaultName.BackColor = SystemColors.Window;
                 tbVaultPass.BackColor = SystemColors.Window;
@@ -3020,6 +3029,8 @@ namespace AutoPuTTY
                     }
                 }
             }
+
+            XmlSave();
 
             if (lbVault.SelectedItem != null)
             {
