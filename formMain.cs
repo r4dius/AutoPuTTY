@@ -1052,7 +1052,7 @@ namespace AutoPuTTY
                                 {
                                     if (ProxyHost != "") User = UserFromProxy;
                                     User = ReplaceSpecial(SpecialCharsWinscp, User);
-                                    Pass = ReplaceSpecial(SpecialCharsWinscp, Pass);
+                                    //Pass = ReplaceSpecial(SpecialCharsWinscp, Pass);
                                     Proc.StartInfo.Arguments += $"{User}@";
                                 }
                                 if (Host != "") Proc.StartInfo.Arguments += HttpUtility.UrlEncode(Host);
@@ -1061,7 +1061,7 @@ namespace AutoPuTTY
                                 if (User != "" && Pass != "")
                                 {
                                     Pipe = Guid.NewGuid().ToString("N");
-                                    Proc.StartInfo.Arguments += $" /passwordsfromfiles /password:\\\\.\\pipe\\{Pipe}";
+                                    Proc.StartInfo.Arguments += $" /passwordsfromfiles /password=\\\\.\\pipe\\{Pipe}";
                                 }
                                 if (PrivateKey != "") Proc.StartInfo.Arguments += " /privatekey=\"" + PrivateKey + "\"";
                                 else if (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "") Proc.StartInfo.Arguments += " /privatekey=\"" + Settings.Default.winscpkeyfilepath + "\"";
@@ -3290,6 +3290,7 @@ namespace AutoPuTTY
                 pipeServer.Write(passwordBytes, 0, passwordBytes.Length);
                 pipeServer.Flush();
                 pipeServer.WaitForPipeDrain();
+                //Thread.Sleep(1000); // Wait an extra second for debugging
             }
         }
 

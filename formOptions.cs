@@ -573,7 +573,19 @@ namespace AutoPuTTY
 
         private void liGImport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBoxEx.Show(this, "List format:\r\n\r\nName     Hostname[:port]     [[Domain\\]username]     [Password]     [Type]\r\n\r\n- One server per line.\r\n- Use a tab as separator.\r\n- Only \"Name\" and \"Hostname\" are required.\r\n- \"Type\" is a numerical value, use the following correspondence:\r\n    0 = PuTTY\r\n    1 = Remote Desktop\r\n    2 = VNC\r\n    3 = WinSCP (SCP)\r\n    4 = WinSCP (SFTP)\r\n    5 = WinSCP (FTP)\r\n- If no \"Type\" is given it'll be set as \"PuTTY\" by default.", "Import list", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBoxEx.Show(this, "List format:\n\n" +
+                "Name     Hostname[:port]     [[Domain\\]username]     [Password]     [Type]\n\n" +
+                "- One server per line.\n" +
+                "- Use a tab as separator.\n" +
+                "- Only \"Name\" and \"Hostname\" are required.\n" +
+                "- \"Type\" is a numerical value, use the following correspondence:\n" +
+                "    0 = PuTTY\n" +
+                "    1 = Remote Desktop\n" +
+                "    2 = VNC\n" +
+                "    3 = WinSCP (SCP)\n" +
+                "    4 = WinSCP (SFTP)\n" +
+                "    5 = WinSCP (FTP)\n" +
+                "- If no \"Type\" is given it'll be set as \"PuTTY\" by default.", "Import list", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void slGMulti_Scroll(object sender, EventArgs e)
