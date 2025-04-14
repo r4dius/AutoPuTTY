@@ -47,7 +47,8 @@ namespace AutoPuTTY
         private const int FilterWidth = 145;
         private const int FindWidth = 250;
         private bool IndexChanged;
-        private bool Filter;
+        private bool FilterServer;
+        private bool FilterVault;
         //private bool Locked;
         private bool SelectAll;
         private bool Remove;
@@ -131,7 +132,8 @@ namespace AutoPuTTY
             Types = (string[])TypeList.Clone();
             Array.Sort(Types);
 
-            SwitchSearch(false);
+            SwitchSearch("server", false);
+            SwitchSearch("vault", false);
             foreach (string type in Types)
             {
                 cbType.Items.Add(type);
@@ -176,7 +178,7 @@ namespace AutoPuTTY
                 Index = i++,
                 Text = "Search...\tCtrl+F"
             };
-            searchmenu.Click += SwitchSearchShow;
+            searchmenu.Click += SwitchServerSearchShow;
             cmServer.MenuItems.Add(searchmenu);
             sepmenu.Index++;
             sepmenu.Visible = false;
@@ -197,6 +199,13 @@ namespace AutoPuTTY
             };
             deletevaultmenu.Click += meDeleteVault;
             cmVault.MenuItems.Add(deletevaultmenu);
+            MenuItem searchvaultmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Search...\tCtrl+F"
+            };
+            searchvaultmenu.Click += SwitchVaultSearchShow;
+            cmVault.MenuItems.Add(searchvaultmenu);
 
             try
             {
@@ -1221,23 +1230,38 @@ namespace AutoPuTTY
         }
 
         // toggle "search" form
-        private void SwitchSearch(bool status)
+        private void SwitchSearch(string type, bool status)
         {
+            TableLayoutPanel tbLeft = tlLeftServer;
+            Panel paToogle = paServerFindToogle;
+            TextBox tbFilter = tbServerFilter;
+            if (type == "vault")
+            {
+                tbLeft = tlLeftVault;
+                paToogle = paVaultFindToogle;
+                tbFilter = tbVaultFilter;
+            }
+
             // reset the search input text
-            if (status && !paFindToogle.Visible) tbFilter.Text = "";
+            if (status && !paToogle.Visible) tbFilter.Text = "";
             // show the "search" form
-            tlLeft.RowStyles[1].Height = status ? 1 : 0;
-            tlLeft.RowStyles[2].Height = status ? 24 : 0;
-            paFindToogle.Visible = status;
+            tbLeft.RowStyles[1].Height = status ? 1 : 0;
+            tbLeft.RowStyles[2].Height = status ? 24 : 0;
+            paToogle.Visible = status;
             // focus the filter input
             tbFilter.Focus();
             // pressed ctrl + F twice, select the search input text so we can search again over last one
-            if (status && paFindToogle.Visible && tbFilter.Text != "") tbFilter.SelectAll();
+            if (status && paToogle.Visible && tbFilter.Text != "") tbFilter.SelectAll();
         }
 
-        private void SwitchSearchShow(object sender, EventArgs e)
+        private void SwitchServerSearchShow(object sender, EventArgs e)
         {
-            SwitchSearch(true);
+            SwitchSearch("server", true);
+        }
+
+        private void SwitchVaultSearchShow(object sender, EventArgs e)
+        {
+            SwitchSearch("vault", true);
         }
 
         public static string ParseXpathString(string input)
@@ -1615,7 +1639,7 @@ namespace AutoPuTTY
                 lbServer.Items.Add(tbName.Text);
                 lbServer.SelectedItems.Clear();
                 lbServer.SelectedItem = tbName.Text;
-                if (paFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
+                if (paServerFindToogle.Visible) tbServerSearch_Changed(new object(), new EventArgs());
                 buModify.Enabled = false;
                 buAdd.Enabled = false;
                 buDelete.Enabled = true;
@@ -1674,7 +1698,7 @@ namespace AutoPuTTY
             lbServer.Items.Add(tbName.Text);
             lbServer.SelectedItems.Clear();
             lbServer.SelectedItem = tbName.Text;
-            if (paFindToogle.Visible) tbSearch_Changed(new object(), new EventArgs());
+            if (paServerFindToogle.Visible) tbServerSearch_Changed(new object(), new EventArgs());
             buModify.Enabled = false;
             buAdd.Enabled = false;
             BeginInvoke(new InvokeDelegate(lbServer.Focus));
@@ -1748,12 +1772,12 @@ namespace AutoPuTTY
             }
         }
 
-        private void piClose_Click(object sender, EventArgs e)
+        private void piServerClose_Click(object sender, EventArgs e)
         {
             string Selected = "";
             if (lbServer.SelectedItem != null) Selected = lbServer.SelectedItem.ToString();
-            SwitchSearch(false);
-            if (tbFilter.Text == "") return;
+            SwitchSearch("server", false);
+            if (tbServerFilter.Text == "") return;
             XmlToServer();
             if (lbServer.Items.Count > 0 && lbServer.Items.Contains(Selected))
             {
@@ -1765,28 +1789,54 @@ namespace AutoPuTTY
             }
         }
 
+        private void piVaultClose_Click(object sender, EventArgs e)
+        {
+            string Selected = "";
+            if (lbVault.SelectedItem != null) Selected = lbVault.SelectedItem.ToString();
+            SwitchSearch("vault", false);
+            if (tbVaultFilter.Text == "") return;
+            XmlToVault();
+            if (lbVault.Items.Count > 0 && lbVault.Items.Contains(Selected))
+            {
+                lbVault.SelectedItem = Selected;
+            }
+            else
+            {
+                lbVault.SelectedItems.Clear();
+            }
+        }
+
         // "search" form change close button image on mouse down
         private void piClose_MouseDown(object sender, MouseEventArgs e)
         {
-            piClose.Image = Resources.closed;
+            PictureBox picture = sender as PictureBox;
+            picture.Image = Resources.closed;
         }
 
         // "search" form change close button image on mouse hover
         private void piClose_MouseEnter(object sender, EventArgs e)
         {
-            piClose.Image = Resources.closeh;
+            PictureBox picture = sender as PictureBox;
+            picture.Image = Resources.closeh;
         }
 
         // "search" form change close button image on mouse leave
         private void piClose_MouseLeave(object sender, EventArgs e)
         {
-            piClose.Image = Resources.close;
+            PictureBox picture = sender as PictureBox;
+            picture.Image = Resources.close;
         }
 
         // check "search" case censitive box
-        private void piClose_CheckedChanged(object sender, EventArgs e)
+        private void piServerClose_CheckedChanged(object sender, EventArgs e)
         {
-            if (tbFilter.Text != "") tbSearch_Changed(sender, e);
+            if (tbServerFilter.Text != "") tbServerSearch_Changed(sender, e);
+        }
+
+        // check "search" case censitive box
+        private void piVaultClose_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tbServerFilter.Text != "") tbServerSearch_Changed(sender, e);
         }
 
         private void cbType_SelectedIndexChanged(object sender, EventArgs e)
@@ -1972,7 +2022,7 @@ namespace AutoPuTTY
 
         public void lbServer_Filter(string search, string selected)
         {
-            Filter = true;
+            FilterServer = true;
             XmlToServer();
             ListBox.ObjectCollection ListItems = new ListBox.ObjectCollection(lbServer);
             ListItems.AddRange(lbServer.Items);
@@ -1981,7 +2031,7 @@ namespace AutoPuTTY
             foreach (string item in ListItems)
             {
                 string Item = item;
-                if (!cbCase.Checked)
+                if (!cbServerCase.Checked)
                 {
                     search = search.ToLower();
                     Item = Item.ToLower();
@@ -1996,15 +2046,15 @@ namespace AutoPuTTY
             int Count = lbServer.Items.Count;
             if (search != "")
             {
-                laResults.Text = "Found " + Count + " result" + (Count > 1 ? "s" : "");
-                laResults.Visible = true;
+                laServerResults.Text = "Found " + Count + " result" + (Count > 1 ? "s" : "");
+                laServerResults.Visible = true;
             }
             else
             {
-                laResults.Visible = false;
+                laServerResults.Visible = false;
             }
 
-            Filter = false;
+            FilterServer = false;
             if (Count > 0)
             {
                 if (lbServer.Items.Contains(selected))
@@ -2018,10 +2068,58 @@ namespace AutoPuTTY
                 lbServer_IndexChanged(new object(), new EventArgs());
             }
         }
+        public void lbVault_Filter(string search, string selected)
+        {
+            FilterVault = true;
+            XmlToVault();
+            ListBox.ObjectCollection ListItems = new ListBox.ObjectCollection(lbVault);
+            ListItems.AddRange(lbVault.Items);
+            lbVault.Items.Clear();
+
+            foreach (string item in ListItems)
+            {
+                string Item = item;
+                if (!cbVaultCase.Checked)
+                {
+                    search = search.ToLower();
+                    Item = Item.ToLower();
+                }
+
+                if (Item.IndexOf(search) >= 0 || search == "")
+                {
+                    lbVault.Items.Add(item);
+                }
+            }
+
+            int Count = lbVault.Items.Count;
+            if (search != "")
+            {
+                laVaultResults.Text = "Found " + Count + " result" + (Count > 1 ? "s" : "");
+                laVaultResults.Visible = true;
+            }
+            else
+            {
+                laVaultResults.Visible = false;
+            }
+
+            FilterVault = false;
+            if (Count > 0)
+            {
+                if (lbVault.Items.Contains(selected))
+                {
+                    lbVault.SelectedItem = selected;
+                }
+            }
+            else
+            {
+                lbVault.SelectedItems.Clear();
+                lbVault_IndexChanged(new object(), new EventArgs());
+            }
+        }
 
         public void lbServer_IndexChanged(object sender, EventArgs e)
         {
-            if (Filter || SelectAll)
+            if (FilterServer || SelectAll)
             {
                 return;
             }
@@ -2167,7 +2265,11 @@ namespace AutoPuTTY
         {
             if (e.KeyCode == Keys.F && e.Control)
             {
-                if (tlMain.Visible) SwitchSearch(true);
+                if (tlMain.Visible)
+                {
+                    if (tlLeftVault.Visible) SwitchSearch("vault", true);
+                    else SwitchSearch("server", true);
+                }
             }
             else if (e.KeyCode == Keys.O && e.Control)
             {
@@ -2176,7 +2278,11 @@ namespace AutoPuTTY
             if (e.KeyCode == Keys.Escape)
             {
                 if (tlAbout.Visible) buAboutOK_Click(sender, e);
-                else piClose_Click(sender, e);
+                else
+                {
+                    if(tlLeftVault.Visible) piVaultClose_Click(sender, e);
+                    else piServerClose_Click(sender, e);
+                }
             }
         }
 
@@ -2204,8 +2310,10 @@ namespace AutoPuTTY
                 LastState = WindowState.ToString();
             }
 
-            tbFilter.Width = tlLeft.Width - tbFilter.Left < FilterWidth ? tlLeft.Width - tbFilter.Left : FilterWidth;
-            cbCase.TabStop = paFindToogle.Width >= FindWidth;
+            tbServerFilter.Width = tlLeftServer.Width - tbServerFilter.Left < FilterWidth ? tlLeftServer.Width - tbServerFilter.Left : FilterWidth;
+            tbVaultFilter.Width = tbServerFilter.Width;
+            cbServerCase.TabStop = paServerFindToogle.Width >= FindWidth;
+            cbVaultCase.TabStop = cbServerCase.TabStop;
         }
 
         private void formMain_ResizeEnd(object sender, EventArgs e)
@@ -2397,16 +2505,29 @@ namespace AutoPuTTY
         }
 
         // update "search"
-        private void tbSearch_Changed(object sender, EventArgs e)
+        private void tbServerSearch_Changed(object sender, EventArgs e)
         {
             string Selected = "";
-            if (paFindToogle.Visible)
+            if (paServerFindToogle.Visible)
             {
                 if (lbServer.SelectedItem != null)
                 {
                     Selected = lbServer.SelectedItem.ToString();
                 }
-                lbServer_Filter(tbFilter.Text, Selected);
+                lbServer_Filter(tbServerFilter.Text, Selected);
+            }
+        }
+
+        private void tbVaultSearch_Changed(object sender, EventArgs e)
+        {
+            string Selected = "";
+            if (paVaultFindToogle.Visible)
+            {
+                if (lbVault.SelectedItem != null)
+                {
+                    Selected = lbVault.SelectedItem.ToString();
+                }
+                lbVault_Filter(tbVaultFilter.Text, Selected);
             }
         }
 
@@ -2420,12 +2541,21 @@ namespace AutoPuTTY
         }
 
         // close "search" form when pressing ESC
-        private void tbSearch_KeyPress(object sender, KeyPressEventArgs e)
+        private void tbServerSearch_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)27)
             {
                 e.Handled = true;
-                piClose_Click(sender, e);
+                piServerClose_Click(sender, e);
+            }
+        }
+
+        private void tbVaultSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)27)
+            {
+                e.Handled = true;
+                piVaultClose_Click(sender, e);
             }
         }
 
@@ -2810,19 +2940,19 @@ namespace AutoPuTTY
         {
             if (show)
             {
-                lbVault.Visible = lbVault.Enabled = true;
+                tlLeftVault.Visible = tlLeftVault.Enabled = true;
                 paVault.Visible = paVault.Enabled = true;
                 paVault.BringToFront();
-                lbServer.Visible = lbServer.Enabled = false;
+                tlLeftServer.Visible = tlLeftServer.Enabled = false;
                 paServer.Visible = paServer.Enabled = false;
                 paServer.SendToBack();
             }
             else
             {
-                lbServer.Visible = lbServer.Enabled = true;
+                tlLeftServer.Visible = tlLeftServer.Enabled = true;
                 paServer.Visible = paServer.Enabled = true;
                 paServer.BringToFront();
-                lbVault.Visible = lbVault.Enabled = false;
+                tlLeftVault.Visible = tlLeftVault.Enabled = false;
                 paVault.Visible = paVault.Enabled = false;
                 paVault.SendToBack();
             }
@@ -2833,9 +2963,9 @@ namespace AutoPuTTY
             SwitchVault(true);
         }
 
-        private void lbVault_SelectedIndexChanged(object sender, EventArgs e)
+        private void lbVault_IndexChanged(object sender, EventArgs e)
         {
-            if (Filter || SelectAll)
+            if (FilterVault || SelectAll)
             {
                 return;
             }
@@ -2994,9 +3124,9 @@ namespace AutoPuTTY
                 MessageError(this, "No name ?\nTry again ...");
             }
 
-            if (paFindToogle.Visible)
+            if (paServerFindToogle.Visible)
             {
-                tbSearch_Changed(new object(), new EventArgs());
+                tbServerSearch_Changed(new object(), new EventArgs());
             }
         }
 
@@ -3058,9 +3188,9 @@ namespace AutoPuTTY
             buVaultAdd.Enabled = false;
             BeginInvoke(new InvokeDelegate(lbVault.Focus));
 
-            if (paFindToogle.Visible)
+            if (paServerFindToogle.Visible)
             {
-                tbSearch_Changed(new object(), new EventArgs());
+                tbServerSearch_Changed(new object(), new EventArgs());
             }
         }
 
