@@ -115,9 +115,6 @@
   <ItemGroup>
     <Compile Include="Utils\Legacy.cs" />
     <Compile Include="Utils\Crypto.cs" />
-    <Compile Include="Utils\FusionTrackBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="popupRecrypt.cs">
       <SubType>Form</SubType>
     </Compile>

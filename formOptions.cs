@@ -240,7 +240,7 @@ namespace AutoPuTTY
                 Args = new string[] { "import", Count + " / " + Lines.Count, CountAdd.ToString(), CountReplace.ToString(), CountSkip.ToString() };
                 backgroundProgress.ReportProgress((int)(Count / (double)Lines.Count * 100), Args);
             }
-            FormMain.XmlSetConfig("cfgversion", Settings.Default.version);
+            FormMain.XmlSetConfigSave("cfgversion", Settings.Default.version);
 #if DEBUG
             Debug.WriteLine("Import duration :" + (DateTime.Now - time));
 #endif
@@ -380,7 +380,7 @@ namespace AutoPuTTY
                     backgroundProgress.ReportProgress((int)(Count / (double)(FormMain.lbServer.Items.Count + FormMain.lbVault.Items.Count) * 100), Args);
                 }
             }
-            FormMain.XmlSetConfig("cfgversion", Settings.Default.version);
+            FormMain.XmlSetConfigSave("cfgversion", Settings.Default.version);
 #if DEBUG
             Debug.WriteLine("Encryption duration :" + (DateTime.Now - time));
 #endif
@@ -491,6 +491,7 @@ namespace AutoPuTTY
                 Environment.Exit(0);
             }
 #endif
+            FormMain.XmlSave();
         }
 
         private void cbGPassword_CheckedChanged(object sender, EventArgs e)

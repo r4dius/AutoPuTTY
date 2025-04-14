@@ -1357,7 +1357,11 @@ namespace AutoPuTTY
             _ = ConfigNode != null
                 ? XmlConfig.DocumentElement.ReplaceChild(ConfigXml, ConfigNode)
                 : XmlConfig.DocumentElement.InsertBefore(ConfigXml, XmlConfig.DocumentElement.FirstChild);
+        }
 
+        public void XmlSetConfigSave(string id, string value)
+        {
+            XmlSetConfig(id, value);
             XmlSave();
         }
 
