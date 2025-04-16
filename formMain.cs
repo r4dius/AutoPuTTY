@@ -246,6 +246,13 @@ namespace AutoPuTTY
             // do once
             Settings.Default.cryptokeyoriginal = Settings.Default.cryptokey;
 
+            IconEditHover = ImageOpacity.Set(Resources.iconedit, (float)0.5);
+            IconCopyHover = ImageOpacity.Set(Resources.iconcopy, (float)0.5);
+            IconEyeShowHover = ImageOpacity.Set(Resources.iconeyeshow, (float)0.5);
+            IconEyeHideHover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
+            IconEyeHover = ImageOpacity.Set(Resources.eye, (float)0.5);
+            piPassEye.Image = IconEyeHover;
+
             AutoSize = false;
             MinimumSize = Size;
 
@@ -459,13 +466,6 @@ namespace AutoPuTTY
 
             lbServer.MultiColumn = Settings.Default.multicolumn;
             lbServer.ColumnWidth = Settings.Default.multicolumnwidth * 10;
-
-            IconEditHover = ImageOpacity.Set(Resources.iconedit, (float)0.5);
-            IconCopyHover = ImageOpacity.Set(Resources.iconcopy, (float)0.5);
-            IconEyeShowHover = ImageOpacity.Set(Resources.iconeyeshow, (float)0.5);
-            IconEyeHideHover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
-            IconEyeHover = ImageOpacity.Set(Resources.eye, (float)0.5);
-            piPassEye.Image = IconEyeHover;
 #if SECURE
             laAboutS.Visible = true;
             laPassS.Visible = true;
@@ -2333,6 +2333,18 @@ namespace AutoPuTTY
             tbVaultFilter.Width = tbServerFilter.Width;
             cbServerCase.TabStop = paServerFindToogle.Width >= FindWidth;
             cbVaultCase.TabStop = cbServerCase.TabStop;
+
+            // Define the maximum allowed width for the panel
+            int maxPanelWidth = 500;
+
+            // Calculate the new width: it should be the form's width (or any calculation you like) capped at maxPanelWidth.
+            int newPanelWidth = Math.Min(this.ClientSize.Width, maxPanelWidth);
+
+            // Assign the new width
+            panel1.Width = newPanelWidth;
+
+            // Center the panel horizontally
+            panel1.Left = (this.ClientSize.Width - newPanelWidth) / 2;
         }
 
         private void formMain_ResizeEnd(object sender, EventArgs e)
