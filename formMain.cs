@@ -128,12 +128,12 @@ namespace AutoPuTTY
             laAboutVersion.Text = "v" + Info.version;
             UpdateReset();
 
+            SwitchSearch("server", false);
+            SwitchSearch("vault", false);
+
             //clone types array to have a sorted version
             Types = (string[])TypeList.Clone();
             Array.Sort(Types);
-
-            SwitchSearch("server", false);
-            SwitchSearch("vault", false);
             foreach (string type in Types)
             {
                 cbType.Items.Add(type);
@@ -169,7 +169,7 @@ namespace AutoPuTTY
             MenuItem deletemenu = new MenuItem
             {
                 Index = i++,
-                Text = "Delete..."
+                Text = "Delete...\tDel"
             };
             deletemenu.Click += meDeleteServer;
             cmServer.MenuItems.Add(deletemenu);
@@ -181,8 +181,14 @@ namespace AutoPuTTY
             searchmenu.Click += SwitchServerSearchShow;
             cmServer.MenuItems.Add(searchmenu);
             sepmenu.Index++;
-            sepmenu.Visible = false;
             cmServer.MenuItems.Add(sepmenu.CloneMenu());
+            MenuItem switchmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Switch to vault\tCtrl+S"
+            };
+            switchmenu.Click += buVault_Click;
+            cmServer.MenuItems.Add(switchmenu);
             MenuItem lockmenu = new MenuItem
             {
                 Index = i++,
@@ -195,7 +201,7 @@ namespace AutoPuTTY
             MenuItem deletevaultmenu = new MenuItem
             {
                 Index = i++,
-                Text = "Delete..."
+                Text = "Delete...\tDel"
             };
             deletevaultmenu.Click += meDeleteVault;
             cmVault.MenuItems.Add(deletevaultmenu);
@@ -206,6 +212,16 @@ namespace AutoPuTTY
             };
             searchvaultmenu.Click += SwitchVaultSearchShow;
             cmVault.MenuItems.Add(searchvaultmenu);
+            sepmenu.Index++;
+            cmVault.MenuItems.Add(sepmenu.CloneMenu());
+            MenuItem backmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Switch to server list\tCtrl+S"
+            };
+            backmenu.Click += buVaultBack_Click;
+            cmVault.MenuItems.Add(backmenu);
+            cmVault.MenuItems.Add(lockmenu.CloneMenu());
 
             try
             {
@@ -618,8 +634,9 @@ namespace AutoPuTTY
             }
             // right click menu
             count = cmServer.MenuItems.Count;
-            cmServer.MenuItems[count - 2].Visible = enable;
             cmServer.MenuItems[count - 1].Visible = enable;
+            count = cmVault.MenuItems.Count;
+            cmVault.MenuItems[count - 1].Visible = enable;
         }
 
         private async void UpdateCheck()
@@ -1827,16 +1844,16 @@ namespace AutoPuTTY
             picture.Image = Resources.close;
         }
 
-        // check "search" case censitive box
-        private void piServerClose_CheckedChanged(object sender, EventArgs e)
+        // check server "search" case censitive box
+        private void piServerCase_CheckedChanged(object sender, EventArgs e)
         {
             if (tbServerFilter.Text != "") tbServerSearch_Changed(sender, e);
         }
 
-        // check "search" case censitive box
-        private void piVaultClose_CheckedChanged(object sender, EventArgs e)
+        // check vault "search" case censitive box
+        private void piVaultCase_CheckedChanged(object sender, EventArgs e)
         {
-            if (tbServerFilter.Text != "") tbServerSearch_Changed(sender, e);
+            if (tbVaultFilter.Text != "") tbVaultSearch_Changed(sender, e);
         }
 
         private void cbType_SelectedIndexChanged(object sender, EventArgs e)
@@ -1987,7 +2004,9 @@ namespace AutoPuTTY
         {
             for (int i = 0; i < menu.MenuItems.Count; i++)
             {
-                if (!menu.MenuItems[i].Text.StartsWith("Lock") && !menu.MenuItems[i].Text.StartsWith("Search"))
+                if (!menu.MenuItems[i].Text.StartsWith("Lock") &&
+                    !menu.MenuItems[i].Text.StartsWith("Search") &&
+                    !menu.MenuItems[i].Text.StartsWith("Switch"))
                 {
                     menu.MenuItems[i].Enabled = status;
                 }
@@ -2333,10 +2352,18 @@ namespace AutoPuTTY
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == (Keys.Control | Keys.L))
-            {
-                Lock();
-                return true;
+            if (tlMain.Visible) {
+                if (keyData == (Keys.Control | Keys.L))
+                {
+                    Lock();
+                    return true;
+                }
+                if (keyData == (Keys.Control | Keys.S))
+                {
+                    if (tlLeftServer.Visible) SwitchVault(true);
+                    else SwitchVault(false);
+                    return true;
+                }
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -2958,7 +2985,7 @@ namespace AutoPuTTY
             }
         }
 
-        private void buEdit_Click(object sender, EventArgs e)
+        private void buVault_Click(object sender, EventArgs e)
         {
             SwitchVault(true);
         }
@@ -2999,7 +3026,7 @@ namespace AutoPuTTY
             IndexChanged = false;
         }
 
-        private void buVaultOk_Click(object sender, EventArgs e)
+        private void buVaultBack_Click(object sender, EventArgs e)
         {
             SwitchVault(false);
         }

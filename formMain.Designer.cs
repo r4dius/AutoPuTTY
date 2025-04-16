@@ -69,7 +69,7 @@ namespace AutoPuTTY
             this.buVaultOptions = new System.Windows.Forms.Button();
             this.buCopyVaultPriv = new System.Windows.Forms.PictureBox();
             this.buCopyVaultPass = new System.Windows.Forms.PictureBox();
-            this.buVaultOk = new System.Windows.Forms.Button();
+            this.buVaultBack = new System.Windows.Forms.Button();
             this.buVaultDelete = new System.Windows.Forms.Button();
             this.buVaultAdd = new System.Windows.Forms.Button();
             this.laVaultSeparator3 = new System.Windows.Forms.Label();
@@ -374,7 +374,7 @@ namespace AutoPuTTY
             this.ttMain.SetToolTip(this.buVault, "Switch to vault");
             this.buVault.UseCompatibleTextRendering = true;
             this.buVault.UseVisualStyleBackColor = true;
-            this.buVault.Click += new System.EventHandler(this.buEdit_Click);
+            this.buVault.Click += new System.EventHandler(this.buVault_Click);
             // 
             // laSeparator6
             // 
@@ -642,7 +642,7 @@ namespace AutoPuTTY
             this.paVault.Controls.Add(this.buVaultOptions);
             this.paVault.Controls.Add(this.buCopyVaultPriv);
             this.paVault.Controls.Add(this.buCopyVaultPass);
-            this.paVault.Controls.Add(this.buVaultOk);
+            this.paVault.Controls.Add(this.buVaultBack);
             this.paVault.Controls.Add(this.buVaultDelete);
             this.paVault.Controls.Add(this.buVaultAdd);
             this.paVault.Controls.Add(this.laVaultSeparator3);
@@ -716,20 +716,20 @@ namespace AutoPuTTY
             this.buCopyVaultPass.MouseEnter += new System.EventHandler(this.buCopy_MouseEnter);
             this.buCopyVaultPass.MouseLeave += new System.EventHandler(this.buCopy_MouseLeave);
             // 
-            // buVaultOk
+            // buVaultBack
             // 
-            this.buVaultOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buVaultOk.Image = global::AutoPuTTY.Properties.Resources.iconback;
-            this.buVaultOk.Location = new System.Drawing.Point(91, 236);
-            this.buVaultOk.Margin = new System.Windows.Forms.Padding(0);
-            this.buVaultOk.Name = "buVaultOk";
-            this.buVaultOk.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.buVaultOk.Size = new System.Drawing.Size(30, 30);
-            this.buVaultOk.TabIndex = 14;
-            this.ttMain.SetToolTip(this.buVaultOk, "Back");
-            this.buVaultOk.UseCompatibleTextRendering = true;
-            this.buVaultOk.UseVisualStyleBackColor = true;
-            this.buVaultOk.Click += new System.EventHandler(this.buVaultOk_Click);
+            this.buVaultBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buVaultBack.Image = global::AutoPuTTY.Properties.Resources.iconback;
+            this.buVaultBack.Location = new System.Drawing.Point(91, 236);
+            this.buVaultBack.Margin = new System.Windows.Forms.Padding(0);
+            this.buVaultBack.Name = "buVaultBack";
+            this.buVaultBack.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.buVaultBack.Size = new System.Drawing.Size(30, 30);
+            this.buVaultBack.TabIndex = 14;
+            this.ttMain.SetToolTip(this.buVaultBack, "Switch to server list");
+            this.buVaultBack.UseCompatibleTextRendering = true;
+            this.buVaultBack.UseVisualStyleBackColor = true;
+            this.buVaultBack.Click += new System.EventHandler(this.buVaultBack_Click);
             // 
             // buVaultDelete
             // 
@@ -1074,7 +1074,7 @@ namespace AutoPuTTY
             this.cbServerCase.TabIndex = 2;
             this.cbServerCase.Text = "Match case";
             this.cbServerCase.UseVisualStyleBackColor = true;
-            this.cbServerCase.CheckedChanged += new System.EventHandler(this.piServerClose_CheckedChanged);
+            this.cbServerCase.CheckedChanged += new System.EventHandler(this.piServerCase_CheckedChanged);
             // 
             // pSepHorizontal
             // 
@@ -1198,7 +1198,7 @@ namespace AutoPuTTY
             this.cbVaultCase.TabIndex = 2;
             this.cbVaultCase.Text = "Match case";
             this.cbVaultCase.UseVisualStyleBackColor = true;
-            this.cbVaultCase.CheckedChanged += new System.EventHandler(this.piVaultClose_CheckedChanged);
+            this.cbVaultCase.CheckedChanged += new System.EventHandler(this.piVaultCase_CheckedChanged);
             // 
             // panel5
             // 
@@ -1727,7 +1727,7 @@ namespace AutoPuTTY
         private SingleClickLabel laPassMessage;
         private SingleClickLabel laAboutVersion;
         private System.Windows.Forms.Panel paVault;
-        private System.Windows.Forms.Button buVaultOk;
+        private System.Windows.Forms.Button buVaultBack;
         private System.Windows.Forms.Button buVaultDelete;
         private System.Windows.Forms.Button buVaultAdd;
         private System.Windows.Forms.Label laVaultSeparator3;
