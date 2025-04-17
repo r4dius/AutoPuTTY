@@ -46,6 +46,8 @@ namespace AutoPuTTY
         public static XmlDocument XmlData = new XmlDocument();
         private const int FilterWidth = 145;
         private const int FindWidth = 250;
+        private int MainWidth = 0;
+        private int PassWidth = 0;
         private bool IndexChanged;
         private bool FilterServer;
         private bool FilterVault;
@@ -252,6 +254,10 @@ namespace AutoPuTTY
             IconEyeHideHover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
             IconEyeHover = ImageOpacity.Set(Resources.eye, (float)0.5);
             piPassEye.Image = IconEyeHover;
+
+            // get original sizes at startup
+            MainWidth = ClientSize.Width;
+            PassWidth = paPassBack.Width;
 
             AutoSize = false;
             MinimumSize = Size;
@@ -2334,17 +2340,10 @@ namespace AutoPuTTY
             cbServerCase.TabStop = paServerFindToogle.Width >= FindWidth;
             cbVaultCase.TabStop = cbServerCase.TabStop;
 
-            // Define the maximum allowed width for the panel
-            int maxPanelWidth = 500;
-
-            // Calculate the new width: it should be the form's width (or any calculation you like) capped at maxPanelWidth.
-            int newPanelWidth = Math.Min(this.ClientSize.Width, maxPanelWidth);
-
-            // Assign the new width
-            panel1.Width = newPanelWidth;
-
-            // Center the panel horizontally
-            panel1.Left = (this.ClientSize.Width - newPanelWidth) / 2;
+            // resize password input to maximum width
+            int passbackmargin = MainWidth - PassWidth;
+            paPassBack.Width = Math.Min(paPassBack.MaximumSize.Width, ClientSize.Width - passbackmargin);
+            paPassBack.Left = (ClientSize.Width - paPassBack.Width) / 2;
         }
 
         private void formMain_ResizeEnd(object sender, EventArgs e)

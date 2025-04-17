@@ -125,7 +125,7 @@ namespace AutoPuTTY
             this.laAboutTitle = new AutoPuTTY.SingleClickLabel();
             this.tlPassword = new System.Windows.Forms.TableLayoutPanel();
             this.paPassword = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.paPassBack = new System.Windows.Forms.Panel();
             this.paPassBackRight = new System.Windows.Forms.Panel();
             this.buPassOK = new System.Windows.Forms.Button();
             this.paPassBackLeft = new System.Windows.Forms.Panel();
@@ -169,7 +169,7 @@ namespace AutoPuTTY
             ((System.ComponentModel.ISupportInitialize)(this.piAboutLogo)).BeginInit();
             this.tlPassword.SuspendLayout();
             this.paPassword.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.paPassBack.SuspendLayout();
             this.paPassBackRight.SuspendLayout();
             this.paPassBackLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piPassEye)).BeginInit();
@@ -1445,7 +1445,7 @@ namespace AutoPuTTY
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(63)))));
-            this.paPassword.Controls.Add(this.panel1);
+            this.paPassword.Controls.Add(this.paPassBack);
             this.paPassword.Controls.Add(this.pbLoading);
             this.paPassword.Controls.Add(this.laPassS);
             this.paPassword.Controls.Add(this.laPassMessage);
@@ -1457,18 +1457,18 @@ namespace AutoPuTTY
             this.paPassword.Size = new System.Drawing.Size(304, 267);
             this.paPassword.TabIndex = 0;
             // 
-            // panel1
+            // paPassBack
             // 
-            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.panel1.Controls.Add(this.paPassBackRight);
-            this.panel1.Controls.Add(this.paPassBackLeft);
-            this.panel1.Controls.Add(this.tbPassFake);
-            this.panel1.Controls.Add(this.tbPassBack);
-            this.panel1.Location = new System.Drawing.Point(45, 192);
-            this.panel1.MaximumSize = new System.Drawing.Size(260, 34);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(211, 34);
-            this.panel1.TabIndex = 34;
+            this.paPassBack.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.paPassBack.Controls.Add(this.paPassBackRight);
+            this.paPassBack.Controls.Add(this.paPassBackLeft);
+            this.paPassBack.Controls.Add(this.tbPassFake);
+            this.paPassBack.Controls.Add(this.tbPassBack);
+            this.paPassBack.Location = new System.Drawing.Point(44, 189);
+            this.paPassBack.MaximumSize = new System.Drawing.Size(310, 34);
+            this.paPassBack.Name = "paPassBack";
+            this.paPassBack.Size = new System.Drawing.Size(216, 34);
+            this.paPassBack.TabIndex = 34;
             // 
             // paPassBackRight
             // 
@@ -1476,7 +1476,7 @@ namespace AutoPuTTY
             this.paPassBackRight.BackColor = System.Drawing.Color.White;
             this.paPassBackRight.Controls.Add(this.buPassOK);
             this.paPassBackRight.Cursor = System.Windows.Forms.Cursors.Default;
-            this.paPassBackRight.Location = new System.Drawing.Point(178, 2);
+            this.paPassBackRight.Location = new System.Drawing.Point(183, 2);
             this.paPassBackRight.Name = "paPassBackRight";
             this.paPassBackRight.Size = new System.Drawing.Size(32, 30);
             this.paPassBackRight.TabIndex = 29;
@@ -1506,7 +1506,7 @@ namespace AutoPuTTY
             this.paPassBackLeft.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.paPassBackLeft.Location = new System.Drawing.Point(3, 2);
             this.paPassBackLeft.Name = "paPassBackLeft";
-            this.paPassBackLeft.Size = new System.Drawing.Size(175, 30);
+            this.paPassBackLeft.Size = new System.Drawing.Size(180, 30);
             this.paPassBackLeft.TabIndex = 28;
             this.paPassBackLeft.Click += new System.EventHandler(this.piPasswordBack_Click);
             // 
@@ -1518,7 +1518,7 @@ namespace AutoPuTTY
             this.tbPassPassword.ForeColor = System.Drawing.Color.Gray;
             this.tbPassPassword.Location = new System.Drawing.Point(6, 4);
             this.tbPassPassword.Name = "tbPassPassword";
-            this.tbPassPassword.Size = new System.Drawing.Size(141, 20);
+            this.tbPassPassword.Size = new System.Drawing.Size(146, 20);
             this.tbPassPassword.TabIndex = 24;
             this.tbPassPassword.Text = "Password";
             this.tbPassPassword.WordWrap = false;
@@ -1534,7 +1534,7 @@ namespace AutoPuTTY
             this.piPassEye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.piPassEye.Cursor = System.Windows.Forms.Cursors.Default;
             this.piPassEye.Image = global::AutoPuTTY.Properties.Resources.eye;
-            this.piPassEye.Location = new System.Drawing.Point(150, 2);
+            this.piPassEye.Location = new System.Drawing.Point(155, 2);
             this.piPassEye.Name = "piPassEye";
             this.piPassEye.Size = new System.Drawing.Size(26, 26);
             this.piPassEye.TabIndex = 25;
@@ -1549,7 +1549,7 @@ namespace AutoPuTTY
             // 
             this.tbPassFake.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tbPassFake.BackColor = System.Drawing.SystemColors.Window;
-            this.tbPassFake.Location = new System.Drawing.Point(73, 5);
+            this.tbPassFake.Location = new System.Drawing.Point(76, 5);
             this.tbPassFake.Name = "tbPassFake";
             this.tbPassFake.Size = new System.Drawing.Size(19, 20);
             this.tbPassFake.TabIndex = 31;
@@ -1565,7 +1565,7 @@ namespace AutoPuTTY
             this.tbPassBack.Location = new System.Drawing.Point(0, 0);
             this.tbPassBack.Multiline = true;
             this.tbPassBack.Name = "tbPassBack";
-            this.tbPassBack.Size = new System.Drawing.Size(211, 34);
+            this.tbPassBack.Size = new System.Drawing.Size(216, 34);
             this.tbPassBack.TabIndex = 30;
             this.tbPassBack.TabStop = false;
             // 
@@ -1703,8 +1703,8 @@ namespace AutoPuTTY
             this.tlPassword.ResumeLayout(false);
             this.paPassword.ResumeLayout(false);
             this.paPassword.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.paPassBack.ResumeLayout(false);
+            this.paPassBack.PerformLayout();
             this.paPassBackRight.ResumeLayout(false);
             this.paPassBackLeft.ResumeLayout(false);
             this.paPassBackLeft.PerformLayout();
@@ -1824,7 +1824,7 @@ namespace AutoPuTTY
         private TextBox tbVaultFilter;
         private CheckBox cbVaultCase;
         private Panel panel5;
-        private Panel panel1;
+        private Panel paPassBack;
     }
 }
 
