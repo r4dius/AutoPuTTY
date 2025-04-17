@@ -1654,9 +1654,9 @@ namespace AutoPuTTY
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(304, 267);
-            this.Controls.Add(this.tlPassword);
             this.Controls.Add(this.tlMain);
             this.Controls.Add(this.tlAbout);
+            this.Controls.Add(this.tlPassword);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FormMain";

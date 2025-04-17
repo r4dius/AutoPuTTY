@@ -307,7 +307,7 @@ namespace AutoPuTTY
         private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
         [DllImport("user32.dll")]
         private static extern int GetMenuItemCount(IntPtr hMenu);
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DllImport("user32.dll")]
         private static extern int GetMenuString(IntPtr hMenu, uint uIDItem, StringBuilder lpString, int nMaxCount, uint uFlag);
         [DllImport("user32.dll")]
         private static extern bool InsertMenu(IntPtr hMenu, Int32 wPosition, Int32 wFlags, Int32 wIDNewItem, string lpNewItem);
@@ -315,8 +315,6 @@ namespace AutoPuTTY
         private static extern bool DeleteMenu(IntPtr hMenu, int uPosition, uint uFlags);
         [DllImport("user32.dll")]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetMenuItemID(IntPtr hMenu, int nPos);
 
         protected override void WndProc(ref Message m)
         {
@@ -502,7 +500,9 @@ namespace AutoPuTTY
             buCopyVaultName.Enabled = false;
             buCopyVaultPass.Enabled = false;
             buCopyVaultPriv.Enabled = false;
+
             ShowTableLayoutPanel(tlMain);
+
             XmlToServer();
             XmlToVault();
             if (lbServer.Items.Count > 0)
@@ -1577,7 +1577,12 @@ namespace AutoPuTTY
 
         internal void XmlToList(string node, ListBox list)
         {
+            // clear before use
             list.Items.Clear();
+            if (node == "Vault")
+            {
+                cbVault.Items.Clear();
+            }
 
             if (File.Exists(Settings.Default.cfgpath))
             {
