@@ -181,9 +181,9 @@ namespace AutoPuTTY
             this.cbPuTTYX11.AutoSize = true;
             this.cbPuTTYX11.Location = new System.Drawing.Point(2, 151);
             this.cbPuTTYX11.Name = "cbPuTTYX11";
-            this.cbPuTTYX11.Size = new System.Drawing.Size(100, 17);
+            this.cbPuTTYX11.Size = new System.Drawing.Size(97, 17);
             this.cbPuTTYX11.TabIndex = 15;
-            this.cbPuTTYX11.Text = "X11 Forwarding";
+            this.cbPuTTYX11.Text = "X11 forwarding";
             this.cbPuTTYX11.UseVisualStyleBackColor = true;
             this.cbPuTTYX11.CheckedChanged += new System.EventHandler(this.cbPuTTYX11_CheckedChanged);
             // 
@@ -192,9 +192,9 @@ namespace AutoPuTTY
             this.cbPuTTYAgent.AutoSize = true;
             this.cbPuTTYAgent.Location = new System.Drawing.Point(2, 136);
             this.cbPuTTYAgent.Name = "cbPuTTYAgent";
-            this.cbPuTTYAgent.Size = new System.Drawing.Size(109, 17);
+            this.cbPuTTYAgent.Size = new System.Drawing.Size(106, 17);
             this.cbPuTTYAgent.TabIndex = 14;
-            this.cbPuTTYAgent.Text = "Agent Forwarding";
+            this.cbPuTTYAgent.Text = "Agent forwarding";
             this.cbPuTTYAgent.UseVisualStyleBackColor = true;
             this.cbPuTTYAgent.CheckedChanged += new System.EventHandler(this.cbPuTTYAgent_CheckedChanged);
             // 
@@ -758,9 +758,9 @@ namespace AutoPuTTY
             this.cbWSCPAgent.AutoSize = true;
             this.cbWSCPAgent.Location = new System.Drawing.Point(2, 97);
             this.cbWSCPAgent.Name = "cbWSCPAgent";
-            this.cbWSCPAgent.Size = new System.Drawing.Size(109, 17);
+            this.cbWSCPAgent.Size = new System.Drawing.Size(106, 17);
             this.cbWSCPAgent.TabIndex = 10;
-            this.cbWSCPAgent.Text = "Agent Forwarding";
+            this.cbWSCPAgent.Text = "Agent forwarding";
             this.cbWSCPAgent.UseVisualStyleBackColor = true;
             this.cbWSCPAgent.CheckedChanged += new System.EventHandler(this.cbWSCPAgent_CheckedChanged);
             // 

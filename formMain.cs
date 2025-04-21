@@ -503,7 +503,6 @@ namespace AutoPuTTY
             buCopyVault.Enabled = false;
             buCopyVaultName.Enabled = false;
             buCopyVaultPass.Enabled = false;
-            buCopyVaultPriv.Enabled = false;
 
             ShowTableLayoutPanel(tlMain);
 
@@ -1343,19 +1342,27 @@ namespace AutoPuTTY
             return text;
         }
 
-        private void TooglePassword(bool state)
+        private void TooglePassword(string type, bool state)
         {
+            PictureBox eye = buEye;
+            TextBox password = tbPass;
+            if (type == "vault")
+            {
+                eye = buVaultEye;
+                password = tbVaultPass;
+            }
+
             if (state)
             {
-                buEye.Image = buEye.ClientRectangle.Contains(buEye.PointToClient(MousePosition)) ? IconEyeShowHover : Resources.iconeyeshow;
-                ttMain.SetToolTip(buEye, "Show password");
-                tbPass.PasswordChar = '●';
+                eye.Image = eye.ClientRectangle.Contains(eye.PointToClient(MousePosition)) ? IconEyeShowHover : Resources.iconeyeshow;
+                ttMain.SetToolTip(eye, "Show password");
+                password.PasswordChar = '●';
             }
             else
             {
-                buEye.Image = buEye.ClientRectangle.Contains(buEye.PointToClient(MousePosition)) ? IconEyeHideHover : Resources.iconeyehide;
-                ttMain.SetToolTip(buEye, "Hide password");
-                tbPass.PasswordChar = '\0';
+                eye.Image = eye.ClientRectangle.Contains(eye.PointToClient(MousePosition)) ? IconEyeHideHover : Resources.iconeyehide;
+                ttMain.SetToolTip(eye, "Hide password");
+                password.PasswordChar = '\0';
             }
         }
 
@@ -1741,19 +1748,7 @@ namespace AutoPuTTY
 
         private void buEye_Click(object sender, EventArgs e)
         {
-            TooglePassword(!(tbPass.PasswordChar == '●'));
-        }
-
-        private void buEdit_MouseEnter(object sender, EventArgs e)
-        {
-            PictureBox icon = (PictureBox)sender;
-            icon.Image = IconEditHover;
-        }
-
-        private void buEdit_MouseLeave(object sender, EventArgs e)
-        {
-            PictureBox icon = (PictureBox)sender;
-            icon.Image = Resources.iconedit;
+            TooglePassword("server", !(tbPass.PasswordChar == '●'));
         }
 
         private void buEye_MouseEnter(object sender, EventArgs e)
@@ -1766,6 +1761,23 @@ namespace AutoPuTTY
         {
             PictureBox icon = (PictureBox)sender;
             icon.Image = tbPass.PasswordChar == '●' ? Resources.iconeyeshow : Resources.iconeyehide;
+        }
+
+        private void buVaultEye_Click(object sender, EventArgs e)
+        {
+            TooglePassword("vault", !(tbVaultPass.PasswordChar == '●'));
+        }
+
+        private void buVaultEye_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            icon.Image = tbVaultPass.PasswordChar == '●' ? IconEyeShowHover : IconEyeHideHover;
+        }
+
+        private void buVaultEye_MouseLeave(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            icon.Image = tbVaultPass.PasswordChar == '●' ? Resources.iconeyeshow : Resources.iconeyehide;
         }
 
         private void buCopy_MouseEnter(object sender, EventArgs e)
@@ -2197,7 +2209,7 @@ namespace AutoPuTTY
 
             if (Settings.Default.autohidepassword && tbPass.PasswordChar != '●')
             {
-                TooglePassword(!(tbPass.PasswordChar == '●'));
+                TooglePassword("server", !(tbPass.PasswordChar == '●'));
             }
 
             //reset colors
@@ -3018,6 +3030,10 @@ namespace AutoPuTTY
         {
             if (show)
             {
+                if (Settings.Default.autohidepassword && tbVaultPass.PasswordChar != '●')
+                {
+                    TooglePassword("vault", !(tbVaultPass.PasswordChar == '●'));
+                }
                 tlLeftVault.Visible = tlLeftVault.Enabled = true;
                 paVault.Visible = paVault.Enabled = true;
                 paVault.BringToFront();
@@ -3027,6 +3043,10 @@ namespace AutoPuTTY
             }
             else
             {
+                if (Settings.Default.autohidepassword && tbPass.PasswordChar != '●')
+                {
+                    TooglePassword("server", !(tbPass.PasswordChar == '●'));
+                }
                 tlLeftServer.Visible = tlLeftServer.Enabled = true;
                 paServer.Visible = paServer.Enabled = true;
                 paServer.BringToFront();
@@ -3054,6 +3074,11 @@ namespace AutoPuTTY
                 return;
             }
             IndexChanged = true;
+
+            if (Settings.Default.autohidepassword && tbVaultPass.PasswordChar != '●')
+            {
+                TooglePassword("vault", !(tbVaultPass.PasswordChar == '●'));
+            }
 
             //reset colors
             tbVaultName.BackColor = SystemColors.Window;
@@ -3119,7 +3144,6 @@ namespace AutoPuTTY
                     {
                         TextBoxVal = Legacy.Decrypt(GetVault["PrivateKey"]);
                     }
-                    buCopyVaultPriv.Enabled = TextBox.Text.Trim() != "";
                     break;
             }
 
@@ -3351,11 +3375,6 @@ namespace AutoPuTTY
         private void buCopyVaultPass_Click(object sender, EventArgs e)
         {
             System.Windows.Clipboard.SetText(tbVaultPass.Text);
-        }
-
-        private void buCopyVaultPriv_Click(object sender, EventArgs e)
-        {
-            System.Windows.Clipboard.SetText(tbVaultPriv.Text);
         }
 
         private void buCopy_EnabledChanged(object sender, EventArgs e)
