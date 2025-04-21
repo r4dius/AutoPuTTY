@@ -43,6 +43,7 @@ namespace AutoPuTTY
             this.cbPuTTYKey = new System.Windows.Forms.CheckBox();
             this.laPuTTYSeparator1 = new System.Windows.Forms.Label();
             this.buPuTTYKey = new System.Windows.Forms.Button();
+            this.laPuTTYPath = new AutoPuTTY.SingleClickLabel();
             this.tbPuTTYKey = new System.Windows.Forms.TextBox();
             this.buPuTTYPath = new System.Windows.Forms.Button();
             this.tbPuTTYPath = new System.Windows.Forms.TextBox();
@@ -51,16 +52,22 @@ namespace AutoPuTTY
             this.cbRDDrives = new System.Windows.Forms.CheckBox();
             this.cbRDAdmin = new System.Windows.Forms.CheckBox();
             this.laRDSeparator4 = new System.Windows.Forms.Label();
+            this.laRDOther = new AutoPuTTY.SingleClickLabel();
             this.laRDSeparator3 = new System.Windows.Forms.Label();
+            this.laRDSize = new AutoPuTTY.SingleClickLabel();
             this.cbRDSize = new System.Windows.Forms.ComboBox();
+            this.laRDKeep = new AutoPuTTY.SingleClickLabel();
             this.tbRDKeep = new System.Windows.Forms.TextBox();
             this.buRDKeep = new System.Windows.Forms.Button();
             this.laRDSeparator2 = new System.Windows.Forms.Label();
             this.laRDSeparator1 = new System.Windows.Forms.Label();
             this.tbRDPath = new System.Windows.Forms.TextBox();
+            this.laRDPath = new AutoPuTTY.SingleClickLabel();
             this.buRDPath = new System.Windows.Forms.Button();
             this.panelVNC = new System.Windows.Forms.Panel();
+            this.laVNCOther = new AutoPuTTY.SingleClickLabel();
             this.laVNCSeparator3 = new System.Windows.Forms.Label();
+            this.laVNCFiles = new AutoPuTTY.SingleClickLabel();
             this.tbVNCKeep = new System.Windows.Forms.TextBox();
             this.buVNCKeep = new System.Windows.Forms.Button();
             this.laVNCSeparator2 = new System.Windows.Forms.Label();
@@ -68,15 +75,18 @@ namespace AutoPuTTY
             this.cbVNCFullscreen = new System.Windows.Forms.CheckBox();
             this.laVNCSeparator1 = new System.Windows.Forms.Label();
             this.tbVNCPath = new System.Windows.Forms.TextBox();
+            this.laVNCPath = new AutoPuTTY.SingleClickLabel();
             this.buVNCPath = new System.Windows.Forms.Button();
             this.paWinSCP = new System.Windows.Forms.Panel();
             this.cbWSCPAgent = new System.Windows.Forms.CheckBox();
             this.laWSeparator3 = new System.Windows.Forms.Label();
+            this.laWSCPOther = new AutoPuTTY.SingleClickLabel();
             this.cbWSCPPassive = new System.Windows.Forms.CheckBox();
             this.laWSeparator2 = new System.Windows.Forms.Label();
             this.cbWSCPKey = new System.Windows.Forms.CheckBox();
             this.laWSeparator1 = new System.Windows.Forms.Label();
             this.buWSCPKey = new System.Windows.Forms.Button();
+            this.laWSCPPath = new AutoPuTTY.SingleClickLabel();
             this.tbWSCPKey = new System.Windows.Forms.TextBox();
             this.buWSCPPath = new System.Windows.Forms.Button();
             this.tbWSCPPath = new System.Windows.Forms.TextBox();
@@ -90,9 +100,11 @@ namespace AutoPuTTY
             this.cbGPosition = new System.Windows.Forms.CheckBox();
             this.cbGSize = new System.Windows.Forms.CheckBox();
             this.laGSeparator6 = new System.Windows.Forms.Label();
+            this.laGOther = new AutoPuTTY.SingleClickLabel();
             this.cbGSkip = new System.Windows.Forms.CheckBox();
             this.cbGReplace = new System.Windows.Forms.CheckBox();
             this.laGSeparator5 = new System.Windows.Forms.Label();
+            this.laGImport = new AutoPuTTY.SingleClickLabel();
             this.buGImport = new System.Windows.Forms.Button();
             this.laGSeparator4 = new System.Windows.Forms.Label();
             this.cbGMulti = new System.Windows.Forms.CheckBox();
@@ -101,12 +113,14 @@ namespace AutoPuTTY
             this.buGApply = new System.Windows.Forms.Button();
             this.laGSeparator3 = new System.Windows.Forms.Label();
             this.pGPassword = new System.Windows.Forms.Panel();
+            this.labelGPassword = new AutoPuTTY.SingleClickLabel();
             this.laGSeparator1 = new System.Windows.Forms.Label();
             this.tbGPassword = new System.Windows.Forms.TextBox();
             this.cbGPassword = new System.Windows.Forms.CheckBox();
             this.paGConfirm = new System.Windows.Forms.Panel();
             this.tbGConfirm = new System.Windows.Forms.TextBox();
             this.laGSeparator2 = new System.Windows.Forms.Label();
+            this.labelGConfirm = new AutoPuTTY.SingleClickLabel();
             this.liGImport = new System.Windows.Forms.LinkLabel();
             this.taPuTTY = new System.Windows.Forms.TabPage();
             this.taRD = new System.Windows.Forms.TabPage();
@@ -115,20 +129,7 @@ namespace AutoPuTTY
             this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
             this.buOK = new System.Windows.Forms.Button();
             this.tooltipOptions = new System.Windows.Forms.ToolTip(this.components);
-            this.laGOther = new AutoPuTTY.SingleClickLabel();
-            this.laGImport = new AutoPuTTY.SingleClickLabel();
-            this.labelGPassword = new AutoPuTTY.SingleClickLabel();
-            this.labelGConfirm = new AutoPuTTY.SingleClickLabel();
-            this.laPuTTYPath = new AutoPuTTY.SingleClickLabel();
-            this.laRDOther = new AutoPuTTY.SingleClickLabel();
-            this.laRDSize = new AutoPuTTY.SingleClickLabel();
-            this.laRDKeep = new AutoPuTTY.SingleClickLabel();
-            this.laRDPath = new AutoPuTTY.SingleClickLabel();
-            this.laVNCOther = new AutoPuTTY.SingleClickLabel();
-            this.laVNCFiles = new AutoPuTTY.SingleClickLabel();
-            this.laVNCPath = new AutoPuTTY.SingleClickLabel();
-            this.laWSCPOther = new AutoPuTTY.SingleClickLabel();
-            this.laWSCPPath = new AutoPuTTY.SingleClickLabel();
+            this.cbWSCPJump = new System.Windows.Forms.CheckBox();
             this.panelPuTTY.SuspendLayout();
             this.panelRD.SuspendLayout();
             this.panelVNC.SuspendLayout();
@@ -306,6 +307,15 @@ namespace AutoPuTTY
             this.buPuTTYKey.UseVisualStyleBackColor = true;
             this.buPuTTYKey.Click += new System.EventHandler(this.bPuTTYKey_Click);
             // 
+            // laPuTTYPath
+            // 
+            this.laPuTTYPath.AutoSize = true;
+            this.laPuTTYPath.Location = new System.Drawing.Point(3, 3);
+            this.laPuTTYPath.Name = "laPuTTYPath";
+            this.laPuTTYPath.Size = new System.Drawing.Size(81, 13);
+            this.laPuTTYPath.TabIndex = 0;
+            this.laPuTTYPath.Text = "Path (putty.exe)";
+            // 
             // tbPuTTYKey
             // 
             this.tbPuTTYKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -411,6 +421,15 @@ namespace AutoPuTTY
             this.laRDSeparator4.Size = new System.Drawing.Size(283, 2);
             this.laRDSeparator4.TabIndex = 12;
             // 
+            // laRDOther
+            // 
+            this.laRDOther.AutoSize = true;
+            this.laRDOther.Location = new System.Drawing.Point(3, 120);
+            this.laRDOther.Name = "laRDOther";
+            this.laRDOther.Size = new System.Drawing.Size(33, 13);
+            this.laRDOther.TabIndex = 11;
+            this.laRDOther.Text = "Other";
+            // 
             // laRDSeparator3
             // 
             this.laRDSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -420,6 +439,15 @@ namespace AutoPuTTY
             this.laRDSeparator3.Name = "laRDSeparator3";
             this.laRDSeparator3.Size = new System.Drawing.Size(283, 2);
             this.laRDSeparator3.TabIndex = 9;
+            // 
+            // laRDSize
+            // 
+            this.laRDSize.AutoSize = true;
+            this.laRDSize.Location = new System.Drawing.Point(3, 81);
+            this.laRDSize.Name = "laRDSize";
+            this.laRDSize.Size = new System.Drawing.Size(62, 13);
+            this.laRDSize.TabIndex = 8;
+            this.laRDSize.Text = "Screen size";
             // 
             // cbRDSize
             // 
@@ -448,6 +476,15 @@ namespace AutoPuTTY
             this.cbRDSize.TabIndex = 10;
             this.cbRDSize.SelectedIndexChanged += new System.EventHandler(this.cbRDSize_SelectedIndexChanged);
             this.cbRDSize.TextChanged += new System.EventHandler(this.cbRDSize_TextChanged);
+            // 
+            // laRDKeep
+            // 
+            this.laRDKeep.AutoSize = true;
+            this.laRDKeep.Location = new System.Drawing.Point(3, 42);
+            this.laRDKeep.Name = "laRDKeep";
+            this.laRDKeep.Size = new System.Drawing.Size(237, 13);
+            this.laRDKeep.TabIndex = 4;
+            this.laRDKeep.Text = "Output path for generated \".rdp\" connection files";
             // 
             // tbRDKeep
             // 
@@ -502,6 +539,15 @@ namespace AutoPuTTY
             this.tbRDPath.TabIndex = 2;
             this.tbRDPath.TextChanged += new System.EventHandler(this.tbRD_TextChanged);
             // 
+            // laRDPath
+            // 
+            this.laRDPath.AutoSize = true;
+            this.laRDPath.Location = new System.Drawing.Point(3, 3);
+            this.laRDPath.Name = "laRDPath";
+            this.laRDPath.Size = new System.Drawing.Size(85, 13);
+            this.laRDPath.TabIndex = 0;
+            this.laRDPath.Text = "Path (mstsc.exe)";
+            // 
             // buRDPath
             // 
             this.buRDPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -537,6 +583,15 @@ namespace AutoPuTTY
             this.panelVNC.Size = new System.Drawing.Size(286, 194);
             this.panelVNC.TabIndex = 0;
             // 
+            // laVNCOther
+            // 
+            this.laVNCOther.AutoSize = true;
+            this.laVNCOther.Location = new System.Drawing.Point(3, 81);
+            this.laVNCOther.Name = "laVNCOther";
+            this.laVNCOther.Size = new System.Drawing.Size(33, 13);
+            this.laVNCOther.TabIndex = 8;
+            this.laVNCOther.Text = "Other";
+            // 
             // laVNCSeparator3
             // 
             this.laVNCSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -546,6 +601,15 @@ namespace AutoPuTTY
             this.laVNCSeparator3.Name = "laVNCSeparator3";
             this.laVNCSeparator3.Size = new System.Drawing.Size(283, 2);
             this.laVNCSeparator3.TabIndex = 9;
+            // 
+            // laVNCFiles
+            // 
+            this.laVNCFiles.AutoSize = true;
+            this.laVNCFiles.Location = new System.Drawing.Point(3, 42);
+            this.laVNCFiles.Name = "laVNCFiles";
+            this.laVNCFiles.Size = new System.Drawing.Size(240, 13);
+            this.laVNCFiles.TabIndex = 4;
+            this.laVNCFiles.Text = "Output path for generated \".vnc\" connection files";
             // 
             // tbVNCKeep
             // 
@@ -620,6 +684,15 @@ namespace AutoPuTTY
             this.tbVNCPath.TabIndex = 2;
             this.tbVNCPath.TextChanged += new System.EventHandler(this.tbVNCPath_TextChanged);
             // 
+            // laVNCPath
+            // 
+            this.laVNCPath.AutoSize = true;
+            this.laVNCPath.Location = new System.Drawing.Point(3, 3);
+            this.laVNCPath.Name = "laVNCPath";
+            this.laVNCPath.Size = new System.Drawing.Size(107, 13);
+            this.laVNCPath.TabIndex = 0;
+            this.laVNCPath.Text = "Path (vncviewer.exe)";
+            // 
             // buVNCPath
             // 
             this.buVNCPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -638,10 +711,11 @@ namespace AutoPuTTY
             this.paWinSCP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.paWinSCP.Controls.Add(this.cbWSCPPassive);
+            this.paWinSCP.Controls.Add(this.cbWSCPJump);
             this.paWinSCP.Controls.Add(this.cbWSCPAgent);
             this.paWinSCP.Controls.Add(this.laWSeparator3);
             this.paWinSCP.Controls.Add(this.laWSCPOther);
-            this.paWinSCP.Controls.Add(this.cbWSCPPassive);
             this.paWinSCP.Controls.Add(this.laWSeparator2);
             this.paWinSCP.Controls.Add(this.cbWSCPKey);
             this.paWinSCP.Controls.Add(this.laWSeparator1);
@@ -676,10 +750,19 @@ namespace AutoPuTTY
             this.laWSeparator3.Size = new System.Drawing.Size(283, 2);
             this.laWSeparator3.TabIndex = 9;
             // 
+            // laWSCPOther
+            // 
+            this.laWSCPOther.AutoSize = true;
+            this.laWSCPOther.Location = new System.Drawing.Point(3, 81);
+            this.laWSCPOther.Name = "laWSCPOther";
+            this.laWSCPOther.Size = new System.Drawing.Size(33, 13);
+            this.laWSCPOther.TabIndex = 8;
+            this.laWSCPOther.Text = "Other";
+            // 
             // cbWSCPPassive
             // 
             this.cbWSCPPassive.AutoSize = true;
-            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 113);
+            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 127);
             this.cbWSCPPassive.Name = "cbWSCPPassive";
             this.cbWSCPPassive.Size = new System.Drawing.Size(143, 17);
             this.cbWSCPPassive.TabIndex = 11;
@@ -730,6 +813,15 @@ namespace AutoPuTTY
             this.buWSCPKey.UseCompatibleTextRendering = true;
             this.buWSCPKey.UseVisualStyleBackColor = true;
             this.buWSCPKey.Click += new System.EventHandler(this.bWSCPKey_Click);
+            // 
+            // laWSCPPath
+            // 
+            this.laWSCPPath.AutoSize = true;
+            this.laWSCPPath.Location = new System.Drawing.Point(3, 3);
+            this.laWSCPPath.Name = "laWSCPPath";
+            this.laWSCPPath.Size = new System.Drawing.Size(91, 13);
+            this.laWSCPPath.TabIndex = 0;
+            this.laWSCPPath.Text = "Path (winscp.exe)";
             // 
             // tbWSCPKey
             // 
@@ -799,12 +891,12 @@ namespace AutoPuTTY
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paGeneral.BackColor = System.Drawing.Color.Transparent;
-            this.paGeneral.Controls.Add(this.slGMulti);
-            this.paGeneral.Controls.Add(this.cbGHidePassword);
-            this.paGeneral.Controls.Add(this.cbGMinimize);
             this.paGeneral.Controls.Add(this.cbGTooltips);
+            this.paGeneral.Controls.Add(this.cbGMinimize);
             this.paGeneral.Controls.Add(this.cbGPosition);
             this.paGeneral.Controls.Add(this.cbGSize);
+            this.paGeneral.Controls.Add(this.cbGHidePassword);
+            this.paGeneral.Controls.Add(this.slGMulti);
             this.paGeneral.Controls.Add(this.laGSeparator6);
             this.paGeneral.Controls.Add(this.laGOther);
             this.paGeneral.Controls.Add(this.cbGSkip);
@@ -842,11 +934,11 @@ namespace AutoPuTTY
             this.cbGHidePassword.AutoSize = true;
             this.cbGHidePassword.Checked = true;
             this.cbGHidePassword.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGHidePassword.Location = new System.Drawing.Point(2, 174);
+            this.cbGHidePassword.Location = new System.Drawing.Point(2, 144);
             this.cbGHidePassword.Margin = new System.Windows.Forms.Padding(0);
             this.cbGHidePassword.Name = "cbGHidePassword";
             this.cbGHidePassword.Size = new System.Drawing.Size(119, 17);
-            this.cbGHidePassword.TabIndex = 14;
+            this.cbGHidePassword.TabIndex = 12;
             this.cbGHidePassword.Text = "Auto-hide password";
             this.tooltipOptions.SetToolTip(this.cbGHidePassword, "Hide host password input when switching selection");
             this.cbGHidePassword.CheckedChanged += new System.EventHandler(this.cbGHidePassword_CheckedChanged);
@@ -856,11 +948,11 @@ namespace AutoPuTTY
             this.cbGMinimize.AutoSize = true;
             this.cbGMinimize.Checked = true;
             this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGMinimize.Location = new System.Drawing.Point(152, 159);
+            this.cbGMinimize.Location = new System.Drawing.Point(152, 144);
             this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
             this.cbGMinimize.Name = "cbGMinimize";
             this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
-            this.cbGMinimize.TabIndex = 16;
+            this.cbGMinimize.TabIndex = 15;
             this.cbGMinimize.Text = "Minimize to system tray";
             this.cbGMinimize.CheckedChanged += new System.EventHandler(this.cbGMinimize_CheckedChanged);
             // 
@@ -869,11 +961,11 @@ namespace AutoPuTTY
             this.cbGTooltips.AutoSize = true;
             this.cbGTooltips.Checked = true;
             this.cbGTooltips.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGTooltips.Location = new System.Drawing.Point(152, 144);
+            this.cbGTooltips.Location = new System.Drawing.Point(152, 159);
             this.cbGTooltips.Margin = new System.Windows.Forms.Padding(0);
             this.cbGTooltips.Name = "cbGTooltips";
             this.cbGTooltips.Size = new System.Drawing.Size(89, 17);
-            this.cbGTooltips.TabIndex = 15;
+            this.cbGTooltips.TabIndex = 16;
             this.cbGTooltips.Text = "Show tooltips";
             this.tooltipOptions.SetToolTip(this.cbGTooltips, "When you really like tooltip info");
             this.cbGTooltips.CheckedChanged += new System.EventHandler(this.cbGTooltips_CheckedChanged);
@@ -883,11 +975,11 @@ namespace AutoPuTTY
             this.cbGPosition.AutoSize = true;
             this.cbGPosition.Checked = true;
             this.cbGPosition.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGPosition.Location = new System.Drawing.Point(2, 159);
+            this.cbGPosition.Location = new System.Drawing.Point(2, 174);
             this.cbGPosition.Margin = new System.Windows.Forms.Padding(0);
             this.cbGPosition.Name = "cbGPosition";
             this.cbGPosition.Size = new System.Drawing.Size(129, 17);
-            this.cbGPosition.TabIndex = 13;
+            this.cbGPosition.TabIndex = 14;
             this.cbGPosition.Text = "Save window position";
             this.cbGPosition.CheckedChanged += new System.EventHandler(this.cbGPosition_CheckedChanged);
             // 
@@ -896,11 +988,11 @@ namespace AutoPuTTY
             this.cbGSize.AutoSize = true;
             this.cbGSize.Checked = true;
             this.cbGSize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGSize.Location = new System.Drawing.Point(2, 144);
+            this.cbGSize.Location = new System.Drawing.Point(2, 159);
             this.cbGSize.Margin = new System.Windows.Forms.Padding(0);
             this.cbGSize.Name = "cbGSize";
             this.cbGSize.Size = new System.Drawing.Size(111, 17);
-            this.cbGSize.TabIndex = 12;
+            this.cbGSize.TabIndex = 13;
             this.cbGSize.Text = "Save window size";
             this.cbGSize.CheckedChanged += new System.EventHandler(this.cbGSize_CheckedChanged);
             // 
@@ -913,6 +1005,15 @@ namespace AutoPuTTY
             this.laGSeparator6.Name = "laGSeparator6";
             this.laGSeparator6.Size = new System.Drawing.Size(283, 2);
             this.laGSeparator6.TabIndex = 11;
+            // 
+            // laGOther
+            // 
+            this.laGOther.AutoSize = true;
+            this.laGOther.Location = new System.Drawing.Point(3, 128);
+            this.laGOther.Name = "laGOther";
+            this.laGOther.Size = new System.Drawing.Size(33, 13);
+            this.laGOther.TabIndex = 10;
+            this.laGOther.Text = "Other";
             // 
             // cbGSkip
             // 
@@ -943,6 +1044,15 @@ namespace AutoPuTTY
             this.laGSeparator5.Name = "laGSeparator5";
             this.laGSeparator5.Size = new System.Drawing.Size(283, 2);
             this.laGSeparator5.TabIndex = 6;
+            // 
+            // laGImport
+            // 
+            this.laGImport.AutoSize = true;
+            this.laGImport.Location = new System.Drawing.Point(3, 81);
+            this.laGImport.Name = "laGImport";
+            this.laGImport.Size = new System.Drawing.Size(51, 13);
+            this.laGImport.TabIndex = 4;
+            this.laGImport.Text = "Import list";
             // 
             // buGImport
             // 
@@ -1045,6 +1155,16 @@ namespace AutoPuTTY
             this.pGPassword.Size = new System.Drawing.Size(117, 39);
             this.pGPassword.TabIndex = 0;
             // 
+            // labelGPassword
+            // 
+            this.labelGPassword.AutoSize = true;
+            this.labelGPassword.Location = new System.Drawing.Point(3, 1);
+            this.labelGPassword.Name = "labelGPassword";
+            this.labelGPassword.Size = new System.Drawing.Size(53, 13);
+            this.labelGPassword.TabIndex = 3;
+            this.labelGPassword.Text = "Password";
+            this.tooltipOptions.SetToolTip(this.labelGPassword, "Ask for a password on startup and crypt your login list with it");
+            // 
             // laGSeparator1
             // 
             this.laGSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1116,6 +1236,15 @@ namespace AutoPuTTY
             this.laGSeparator2.Name = "laGSeparator2";
             this.laGSeparator2.Size = new System.Drawing.Size(119, 2);
             this.laGSeparator2.TabIndex = 1;
+            // 
+            // labelGConfirm
+            // 
+            this.labelGConfirm.AutoSize = true;
+            this.labelGConfirm.Location = new System.Drawing.Point(3, 1);
+            this.labelGConfirm.Name = "labelGConfirm";
+            this.labelGConfirm.Size = new System.Drawing.Size(65, 13);
+            this.labelGConfirm.TabIndex = 0;
+            this.labelGConfirm.Text = "Confirmation";
             // 
             // liGImport
             // 
@@ -1197,132 +1326,16 @@ namespace AutoPuTTY
             this.tooltipOptions.InitialDelay = 200;
             this.tooltipOptions.ReshowDelay = 100;
             // 
-            // laGOther
+            // cbWSCPJump
             // 
-            this.laGOther.AutoSize = true;
-            this.laGOther.Location = new System.Drawing.Point(3, 128);
-            this.laGOther.Name = "laGOther";
-            this.laGOther.Size = new System.Drawing.Size(33, 13);
-            this.laGOther.TabIndex = 10;
-            this.laGOther.Text = "Other";
-            // 
-            // laGImport
-            // 
-            this.laGImport.AutoSize = true;
-            this.laGImport.Location = new System.Drawing.Point(3, 81);
-            this.laGImport.Name = "laGImport";
-            this.laGImport.Size = new System.Drawing.Size(51, 13);
-            this.laGImport.TabIndex = 4;
-            this.laGImport.Text = "Import list";
-            // 
-            // labelGPassword
-            // 
-            this.labelGPassword.AutoSize = true;
-            this.labelGPassword.Location = new System.Drawing.Point(3, 1);
-            this.labelGPassword.Name = "labelGPassword";
-            this.labelGPassword.Size = new System.Drawing.Size(53, 13);
-            this.labelGPassword.TabIndex = 3;
-            this.labelGPassword.Text = "Password";
-            this.tooltipOptions.SetToolTip(this.labelGPassword, "Ask for a password on startup and crypt your login list with it");
-            // 
-            // labelGConfirm
-            // 
-            this.labelGConfirm.AutoSize = true;
-            this.labelGConfirm.Location = new System.Drawing.Point(3, 1);
-            this.labelGConfirm.Name = "labelGConfirm";
-            this.labelGConfirm.Size = new System.Drawing.Size(65, 13);
-            this.labelGConfirm.TabIndex = 0;
-            this.labelGConfirm.Text = "Confirmation";
-            // 
-            // laPuTTYPath
-            // 
-            this.laPuTTYPath.AutoSize = true;
-            this.laPuTTYPath.Location = new System.Drawing.Point(3, 3);
-            this.laPuTTYPath.Name = "laPuTTYPath";
-            this.laPuTTYPath.Size = new System.Drawing.Size(81, 13);
-            this.laPuTTYPath.TabIndex = 0;
-            this.laPuTTYPath.Text = "Path (putty.exe)";
-            // 
-            // laRDOther
-            // 
-            this.laRDOther.AutoSize = true;
-            this.laRDOther.Location = new System.Drawing.Point(3, 120);
-            this.laRDOther.Name = "laRDOther";
-            this.laRDOther.Size = new System.Drawing.Size(33, 13);
-            this.laRDOther.TabIndex = 11;
-            this.laRDOther.Text = "Other";
-            // 
-            // laRDSize
-            // 
-            this.laRDSize.AutoSize = true;
-            this.laRDSize.Location = new System.Drawing.Point(3, 81);
-            this.laRDSize.Name = "laRDSize";
-            this.laRDSize.Size = new System.Drawing.Size(62, 13);
-            this.laRDSize.TabIndex = 8;
-            this.laRDSize.Text = "Screen size";
-            // 
-            // laRDKeep
-            // 
-            this.laRDKeep.AutoSize = true;
-            this.laRDKeep.Location = new System.Drawing.Point(3, 42);
-            this.laRDKeep.Name = "laRDKeep";
-            this.laRDKeep.Size = new System.Drawing.Size(237, 13);
-            this.laRDKeep.TabIndex = 4;
-            this.laRDKeep.Text = "Output path for generated \".rdp\" connection files";
-            // 
-            // laRDPath
-            // 
-            this.laRDPath.AutoSize = true;
-            this.laRDPath.Location = new System.Drawing.Point(3, 3);
-            this.laRDPath.Name = "laRDPath";
-            this.laRDPath.Size = new System.Drawing.Size(85, 13);
-            this.laRDPath.TabIndex = 0;
-            this.laRDPath.Text = "Path (mstsc.exe)";
-            // 
-            // laVNCOther
-            // 
-            this.laVNCOther.AutoSize = true;
-            this.laVNCOther.Location = new System.Drawing.Point(3, 81);
-            this.laVNCOther.Name = "laVNCOther";
-            this.laVNCOther.Size = new System.Drawing.Size(33, 13);
-            this.laVNCOther.TabIndex = 8;
-            this.laVNCOther.Text = "Other";
-            // 
-            // laVNCFiles
-            // 
-            this.laVNCFiles.AutoSize = true;
-            this.laVNCFiles.Location = new System.Drawing.Point(3, 42);
-            this.laVNCFiles.Name = "laVNCFiles";
-            this.laVNCFiles.Size = new System.Drawing.Size(240, 13);
-            this.laVNCFiles.TabIndex = 4;
-            this.laVNCFiles.Text = "Output path for generated \".vnc\" connection files";
-            // 
-            // laVNCPath
-            // 
-            this.laVNCPath.AutoSize = true;
-            this.laVNCPath.Location = new System.Drawing.Point(3, 3);
-            this.laVNCPath.Name = "laVNCPath";
-            this.laVNCPath.Size = new System.Drawing.Size(107, 13);
-            this.laVNCPath.TabIndex = 0;
-            this.laVNCPath.Text = "Path (vncviewer.exe)";
-            // 
-            // laWSCPOther
-            // 
-            this.laWSCPOther.AutoSize = true;
-            this.laWSCPOther.Location = new System.Drawing.Point(3, 81);
-            this.laWSCPOther.Name = "laWSCPOther";
-            this.laWSCPOther.Size = new System.Drawing.Size(33, 13);
-            this.laWSCPOther.TabIndex = 8;
-            this.laWSCPOther.Text = "Other";
-            // 
-            // laWSCPPath
-            // 
-            this.laWSCPPath.AutoSize = true;
-            this.laWSCPPath.Location = new System.Drawing.Point(3, 3);
-            this.laWSCPPath.Name = "laWSCPPath";
-            this.laWSCPPath.Size = new System.Drawing.Size(91, 13);
-            this.laWSCPPath.TabIndex = 0;
-            this.laWSCPPath.Text = "Path (winscp.exe)";
+            this.cbWSCPJump.AutoSize = true;
+            this.cbWSCPJump.Location = new System.Drawing.Point(2, 112);
+            this.cbWSCPJump.Name = "cbWSCPJump";
+            this.cbWSCPJump.Size = new System.Drawing.Size(187, 17);
+            this.cbWSCPJump.TabIndex = 12;
+            this.cbWSCPJump.Text = "Allow unsecured \"jump\" password";
+            this.tooltipOptions.SetToolTip(this.cbWSCPJump, "Password will appear in plaintext in the process list");
+            this.cbWSCPJump.UseVisualStyleBackColor = true;
             // 
             // FormOptions
             // 
@@ -1470,6 +1483,7 @@ namespace AutoPuTTY
         public System.Windows.Forms.CheckBox cbWSCPAgent;
         public System.Windows.Forms.CheckBox cbGHidePassword;
         private System.Windows.Forms.TrackBar slGMulti;
+        public System.Windows.Forms.CheckBox cbWSCPJump;
     }
 }
 
