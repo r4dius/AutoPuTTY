@@ -113,6 +113,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="popupInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Utils\Legacy.cs" />
     <Compile Include="Utils\Crypto.cs" />
     <Compile Include="popupRecrypt.cs">
@@ -148,6 +151,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Utils\MessageBoxEx.cs" />
+    <EmbeddedResource Include="popupInfo.resx">
+      <DependentUpon>popupInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="popupRecrypt.resx">
       <DependentUpon>popupRecrypt.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -211,6 +217,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\iconinfo.png" />
     <None Include="Resources\iconswitch.png" />
     <None Include="Resources\loading.gif" />
     <None Include="Resources\iconvault.png" />

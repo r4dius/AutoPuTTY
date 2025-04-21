@@ -183,6 +183,16 @@ namespace AutoPuTTY.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap iconinfo {
+            get {
+                object obj = ResourceManager.GetObject("iconinfo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap iconmodify {
             get {
                 object obj = ResourceManager.GetObject("iconmodify", resourceCulture);

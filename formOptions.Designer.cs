@@ -78,10 +78,11 @@ namespace AutoPuTTY
             this.laVNCPath = new AutoPuTTY.SingleClickLabel();
             this.buVNCPath = new System.Windows.Forms.Button();
             this.paWinSCP = new System.Windows.Forms.Panel();
+            this.cbWSCPPassive = new System.Windows.Forms.CheckBox();
+            this.cbWSCPUnsecure = new System.Windows.Forms.CheckBox();
             this.cbWSCPAgent = new System.Windows.Forms.CheckBox();
             this.laWSeparator3 = new System.Windows.Forms.Label();
             this.laWSCPOther = new AutoPuTTY.SingleClickLabel();
-            this.cbWSCPPassive = new System.Windows.Forms.CheckBox();
             this.laWSeparator2 = new System.Windows.Forms.Label();
             this.cbWSCPKey = new System.Windows.Forms.CheckBox();
             this.laWSeparator1 = new System.Windows.Forms.Label();
@@ -93,12 +94,13 @@ namespace AutoPuTTY
             this.taOptions = new System.Windows.Forms.TabControl();
             this.taGeneral = new System.Windows.Forms.TabPage();
             this.paGeneral = new System.Windows.Forms.Panel();
-            this.slGMulti = new System.Windows.Forms.TrackBar();
-            this.cbGHidePassword = new System.Windows.Forms.CheckBox();
-            this.cbGMinimize = new System.Windows.Forms.CheckBox();
+            this.piGImport = new System.Windows.Forms.PictureBox();
             this.cbGTooltips = new System.Windows.Forms.CheckBox();
+            this.cbGMinimize = new System.Windows.Forms.CheckBox();
             this.cbGPosition = new System.Windows.Forms.CheckBox();
             this.cbGSize = new System.Windows.Forms.CheckBox();
+            this.cbGHidePassword = new System.Windows.Forms.CheckBox();
+            this.slGMulti = new System.Windows.Forms.TrackBar();
             this.laGSeparator6 = new System.Windows.Forms.Label();
             this.laGOther = new AutoPuTTY.SingleClickLabel();
             this.cbGSkip = new System.Windows.Forms.CheckBox();
@@ -121,7 +123,6 @@ namespace AutoPuTTY
             this.tbGConfirm = new System.Windows.Forms.TextBox();
             this.laGSeparator2 = new System.Windows.Forms.Label();
             this.labelGConfirm = new AutoPuTTY.SingleClickLabel();
-            this.liGImport = new System.Windows.Forms.LinkLabel();
             this.taPuTTY = new System.Windows.Forms.TabPage();
             this.taRD = new System.Windows.Forms.TabPage();
             this.taVNC = new System.Windows.Forms.TabPage();
@@ -129,7 +130,6 @@ namespace AutoPuTTY
             this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
             this.buOK = new System.Windows.Forms.Button();
             this.tooltipOptions = new System.Windows.Forms.ToolTip(this.components);
-            this.cbWSCPJump = new System.Windows.Forms.CheckBox();
             this.panelPuTTY.SuspendLayout();
             this.panelRD.SuspendLayout();
             this.panelVNC.SuspendLayout();
@@ -137,6 +137,7 @@ namespace AutoPuTTY
             this.taOptions.SuspendLayout();
             this.taGeneral.SuspendLayout();
             this.paGeneral.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.piGImport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
             this.tpGPass.SuspendLayout();
             this.paGApply.SuspendLayout();
@@ -712,7 +713,7 @@ namespace AutoPuTTY
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paWinSCP.Controls.Add(this.cbWSCPPassive);
-            this.paWinSCP.Controls.Add(this.cbWSCPJump);
+            this.paWinSCP.Controls.Add(this.cbWSCPUnsecure);
             this.paWinSCP.Controls.Add(this.cbWSCPAgent);
             this.paWinSCP.Controls.Add(this.laWSeparator3);
             this.paWinSCP.Controls.Add(this.laWSCPOther);
@@ -728,6 +729,29 @@ namespace AutoPuTTY
             this.paWinSCP.Name = "paWinSCP";
             this.paWinSCP.Size = new System.Drawing.Size(286, 194);
             this.paWinSCP.TabIndex = 0;
+            // 
+            // cbWSCPPassive
+            // 
+            this.cbWSCPPassive.AutoSize = true;
+            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 127);
+            this.cbWSCPPassive.Name = "cbWSCPPassive";
+            this.cbWSCPPassive.Size = new System.Drawing.Size(143, 17);
+            this.cbWSCPPassive.TabIndex = 11;
+            this.cbWSCPPassive.Text = "Passive mode (FTP only)";
+            this.cbWSCPPassive.UseVisualStyleBackColor = true;
+            this.cbWSCPPassive.CheckedChanged += new System.EventHandler(this.cbWSCPPassive_CheckedChanged);
+            // 
+            // cbWSCPUnsecure
+            // 
+            this.cbWSCPUnsecure.AutoSize = true;
+            this.cbWSCPUnsecure.Location = new System.Drawing.Point(2, 112);
+            this.cbWSCPUnsecure.Name = "cbWSCPUnsecure";
+            this.cbWSCPUnsecure.Size = new System.Drawing.Size(187, 17);
+            this.cbWSCPUnsecure.TabIndex = 12;
+            this.cbWSCPUnsecure.Text = "Allow unsecured \"jump\" password";
+            this.tooltipOptions.SetToolTip(this.cbWSCPUnsecure, "Jump proxy password will appear in plaintext in the process list");
+            this.cbWSCPUnsecure.UseVisualStyleBackColor = true;
+            this.cbWSCPUnsecure.CheckedChanged += new System.EventHandler(this.cbWSCPUnsecure_CheckedChanged);
             // 
             // cbWSCPAgent
             // 
@@ -758,17 +782,6 @@ namespace AutoPuTTY
             this.laWSCPOther.Size = new System.Drawing.Size(33, 13);
             this.laWSCPOther.TabIndex = 8;
             this.laWSCPOther.Text = "Other";
-            // 
-            // cbWSCPPassive
-            // 
-            this.cbWSCPPassive.AutoSize = true;
-            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 127);
-            this.cbWSCPPassive.Name = "cbWSCPPassive";
-            this.cbWSCPPassive.Size = new System.Drawing.Size(143, 17);
-            this.cbWSCPPassive.TabIndex = 11;
-            this.cbWSCPPassive.Text = "Passive mode (FTP only)";
-            this.cbWSCPPassive.UseVisualStyleBackColor = true;
-            this.cbWSCPPassive.CheckedChanged += new System.EventHandler(this.cbWSCPPassive_CheckedChanged);
             // 
             // laWSeparator2
             // 
@@ -891,6 +904,7 @@ namespace AutoPuTTY
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paGeneral.BackColor = System.Drawing.Color.Transparent;
+            this.paGeneral.Controls.Add(this.piGImport);
             this.paGeneral.Controls.Add(this.cbGTooltips);
             this.paGeneral.Controls.Add(this.cbGMinimize);
             this.paGeneral.Controls.Add(this.cbGPosition);
@@ -907,54 +921,25 @@ namespace AutoPuTTY
             this.paGeneral.Controls.Add(this.laGSeparator4);
             this.paGeneral.Controls.Add(this.cbGMulti);
             this.paGeneral.Controls.Add(this.tpGPass);
-            this.paGeneral.Controls.Add(this.liGImport);
             this.paGeneral.Location = new System.Drawing.Point(4, 4);
             this.paGeneral.Name = "paGeneral";
             this.paGeneral.Size = new System.Drawing.Size(286, 194);
             this.paGeneral.TabIndex = 0;
             // 
-            // slGMulti
+            // piGImport
             // 
-            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.slGMulti.AutoSize = false;
-            this.slGMulti.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
-            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
-            this.slGMulti.Maximum = 40;
-            this.slGMulti.Minimum = 10;
-            this.slGMulti.Name = "slGMulti";
-            this.slGMulti.Size = new System.Drawing.Size(292, 20);
-            this.slGMulti.TabIndex = 3;
-            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.slGMulti.Value = 15;
-            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
-            // 
-            // cbGHidePassword
-            // 
-            this.cbGHidePassword.AutoSize = true;
-            this.cbGHidePassword.Checked = true;
-            this.cbGHidePassword.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGHidePassword.Location = new System.Drawing.Point(2, 144);
-            this.cbGHidePassword.Margin = new System.Windows.Forms.Padding(0);
-            this.cbGHidePassword.Name = "cbGHidePassword";
-            this.cbGHidePassword.Size = new System.Drawing.Size(119, 17);
-            this.cbGHidePassword.TabIndex = 12;
-            this.cbGHidePassword.Text = "Auto-hide password";
-            this.tooltipOptions.SetToolTip(this.cbGHidePassword, "Hide host password input when switching selection");
-            this.cbGHidePassword.CheckedChanged += new System.EventHandler(this.cbGHidePassword_CheckedChanged);
-            // 
-            // cbGMinimize
-            // 
-            this.cbGMinimize.AutoSize = true;
-            this.cbGMinimize.Checked = true;
-            this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGMinimize.Location = new System.Drawing.Point(152, 144);
-            this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
-            this.cbGMinimize.Name = "cbGMinimize";
-            this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
-            this.cbGMinimize.TabIndex = 15;
-            this.cbGMinimize.Text = "Minimize to system tray";
-            this.cbGMinimize.CheckedChanged += new System.EventHandler(this.cbGMinimize_CheckedChanged);
+            this.piGImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.piGImport.BackColor = System.Drawing.Color.Transparent;
+            this.piGImport.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.piGImport.Image = global::AutoPuTTY.Properties.Resources.iconinfo;
+            this.piGImport.Location = new System.Drawing.Point(50, 80);
+            this.piGImport.Margin = new System.Windows.Forms.Padding(0);
+            this.piGImport.Name = "piGImport";
+            this.piGImport.Size = new System.Drawing.Size(22, 15);
+            this.piGImport.TabIndex = 27;
+            this.piGImport.TabStop = false;
+            this.tooltipOptions.SetToolTip(this.piGImport, "Show import list format");
+            this.piGImport.Click += new System.EventHandler(this.liGImport_LinkClicked);
             // 
             // cbGTooltips
             // 
@@ -969,6 +954,19 @@ namespace AutoPuTTY
             this.cbGTooltips.Text = "Show tooltips";
             this.tooltipOptions.SetToolTip(this.cbGTooltips, "When you really like tooltip info");
             this.cbGTooltips.CheckedChanged += new System.EventHandler(this.cbGTooltips_CheckedChanged);
+            // 
+            // cbGMinimize
+            // 
+            this.cbGMinimize.AutoSize = true;
+            this.cbGMinimize.Checked = true;
+            this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGMinimize.Location = new System.Drawing.Point(152, 144);
+            this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGMinimize.Name = "cbGMinimize";
+            this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
+            this.cbGMinimize.TabIndex = 15;
+            this.cbGMinimize.Text = "Minimize to system tray";
+            this.cbGMinimize.CheckedChanged += new System.EventHandler(this.cbGMinimize_CheckedChanged);
             // 
             // cbGPosition
             // 
@@ -995,6 +993,36 @@ namespace AutoPuTTY
             this.cbGSize.TabIndex = 13;
             this.cbGSize.Text = "Save window size";
             this.cbGSize.CheckedChanged += new System.EventHandler(this.cbGSize_CheckedChanged);
+            // 
+            // cbGHidePassword
+            // 
+            this.cbGHidePassword.AutoSize = true;
+            this.cbGHidePassword.Checked = true;
+            this.cbGHidePassword.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGHidePassword.Location = new System.Drawing.Point(2, 144);
+            this.cbGHidePassword.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGHidePassword.Name = "cbGHidePassword";
+            this.cbGHidePassword.Size = new System.Drawing.Size(119, 17);
+            this.cbGHidePassword.TabIndex = 12;
+            this.cbGHidePassword.Text = "Auto-hide password";
+            this.tooltipOptions.SetToolTip(this.cbGHidePassword, "Hide host password input when switching selection");
+            this.cbGHidePassword.CheckedChanged += new System.EventHandler(this.cbGHidePassword_CheckedChanged);
+            // 
+            // slGMulti
+            // 
+            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.slGMulti.AutoSize = false;
+            this.slGMulti.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
+            this.slGMulti.Maximum = 40;
+            this.slGMulti.Minimum = 10;
+            this.slGMulti.Name = "slGMulti";
+            this.slGMulti.Size = new System.Drawing.Size(292, 20);
+            this.slGMulti.TabIndex = 3;
+            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.slGMulti.Value = 15;
+            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
             // 
             // laGSeparator6
             // 
@@ -1246,21 +1274,6 @@ namespace AutoPuTTY
             this.labelGConfirm.TabIndex = 0;
             this.labelGConfirm.Text = "Confirmation";
             // 
-            // liGImport
-            // 
-            this.liGImport.ActiveLinkColor = System.Drawing.Color.Black;
-            this.liGImport.AutoSize = true;
-            this.liGImport.ForeColor = System.Drawing.Color.White;
-            this.liGImport.LinkColor = System.Drawing.Color.Blue;
-            this.liGImport.Location = new System.Drawing.Point(50, 81);
-            this.liGImport.Margin = new System.Windows.Forms.Padding(0);
-            this.liGImport.Name = "liGImport";
-            this.liGImport.Size = new System.Drawing.Size(19, 13);
-            this.liGImport.TabIndex = 5;
-            this.liGImport.TabStop = true;
-            this.liGImport.Text = "(?)";
-            this.liGImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liGImport_LinkClicked);
-            // 
             // taPuTTY
             // 
             this.taPuTTY.Controls.Add(this.panelPuTTY);
@@ -1326,17 +1339,6 @@ namespace AutoPuTTY
             this.tooltipOptions.InitialDelay = 200;
             this.tooltipOptions.ReshowDelay = 100;
             // 
-            // cbWSCPJump
-            // 
-            this.cbWSCPJump.AutoSize = true;
-            this.cbWSCPJump.Location = new System.Drawing.Point(2, 112);
-            this.cbWSCPJump.Name = "cbWSCPJump";
-            this.cbWSCPJump.Size = new System.Drawing.Size(187, 17);
-            this.cbWSCPJump.TabIndex = 12;
-            this.cbWSCPJump.Text = "Allow unsecured \"jump\" password";
-            this.tooltipOptions.SetToolTip(this.cbWSCPJump, "Password will appear in plaintext in the process list");
-            this.cbWSCPJump.UseVisualStyleBackColor = true;
-            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1366,6 +1368,7 @@ namespace AutoPuTTY
             this.taGeneral.ResumeLayout(false);
             this.paGeneral.ResumeLayout(false);
             this.paGeneral.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.piGImport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.tpGPass.ResumeLayout(false);
             this.tpGPass.PerformLayout();
@@ -1432,7 +1435,6 @@ namespace AutoPuTTY
         private System.Windows.Forms.TabPage taWSCP;
         private System.Windows.Forms.TabPage taGeneral;
         private System.Windows.Forms.Panel paGeneral;
-        private System.Windows.Forms.LinkLabel liGImport;
         public System.Windows.Forms.CheckBox cbGSkip;
         public System.Windows.Forms.CheckBox cbGReplace;
         private System.Windows.Forms.Label laGSeparator5;
@@ -1483,7 +1485,8 @@ namespace AutoPuTTY
         public System.Windows.Forms.CheckBox cbWSCPAgent;
         public System.Windows.Forms.CheckBox cbGHidePassword;
         private System.Windows.Forms.TrackBar slGMulti;
-        public System.Windows.Forms.CheckBox cbWSCPJump;
+        public System.Windows.Forms.CheckBox cbWSCPUnsecure;
+        private System.Windows.Forms.PictureBox piGImport;
     }
 }
 

@@ -1108,8 +1108,11 @@ namespace AutoPuTTY
                                 //SSH Jump
                                 if (ProxyHost != "")
                                 {
+#if SECURE
+                                    Settings.Default.winscpunsecure = false;
+#endif
                                     User = UserFromProxy;
-                                    Proc.StartInfo.Arguments += " Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22") + (ProxyPass != "" ? " TunnelPasswordPlain=\"" + ReplaceSpecial(SpecialCharsWinscp, ProxyPass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
+                                    Proc.StartInfo.Arguments += " Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22") + (Settings.Default.winscpunsecure && ProxyPass != "" ? " TunnelPasswordPlain=\"" + ReplaceSpecial(SpecialCharsWinscp, ProxyPass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
                                 }
 
                                 if (WinscpArgs != "") Proc.StartInfo.Arguments += $" {WinscpArgs}";
@@ -3454,34 +3457,6 @@ namespace AutoPuTTY
             }
         }
 
-        /// <summary>
-        /// Creates a named pipe server that writes the password when a client connects.
-        /// </summary>
-        /// <param name="pipeName">The pipe name (without the \\.\pipe\ prefix).</param>
-        /// <param name="password">The password to send.</param>
-        static void RunNamedPipeServer(string pipeName, string password)
-        {
-            // Create a named pipe server stream that only allows one connection.
-            using (NamedPipeServerStream pipeServer = new NamedPipeServerStream(
-                       pipeName,
-                       PipeDirection.Out,
-                       1,
-                       PipeTransmissionMode.Byte,
-                       PipeOptions.Asynchronous))
-            {
-                //Console.WriteLine("Waiting for client to connect to named pipe...");
-                pipeServer.WaitForConnection();
-                //Console.WriteLine("Client connected. Sending password...");
-
-                // Convert the password to bytes and send it.
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-                pipeServer.Write(passwordBytes, 0, passwordBytes.Length);
-                pipeServer.Flush();
-                pipeServer.WaitForPipeDrain();
-                //Thread.Sleep(1000); // Wait an extra second for debugging
-            }
-        }
-
         private void RecryptConfigList(string newpass)
         {
             int Count = 0;
@@ -3614,6 +3589,43 @@ namespace AutoPuTTY
                     backgroundProgress.ReportProgress((int)(Count / (double)(lbServer.Items.Count + lbVault.Items.Count) * 100), Args);
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates a named pipe server that writes the password when a client connects.
+        /// </summary>
+        /// <param name="pipeName">The pipe name (without the \\.\pipe\ prefix).</param>
+        /// <param name="password">The password to send.</param>
+        static void RunNamedPipeServer(string pipeName, string password)
+        {
+            // Create a named pipe server stream that only allows one connection.
+            using (NamedPipeServerStream pipeServer = new NamedPipeServerStream(
+                       pipeName,
+                       PipeDirection.Out,
+                       1,
+                       PipeTransmissionMode.Byte,
+                       PipeOptions.Asynchronous))
+            {
+                //Console.WriteLine("Waiting for client to connect to named pipe...");
+                pipeServer.WaitForConnection();
+                //Console.WriteLine("Client connected. Sending password...");
+
+                // Convert the password to bytes and send it.
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+                pipeServer.Write(passwordBytes, 0, passwordBytes.Length);
+                pipeServer.Flush();
+                pipeServer.WaitForPipeDrain();
+                //Thread.Sleep(1000); // Wait an extra second for debugging
+            }
+        }
+
+        private void piUser_Click(object sender, EventArgs e)
+        {
+            InfoPopupForm popup = new InfoPopupForm("To connect using an SSH \"jump\" proxy, use the following syntax:\n\n" +
+                "proxy_username : proxy_password @ proxy_host : proxy_port # username\n\n" +
+                "proxy_port and proxy_password are optional.\n" +
+                "If the port is not provided, it will default to 22.");
+            popup.ShowNear((Control)sender, PopupAlignment.TopCenter);
         }
     }
 }

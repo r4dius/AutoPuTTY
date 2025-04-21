@@ -34,6 +34,7 @@ namespace AutoPuTTY
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.paConfig = new System.Windows.Forms.Panel();
             this.paServer = new System.Windows.Forms.Panel();
+            this.piUser = new System.Windows.Forms.PictureBox();
             this.liPass = new AutoPuTTY.NoFocusLinkLabel();
             this.buCopyName = new System.Windows.Forms.PictureBox();
             this.buCopyHost = new System.Windows.Forms.PictureBox();
@@ -143,6 +144,7 @@ namespace AutoPuTTY
             this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
             this.paConfig.SuspendLayout();
             this.paServer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.piUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyHost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyUser)).BeginInit();
@@ -191,6 +193,7 @@ namespace AutoPuTTY
             // paServer
             // 
             this.paServer.BackColor = System.Drawing.SystemColors.Control;
+            this.paServer.Controls.Add(this.piUser);
             this.paServer.Controls.Add(this.liPass);
             this.paServer.Controls.Add(this.buCopyName);
             this.paServer.Controls.Add(this.buCopyHost);
@@ -208,7 +211,6 @@ namespace AutoPuTTY
             this.paServer.Controls.Add(this.laSeparator2);
             this.paServer.Controls.Add(this.laSeparator1);
             this.paServer.Controls.Add(this.laName);
-            this.paServer.Controls.Add(this.laUser);
             this.paServer.Controls.Add(this.buModify);
             this.paServer.Controls.Add(this.buAdd);
             this.paServer.Controls.Add(this.buDelete);
@@ -222,11 +224,27 @@ namespace AutoPuTTY
             this.paServer.Controls.Add(this.buCopyVault);
             this.paServer.Controls.Add(this.tbPass);
             this.paServer.Controls.Add(this.cbVault);
+            this.paServer.Controls.Add(this.laUser);
             this.paServer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.paServer.Location = new System.Drawing.Point(0, 0);
             this.paServer.Name = "paServer";
             this.paServer.Size = new System.Drawing.Size(152, 267);
             this.paServer.TabIndex = 41;
+            // 
+            // piUser
+            // 
+            this.piUser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.piUser.BackColor = System.Drawing.Color.Transparent;
+            this.piUser.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.piUser.Image = global::AutoPuTTY.Properties.Resources.iconinfo;
+            this.piUser.Location = new System.Drawing.Point(53, 80);
+            this.piUser.Margin = new System.Windows.Forms.Padding(0);
+            this.piUser.Name = "piUser";
+            this.piUser.Size = new System.Drawing.Size(22, 15);
+            this.piUser.TabIndex = 29;
+            this.piUser.TabStop = false;
+            this.ttMain.SetToolTip(this.piUser, "Show SSH \"jump\" proxy info");
+            this.piUser.Click += new System.EventHandler(this.piUser_Click);
             // 
             // liPass
             // 
@@ -239,8 +257,8 @@ namespace AutoPuTTY
             this.liPass.LinkColor = System.Drawing.Color.Black;
             this.liPass.Location = new System.Drawing.Point(3, 120);
             this.liPass.Name = "liPass";
-            this.liPass.Padding = new System.Windows.Forms.Padding(0, 0, 18, 0);
-            this.liPass.Size = new System.Drawing.Size(71, 13);
+            this.liPass.Padding = new System.Windows.Forms.Padding(0, 0, 19, 0);
+            this.liPass.Size = new System.Drawing.Size(72, 13);
             this.liPass.TabIndex = 9;
             this.liPass.TabStop = true;
             this.liPass.Text = "Password";
@@ -1671,6 +1689,7 @@ namespace AutoPuTTY
             this.paConfig.ResumeLayout(false);
             this.paServer.ResumeLayout(false);
             this.paServer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.piUser)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyHost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyUser)).EndInit();
@@ -1825,6 +1844,7 @@ namespace AutoPuTTY
         private CheckBox cbVaultCase;
         private Panel panel5;
         private Panel paPassBack;
+        private PictureBox piUser;
     }
 }
 

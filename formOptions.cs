@@ -84,6 +84,12 @@ namespace AutoPuTTY
                 tbWSCPKey.Text = Settings.Default.winscpkeyfilepath;
                 cbWSCPAgent.Checked = Settings.Default.winscpagent;
                 cbWSCPPassive.Checked = Settings.Default.winscppassive;
+#if SECURE
+                cbWSCPUnsecure.Hide();
+                cbWSCPPassive.Top = cbWSCPUnsecure.Top;
+#else
+                cbWSCPUnsecure.Checked = Settings.Default.winscpunsecure;
+#endif
             }
 
             tooltipOptions.Active = cbGTooltips.Checked;
@@ -572,21 +578,22 @@ namespace AutoPuTTY
             if (cbGSkip.Checked) cbGReplace.Checked = false;
         }
 
-        private void liGImport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void liGImport_LinkClicked(object sender, EventArgs e)
         {
-            MessageBoxEx.Show(this, "List format:\n\n" +
+            InfoPopupForm popup = new InfoPopupForm("List format:\n\n" +
                 "Name     Hostname[:port]     [[Domain\\]username]     [Password]     [Type]\n\n" +
-                "- One server per line.\n" +
-                "- Use a tab as separator.\n" +
-                "- Only \"Name\" and \"Hostname\" are required.\n" +
-                "- \"Type\" is a numerical value, use the following correspondence:\n" +
+                "- Each server should be on a separate line.\n" +
+                "- Use tabs to separate fields.\n" +
+                "- Only \"Name\" and \"Hostname\" are mandatory.\n" +
+                "- The \"Type\" field is a numerical value, with the following options:\n" +
                 "    0 = PuTTY\n" +
                 "    1 = Remote Desktop\n" +
                 "    2 = VNC\n" +
-                "    3 = WinSCP (SCP)\n" +
-                "    4 = WinSCP (SFTP)\n" +
-                "    5 = WinSCP (FTP)\n" +
-                "- If no \"Type\" is given it'll be set as \"PuTTY\" by default.", "Import list", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                "    3 = WinSCP(SCP)\n" +
+                "    4 = WinSCP(SFTP)\n" +
+                "    5 = WinSCP(FTP)\n" +
+                "- If the \"Type\" is not provided, it will default to \"PuTTY.\"");
+            popup.ShowNear((Control)sender, PopupAlignment.TopCenter);
         }
 
         private void slGMulti_Scroll(object sender, EventArgs e)
@@ -965,6 +972,12 @@ namespace AutoPuTTY
             if (!FirstRead) FormMain.XmlSetConfig("winscp", Settings.Default.winscppath);
         }
 
+        private void cbWSCPUnsecure_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.winscpunsecure = cbWSCPUnsecure.Checked;
+            if (!FirstRead) FormMain.XmlSetConfig("winscpunsecure", Settings.Default.winscpunsecure.ToString());
+        }
+
         private void bwProgress_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             object[] Args = (object[])e.Argument;
@@ -1023,6 +1036,11 @@ namespace AutoPuTTY
         {
             Settings.Default.autohidepassword = cbGHidePassword.Checked;
             if (!FirstRead) FormMain.XmlSetConfig("autohidepassword", Settings.Default.autohidepassword.ToString());
+        }
+
+        private void liGImport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
         }
     }
 }
