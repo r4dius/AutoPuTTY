@@ -139,10 +139,6 @@ namespace AutoPuTTY
             while ((Line = Stream.ReadLine()) != null) Lines.Add(Line.Trim());
             Stream.Close();
 
-            string ConfigFile = Settings.Default.cfgpath;
-            XmlDocument XmlConfig = new XmlDocument();
-            XmlConfig.Load(ConfigFile);
-
             string[] Args = new string[] { "import", Count + " / " + Lines.Count, CountAdd.ToString(), CountReplace.ToString(), CountSkip.ToString() };
             backgroundProgress.ReportProgress((int)(Count / (double)Lines.Count * 100), Args);
 
@@ -171,32 +167,32 @@ namespace AutoPuTTY
                     if (ListArray.Count > 3) Pass = Split[3];
                     if (ListArray.Count > 4) Int32.TryParse(Split[4], out Type);
 
-                    XmlElement ServerXml = XmlConfig.CreateElement("Server");
-                    XmlAttribute NameXml = XmlConfig.CreateAttribute("Name");
+                    XmlElement ServerXml = FormMain.XmlConfig.CreateElement("Server");
+                    XmlAttribute NameXml = FormMain.XmlConfig.CreateAttribute("Name");
                     NameXml.Value = Name;
                     ServerXml.SetAttributeNode(NameXml);
 
                     if (Host != "")
                     {
-                        XmlElement HostXml = XmlConfig.CreateElement("Host");
+                        XmlElement HostXml = FormMain.XmlConfig.CreateElement("Host");
                         HostXml.InnerText = Legacy.Encrypt(Host);
                         ServerXml.AppendChild(HostXml);
                     }
                     if (User != "")
                     {
-                        XmlElement UserXml = XmlConfig.CreateElement("User");
+                        XmlElement UserXml = FormMain.XmlConfig.CreateElement("User");
                         UserXml.InnerText = Legacy.Encrypt(User);
                         ServerXml.AppendChild(UserXml);
                     }
                     if (Pass != "")
                     {
-                        XmlElement PassXml = XmlConfig.CreateElement("Password");
+                        XmlElement PassXml = FormMain.XmlConfig.CreateElement("Password");
                         PassXml.InnerText = Legacy.Encrypt(Pass);
                         ServerXml.AppendChild(PassXml);
                     }
                     if (Type > 0)
                     {
-                        XmlElement TypeXml = XmlConfig.CreateElement("Type");
+                        XmlElement TypeXml = FormMain.XmlConfig.CreateElement("Type");
                         TypeXml.InnerText = Type.ToString();
                         ServerXml.AppendChild(TypeXml);
                     }
@@ -211,10 +207,10 @@ namespace AutoPuTTY
                         {
                             if (cbGReplace.Checked || (!cbGReplace.Checked && ImportAskDuplicate(Name)))
                             {
-                                XmlNodeList ServerNodes = XmlConfig.SelectNodes("//Server[@Name=" + FormMain.ParseXpathString(Name) + "]");
-                                if (XmlConfig.DocumentElement != null)
+                                XmlNodeList ServerNodes = FormMain.XmlConfig.SelectNodes("//Server[@Name=" + FormMain.ParseXpathString(Name) + "]");
+                                if (FormMain.XmlConfig.DocumentElement != null)
                                 {
-                                    if (ServerNodes != null) XmlConfig.DocumentElement.ReplaceChild(ServerXml, ServerNodes[0]);
+                                    if (ServerNodes != null) FormMain.XmlConfig.DocumentElement.ReplaceChild(ServerXml, ServerNodes[0]);
                                 }
                                 if (FormMain.lbServer.InvokeRequired) Invoke(new MethodInvoker(delegate
                                 {
@@ -237,7 +233,7 @@ namespace AutoPuTTY
                     }
                     else //add
                     {
-                        XmlConfig.DocumentElement?.InsertAfter(ServerXml, XmlConfig.DocumentElement.LastChild);
+                        FormMain.XmlConfig.DocumentElement?.InsertAfter(ServerXml, FormMain.XmlConfig.DocumentElement.LastChild);
                         if (FormMain.lbServer.InvokeRequired) Invoke(new MethodInvoker(delegate { FormMain.lbServer.Items.Add(Name); }));
                         else FormMain.lbServer.Items.Add(Name);
                         CountAdd++;
