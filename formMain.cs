@@ -65,6 +65,8 @@ namespace AutoPuTTY
         private Image IconEyeShowHover;
         private Image IconEyeHideHover;
         private Image IconEyeHover;
+        private Image IconInfoHover;
+        private Image IconSwitchHover;
 
         public FormMain()
         {
@@ -253,6 +255,8 @@ namespace AutoPuTTY
             IconEyeShowHover = ImageOpacity.Set(Resources.iconeyeshow, (float)0.5);
             IconEyeHideHover = ImageOpacity.Set(Resources.iconeyehide, (float)0.5);
             IconEyeHover = ImageOpacity.Set(Resources.eye, (float)0.5);
+            IconInfoHover = ImageOpacity.Set(Resources.iconinfo, (float)0.5);
+            IconSwitchHover = ImageOpacity.Set(Resources.iconswitch, (float)0.5);
             piPassEye.Image = IconEyeHover;
 
             // get original sizes at startup
@@ -1776,6 +1780,34 @@ namespace AutoPuTTY
             PictureBox icon = (PictureBox)sender;
             if (!icon.Enabled) return;
             icon.Image = Resources.iconcopy;
+        }
+
+        public void buInfo_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            if (!icon.Enabled) return;
+            icon.Image = IconInfoHover;
+        }
+
+        public void buInfo_MouseLeave(object sender, EventArgs e)
+        {
+            PictureBox icon = (PictureBox)sender;
+            if (!icon.Enabled) return;
+            icon.Image = Resources.iconinfo;
+        }
+
+        public void buSwitch_MouseEnter(object sender, EventArgs e)
+        {
+            NoFocusLinkLabel icon = (NoFocusLinkLabel)sender;
+            if (!icon.Enabled) return;
+            icon.Image = IconSwitchHover;
+        }
+
+        public void buSwitch_MouseLeave(object sender, EventArgs e)
+        {
+            NoFocusLinkLabel icon = (NoFocusLinkLabel)sender;
+            if (!icon.Enabled) return;
+            icon.Image = Resources.iconswitch;
         }
 
         private void buDelete_Click(object sender, EventArgs e)

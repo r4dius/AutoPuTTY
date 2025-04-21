@@ -52,7 +52,6 @@ namespace AutoPuTTY
             this.laSeparator2 = new System.Windows.Forms.Label();
             this.laSeparator1 = new System.Windows.Forms.Label();
             this.laName = new AutoPuTTY.SingleClickLabel();
-            this.laUser = new AutoPuTTY.SingleClickLabel();
             this.buModify = new System.Windows.Forms.Button();
             this.buAdd = new System.Windows.Forms.Button();
             this.buDelete = new System.Windows.Forms.Button();
@@ -66,6 +65,7 @@ namespace AutoPuTTY
             this.buCopyVault = new System.Windows.Forms.PictureBox();
             this.tbPass = new System.Windows.Forms.TextBox();
             this.cbVault = new System.Windows.Forms.ComboBox();
+            this.laUser = new AutoPuTTY.SingleClickLabel();
             this.paVault = new System.Windows.Forms.Panel();
             this.buVaultOptions = new System.Windows.Forms.Button();
             this.buCopyVaultPriv = new System.Windows.Forms.PictureBox();
@@ -245,6 +245,8 @@ namespace AutoPuTTY
             this.piUser.TabStop = false;
             this.ttMain.SetToolTip(this.piUser, "Show SSH \"jump\" proxy info");
             this.piUser.Click += new System.EventHandler(this.piUser_Click);
+            this.piUser.MouseEnter += new System.EventHandler(this.buInfo_MouseEnter);
+            this.piUser.MouseLeave += new System.EventHandler(this.buInfo_MouseLeave);
             // 
             // liPass
             // 
@@ -265,6 +267,8 @@ namespace AutoPuTTY
             this.ttMain.SetToolTip(this.liPass, "Switch to vault");
             this.liPass.VisitedLinkColor = System.Drawing.Color.Black;
             this.liPass.Click += new System.EventHandler(this.laPass_Click);
+            this.liPass.MouseEnter += new System.EventHandler(this.buSwitch_MouseEnter);
+            this.liPass.MouseLeave += new System.EventHandler(this.buSwitch_MouseLeave);
             // 
             // buCopyName
             // 
@@ -469,15 +473,6 @@ namespace AutoPuTTY
             this.laName.TabIndex = 0;
             this.laName.Text = "Name";
             // 
-            // laUser
-            // 
-            this.laUser.AutoSize = true;
-            this.laUser.Location = new System.Drawing.Point(3, 81);
-            this.laUser.Name = "laUser";
-            this.laUser.Size = new System.Drawing.Size(55, 13);
-            this.laUser.TabIndex = 6;
-            this.laUser.Text = "Username";
-            // 
             // buModify
             // 
             this.buModify.Enabled = false;
@@ -656,6 +651,15 @@ namespace AutoPuTTY
             this.cbVault.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
             this.cbVault.SelectedIndexChanged += new System.EventHandler(this.cbVault_IndexChanged);
             this.cbVault.EnabledChanged += new System.EventHandler(this.tbServer_TextChanged);
+            // 
+            // laUser
+            // 
+            this.laUser.AutoSize = true;
+            this.laUser.Location = new System.Drawing.Point(3, 81);
+            this.laUser.Name = "laUser";
+            this.laUser.Size = new System.Drawing.Size(55, 13);
+            this.laUser.TabIndex = 6;
+            this.laUser.Text = "Username";
             // 
             // paVault
             // 

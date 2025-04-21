@@ -940,6 +940,8 @@ namespace AutoPuTTY
             this.piGImport.TabStop = false;
             this.tooltipOptions.SetToolTip(this.piGImport, "Show import list format");
             this.piGImport.Click += new System.EventHandler(this.liGImport_LinkClicked);
+            this.piGImport.MouseEnter += new System.EventHandler(FormMain.buInfo_MouseEnter);
+            this.piGImport.MouseLeave += new System.EventHandler(FormMain.buInfo_MouseLeave);
             // 
             // cbGTooltips
             // 
