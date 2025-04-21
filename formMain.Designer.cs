@@ -98,7 +98,7 @@ namespace AutoPuTTY
             this.piVaultClose = new System.Windows.Forms.PictureBox();
             this.tbVaultFilter = new System.Windows.Forms.TextBox();
             this.cbVaultCase = new System.Windows.Forms.CheckBox();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.paLeftHorizontal = new System.Windows.Forms.Panel();
             this.tlAbout = new System.Windows.Forms.TableLayoutPanel();
             this.paAbout = new System.Windows.Forms.Panel();
             this.liAboutGithub = new System.Windows.Forms.LinkLabel();
@@ -1002,7 +1002,7 @@ namespace AutoPuTTY
             this.tlLeftVault.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlLeftVault.Controls.Add(this.lbVault, 0, 0);
             this.tlLeftVault.Controls.Add(this.paVaultFind, 0, 2);
-            this.tlLeftVault.Controls.Add(this.panel5, 0, 1);
+            this.tlLeftVault.Controls.Add(this.paLeftHorizontal, 0, 1);
             this.tlLeftVault.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlLeftVault.Location = new System.Drawing.Point(0, 0);
             this.tlLeftVault.Margin = new System.Windows.Forms.Padding(0);
@@ -1014,6 +1014,7 @@ namespace AutoPuTTY
             this.tlLeftVault.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlLeftVault.Size = new System.Drawing.Size(152, 267);
             this.tlLeftVault.TabIndex = 1;
+            this.tlLeftVault.Visible = false;
             // 
             // lbVault
             // 
@@ -1099,15 +1100,15 @@ namespace AutoPuTTY
             this.cbVaultCase.UseVisualStyleBackColor = true;
             this.cbVaultCase.CheckedChanged += new System.EventHandler(this.piVaultCase_CheckedChanged);
             // 
-            // panel5
+            // paLeftHorizontal
             // 
-            this.panel5.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(0, 242);
-            this.panel5.Margin = new System.Windows.Forms.Padding(0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(152, 1);
-            this.panel5.TabIndex = 5;
+            this.paLeftHorizontal.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.paLeftHorizontal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.paLeftHorizontal.Location = new System.Drawing.Point(0, 242);
+            this.paLeftHorizontal.Margin = new System.Windows.Forms.Padding(0);
+            this.paLeftHorizontal.Name = "paLeftHorizontal";
+            this.paLeftHorizontal.Size = new System.Drawing.Size(152, 1);
+            this.paLeftHorizontal.TabIndex = 5;
             // 
             // tlAbout
             // 
@@ -1487,7 +1488,6 @@ namespace AutoPuTTY
             this.liPass.Padding = new System.Windows.Forms.Padding(0, 0, 19, 0);
             this.liPass.Size = new System.Drawing.Size(72, 13);
             this.liPass.TabIndex = 9;
-            this.liPass.TabStop = true;
             this.liPass.Text = "Password";
             this.ttMain.SetToolTip(this.liPass, "Switch to vault");
             this.liPass.VisitedLinkColor = System.Drawing.Color.Black;
@@ -1846,7 +1846,7 @@ namespace AutoPuTTY
         private PictureBox piVaultClose;
         private TextBox tbVaultFilter;
         private CheckBox cbVaultCase;
-        private Panel panel5;
+        private Panel paLeftHorizontal;
         private Panel paPassBack;
         private PictureBox piUser;
         private PictureBox buVaultEye;
