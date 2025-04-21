@@ -2,50 +2,62 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AutoPuTTY.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">0.40</Value>
-    </Setting>
-    <Setting Name="multicolumnwidth" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
-    </Setting>
-    <Setting Name="multicolumn" Type="System.Boolean" Scope="User">
+    <Setting Name="autohidepassword" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="cryptokeyoriginal" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="cfgpath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="cfgfilepath" Type="System.String" Scope="User">
       <Value Profile="(Default)">autoputty.xml</Value>
     </Setting>
+    <Setting Name="cfgpath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="cfgversion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="cryptokey" Type="System.String" Scope="User">
       <Value Profile="(Default)">12ùMkldQ%kS2A</Value>
     </Setting>
-    <Setting Name="puttypath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">putty.exe</Value>
+    <Setting Name="cryptokeyoriginal" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="rdpath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">mstsc.exe</Value>
+    <Setting Name="cryptolegacypassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">;Sk/#µ^éD}=@|</Value>
     </Setting>
-    <Setting Name="vncpath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">vncviewer.exe</Value>
+    <Setting Name="maximized" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="winscppath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">winscp.exe</Value>
+    <Setting Name="minimize" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="multicolumn" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="multicolumnwidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="password" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="minimize" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="passwordmd5" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="puttyexecute" Type="System.Boolean" Scope="User">
+    <Setting Name="passwordpbk" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="position" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="puttyagent" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="puttycommand" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="puttyexecute" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="puttyforward" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="puttykey" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -53,14 +65,35 @@
     <Setting Name="puttykeyfilepath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="puttypath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">putty.exe</Value>
+    </Setting>
+    <Setting Name="rdadmin" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="rdfilespath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="rddrives" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="rdpath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">mstsc.exe</Value>
+    </Setting>
     <Setting Name="rdsize" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="rdspan" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="size" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="tooltips" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="version" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="vncfilespath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -68,7 +101,13 @@
     <Setting Name="vncfullscreen" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="vncpath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">vncviewer.exe</Value>
+    </Setting>
     <Setting Name="vncviewonly" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="winscpagent" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="winscpkey" Type="System.Boolean" Scope="User">
@@ -77,29 +116,14 @@
     <Setting Name="winscpkeyfilepath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="rdadmin" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="puttyforward" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="rdspan" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="winscppath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">winscp.exe</Value>
     </Setting>
     <Setting Name="winscppassive" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="size" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="position" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="cryptopasswordkey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">;Sk/#µ^éD}=@|</Value>
-    </Setting>
-    <Setting Name="passwordmd5" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="winscpunsecure" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

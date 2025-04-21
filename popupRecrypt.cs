@@ -3,37 +3,45 @@ using System.Windows.Forms;
 
 namespace AutoPuTTY
 {
-    public partial class popupRecrypt : Form
+    public partial class PopupRecrypt : Form
     {
-        public formOptions optionsform;
+        public Form _parentForm;
 
-        public popupRecrypt(formOptions form)
+        public PopupRecrypt(Form form)
         {
-            optionsform = form;
+            _parentForm = form;
             InitializeComponent();
         }
 
         private void formClosing(object sender, FormClosingEventArgs e)
         {
-            if (bOK.Enabled) bOK_Click(sender, e);
+            if (buOK.Enabled) bOK_Click(sender, e);
             else e.Cancel = true;
         }
 
         private void bOK_Click(object sender, EventArgs e)
         {
-            optionsform.bwProgress.CancelAsync();
+            if (_parentForm is IRecryptForm recryptForm)
+            {
+                recryptForm.CancelRecrypt();
+            }
         }
 
         public void RecryptProgress(string[] args)
         {
-            pbProgress.Value = Convert.ToInt16(args[0]);
-            lProgressValue.Text = args[1];
+            prRecrypt.Value = Convert.ToInt16(args[0]);
+            laProcessedCount.Text = args[1];
         }
 
         public void RecryptComplete()
         {
             Text = "Processing complete";
-            bOK.Enabled = true;
+            buOK.Enabled = true;
+        }
+
+        public interface IRecryptForm
+        {
+            void CancelRecrypt();
         }
     }
 }

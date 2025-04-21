@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AutoPuTTY")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Litrux")]
+[assembly: AssemblyCompany("r4dius")]
 [assembly: AssemblyProduct("AutoPuTTY")]
-[assembly: AssemblyCopyright("Copyright © Litrux 2024")]
+[assembly: AssemblyCopyright("Copyright © r4dius 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -28,5 +28,11 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.40")]
-[assembly: AssemblyFileVersion("0.40")]
+
+[assembly: AssemblyVersion(Info.version)]
+[assembly: AssemblyFileVersion(Info.version)]
+
+public static class Info
+{
+    public const string version = "0.50";
+}

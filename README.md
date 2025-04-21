@@ -9,41 +9,49 @@ Source : https://github.com/r4dius/AutoPuTTY
 - Manage a server list and connect thru PuTTY, WinSCP, Microsoft Remote Desktop and VNC (only VNC 3.3 encryption is supported for passwords yet)
 - Easily connect to multiple servers at once
 - Import a list from a simple text file
-- Protect the application startup with a password (note that the list is always encrypted)
-
-## It looks complicated isn't it ? ##
-- No, it's not
+- Protect application startup with a password (note: the list is always encrypted)
 
 ## So how do I use this ? ##
 
 ### Configure tools ###
-- Click the Options button ("3 dashes") at the bottom right and configure paths for the tools you want to use, default configuration will run tools from current path (except for RDP which is : %WINDIR%\system32\mstsc.exe) 
+- Click the Options button (the "three dots") at the bottom right and configure paths for the tools you want to use
+- By default, tools will run from current path, except for RDP which uses: %WINDIR%\system32\mstsc.exe
 
 ### Adding a server ###
-- Name and Hostname are required, Username and Password are optional
-- Name has to be unique
-- Don't forget the connection "Type", default is PuTTY
-- You can import server lists from the Options / General menu ("3 dashes" button)
-- SSH jump can be used by adding proxy syntax before the username, it looks like :\
-  `proxy_username`@`proxy_host_or_ip`:`proxy_port`#`username`\
-  :`proxy_port` and :`proxy_port` are optional, will use port 22 as default
+- "Name" and "Hostname" are required. "Username", "Password" and "Private key" are optional
+- "Name" must be unique
+- Don't forget to set the connection "Type", the default is PuTTY
+- You can import server lists from the Options (the "three dots" button) -> General
+- SSH jump (proxy) is supported by using this syntax before the username:\
+  `proxy_username`:`proxy_pass`@`proxy_host_or_ip`:`proxy_port`#`username`\
+  :`proxy_pass` and :`proxy_port` are optional, will use port 22 as default
+
+### Add and use a vault password ###
+- Click the yellow "key" button to access your vault
+- "Vault name" is required and must be unique. "Password" and "Private key" are optional
+- Click the yellow "arrow" button to return to the server list. Then, click the "Password" text to switch to "Vault" and select the vault to use
 
 ### Connect to a server ###
-- Double clicking a server will connect using the associated "Type"
-- Right click on a server or a multiple server selection in the list, if you choose "Connect" each will use their associated "Type"
+- Double-click a server to connect using its associated "Type"
+- Right-click a server (or multiple selected servers) and choose "Connect" each will use their configured connection "Type"
 
-### Modifying a server ###
-- Change any of the informations and click the blue "left arrow" button
+### Modifying a server or vault ###
+- Edit any of the fields and click the blue "checkmark" to save changes
 
-### Duplicating a server ###
-- Change the Name and click the green "plus" button
+### Duplicating a server or vault ###
+- Change the "Name" and click the green "plus" to create a duplicate
 
-### Delete a server ###
-- Select a server and either click the red "cross" button or right click the server in the list and select "Delete"
-- To delete multiple servers, select them then right click on the selection and select "Delete"
+### Delete a server or vault ###
+- Select a server or vault, then either click the red "cross" button or right click it and choose "Delete..."
+- To delete multiple servers or vaults, select them all, right click on the selection, and choose "Delete..."
 
 ### Search servers ###
-- Right-click on server list and click "Search..." or press Ctrl+F, if window size is large enough, there'll be "Match case" option too
+- Right-click the server list and select "Search...", or press Ctrl+F
+- If the window is wide enough, you'll also see a "Match case" option
+
+### Lock ###
+- Right-click the server list and choose "Lock", or press Ctrl+L
+- You'll need to re-enter your password to unlock
 
 ## Source includes ##
 - A modified DPAPI crypto class (http://www.obviex.com/samples/dpapi.aspx) from Chip Forster : http://www.remkoweijnen.nl/blog/2007/10/18/how-rdp-passwords-are-encrypted/#comment-562
@@ -54,4 +62,4 @@ Source : https://github.com/r4dius/AutoPuTTY
 
 #
 
-Please report bugs or lost money to autoputty@r4di.us
+Please report bugs or lost money to https://github.com/r4dius/AutoPuTTY/issues

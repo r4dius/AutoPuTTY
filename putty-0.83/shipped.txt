@@ -1,0 +1,8 @@
+plink.exe
+pscp.exe
+psftp.exe
+pageant.exe
+putty.exe
+puttytel.exe
+puttygen.exe
+pterm.exe

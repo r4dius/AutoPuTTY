@@ -1,0 +1,1488 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Windows - 10.0.26100 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild version 17.13.15+18b3035f6 for .NET Framework
+      Build started 3/17/2025 3:08:20 PM.
+      
+      Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.vcxproj" on node 1 (default targets).
+      PrepareForBuild:
+        Creating directory "Debug\\".
+        Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+        Creating directory "Debug\\CompilerIdC.tlog\\".
+      InitializeBuildStatus:
+        Creating "Debug\\CompilerIdC.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+        Touching "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Deleting file "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+        Touching "Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate".
+      Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.vcxproj" (default targets).
+      
+      Build succeeded.
+          0 Warning(s)
+          0 Error(s)
+      
+      Time Elapsed 00:00:01.26
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/3.31.6/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-k2g1cu"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-k2g1cu"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-k2g1cu'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_84b33.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:21 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-k2g1cu\\cmTC_84b33.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_84b33.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-k2g1cu\\Debug\\".
+          Creating directory "cmTC_84b33.dir\\Debug\\cmTC_84b33.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_84b33.dir\\Debug\\cmTC_84b33.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_84b33.dir\\Debug\\cmTC_84b33.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_84b33.dir\\Debug\\\\" /Fd"cmTC_84b33.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_84b33.dir\\Debug\\\\" /Fd"cmTC_84b33.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
+          CMakeCCompilerABI.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-k2g1cu\\Debug\\cmTC_84b33.exe" /INCREMENTAL /ILK:"cmTC_84b33.dir\\Debug\\cmTC_84b33.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-k2g1cu/Debug/cmTC_84b33.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-k2g1cu/Debug/cmTC_84b33.lib" /MACHINE:X64  /machine:x64 cmTC_84b33.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_84b33.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-k2g1cu\\Debug\\cmTC_84b33.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_84b33.dir\\Debug\\cmTC_84b33.tlog\\unsuccessfulbuild".
+          Touching "cmTC_84b33.dir\\Debug\\cmTC_84b33.tlog\\cmTC_84b33.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-k2g1cu\\cmTC_84b33.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.82
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the C compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.43.34808.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/platforms/windows.cmake:34 (check_include_files)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for include files windows.h, winresrc.h"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-58thqm"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-58thqm"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_WINRESRC_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-58thqm'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_37600.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:23 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_37600.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\Debug\\".
+          Creating directory "cmTC_37600.dir\\Debug\\cmTC_37600.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_37600.dir\\Debug\\cmTC_37600.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_37600.dir\\Debug\\cmTC_37600.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_37600.dir\\Debug\\\\" /Fd"cmTC_37600.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\HAVE_WINRESRC_H.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_37600.dir\\Debug\\\\" /Fd"cmTC_37600.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\HAVE_WINRESRC_H.c"
+          HAVE_WINRESRC_H.c
+        C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(21,9): warning C4005: 'RT_MANIFEST': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          (compiling source file 'HAVE_WINRESRC_H.c')
+              C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.h(282,9):
+              see previous definition of 'RT_MANIFEST'
+          
+        C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(22,9): warning C4005: 'CREATEPROCESS_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          (compiling source file 'HAVE_WINRESRC_H.c')
+              C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.h(283,9):
+              see previous definition of 'CREATEPROCESS_MANIFEST_RESOURCE_ID'
+          
+        C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(23,9): warning C4005: 'ISOLATIONAWARE_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          (compiling source file 'HAVE_WINRESRC_H.c')
+              C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.h(284,9):
+              see previous definition of 'ISOLATIONAWARE_MANIFEST_RESOURCE_ID'
+          
+        C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(24,9): warning C4005: 'ISOLATIONAWARE_NOSTATICIMPORT_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          (compiling source file 'HAVE_WINRESRC_H.c')
+              C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.h(285,9):
+              see previous definition of 'ISOLATIONAWARE_NOSTATICIMPORT_MANIFEST_RESOURCE_ID'
+          
+        C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(25,9): warning C4005: 'ISOLATIONPOLICY_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          (compiling source file 'HAVE_WINRESRC_H.c')
+              C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.h(286,9):
+              see previous definition of 'ISOLATIONPOLICY_MANIFEST_RESOURCE_ID'
+          
+        C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(26,9): warning C4005: 'ISOLATIONPOLICY_BROWSER_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          (compiling source file 'HAVE_WINRESRC_H.c')
+              C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.h(287,9):
+              see previous definition of 'ISOLATIONPOLICY_BROWSER_MANIFEST_RESOURCE_ID'
+          
+        C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(27,9): warning C4005: 'MINIMUM_RESERVED_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          (compiling source file 'HAVE_WINRESRC_H.c')
+              C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.h(288,9):
+              see previous definition of 'MINIMUM_RESERVED_MANIFEST_RESOURCE_ID'
+          
+        C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(28,9): warning C4005: 'MAXIMUM_RESERVED_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          (compiling source file 'HAVE_WINRESRC_H.c')
+              C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.h(289,9):
+              see previous definition of 'MAXIMUM_RESERVED_MANIFEST_RESOURCE_ID'
+          
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\Debug\\cmTC_37600.exe" /INCREMENTAL /ILK:"cmTC_37600.dir\\Debug\\cmTC_37600.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-58thqm/Debug/cmTC_37600.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-58thqm/Debug/cmTC_37600.lib" /MACHINE:X64  /machine:x64 cmTC_37600.dir\\Debug\\HAVE_WINRESRC_H.obj
+          cmTC_37600.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\Debug\\cmTC_37600.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_37600.dir\\Debug\\cmTC_37600.tlog\\unsuccessfulbuild".
+          Touching "cmTC_37600.dir\\Debug\\cmTC_37600.tlog\\cmTC_37600.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj" (default targets).
+        
+        Build succeeded.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(21,9): warning C4005: 'RT_MANIFEST': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(22,9): warning C4005: 'CREATEPROCESS_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(23,9): warning C4005: 'ISOLATIONAWARE_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(24,9): warning C4005: 'ISOLATIONAWARE_NOSTATICIMPORT_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(25,9): warning C4005: 'ISOLATIONPOLICY_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(26,9): warning C4005: 'ISOLATIONPOLICY_BROWSER_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(27,9): warning C4005: 'MINIMUM_RESERVED_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\um\\winuser.rh(28,9): warning C4005: 'MAXIMUM_RESERVED_MANIFEST_RESOURCE_ID': macro redefinition [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-58thqm\\cmTC_37600.vcxproj]
+        
+            8 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.07
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/platforms/windows.cmake:44 (check_include_files)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for include file stdint.h"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-osxhqn"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-osxhqn"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-osxhqn'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_729f4.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:24 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-osxhqn\\cmTC_729f4.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_729f4.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-osxhqn\\Debug\\".
+          Creating directory "cmTC_729f4.dir\\Debug\\cmTC_729f4.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_729f4.dir\\Debug\\cmTC_729f4.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_729f4.dir\\Debug\\cmTC_729f4.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_729f4.dir\\Debug\\\\" /Fd"cmTC_729f4.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-osxhqn\\HAVE_STDINT_H.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_729f4.dir\\Debug\\\\" /Fd"cmTC_729f4.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-osxhqn\\HAVE_STDINT_H.c"
+          HAVE_STDINT_H.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-osxhqn\\Debug\\cmTC_729f4.exe" /INCREMENTAL /ILK:"cmTC_729f4.dir\\Debug\\cmTC_729f4.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-osxhqn/Debug/cmTC_729f4.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-osxhqn/Debug/cmTC_729f4.lib" /MACHINE:X64  /machine:x64 cmTC_729f4.dir\\Debug\\HAVE_STDINT_H.obj
+          cmTC_729f4.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-osxhqn\\Debug\\cmTC_729f4.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_729f4.dir\\Debug\\cmTC_729f4.tlog\\unsuccessfulbuild".
+          Touching "cmTC_729f4.dir\\Debug\\cmTC_729f4.tlog\\cmTC_729f4.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-osxhqn\\cmTC_729f4.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.83
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/platforms/windows.cmake:47 (check_include_files)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for include files windows.h, multimon.h"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-70rh55"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-70rh55"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_MULTIMON_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-70rh55'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_68e96.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:25 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-70rh55\\cmTC_68e96.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_68e96.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-70rh55\\Debug\\".
+          Creating directory "cmTC_68e96.dir\\Debug\\cmTC_68e96.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_68e96.dir\\Debug\\cmTC_68e96.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_68e96.dir\\Debug\\cmTC_68e96.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_68e96.dir\\Debug\\\\" /Fd"cmTC_68e96.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-70rh55\\HAVE_MULTIMON_H.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_68e96.dir\\Debug\\\\" /Fd"cmTC_68e96.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-70rh55\\HAVE_MULTIMON_H.c"
+          HAVE_MULTIMON_H.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-70rh55\\Debug\\cmTC_68e96.exe" /INCREMENTAL /ILK:"cmTC_68e96.dir\\Debug\\cmTC_68e96.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-70rh55/Debug/cmTC_68e96.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-70rh55/Debug/cmTC_68e96.lib" /MACHINE:X64  /machine:x64 cmTC_68e96.dir\\Debug\\HAVE_MULTIMON_H.obj
+          cmTC_68e96.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-70rh55\\Debug\\cmTC_68e96.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_68e96.dir\\Debug\\cmTC_68e96.tlog\\unsuccessfulbuild".
+          Touching "cmTC_68e96.dir\\Debug\\cmTC_68e96.tlog\\cmTC_68e96.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-70rh55\\cmTC_68e96.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.98
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/platforms/windows.cmake:50 (check_include_files)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for include files windows.h, htmlhelp.h"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-9tzj5f"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-9tzj5f"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_HTMLHELP_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-9tzj5f'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1e93f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:27 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-9tzj5f\\cmTC_1e93f.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_1e93f.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-9tzj5f\\Debug\\".
+          Creating directory "cmTC_1e93f.dir\\Debug\\cmTC_1e93f.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_1e93f.dir\\Debug\\cmTC_1e93f.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_1e93f.dir\\Debug\\cmTC_1e93f.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1e93f.dir\\Debug\\\\" /Fd"cmTC_1e93f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-9tzj5f\\HAVE_HTMLHELP_H.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1e93f.dir\\Debug\\\\" /Fd"cmTC_1e93f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-9tzj5f\\HAVE_HTMLHELP_H.c"
+          HAVE_HTMLHELP_H.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-9tzj5f\\Debug\\cmTC_1e93f.exe" /INCREMENTAL /ILK:"cmTC_1e93f.dir\\Debug\\cmTC_1e93f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-9tzj5f/Debug/cmTC_1e93f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-9tzj5f/Debug/cmTC_1e93f.lib" /MACHINE:X64  /machine:x64 cmTC_1e93f.dir\\Debug\\HAVE_HTMLHELP_H.obj
+          cmTC_1e93f.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-9tzj5f\\Debug\\cmTC_1e93f.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_1e93f.dir\\Debug\\cmTC_1e93f.tlog\\unsuccessfulbuild".
+          Touching "cmTC_1e93f.dir\\Debug\\cmTC_1e93f.tlog\\cmTC_1e93f.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-9tzj5f\\cmTC_1e93f.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.03
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "cmake/platforms/windows.cmake:53 (check_include_files)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for include files winsock2.h, afunix.h"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-wc9exs"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-wc9exs"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_AFUNIX_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-wc9exs'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_46a18.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:28 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-wc9exs\\cmTC_46a18.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_46a18.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-wc9exs\\Debug\\".
+          Creating directory "cmTC_46a18.dir\\Debug\\cmTC_46a18.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_46a18.dir\\Debug\\cmTC_46a18.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_46a18.dir\\Debug\\cmTC_46a18.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_46a18.dir\\Debug\\\\" /Fd"cmTC_46a18.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-wc9exs\\HAVE_AFUNIX_H.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_46a18.dir\\Debug\\\\" /Fd"cmTC_46a18.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-wc9exs\\HAVE_AFUNIX_H.c"
+          HAVE_AFUNIX_H.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-wc9exs\\Debug\\cmTC_46a18.exe" /INCREMENTAL /ILK:"cmTC_46a18.dir\\Debug\\cmTC_46a18.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-wc9exs/Debug/cmTC_46a18.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-wc9exs/Debug/cmTC_46a18.lib" /MACHINE:X64  /machine:x64 cmTC_46a18.dir\\Debug\\HAVE_AFUNIX_H.obj
+          cmTC_46a18.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-wc9exs\\Debug\\cmTC_46a18.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_46a18.dir\\Debug\\cmTC_46a18.tlog\\unsuccessfulbuild".
+          Touching "cmTC_46a18.dir\\Debug\\cmTC_46a18.tlog\\cmTC_46a18.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-wc9exs\\cmTC_46a18.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.98
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:163 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:68 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "cmake/platforms/windows.cmake:55 (check_symbol_exists)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for strtoumax"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-cahz10"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-cahz10"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_STRTOUMAX"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-cahz10'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_0233d.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:29 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-cahz10\\cmTC_0233d.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_0233d.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-cahz10\\Debug\\".
+          Creating directory "cmTC_0233d.dir\\Debug\\cmTC_0233d.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_0233d.dir\\Debug\\cmTC_0233d.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_0233d.dir\\Debug\\cmTC_0233d.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_0233d.dir\\Debug\\\\" /Fd"cmTC_0233d.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-cahz10\\CheckSymbolExists.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_0233d.dir\\Debug\\\\" /Fd"cmTC_0233d.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-cahz10\\CheckSymbolExists.c"
+          CheckSymbolExists.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-cahz10\\Debug\\cmTC_0233d.exe" /INCREMENTAL /ILK:"cmTC_0233d.dir\\Debug\\cmTC_0233d.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-cahz10/Debug/cmTC_0233d.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-cahz10/Debug/cmTC_0233d.lib" /MACHINE:X64  /machine:x64 cmTC_0233d.dir\\Debug\\CheckSymbolExists.obj
+          cmTC_0233d.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-cahz10\\Debug\\cmTC_0233d.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_0233d.dir\\Debug\\cmTC_0233d.tlog\\unsuccessfulbuild".
+          Touching "cmTC_0233d.dir\\Debug\\cmTC_0233d.tlog\\cmTC_0233d.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-cahz10\\cmTC_0233d.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.82
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:163 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:68 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "cmake/platforms/windows.cmake:56 (check_symbol_exists)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for wmemchr"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-0j73hj"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-0j73hj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_WMEMCHR"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-0j73hj'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_5374f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:30 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-0j73hj\\cmTC_5374f.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_5374f.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-0j73hj\\Debug\\".
+          Creating directory "cmTC_5374f.dir\\Debug\\cmTC_5374f.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_5374f.dir\\Debug\\cmTC_5374f.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_5374f.dir\\Debug\\cmTC_5374f.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5374f.dir\\Debug\\\\" /Fd"cmTC_5374f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-0j73hj\\CheckSymbolExists.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5374f.dir\\Debug\\\\" /Fd"cmTC_5374f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-0j73hj\\CheckSymbolExists.c"
+          CheckSymbolExists.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-0j73hj\\Debug\\cmTC_5374f.exe" /INCREMENTAL /ILK:"cmTC_5374f.dir\\Debug\\cmTC_5374f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-0j73hj/Debug/cmTC_5374f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-0j73hj/Debug/cmTC_5374f.lib" /MACHINE:X64  /machine:x64 cmTC_5374f.dir\\Debug\\CheckSymbolExists.obj
+          cmTC_5374f.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-0j73hj\\Debug\\cmTC_5374f.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_5374f.dir\\Debug\\cmTC_5374f.tlog\\unsuccessfulbuild".
+          Touching "cmTC_5374f.dir\\Debug\\cmTC_5374f.tlog\\cmTC_5374f.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-0j73hj\\cmTC_5374f.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.84
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:163 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:68 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "cmake/platforms/windows.cmake:57 (check_symbol_exists)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for AddDllDirectory"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6pxds0"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6pxds0"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_ADDDLLDIRECTORY"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6pxds0'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_3ec89.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:31 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6pxds0\\cmTC_3ec89.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_3ec89.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6pxds0\\Debug\\".
+          Creating directory "cmTC_3ec89.dir\\Debug\\cmTC_3ec89.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_3ec89.dir\\Debug\\cmTC_3ec89.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_3ec89.dir\\Debug\\cmTC_3ec89.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_3ec89.dir\\Debug\\\\" /Fd"cmTC_3ec89.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6pxds0\\CheckSymbolExists.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_3ec89.dir\\Debug\\\\" /Fd"cmTC_3ec89.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6pxds0\\CheckSymbolExists.c"
+          CheckSymbolExists.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6pxds0\\Debug\\cmTC_3ec89.exe" /INCREMENTAL /ILK:"cmTC_3ec89.dir\\Debug\\cmTC_3ec89.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6pxds0/Debug/cmTC_3ec89.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6pxds0/Debug/cmTC_3ec89.lib" /MACHINE:X64  /machine:x64 cmTC_3ec89.dir\\Debug\\CheckSymbolExists.obj
+          cmTC_3ec89.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6pxds0\\Debug\\cmTC_3ec89.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_3ec89.dir\\Debug\\cmTC_3ec89.tlog\\unsuccessfulbuild".
+          Touching "cmTC_3ec89.dir\\Debug\\cmTC_3ec89.tlog\\cmTC_3ec89.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6pxds0\\cmTC_3ec89.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.97
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:163 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:68 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "cmake/platforms/windows.cmake:58 (check_symbol_exists)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for SetDefaultDllDirectories"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-1hjsvw"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-1hjsvw"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_SETDEFAULTDLLDIRECTORIES"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-1hjsvw'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_67bcd.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:33 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-1hjsvw\\cmTC_67bcd.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_67bcd.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-1hjsvw\\Debug\\".
+          Creating directory "cmTC_67bcd.dir\\Debug\\cmTC_67bcd.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_67bcd.dir\\Debug\\cmTC_67bcd.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_67bcd.dir\\Debug\\cmTC_67bcd.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_67bcd.dir\\Debug\\\\" /Fd"cmTC_67bcd.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-1hjsvw\\CheckSymbolExists.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_67bcd.dir\\Debug\\\\" /Fd"cmTC_67bcd.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-1hjsvw\\CheckSymbolExists.c"
+          CheckSymbolExists.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-1hjsvw\\Debug\\cmTC_67bcd.exe" /INCREMENTAL /ILK:"cmTC_67bcd.dir\\Debug\\cmTC_67bcd.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-1hjsvw/Debug/cmTC_67bcd.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-1hjsvw/Debug/cmTC_67bcd.lib" /MACHINE:X64  /machine:x64 cmTC_67bcd.dir\\Debug\\CheckSymbolExists.obj
+          cmTC_67bcd.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-1hjsvw\\Debug\\cmTC_67bcd.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_67bcd.dir\\Debug\\cmTC_67bcd.tlog\\unsuccessfulbuild".
+          Touching "cmTC_67bcd.dir\\Debug\\cmTC_67bcd.tlog\\cmTC_67bcd.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-1hjsvw\\cmTC_67bcd.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.97
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:163 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:68 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "cmake/platforms/windows.cmake:60 (check_symbol_exists)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for GetNamedPipeClientProcessId"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-itsm8q"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-itsm8q"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_GETNAMEDPIPECLIENTPROCESSID"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-itsm8q'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_f6ce1.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:34 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-itsm8q\\cmTC_f6ce1.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_f6ce1.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-itsm8q\\Debug\\".
+          Creating directory "cmTC_f6ce1.dir\\Debug\\cmTC_f6ce1.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_f6ce1.dir\\Debug\\cmTC_f6ce1.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_f6ce1.dir\\Debug\\cmTC_f6ce1.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f6ce1.dir\\Debug\\\\" /Fd"cmTC_f6ce1.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-itsm8q\\CheckSymbolExists.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f6ce1.dir\\Debug\\\\" /Fd"cmTC_f6ce1.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-itsm8q\\CheckSymbolExists.c"
+          CheckSymbolExists.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-itsm8q\\Debug\\cmTC_f6ce1.exe" /INCREMENTAL /ILK:"cmTC_f6ce1.dir\\Debug\\cmTC_f6ce1.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-itsm8q/Debug/cmTC_f6ce1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-itsm8q/Debug/cmTC_f6ce1.lib" /MACHINE:X64  /machine:x64 cmTC_f6ce1.dir\\Debug\\CheckSymbolExists.obj
+          cmTC_f6ce1.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-itsm8q\\Debug\\cmTC_f6ce1.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_f6ce1.dir\\Debug\\cmTC_f6ce1.tlog\\unsuccessfulbuild".
+          Touching "cmTC_f6ce1.dir\\Debug\\cmTC_f6ce1.tlog\\cmTC_f6ce1.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-itsm8q\\cmTC_f6ce1.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.96
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:163 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckSymbolExists.cmake:68 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "cmake/platforms/windows.cmake:62 (check_symbol_exists)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Looking for CreatePseudoConsole"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-gjz6g0"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-gjz6g0"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_CONPTY"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-gjz6g0'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_a8a69.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:35 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-gjz6g0\\cmTC_a8a69.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_a8a69.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-gjz6g0\\Debug\\".
+          Creating directory "cmTC_a8a69.dir\\Debug\\cmTC_a8a69.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_a8a69.dir\\Debug\\cmTC_a8a69.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_a8a69.dir\\Debug\\cmTC_a8a69.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a8a69.dir\\Debug\\\\" /Fd"cmTC_a8a69.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-gjz6g0\\CheckSymbolExists.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a8a69.dir\\Debug\\\\" /Fd"cmTC_a8a69.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-gjz6g0\\CheckSymbolExists.c"
+          CheckSymbolExists.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-gjz6g0\\Debug\\cmTC_a8a69.exe" /INCREMENTAL /ILK:"cmTC_a8a69.dir\\Debug\\cmTC_a8a69.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-gjz6g0/Debug/cmTC_a8a69.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-gjz6g0/Debug/cmTC_a8a69.lib" /MACHINE:X64  /machine:x64 cmTC_a8a69.dir\\Debug\\CheckSymbolExists.obj
+          cmTC_a8a69.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-gjz6g0\\Debug\\cmTC_a8a69.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_a8a69.dir\\Debug\\cmTC_a8a69.tlog\\unsuccessfulbuild".
+          Touching "cmTC_a8a69.dir\\Debug\\cmTC_a8a69.tlog\\cmTC_a8a69.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-gjz6g0\\cmTC_a8a69.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.98
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/platforms/windows.cmake:64 (check_c_source_compiles)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Performing Test HAVE_GCP_RESULTSW"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-28cfl9"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-28cfl9"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_GCP_RESULTSW"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-28cfl9'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e639f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:36 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-28cfl9\\cmTC_e639f.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_e639f.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-28cfl9\\Debug\\".
+          Creating directory "cmTC_e639f.dir\\Debug\\cmTC_e639f.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_e639f.dir\\Debug\\cmTC_e639f.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_e639f.dir\\Debug\\cmTC_e639f.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_GCP_RESULTSW /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_e639f.dir\\Debug\\\\" /Fd"cmTC_e639f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-28cfl9\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_GCP_RESULTSW /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_e639f.dir\\Debug\\\\" /Fd"cmTC_e639f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-28cfl9\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-28cfl9\\Debug\\cmTC_e639f.exe" /INCREMENTAL /ILK:"cmTC_e639f.dir\\Debug\\cmTC_e639f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-28cfl9/Debug/cmTC_e639f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-28cfl9/Debug/cmTC_e639f.lib" /MACHINE:X64  /machine:x64 cmTC_e639f.dir\\Debug\\src.obj
+          cmTC_e639f.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-28cfl9\\Debug\\cmTC_e639f.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_e639f.dir\\Debug\\cmTC_e639f.tlog\\unsuccessfulbuild".
+          Touching "cmTC_e639f.dir\\Debug\\cmTC_e639f.tlog\\cmTC_e639f.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-28cfl9\\cmTC_e639f.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.97
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/platforms/windows.cmake:72 (check_c_source_compiles)"
+      - "cmake/platforms/windows.cmake:83 (dwmapi_test_wrapper)"
+      - "cmake/setup.cmake:103 (include)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Performing Test HAVE_DWMAPI_H"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6kk0s5"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6kk0s5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAVE_DWMAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6kk0s5'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_62d43.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:38 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6kk0s5\\cmTC_62d43.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_62d43.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6kk0s5\\Debug\\".
+          Creating directory "cmTC_62d43.dir\\Debug\\cmTC_62d43.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_62d43.dir\\Debug\\cmTC_62d43.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_62d43.dir\\Debug\\cmTC_62d43.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_DWMAPI_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_62d43.dir\\Debug\\\\" /Fd"cmTC_62d43.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6kk0s5\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_DWMAPI_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_62d43.dir\\Debug\\\\" /Fd"cmTC_62d43.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6kk0s5\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6kk0s5\\Debug\\cmTC_62d43.exe" /INCREMENTAL /ILK:"cmTC_62d43.dir\\Debug\\cmTC_62d43.ilk" /NOLOGO dwmapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6kk0s5/Debug/cmTC_62d43.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-6kk0s5/Debug/cmTC_62d43.lib" /MACHINE:X64  /machine:x64 cmTC_62d43.dir\\Debug\\src.obj
+          cmTC_62d43.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6kk0s5\\Debug\\cmTC_62d43.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_62d43.dir\\Debug\\cmTC_62d43.tlog\\unsuccessfulbuild".
+          Touching "cmTC_62d43.dir\\Debug\\cmTC_62d43.tlog\\cmTC_62d43.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-6kk0s5\\cmTC_62d43.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.99
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "cmake/setup.cmake:111 (check_c_source_compiles)"
+      - "CMakeLists.txt:6 (include)"
+    checks:
+      - "Performing Test HAVE_ALIGNED_ALLOC"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-fcec9q"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-fcec9q"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_ALIGNED_ALLOC"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-fcec9q'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_93c08.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:39 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_93c08.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\Debug\\".
+          Creating directory "cmTC_93c08.dir\\Debug\\cmTC_93c08.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_93c08.dir\\Debug\\cmTC_93c08.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_93c08.dir\\Debug\\cmTC_93c08.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_ALIGNED_ALLOC /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_93c08.dir\\Debug\\\\" /Fd"cmTC_93c08.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_ALIGNED_ALLOC /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_93c08.dir\\Debug\\\\" /Fd"cmTC_93c08.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\src.c"
+          src.c
+        C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\src.c(5,11): warning C4047: 'initializing': 'void *' differs in levels of indirection from 'int' [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj]
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\Debug\\cmTC_93c08.exe" /INCREMENTAL /ILK:"cmTC_93c08.dir\\Debug\\cmTC_93c08.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-fcec9q/Debug/cmTC_93c08.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-fcec9q/Debug/cmTC_93c08.lib" /MACHINE:X64  /machine:x64 /manifest:no cmTC_93c08.dir\\Debug\\src.obj
+        LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj]
+        src.obj : error LNK2019: unresolved external symbol aligned_alloc referenced in function main [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj]
+        C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\Debug\\cmTC_93c08.exe : fatal error LNK1120: 1 unresolved externals [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj]
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\src.c(5,11): warning C4047: 'initializing': 'void *' differs in levels of indirection from 'int' [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj]
+        
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj]
+        
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          src.obj : error LNK2019: unresolved external symbol aligned_alloc referenced in function main [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj]
+          C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\Debug\\cmTC_93c08.exe : fatal error LNK1120: 1 unresolved externals [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-fcec9q\\cmTC_93c08.vcxproj]
+        
+            2 Warning(s)
+            2 Error(s)
+        
+        Time Elapsed 00:00:00.63
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "crypto/CMakeLists.txt:69 (check_c_source_compiles)"
+      - "crypto/CMakeLists.txt:89 (test_compile_with_flags)"
+    checks:
+      - "Performing Test HAVE_WMMINTRIN_H"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-pgjadr"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-pgjadr"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_WMMINTRIN_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-pgjadr'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_41857.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:40 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\cmTC_41857.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_41857.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\Debug\\".
+          Creating directory "cmTC_41857.dir\\Debug\\cmTC_41857.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_41857.dir\\Debug\\cmTC_41857.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_41857.dir\\Debug\\cmTC_41857.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_WMMINTRIN_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_41857.dir\\Debug\\\\" /Fd"cmTC_41857.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_WMMINTRIN_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_41857.dir\\Debug\\\\" /Fd"cmTC_41857.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\Debug\\cmTC_41857.exe" /INCREMENTAL /ILK:"cmTC_41857.dir\\Debug\\cmTC_41857.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-pgjadr/Debug/cmTC_41857.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-pgjadr/Debug/cmTC_41857.lib" /MACHINE:X64  /machine:x64 /manifest:no cmTC_41857.dir\\Debug\\src.obj
+        LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\cmTC_41857.vcxproj]
+          cmTC_41857.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\Debug\\cmTC_41857.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_41857.dir\\Debug\\cmTC_41857.tlog\\unsuccessfulbuild".
+          Touching "cmTC_41857.dir\\Debug\\cmTC_41857.tlog\\cmTC_41857.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\cmTC_41857.vcxproj" (default targets).
+        
+        Build succeeded.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\cmTC_41857.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-pgjadr\\cmTC_41857.vcxproj]
+        
+            1 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.72
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "crypto/CMakeLists.txt:69 (check_c_source_compiles)"
+      - "crypto/CMakeLists.txt:97 (test_compile_with_flags)"
+    checks:
+      - "Performing Test HAVE_AES_NI"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-00eh5h"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-00eh5h"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_AES_NI"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-00eh5h'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_bc23f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:41 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\cmTC_bc23f.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_bc23f.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\Debug\\".
+          Creating directory "cmTC_bc23f.dir\\Debug\\cmTC_bc23f.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_bc23f.dir\\Debug\\cmTC_bc23f.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_bc23f.dir\\Debug\\cmTC_bc23f.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_AES_NI /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_bc23f.dir\\Debug\\\\" /Fd"cmTC_bc23f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_AES_NI /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_bc23f.dir\\Debug\\\\" /Fd"cmTC_bc23f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\Debug\\cmTC_bc23f.exe" /INCREMENTAL /ILK:"cmTC_bc23f.dir\\Debug\\cmTC_bc23f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-00eh5h/Debug/cmTC_bc23f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-00eh5h/Debug/cmTC_bc23f.lib" /MACHINE:X64  /machine:x64 /manifest:no cmTC_bc23f.dir\\Debug\\src.obj
+        LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\cmTC_bc23f.vcxproj]
+          cmTC_bc23f.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\Debug\\cmTC_bc23f.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_bc23f.dir\\Debug\\cmTC_bc23f.tlog\\unsuccessfulbuild".
+          Touching "cmTC_bc23f.dir\\Debug\\cmTC_bc23f.tlog\\cmTC_bc23f.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\cmTC_bc23f.vcxproj" (default targets).
+        
+        Build succeeded.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\cmTC_bc23f.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-00eh5h\\cmTC_bc23f.vcxproj]
+        
+            1 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.70
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "crypto/CMakeLists.txt:69 (check_c_source_compiles)"
+      - "crypto/CMakeLists.txt:108 (test_compile_with_flags)"
+    checks:
+      - "Performing Test HAVE_SHAINTRIN_H"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-90jjry"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-90jjry"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_SHAINTRIN_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-90jjry'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_195a1.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:42 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\cmTC_195a1.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_195a1.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\Debug\\".
+          Creating directory "cmTC_195a1.dir\\Debug\\cmTC_195a1.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_195a1.dir\\Debug\\cmTC_195a1.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_195a1.dir\\Debug\\cmTC_195a1.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_SHAINTRIN_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_195a1.dir\\Debug\\\\" /Fd"cmTC_195a1.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_SHAINTRIN_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_195a1.dir\\Debug\\\\" /Fd"cmTC_195a1.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\src.c"
+          src.c
+        C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\src.c(5,16): error C1083: Cannot open include file: 'shaintrin.h': No such file or directory [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\cmTC_195a1.vcxproj]
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\cmTC_195a1.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\cmTC_195a1.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\src.c(5,16): error C1083: Cannot open include file: 'shaintrin.h': No such file or directory [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-90jjry\\cmTC_195a1.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.43
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "crypto/CMakeLists.txt:69 (check_c_source_compiles)"
+      - "crypto/CMakeLists.txt:123 (test_compile_with_flags)"
+    checks:
+      - "Performing Test HAVE_SHA_NI"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-iqen7w"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-iqen7w"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_SHA_NI"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-iqen7w'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_7446f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:43 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\cmTC_7446f.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_7446f.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\Debug\\".
+          Creating directory "cmTC_7446f.dir\\Debug\\cmTC_7446f.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_7446f.dir\\Debug\\cmTC_7446f.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_7446f.dir\\Debug\\cmTC_7446f.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_SHA_NI /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_7446f.dir\\Debug\\\\" /Fd"cmTC_7446f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_SHA_NI /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_7446f.dir\\Debug\\\\" /Fd"cmTC_7446f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\Debug\\cmTC_7446f.exe" /INCREMENTAL /ILK:"cmTC_7446f.dir\\Debug\\cmTC_7446f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-iqen7w/Debug/cmTC_7446f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-iqen7w/Debug/cmTC_7446f.lib" /MACHINE:X64  /machine:x64 /manifest:no cmTC_7446f.dir\\Debug\\src.obj
+        LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\cmTC_7446f.vcxproj]
+          cmTC_7446f.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\Debug\\cmTC_7446f.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_7446f.dir\\Debug\\cmTC_7446f.tlog\\unsuccessfulbuild".
+          Touching "cmTC_7446f.dir\\Debug\\cmTC_7446f.tlog\\cmTC_7446f.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\cmTC_7446f.vcxproj" (default targets).
+        
+        Build succeeded.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\cmTC_7446f.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-iqen7w\\cmTC_7446f.vcxproj]
+        
+            1 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.77
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "crypto/CMakeLists.txt:69 (check_c_source_compiles)"
+      - "crypto/CMakeLists.txt:134 (test_compile_with_flags)"
+    checks:
+      - "Performing Test HAVE_CLMUL"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-86q8h0"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-86q8h0"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_CLMUL"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-86q8h0'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_c591e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:44 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\cmTC_c591e.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_c591e.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\Debug\\".
+          Creating directory "cmTC_c591e.dir\\Debug\\cmTC_c591e.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_c591e.dir\\Debug\\cmTC_c591e.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_c591e.dir\\Debug\\cmTC_c591e.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_CLMUL /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_c591e.dir\\Debug\\\\" /Fd"cmTC_c591e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_CLMUL /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_c591e.dir\\Debug\\\\" /Fd"cmTC_c591e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\Debug\\cmTC_c591e.exe" /INCREMENTAL /ILK:"cmTC_c591e.dir\\Debug\\cmTC_c591e.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-86q8h0/Debug/cmTC_c591e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-86q8h0/Debug/cmTC_c591e.lib" /MACHINE:X64  /machine:x64 /manifest:no cmTC_c591e.dir\\Debug\\src.obj
+        LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\cmTC_c591e.vcxproj]
+          cmTC_c591e.vcxproj -> C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\Debug\\cmTC_c591e.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_c591e.dir\\Debug\\cmTC_c591e.tlog\\unsuccessfulbuild".
+          Touching "cmTC_c591e.dir\\Debug\\cmTC_c591e.tlog\\cmTC_c591e.lastbuildstate".
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\cmTC_c591e.vcxproj" (default targets).
+        
+        Build succeeded.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\cmTC_c591e.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : warning LNK4075: ignoring '/MANIFESTUAC' due to '/MANIFEST:NO' specification [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-86q8h0\\cmTC_c591e.vcxproj]
+        
+            1 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.72
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "crypto/CMakeLists.txt:69 (check_c_source_compiles)"
+      - "crypto/CMakeLists.txt:153 (test_compile_with_flags)"
+    checks:
+      - "Performing Test HAVE_ARM_NEON_H"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-j2asks"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-j2asks"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_ARM_NEON_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-j2asks'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ab7ea.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:45 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-j2asks\\cmTC_ab7ea.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_ab7ea.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-j2asks\\Debug\\".
+          Creating directory "cmTC_ab7ea.dir\\Debug\\cmTC_ab7ea.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_ab7ea.dir\\Debug\\cmTC_ab7ea.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_ab7ea.dir\\Debug\\cmTC_ab7ea.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_USE_NEW_NEON_INTRINSICS /D HAVE_ARM_NEON_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ab7ea.dir\\Debug\\\\" /Fd"cmTC_ab7ea.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-j2asks\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _ARM_USE_NEW_NEON_INTRINSICS /D HAVE_ARM_NEON_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ab7ea.dir\\Debug\\\\" /Fd"cmTC_ab7ea.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-j2asks\\src.c"
+          src.c
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\arm_neon.h(21,1): error C1189: #error:  This header is specific to ARM targets [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-j2asks\\cmTC_ab7ea.vcxproj]
+          (compiling source file 'src.c')
+          
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-j2asks\\cmTC_ab7ea.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-j2asks\\cmTC_ab7ea.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\arm_neon.h(21,1): error C1189: #error:  This header is specific to ARM targets [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-j2asks\\cmTC_ab7ea.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.45
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "crypto/CMakeLists.txt:69 (check_c_source_compiles)"
+      - "crypto/CMakeLists.txt:163 (test_compile_with_flags)"
+    checks:
+      - "Performing Test HAVE_ARM64_NEON_H"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-zrviph"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-zrviph"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_ARM64_NEON_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-zrviph'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_d98c9.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:46 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-zrviph\\cmTC_d98c9.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_d98c9.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-zrviph\\Debug\\".
+          Creating directory "cmTC_d98c9.dir\\Debug\\cmTC_d98c9.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_d98c9.dir\\Debug\\cmTC_d98c9.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_d98c9.dir\\Debug\\cmTC_d98c9.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_ARM64_NEON_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d98c9.dir\\Debug\\\\" /Fd"cmTC_d98c9.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-zrviph\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_ARM64_NEON_H /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d98c9.dir\\Debug\\\\" /Fd"cmTC_d98c9.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-zrviph\\src.c"
+          src.c
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\arm64_neon.h(17,1): error C1189: #error:  This header is specific to ARM64 targets [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-zrviph\\cmTC_d98c9.vcxproj]
+          (compiling source file 'src.c')
+          
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-zrviph\\cmTC_d98c9.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-zrviph\\cmTC_d98c9.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\arm64_neon.h(17,1): error C1189: #error:  This header is specific to ARM64 targets [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-zrviph\\cmTC_d98c9.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.42
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "crypto/CMakeLists.txt:69 (check_c_source_compiles)"
+      - "crypto/CMakeLists.txt:239 (test_compile_with_flags)"
+    checks:
+      - "Performing Test HAVE_ARM_DIT"
+    directories:
+      source: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-aapea1"
+      binary: "C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-aapea1"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64 /manifest:no"
+    buildResult:
+      variable: "HAVE_ARM_DIT"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Tools/source/AutoPuTTY/putty-0.83/CMakeFiles/CMakeScratch/TryCompile-aapea1'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1ee10.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.13.15+18b3035f6 for .NET Framework
+        Build started 3/17/2025 3:08:46 PM.
+        
+        Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\cmTC_1ee10.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_1ee10.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\Debug\\".
+          Creating directory "cmTC_1ee10.dir\\Debug\\cmTC_1ee10.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_1ee10.dir\\Debug\\cmTC_1ee10.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_1ee10.dir\\Debug\\cmTC_1ee10.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_ARM_DIT /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1ee10.dir\\Debug\\\\" /Fd"cmTC_1ee10.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\src.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_ARM_DIT /D _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1ee10.dir\\Debug\\\\" /Fd"cmTC_1ee10.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /wd4244 /wd4267 /wd4018 /wd4146 /wd4293 /wd4090 /errorReport:queue "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\src.c"
+          src.c
+        C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\src.c(2,22): error C2065: 'asm': undeclared identifier [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\cmTC_1ee10.vcxproj]
+        C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\src.c(2,26): error C2143: syntax error: missing ';' before 'volatile' [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\cmTC_1ee10.vcxproj]
+        Done Building Project "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\cmTC_1ee10.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\cmTC_1ee10.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\src.c(2,22): error C2065: 'asm': undeclared identifier [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\cmTC_1ee10.vcxproj]
+          C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\src.c(2,26): error C2143: syntax error: missing ';' before 'volatile' [C:\\Tools\\source\\AutoPuTTY\\putty-0.83\\CMakeFiles\\CMakeScratch\\TryCompile-aapea1\\cmTC_1ee10.vcxproj]
+        
+            0 Warning(s)
+            2 Error(s)
+        
+        Time Elapsed 00:00:00.41
+        
+      exitCode: 1
+...

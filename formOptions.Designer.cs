@@ -1,6 +1,6 @@
 namespace AutoPuTTY
 {
-    partial class formOptions
+    partial class FormOptions
     {
         /// <summary>
         /// Required designer variable.
@@ -29,198 +29,217 @@ namespace AutoPuTTY
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formOptions));
-            this.pOPuTTY = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbPuTTYForward = new System.Windows.Forms.CheckBox();
-            this.bPuTTYExecute = new System.Windows.Forms.Button();
-            this.lSep8 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOptions));
+            this.panelPuTTY = new System.Windows.Forms.Panel();
+            this.cbPuTTYX11 = new System.Windows.Forms.CheckBox();
+            this.cbPuTTYAgent = new System.Windows.Forms.CheckBox();
+            this.laPuTTYSeparator4 = new System.Windows.Forms.Label();
+            this.laOther = new System.Windows.Forms.Label();
+            this.buPuTTYExecute = new System.Windows.Forms.Button();
+            this.laPuTTYSeparator2 = new System.Windows.Forms.Label();
             this.cbPuTTYExecute = new System.Windows.Forms.CheckBox();
             this.tbPuTTYExecute = new System.Windows.Forms.TextBox();
-            this.lSep9 = new System.Windows.Forms.Label();
+            this.laPuTTYSeparator3 = new System.Windows.Forms.Label();
             this.cbPuTTYKey = new System.Windows.Forms.CheckBox();
-            this.lSep7 = new System.Windows.Forms.Label();
-            this.bPuTTYKey = new System.Windows.Forms.Button();
-            this.lPuTTYPath = new System.Windows.Forms.Label();
+            this.laPuTTYSeparator1 = new System.Windows.Forms.Label();
+            this.buPuTTYKey = new System.Windows.Forms.Button();
+            this.laPuTTYPath = new AutoPuTTY.SingleClickLabel();
             this.tbPuTTYKey = new System.Windows.Forms.TextBox();
-            this.bPuTTYPath = new System.Windows.Forms.Button();
+            this.buPuTTYPath = new System.Windows.Forms.Button();
             this.tbPuTTYPath = new System.Windows.Forms.TextBox();
-            this.pORD = new System.Windows.Forms.Panel();
+            this.panelRD = new System.Windows.Forms.Panel();
             this.cbRDSpan = new System.Windows.Forms.CheckBox();
             this.cbRDDrives = new System.Windows.Forms.CheckBox();
             this.cbRDAdmin = new System.Windows.Forms.CheckBox();
-            this.lSep13 = new System.Windows.Forms.Label();
-            this.lRDOther = new System.Windows.Forms.Label();
-            this.lSep12 = new System.Windows.Forms.Label();
-            this.lRDSize = new System.Windows.Forms.Label();
+            this.laRDSeparator4 = new System.Windows.Forms.Label();
+            this.laRDOther = new AutoPuTTY.SingleClickLabel();
+            this.laRDSeparator3 = new System.Windows.Forms.Label();
+            this.laRDSize = new AutoPuTTY.SingleClickLabel();
             this.cbRDSize = new System.Windows.Forms.ComboBox();
-            this.lRDKeep = new System.Windows.Forms.Label();
+            this.laRDKeep = new AutoPuTTY.SingleClickLabel();
             this.tbRDKeep = new System.Windows.Forms.TextBox();
-            this.bRDKeep = new System.Windows.Forms.Button();
-            this.lSep11 = new System.Windows.Forms.Label();
-            this.lSep10 = new System.Windows.Forms.Label();
+            this.buRDKeep = new System.Windows.Forms.Button();
+            this.laRDSeparator2 = new System.Windows.Forms.Label();
+            this.laRDSeparator1 = new System.Windows.Forms.Label();
             this.tbRDPath = new System.Windows.Forms.TextBox();
-            this.lRDPath = new System.Windows.Forms.Label();
-            this.bRDPath = new System.Windows.Forms.Button();
-            this.pOVNC = new System.Windows.Forms.Panel();
-            this.lVNCOther = new System.Windows.Forms.Label();
-            this.lSep16 = new System.Windows.Forms.Label();
-            this.lVNCFiles = new System.Windows.Forms.Label();
+            this.laRDPath = new AutoPuTTY.SingleClickLabel();
+            this.buRDPath = new System.Windows.Forms.Button();
+            this.panelVNC = new System.Windows.Forms.Panel();
+            this.laVNCOther = new AutoPuTTY.SingleClickLabel();
+            this.laVNCSeparator3 = new System.Windows.Forms.Label();
+            this.laVNCFiles = new AutoPuTTY.SingleClickLabel();
             this.tbVNCKeep = new System.Windows.Forms.TextBox();
-            this.bVNCKeep = new System.Windows.Forms.Button();
-            this.lSep15 = new System.Windows.Forms.Label();
+            this.buVNCKeep = new System.Windows.Forms.Button();
+            this.laVNCSeparator2 = new System.Windows.Forms.Label();
             this.cbVNCViewonly = new System.Windows.Forms.CheckBox();
             this.cbVNCFullscreen = new System.Windows.Forms.CheckBox();
-            this.lSep14 = new System.Windows.Forms.Label();
+            this.laVNCSeparator1 = new System.Windows.Forms.Label();
             this.tbVNCPath = new System.Windows.Forms.TextBox();
-            this.lVNCPath = new System.Windows.Forms.Label();
-            this.bVNCPath = new System.Windows.Forms.Button();
-            this.pOWinSCP = new System.Windows.Forms.Panel();
-            this.lSep19 = new System.Windows.Forms.Label();
-            this.lWSCPOther = new System.Windows.Forms.Label();
+            this.laVNCPath = new AutoPuTTY.SingleClickLabel();
+            this.buVNCPath = new System.Windows.Forms.Button();
+            this.paWinSCP = new System.Windows.Forms.Panel();
             this.cbWSCPPassive = new System.Windows.Forms.CheckBox();
-            this.lSep18 = new System.Windows.Forms.Label();
+            this.cbWSCPUnsecure = new System.Windows.Forms.CheckBox();
+            this.cbWSCPAgent = new System.Windows.Forms.CheckBox();
+            this.laWSeparator3 = new System.Windows.Forms.Label();
+            this.laWSCPOther = new AutoPuTTY.SingleClickLabel();
+            this.laWSeparator2 = new System.Windows.Forms.Label();
             this.cbWSCPKey = new System.Windows.Forms.CheckBox();
-            this.lSep17 = new System.Windows.Forms.Label();
-            this.bWSCPKey = new System.Windows.Forms.Button();
-            this.lWSCPPath = new System.Windows.Forms.Label();
+            this.laWSeparator1 = new System.Windows.Forms.Label();
+            this.buWSCPKey = new System.Windows.Forms.Button();
+            this.laWSCPPath = new AutoPuTTY.SingleClickLabel();
             this.tbWSCPKey = new System.Windows.Forms.TextBox();
-            this.bWSCPPath = new System.Windows.Forms.Button();
+            this.buWSCPPath = new System.Windows.Forms.Button();
             this.tbWSCPPath = new System.Windows.Forms.TextBox();
-            this.tabs = new System.Windows.Forms.TabControl();
-            this.tabGeneral = new System.Windows.Forms.TabPage();
-            this.pOGeneral = new System.Windows.Forms.Panel();
+            this.taOptions = new System.Windows.Forms.TabControl();
+            this.taGeneral = new System.Windows.Forms.TabPage();
+            this.paGeneral = new System.Windows.Forms.Panel();
+            this.piGImport = new System.Windows.Forms.PictureBox();
+            this.cbGTooltips = new System.Windows.Forms.CheckBox();
             this.cbGMinimize = new System.Windows.Forms.CheckBox();
             this.cbGPosition = new System.Windows.Forms.CheckBox();
             this.cbGSize = new System.Windows.Forms.CheckBox();
-            this.lSep6 = new System.Windows.Forms.Label();
-            this.lGOther = new System.Windows.Forms.Label();
+            this.cbGHidePassword = new System.Windows.Forms.CheckBox();
+            this.slGMulti = new System.Windows.Forms.TrackBar();
+            this.laGSeparator6 = new System.Windows.Forms.Label();
+            this.laGOther = new AutoPuTTY.SingleClickLabel();
             this.cbGSkip = new System.Windows.Forms.CheckBox();
             this.cbGReplace = new System.Windows.Forms.CheckBox();
-            this.lSep5 = new System.Windows.Forms.Label();
-            this.lGImport = new System.Windows.Forms.Label();
-            this.bGImport = new System.Windows.Forms.Button();
-            this.lSep4 = new System.Windows.Forms.Label();
+            this.laGSeparator5 = new System.Windows.Forms.Label();
+            this.laGImport = new AutoPuTTY.SingleClickLabel();
+            this.buGImport = new System.Windows.Forms.Button();
+            this.laGSeparator4 = new System.Windows.Forms.Label();
             this.cbGMulti = new System.Windows.Forms.CheckBox();
             this.tpGPass = new System.Windows.Forms.TableLayoutPanel();
-            this.pGApply = new System.Windows.Forms.Panel();
-            this.bGPassword = new System.Windows.Forms.Button();
-            this.lSep3 = new System.Windows.Forms.Label();
+            this.paGApply = new System.Windows.Forms.Panel();
+            this.buGApply = new System.Windows.Forms.Button();
+            this.laGSeparator3 = new System.Windows.Forms.Label();
             this.pGPassword = new System.Windows.Forms.Panel();
-            this.lSep1 = new System.Windows.Forms.Label();
-            this.cbGPassword = new System.Windows.Forms.CheckBox();
+            this.labelGPassword = new AutoPuTTY.SingleClickLabel();
+            this.laGSeparator1 = new System.Windows.Forms.Label();
             this.tbGPassword = new System.Windows.Forms.TextBox();
-            this.pGConfirm = new System.Windows.Forms.Panel();
+            this.cbGPassword = new System.Windows.Forms.CheckBox();
+            this.paGConfirm = new System.Windows.Forms.Panel();
             this.tbGConfirm = new System.Windows.Forms.TextBox();
-            this.lSep2 = new System.Windows.Forms.Label();
-            this.lGConfirm = new System.Windows.Forms.Label();
-            this.liGImport = new System.Windows.Forms.LinkLabel();
-            this.tabPuTTY = new System.Windows.Forms.TabPage();
-            this.tabRD = new System.Windows.Forms.TabPage();
-            this.tabVNC = new System.Windows.Forms.TabPage();
-            this.tabWSCP = new System.Windows.Forms.TabPage();
-            this.bwProgress = new System.ComponentModel.BackgroundWorker();
-            this.bOK = new System.Windows.Forms.Button();
-            this.toolTipOptions = new System.Windows.Forms.ToolTip(this.components);
-            this.slGMulti = new Fusionbird.FusionToolkit.FusionTrackBar();
-            this.pOPuTTY.SuspendLayout();
-            this.pORD.SuspendLayout();
-            this.pOVNC.SuspendLayout();
-            this.pOWinSCP.SuspendLayout();
-            this.tabs.SuspendLayout();
-            this.tabGeneral.SuspendLayout();
-            this.pOGeneral.SuspendLayout();
-            this.tpGPass.SuspendLayout();
-            this.pGApply.SuspendLayout();
-            this.pGPassword.SuspendLayout();
-            this.pGConfirm.SuspendLayout();
-            this.tabPuTTY.SuspendLayout();
-            this.tabRD.SuspendLayout();
-            this.tabVNC.SuspendLayout();
-            this.tabWSCP.SuspendLayout();
+            this.laGSeparator2 = new System.Windows.Forms.Label();
+            this.labelGConfirm = new AutoPuTTY.SingleClickLabel();
+            this.taPuTTY = new System.Windows.Forms.TabPage();
+            this.taRD = new System.Windows.Forms.TabPage();
+            this.taVNC = new System.Windows.Forms.TabPage();
+            this.taWSCP = new System.Windows.Forms.TabPage();
+            this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
+            this.buOK = new System.Windows.Forms.Button();
+            this.tooltipOptions = new System.Windows.Forms.ToolTip(this.components);
+            this.panelPuTTY.SuspendLayout();
+            this.panelRD.SuspendLayout();
+            this.panelVNC.SuspendLayout();
+            this.paWinSCP.SuspendLayout();
+            this.taOptions.SuspendLayout();
+            this.taGeneral.SuspendLayout();
+            this.paGeneral.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.piGImport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).BeginInit();
+            this.tpGPass.SuspendLayout();
+            this.paGApply.SuspendLayout();
+            this.pGPassword.SuspendLayout();
+            this.paGConfirm.SuspendLayout();
+            this.taPuTTY.SuspendLayout();
+            this.taRD.SuspendLayout();
+            this.taVNC.SuspendLayout();
+            this.taWSCP.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pOPuTTY
+            // panelPuTTY
             // 
-            this.pOPuTTY.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelPuTTY.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pOPuTTY.BackColor = System.Drawing.Color.Transparent;
-            this.pOPuTTY.Controls.Add(this.label2);
-            this.pOPuTTY.Controls.Add(this.label1);
-            this.pOPuTTY.Controls.Add(this.cbPuTTYForward);
-            this.pOPuTTY.Controls.Add(this.bPuTTYExecute);
-            this.pOPuTTY.Controls.Add(this.lSep8);
-            this.pOPuTTY.Controls.Add(this.cbPuTTYExecute);
-            this.pOPuTTY.Controls.Add(this.tbPuTTYExecute);
-            this.pOPuTTY.Controls.Add(this.lSep9);
-            this.pOPuTTY.Controls.Add(this.cbPuTTYKey);
-            this.pOPuTTY.Controls.Add(this.lSep7);
-            this.pOPuTTY.Controls.Add(this.bPuTTYKey);
-            this.pOPuTTY.Controls.Add(this.lPuTTYPath);
-            this.pOPuTTY.Controls.Add(this.tbPuTTYKey);
-            this.pOPuTTY.Controls.Add(this.bPuTTYPath);
-            this.pOPuTTY.Controls.Add(this.tbPuTTYPath);
-            this.pOPuTTY.Location = new System.Drawing.Point(4, 4);
-            this.pOPuTTY.Name = "pOPuTTY";
-            this.pOPuTTY.Size = new System.Drawing.Size(286, 186);
-            this.pOPuTTY.TabIndex = 0;
+            this.panelPuTTY.BackColor = System.Drawing.Color.Transparent;
+            this.panelPuTTY.Controls.Add(this.cbPuTTYX11);
+            this.panelPuTTY.Controls.Add(this.cbPuTTYAgent);
+            this.panelPuTTY.Controls.Add(this.laPuTTYSeparator4);
+            this.panelPuTTY.Controls.Add(this.laOther);
+            this.panelPuTTY.Controls.Add(this.buPuTTYExecute);
+            this.panelPuTTY.Controls.Add(this.laPuTTYSeparator2);
+            this.panelPuTTY.Controls.Add(this.cbPuTTYExecute);
+            this.panelPuTTY.Controls.Add(this.tbPuTTYExecute);
+            this.panelPuTTY.Controls.Add(this.laPuTTYSeparator3);
+            this.panelPuTTY.Controls.Add(this.cbPuTTYKey);
+            this.panelPuTTY.Controls.Add(this.laPuTTYSeparator1);
+            this.panelPuTTY.Controls.Add(this.buPuTTYKey);
+            this.panelPuTTY.Controls.Add(this.laPuTTYPath);
+            this.panelPuTTY.Controls.Add(this.tbPuTTYKey);
+            this.panelPuTTY.Controls.Add(this.buPuTTYPath);
+            this.panelPuTTY.Controls.Add(this.tbPuTTYPath);
+            this.panelPuTTY.Location = new System.Drawing.Point(4, 4);
+            this.panelPuTTY.Name = "panelPuTTY";
+            this.panelPuTTY.Size = new System.Drawing.Size(286, 194);
+            this.panelPuTTY.TabIndex = 0;
             // 
-            // label2
+            // cbPuTTYX11
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbPuTTYX11.AutoSize = true;
+            this.cbPuTTYX11.Location = new System.Drawing.Point(2, 151);
+            this.cbPuTTYX11.Name = "cbPuTTYX11";
+            this.cbPuTTYX11.Size = new System.Drawing.Size(100, 17);
+            this.cbPuTTYX11.TabIndex = 15;
+            this.cbPuTTYX11.Text = "X11 Forwarding";
+            this.cbPuTTYX11.UseVisualStyleBackColor = true;
+            this.cbPuTTYX11.CheckedChanged += new System.EventHandler(this.cbPuTTYX11_CheckedChanged);
+            // 
+            // cbPuTTYAgent
+            // 
+            this.cbPuTTYAgent.AutoSize = true;
+            this.cbPuTTYAgent.Location = new System.Drawing.Point(2, 136);
+            this.cbPuTTYAgent.Name = "cbPuTTYAgent";
+            this.cbPuTTYAgent.Size = new System.Drawing.Size(109, 17);
+            this.cbPuTTYAgent.TabIndex = 14;
+            this.cbPuTTYAgent.Text = "Agent Forwarding";
+            this.cbPuTTYAgent.UseVisualStyleBackColor = true;
+            this.cbPuTTYAgent.CheckedChanged += new System.EventHandler(this.cbPuTTYAgent_CheckedChanged);
+            // 
+            // laPuTTYSeparator4
+            // 
+            this.laPuTTYSeparator4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label2.Location = new System.Drawing.Point(2, 134);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(283, 2);
-            this.label2.TabIndex = 14;
+            this.laPuTTYSeparator4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laPuTTYSeparator4.Location = new System.Drawing.Point(2, 134);
+            this.laPuTTYSeparator4.Name = "laPuTTYSeparator4";
+            this.laPuTTYSeparator4.Size = new System.Drawing.Size(283, 2);
+            this.laPuTTYSeparator4.TabIndex = 13;
             // 
-            // label1
+            // laOther
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 120);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(33, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Other";
+            this.laOther.AutoSize = true;
+            this.laOther.Location = new System.Drawing.Point(3, 120);
+            this.laOther.Name = "laOther";
+            this.laOther.Size = new System.Drawing.Size(33, 13);
+            this.laOther.TabIndex = 12;
+            this.laOther.Text = "Other";
             // 
-            // cbPuTTYForward
+            // buPuTTYExecute
             // 
-            this.cbPuTTYForward.AutoSize = true;
-            this.cbPuTTYForward.Location = new System.Drawing.Point(2, 136);
-            this.cbPuTTYForward.Name = "cbPuTTYForward";
-            this.cbPuTTYForward.Size = new System.Drawing.Size(100, 17);
-            this.cbPuTTYForward.TabIndex = 12;
-            this.cbPuTTYForward.Text = "X11 Forwarding";
-            this.cbPuTTYForward.UseVisualStyleBackColor = true;
-            this.cbPuTTYForward.CheckedChanged += new System.EventHandler(this.cbPuTTYXforward_CheckedChanged);
+            this.buPuTTYExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buPuTTYExecute.Enabled = false;
+            this.buPuTTYExecute.Location = new System.Drawing.Point(235, 58);
+            this.buPuTTYExecute.Margin = new System.Windows.Forms.Padding(0);
+            this.buPuTTYExecute.Name = "buPuTTYExecute";
+            this.buPuTTYExecute.Size = new System.Drawing.Size(50, 22);
+            this.buPuTTYExecute.TabIndex = 7;
+            this.buPuTTYExecute.Text = "Select";
+            this.buPuTTYExecute.UseCompatibleTextRendering = true;
+            this.buPuTTYExecute.UseVisualStyleBackColor = true;
+            this.buPuTTYExecute.Click += new System.EventHandler(this.bPuTTYExecute_Click);
             // 
-            // bPuTTYExecute
+            // laPuTTYSeparator2
             // 
-            this.bPuTTYExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bPuTTYExecute.Enabled = false;
-            this.bPuTTYExecute.Location = new System.Drawing.Point(235, 58);
-            this.bPuTTYExecute.Margin = new System.Windows.Forms.Padding(0);
-            this.bPuTTYExecute.Name = "bPuTTYExecute";
-            this.bPuTTYExecute.Size = new System.Drawing.Size(50, 22);
-            this.bPuTTYExecute.TabIndex = 7;
-            this.bPuTTYExecute.Text = "Select";
-            this.bPuTTYExecute.UseCompatibleTextRendering = true;
-            this.bPuTTYExecute.UseVisualStyleBackColor = true;
-            this.bPuTTYExecute.Click += new System.EventHandler(this.bPuTTYExecute_Click);
-            // 
-            // lSep8
-            // 
-            this.lSep8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laPuTTYSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep8.Location = new System.Drawing.Point(2, 56);
-            this.lSep8.Name = "lSep8";
-            this.lSep8.Size = new System.Drawing.Size(283, 2);
-            this.lSep8.TabIndex = 5;
+            this.laPuTTYSeparator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laPuTTYSeparator2.Location = new System.Drawing.Point(2, 56);
+            this.laPuTTYSeparator2.Name = "laPuTTYSeparator2";
+            this.laPuTTYSeparator2.Size = new System.Drawing.Size(283, 2);
+            this.laPuTTYSeparator2.TabIndex = 5;
             // 
             // cbPuTTYExecute
             // 
@@ -244,15 +263,15 @@ namespace AutoPuTTY
             this.tbPuTTYExecute.TabIndex = 6;
             this.tbPuTTYExecute.TextChanged += new System.EventHandler(this.tbPuTTYExecute_TextChanged);
             // 
-            // lSep9
+            // laPuTTYSeparator3
             // 
-            this.lSep9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laPuTTYSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep9.Location = new System.Drawing.Point(2, 95);
-            this.lSep9.Name = "lSep9";
-            this.lSep9.Size = new System.Drawing.Size(283, 2);
-            this.lSep9.TabIndex = 9;
+            this.laPuTTYSeparator3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laPuTTYSeparator3.Location = new System.Drawing.Point(2, 95);
+            this.laPuTTYSeparator3.Name = "laPuTTYSeparator3";
+            this.laPuTTYSeparator3.Size = new System.Drawing.Size(283, 2);
+            this.laPuTTYSeparator3.TabIndex = 9;
             // 
             // cbPuTTYKey
             // 
@@ -265,38 +284,38 @@ namespace AutoPuTTY
             this.cbPuTTYKey.UseVisualStyleBackColor = true;
             this.cbPuTTYKey.CheckedChanged += new System.EventHandler(this.cbPuTTYKey_CheckedChanged);
             // 
-            // lSep7
+            // laPuTTYSeparator1
             // 
-            this.lSep7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laPuTTYSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep7.Location = new System.Drawing.Point(2, 17);
-            this.lSep7.Name = "lSep7";
-            this.lSep7.Size = new System.Drawing.Size(283, 2);
-            this.lSep7.TabIndex = 1;
+            this.laPuTTYSeparator1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laPuTTYSeparator1.Location = new System.Drawing.Point(2, 17);
+            this.laPuTTYSeparator1.Name = "laPuTTYSeparator1";
+            this.laPuTTYSeparator1.Size = new System.Drawing.Size(283, 2);
+            this.laPuTTYSeparator1.TabIndex = 1;
             // 
-            // bPuTTYKey
+            // buPuTTYKey
             // 
-            this.bPuTTYKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bPuTTYKey.Enabled = false;
-            this.bPuTTYKey.Location = new System.Drawing.Point(235, 97);
-            this.bPuTTYKey.Margin = new System.Windows.Forms.Padding(0);
-            this.bPuTTYKey.Name = "bPuTTYKey";
-            this.bPuTTYKey.Size = new System.Drawing.Size(50, 22);
-            this.bPuTTYKey.TabIndex = 11;
-            this.bPuTTYKey.Text = "Select";
-            this.bPuTTYKey.UseCompatibleTextRendering = true;
-            this.bPuTTYKey.UseVisualStyleBackColor = true;
-            this.bPuTTYKey.Click += new System.EventHandler(this.bPuTTYKey_Click);
+            this.buPuTTYKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buPuTTYKey.Enabled = false;
+            this.buPuTTYKey.Location = new System.Drawing.Point(235, 97);
+            this.buPuTTYKey.Margin = new System.Windows.Forms.Padding(0);
+            this.buPuTTYKey.Name = "buPuTTYKey";
+            this.buPuTTYKey.Size = new System.Drawing.Size(50, 22);
+            this.buPuTTYKey.TabIndex = 11;
+            this.buPuTTYKey.Text = "Select";
+            this.buPuTTYKey.UseCompatibleTextRendering = true;
+            this.buPuTTYKey.UseVisualStyleBackColor = true;
+            this.buPuTTYKey.Click += new System.EventHandler(this.bPuTTYKey_Click);
             // 
-            // lPuTTYPath
+            // laPuTTYPath
             // 
-            this.lPuTTYPath.AutoSize = true;
-            this.lPuTTYPath.Location = new System.Drawing.Point(3, 3);
-            this.lPuTTYPath.Name = "lPuTTYPath";
-            this.lPuTTYPath.Size = new System.Drawing.Size(81, 13);
-            this.lPuTTYPath.TabIndex = 0;
-            this.lPuTTYPath.Text = "Path (putty.exe)";
+            this.laPuTTYPath.AutoSize = true;
+            this.laPuTTYPath.Location = new System.Drawing.Point(3, 3);
+            this.laPuTTYPath.Name = "laPuTTYPath";
+            this.laPuTTYPath.Size = new System.Drawing.Size(81, 13);
+            this.laPuTTYPath.TabIndex = 0;
+            this.laPuTTYPath.Text = "Path (putty.exe)";
             // 
             // tbPuTTYKey
             // 
@@ -310,18 +329,18 @@ namespace AutoPuTTY
             this.tbPuTTYKey.TabIndex = 10;
             this.tbPuTTYKey.TextChanged += new System.EventHandler(this.tbPuTTYKey_TextChanged);
             // 
-            // bPuTTYPath
+            // buPuTTYPath
             // 
-            this.bPuTTYPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bPuTTYPath.Location = new System.Drawing.Point(235, 19);
-            this.bPuTTYPath.Margin = new System.Windows.Forms.Padding(0);
-            this.bPuTTYPath.Name = "bPuTTYPath";
-            this.bPuTTYPath.Size = new System.Drawing.Size(50, 22);
-            this.bPuTTYPath.TabIndex = 3;
-            this.bPuTTYPath.Text = "Select";
-            this.bPuTTYPath.UseCompatibleTextRendering = true;
-            this.bPuTTYPath.UseVisualStyleBackColor = true;
-            this.bPuTTYPath.Click += new System.EventHandler(this.bPuTTYPath_Click);
+            this.buPuTTYPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buPuTTYPath.Location = new System.Drawing.Point(235, 19);
+            this.buPuTTYPath.Margin = new System.Windows.Forms.Padding(0);
+            this.buPuTTYPath.Name = "buPuTTYPath";
+            this.buPuTTYPath.Size = new System.Drawing.Size(50, 22);
+            this.buPuTTYPath.TabIndex = 3;
+            this.buPuTTYPath.Text = "Select";
+            this.buPuTTYPath.UseCompatibleTextRendering = true;
+            this.buPuTTYPath.UseVisualStyleBackColor = true;
+            this.buPuTTYPath.Click += new System.EventHandler(this.bPuTTYPath_Click);
             // 
             // tbPuTTYPath
             // 
@@ -334,47 +353,47 @@ namespace AutoPuTTY
             this.tbPuTTYPath.TabIndex = 2;
             this.tbPuTTYPath.TextChanged += new System.EventHandler(this.tbPuTTY_TextChanged);
             // 
-            // pORD
+            // panelRD
             // 
-            this.pORD.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelRD.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pORD.Controls.Add(this.cbRDSpan);
-            this.pORD.Controls.Add(this.cbRDDrives);
-            this.pORD.Controls.Add(this.cbRDAdmin);
-            this.pORD.Controls.Add(this.lSep13);
-            this.pORD.Controls.Add(this.lRDOther);
-            this.pORD.Controls.Add(this.lSep12);
-            this.pORD.Controls.Add(this.lRDSize);
-            this.pORD.Controls.Add(this.cbRDSize);
-            this.pORD.Controls.Add(this.lRDKeep);
-            this.pORD.Controls.Add(this.tbRDKeep);
-            this.pORD.Controls.Add(this.bRDKeep);
-            this.pORD.Controls.Add(this.lSep11);
-            this.pORD.Controls.Add(this.lSep10);
-            this.pORD.Controls.Add(this.tbRDPath);
-            this.pORD.Controls.Add(this.lRDPath);
-            this.pORD.Controls.Add(this.bRDPath);
-            this.pORD.Location = new System.Drawing.Point(4, 4);
-            this.pORD.Name = "pORD";
-            this.pORD.Size = new System.Drawing.Size(286, 185);
-            this.pORD.TabIndex = 0;
+            this.panelRD.Controls.Add(this.cbRDSpan);
+            this.panelRD.Controls.Add(this.cbRDDrives);
+            this.panelRD.Controls.Add(this.cbRDAdmin);
+            this.panelRD.Controls.Add(this.laRDSeparator4);
+            this.panelRD.Controls.Add(this.laRDOther);
+            this.panelRD.Controls.Add(this.laRDSeparator3);
+            this.panelRD.Controls.Add(this.laRDSize);
+            this.panelRD.Controls.Add(this.cbRDSize);
+            this.panelRD.Controls.Add(this.laRDKeep);
+            this.panelRD.Controls.Add(this.tbRDKeep);
+            this.panelRD.Controls.Add(this.buRDKeep);
+            this.panelRD.Controls.Add(this.laRDSeparator2);
+            this.panelRD.Controls.Add(this.laRDSeparator1);
+            this.panelRD.Controls.Add(this.tbRDPath);
+            this.panelRD.Controls.Add(this.laRDPath);
+            this.panelRD.Controls.Add(this.buRDPath);
+            this.panelRD.Location = new System.Drawing.Point(4, 4);
+            this.panelRD.Name = "panelRD";
+            this.panelRD.Size = new System.Drawing.Size(286, 194);
+            this.panelRD.TabIndex = 0;
             // 
             // cbRDSpan
             // 
             this.cbRDSpan.AutoSize = true;
-            this.cbRDSpan.Location = new System.Drawing.Point(2, 167);
+            this.cbRDSpan.Location = new System.Drawing.Point(2, 166);
             this.cbRDSpan.Margin = new System.Windows.Forms.Padding(0);
             this.cbRDSpan.Name = "cbRDSpan";
-            this.cbRDSpan.Size = new System.Drawing.Size(104, 17);
+            this.cbRDSpan.Size = new System.Drawing.Size(158, 17);
             this.cbRDSpan.TabIndex = 15;
-            this.cbRDSpan.Text = "Multiple monitors";
+            this.cbRDSpan.Text = "Multiple monitors (fullscreen)";
             this.cbRDSpan.CheckedChanged += new System.EventHandler(this.cbRDSpan_CheckedChanged);
             // 
             // cbRDDrives
             // 
             this.cbRDDrives.AutoSize = true;
-            this.cbRDDrives.Location = new System.Drawing.Point(2, 152);
+            this.cbRDDrives.Location = new System.Drawing.Point(2, 151);
             this.cbRDDrives.Margin = new System.Windows.Forms.Padding(0);
             this.cbRDDrives.Name = "cbRDDrives";
             this.cbRDDrives.Size = new System.Drawing.Size(112, 17);
@@ -385,7 +404,7 @@ namespace AutoPuTTY
             // cbRDAdmin
             // 
             this.cbRDAdmin.AutoSize = true;
-            this.cbRDAdmin.Location = new System.Drawing.Point(2, 137);
+            this.cbRDAdmin.Location = new System.Drawing.Point(2, 136);
             this.cbRDAdmin.Margin = new System.Windows.Forms.Padding(0);
             this.cbRDAdmin.Name = "cbRDAdmin";
             this.cbRDAdmin.Size = new System.Drawing.Size(55, 17);
@@ -393,48 +412,49 @@ namespace AutoPuTTY
             this.cbRDAdmin.Text = "Admin";
             this.cbRDAdmin.CheckedChanged += new System.EventHandler(this.cbRDAdmin_CheckedChanged);
             // 
-            // lSep13
+            // laRDSeparator4
             // 
-            this.lSep13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laRDSeparator4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep13.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep13.Location = new System.Drawing.Point(2, 135);
-            this.lSep13.Name = "lSep13";
-            this.lSep13.Size = new System.Drawing.Size(283, 2);
-            this.lSep13.TabIndex = 12;
+            this.laRDSeparator4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laRDSeparator4.Location = new System.Drawing.Point(2, 134);
+            this.laRDSeparator4.Name = "laRDSeparator4";
+            this.laRDSeparator4.Size = new System.Drawing.Size(283, 2);
+            this.laRDSeparator4.TabIndex = 12;
             // 
-            // lRDOther
+            // laRDOther
             // 
-            this.lRDOther.AutoSize = true;
-            this.lRDOther.Location = new System.Drawing.Point(3, 121);
-            this.lRDOther.Name = "lRDOther";
-            this.lRDOther.Size = new System.Drawing.Size(33, 13);
-            this.lRDOther.TabIndex = 11;
-            this.lRDOther.Text = "Other";
+            this.laRDOther.AutoSize = true;
+            this.laRDOther.Location = new System.Drawing.Point(3, 120);
+            this.laRDOther.Name = "laRDOther";
+            this.laRDOther.Size = new System.Drawing.Size(33, 13);
+            this.laRDOther.TabIndex = 11;
+            this.laRDOther.Text = "Other";
             // 
-            // lSep12
+            // laRDSeparator3
             // 
-            this.lSep12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laRDSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep12.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep12.Location = new System.Drawing.Point(2, 95);
-            this.lSep12.Name = "lSep12";
-            this.lSep12.Size = new System.Drawing.Size(283, 2);
-            this.lSep12.TabIndex = 9;
+            this.laRDSeparator3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laRDSeparator3.Location = new System.Drawing.Point(2, 95);
+            this.laRDSeparator3.Name = "laRDSeparator3";
+            this.laRDSeparator3.Size = new System.Drawing.Size(283, 2);
+            this.laRDSeparator3.TabIndex = 9;
             // 
-            // lRDSize
+            // laRDSize
             // 
-            this.lRDSize.AutoSize = true;
-            this.lRDSize.Location = new System.Drawing.Point(3, 81);
-            this.lRDSize.Name = "lRDSize";
-            this.lRDSize.Size = new System.Drawing.Size(62, 13);
-            this.lRDSize.TabIndex = 8;
-            this.lRDSize.Text = "Screen size";
+            this.laRDSize.AutoSize = true;
+            this.laRDSize.Location = new System.Drawing.Point(3, 81);
+            this.laRDSize.Name = "laRDSize";
+            this.laRDSize.Size = new System.Drawing.Size(62, 13);
+            this.laRDSize.TabIndex = 8;
+            this.laRDSize.Text = "Screen size";
             // 
             // cbRDSize
             // 
             this.cbRDSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbRDSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRDSize.FormattingEnabled = true;
             this.cbRDSize.Items.AddRange(new object[] {
             "",
@@ -449,7 +469,7 @@ namespace AutoPuTTY
             "1680x1050",
             "1920x1080",
             "1920x1200",
-            "Full screen"});
+            "Fullscreen"});
             this.cbRDSize.Location = new System.Drawing.Point(2, 98);
             this.cbRDSize.Name = "cbRDSize";
             this.cbRDSize.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -458,14 +478,14 @@ namespace AutoPuTTY
             this.cbRDSize.SelectedIndexChanged += new System.EventHandler(this.cbRDSize_SelectedIndexChanged);
             this.cbRDSize.TextChanged += new System.EventHandler(this.cbRDSize_TextChanged);
             // 
-            // lRDKeep
+            // laRDKeep
             // 
-            this.lRDKeep.AutoSize = true;
-            this.lRDKeep.Location = new System.Drawing.Point(3, 42);
-            this.lRDKeep.Name = "lRDKeep";
-            this.lRDKeep.Size = new System.Drawing.Size(237, 13);
-            this.lRDKeep.TabIndex = 4;
-            this.lRDKeep.Text = "Output path for generated \".rdp\" connection files";
+            this.laRDKeep.AutoSize = true;
+            this.laRDKeep.Location = new System.Drawing.Point(3, 42);
+            this.laRDKeep.Name = "laRDKeep";
+            this.laRDKeep.Size = new System.Drawing.Size(237, 13);
+            this.laRDKeep.TabIndex = 4;
+            this.laRDKeep.Text = "Output path for generated \".rdp\" connection files";
             // 
             // tbRDKeep
             // 
@@ -477,38 +497,38 @@ namespace AutoPuTTY
             this.tbRDKeep.TabIndex = 6;
             this.tbRDKeep.TextChanged += new System.EventHandler(this.tbRDKeep_TextChanged);
             // 
-            // bRDKeep
+            // buRDKeep
             // 
-            this.bRDKeep.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bRDKeep.Location = new System.Drawing.Point(235, 58);
-            this.bRDKeep.Margin = new System.Windows.Forms.Padding(0);
-            this.bRDKeep.Name = "bRDKeep";
-            this.bRDKeep.Size = new System.Drawing.Size(50, 22);
-            this.bRDKeep.TabIndex = 7;
-            this.bRDKeep.Text = "Select";
-            this.bRDKeep.UseCompatibleTextRendering = true;
-            this.bRDKeep.UseVisualStyleBackColor = true;
-            this.bRDKeep.Click += new System.EventHandler(this.bRDKeep_Click);
+            this.buRDKeep.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buRDKeep.Location = new System.Drawing.Point(235, 58);
+            this.buRDKeep.Margin = new System.Windows.Forms.Padding(0);
+            this.buRDKeep.Name = "buRDKeep";
+            this.buRDKeep.Size = new System.Drawing.Size(50, 22);
+            this.buRDKeep.TabIndex = 7;
+            this.buRDKeep.Text = "Select";
+            this.buRDKeep.UseCompatibleTextRendering = true;
+            this.buRDKeep.UseVisualStyleBackColor = true;
+            this.buRDKeep.Click += new System.EventHandler(this.bRDKeep_Click);
             // 
-            // lSep11
+            // laRDSeparator2
             // 
-            this.lSep11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laRDSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep11.Location = new System.Drawing.Point(2, 56);
-            this.lSep11.Name = "lSep11";
-            this.lSep11.Size = new System.Drawing.Size(283, 2);
-            this.lSep11.TabIndex = 5;
+            this.laRDSeparator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laRDSeparator2.Location = new System.Drawing.Point(2, 56);
+            this.laRDSeparator2.Name = "laRDSeparator2";
+            this.laRDSeparator2.Size = new System.Drawing.Size(283, 2);
+            this.laRDSeparator2.TabIndex = 5;
             // 
-            // lSep10
+            // laRDSeparator1
             // 
-            this.lSep10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laRDSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep10.Location = new System.Drawing.Point(2, 17);
-            this.lSep10.Name = "lSep10";
-            this.lSep10.Size = new System.Drawing.Size(283, 2);
-            this.lSep10.TabIndex = 1;
+            this.laRDSeparator1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laRDSeparator1.Location = new System.Drawing.Point(2, 17);
+            this.laRDSeparator1.Name = "laRDSeparator1";
+            this.laRDSeparator1.Size = new System.Drawing.Size(283, 2);
+            this.laRDSeparator1.TabIndex = 1;
             // 
             // tbRDPath
             // 
@@ -520,77 +540,77 @@ namespace AutoPuTTY
             this.tbRDPath.TabIndex = 2;
             this.tbRDPath.TextChanged += new System.EventHandler(this.tbRD_TextChanged);
             // 
-            // lRDPath
+            // laRDPath
             // 
-            this.lRDPath.AutoSize = true;
-            this.lRDPath.Location = new System.Drawing.Point(3, 3);
-            this.lRDPath.Name = "lRDPath";
-            this.lRDPath.Size = new System.Drawing.Size(85, 13);
-            this.lRDPath.TabIndex = 0;
-            this.lRDPath.Text = "Path (mstsc.exe)";
+            this.laRDPath.AutoSize = true;
+            this.laRDPath.Location = new System.Drawing.Point(3, 3);
+            this.laRDPath.Name = "laRDPath";
+            this.laRDPath.Size = new System.Drawing.Size(85, 13);
+            this.laRDPath.TabIndex = 0;
+            this.laRDPath.Text = "Path (mstsc.exe)";
             // 
-            // bRDPath
+            // buRDPath
             // 
-            this.bRDPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bRDPath.Location = new System.Drawing.Point(235, 19);
-            this.bRDPath.Margin = new System.Windows.Forms.Padding(0);
-            this.bRDPath.Name = "bRDPath";
-            this.bRDPath.Size = new System.Drawing.Size(50, 22);
-            this.bRDPath.TabIndex = 3;
-            this.bRDPath.Text = "Select";
-            this.bRDPath.UseCompatibleTextRendering = true;
-            this.bRDPath.UseVisualStyleBackColor = true;
-            this.bRDPath.Click += new System.EventHandler(this.bRDPath_Click);
+            this.buRDPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buRDPath.Location = new System.Drawing.Point(235, 19);
+            this.buRDPath.Margin = new System.Windows.Forms.Padding(0);
+            this.buRDPath.Name = "buRDPath";
+            this.buRDPath.Size = new System.Drawing.Size(50, 22);
+            this.buRDPath.TabIndex = 3;
+            this.buRDPath.Text = "Select";
+            this.buRDPath.UseCompatibleTextRendering = true;
+            this.buRDPath.UseVisualStyleBackColor = true;
+            this.buRDPath.Click += new System.EventHandler(this.bRDPath_Click);
             // 
-            // pOVNC
+            // panelVNC
             // 
-            this.pOVNC.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelVNC.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pOVNC.Controls.Add(this.lVNCOther);
-            this.pOVNC.Controls.Add(this.lSep16);
-            this.pOVNC.Controls.Add(this.lVNCFiles);
-            this.pOVNC.Controls.Add(this.tbVNCKeep);
-            this.pOVNC.Controls.Add(this.bVNCKeep);
-            this.pOVNC.Controls.Add(this.lSep15);
-            this.pOVNC.Controls.Add(this.cbVNCViewonly);
-            this.pOVNC.Controls.Add(this.cbVNCFullscreen);
-            this.pOVNC.Controls.Add(this.lSep14);
-            this.pOVNC.Controls.Add(this.tbVNCPath);
-            this.pOVNC.Controls.Add(this.lVNCPath);
-            this.pOVNC.Controls.Add(this.bVNCPath);
-            this.pOVNC.Location = new System.Drawing.Point(4, 4);
-            this.pOVNC.Name = "pOVNC";
-            this.pOVNC.Size = new System.Drawing.Size(286, 185);
-            this.pOVNC.TabIndex = 0;
+            this.panelVNC.Controls.Add(this.laVNCOther);
+            this.panelVNC.Controls.Add(this.laVNCSeparator3);
+            this.panelVNC.Controls.Add(this.laVNCFiles);
+            this.panelVNC.Controls.Add(this.tbVNCKeep);
+            this.panelVNC.Controls.Add(this.buVNCKeep);
+            this.panelVNC.Controls.Add(this.laVNCSeparator2);
+            this.panelVNC.Controls.Add(this.cbVNCViewonly);
+            this.panelVNC.Controls.Add(this.cbVNCFullscreen);
+            this.panelVNC.Controls.Add(this.laVNCSeparator1);
+            this.panelVNC.Controls.Add(this.tbVNCPath);
+            this.panelVNC.Controls.Add(this.laVNCPath);
+            this.panelVNC.Controls.Add(this.buVNCPath);
+            this.panelVNC.Location = new System.Drawing.Point(4, 4);
+            this.panelVNC.Name = "panelVNC";
+            this.panelVNC.Size = new System.Drawing.Size(286, 194);
+            this.panelVNC.TabIndex = 0;
             // 
-            // lVNCOther
+            // laVNCOther
             // 
-            this.lVNCOther.AutoSize = true;
-            this.lVNCOther.Location = new System.Drawing.Point(3, 81);
-            this.lVNCOther.Name = "lVNCOther";
-            this.lVNCOther.Size = new System.Drawing.Size(33, 13);
-            this.lVNCOther.TabIndex = 8;
-            this.lVNCOther.Text = "Other";
+            this.laVNCOther.AutoSize = true;
+            this.laVNCOther.Location = new System.Drawing.Point(3, 81);
+            this.laVNCOther.Name = "laVNCOther";
+            this.laVNCOther.Size = new System.Drawing.Size(33, 13);
+            this.laVNCOther.TabIndex = 8;
+            this.laVNCOther.Text = "Other";
             // 
-            // lSep16
+            // laVNCSeparator3
             // 
-            this.lSep16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laVNCSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep16.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep16.Location = new System.Drawing.Point(2, 95);
-            this.lSep16.Name = "lSep16";
-            this.lSep16.Size = new System.Drawing.Size(283, 2);
-            this.lSep16.TabIndex = 9;
+            this.laVNCSeparator3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laVNCSeparator3.Location = new System.Drawing.Point(2, 95);
+            this.laVNCSeparator3.Name = "laVNCSeparator3";
+            this.laVNCSeparator3.Size = new System.Drawing.Size(283, 2);
+            this.laVNCSeparator3.TabIndex = 9;
             // 
-            // lVNCFiles
+            // laVNCFiles
             // 
-            this.lVNCFiles.AutoSize = true;
-            this.lVNCFiles.Location = new System.Drawing.Point(3, 42);
-            this.lVNCFiles.Name = "lVNCFiles";
-            this.lVNCFiles.Size = new System.Drawing.Size(240, 13);
-            this.lVNCFiles.TabIndex = 4;
-            this.lVNCFiles.Text = "Output path for generated \".vnc\" connection files";
+            this.laVNCFiles.AutoSize = true;
+            this.laVNCFiles.Location = new System.Drawing.Point(3, 42);
+            this.laVNCFiles.Name = "laVNCFiles";
+            this.laVNCFiles.Size = new System.Drawing.Size(240, 13);
+            this.laVNCFiles.TabIndex = 4;
+            this.laVNCFiles.Text = "Output path for generated \".vnc\" connection files";
             // 
             // tbVNCKeep
             // 
@@ -602,28 +622,28 @@ namespace AutoPuTTY
             this.tbVNCKeep.TabIndex = 6;
             this.tbVNCKeep.TextChanged += new System.EventHandler(this.tbVNCKeep_TextChanged);
             // 
-            // bVNCKeep
+            // buVNCKeep
             // 
-            this.bVNCKeep.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bVNCKeep.Location = new System.Drawing.Point(235, 58);
-            this.bVNCKeep.Margin = new System.Windows.Forms.Padding(0);
-            this.bVNCKeep.Name = "bVNCKeep";
-            this.bVNCKeep.Size = new System.Drawing.Size(50, 22);
-            this.bVNCKeep.TabIndex = 7;
-            this.bVNCKeep.Text = "Select";
-            this.bVNCKeep.UseCompatibleTextRendering = true;
-            this.bVNCKeep.UseVisualStyleBackColor = true;
-            this.bVNCKeep.Click += new System.EventHandler(this.bVNCKeep_Click);
+            this.buVNCKeep.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buVNCKeep.Location = new System.Drawing.Point(235, 58);
+            this.buVNCKeep.Margin = new System.Windows.Forms.Padding(0);
+            this.buVNCKeep.Name = "buVNCKeep";
+            this.buVNCKeep.Size = new System.Drawing.Size(50, 22);
+            this.buVNCKeep.TabIndex = 7;
+            this.buVNCKeep.Text = "Select";
+            this.buVNCKeep.UseCompatibleTextRendering = true;
+            this.buVNCKeep.UseVisualStyleBackColor = true;
+            this.buVNCKeep.Click += new System.EventHandler(this.bVNCKeep_Click);
             // 
-            // lSep15
+            // laVNCSeparator2
             // 
-            this.lSep15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laVNCSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep15.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep15.Location = new System.Drawing.Point(2, 56);
-            this.lSep15.Name = "lSep15";
-            this.lSep15.Size = new System.Drawing.Size(283, 2);
-            this.lSep15.TabIndex = 5;
+            this.laVNCSeparator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laVNCSeparator2.Location = new System.Drawing.Point(2, 56);
+            this.laVNCSeparator2.Name = "laVNCSeparator2";
+            this.laVNCSeparator2.Size = new System.Drawing.Size(283, 2);
+            this.laVNCSeparator2.TabIndex = 5;
             // 
             // cbVNCViewonly
             // 
@@ -645,15 +665,15 @@ namespace AutoPuTTY
             this.cbVNCFullscreen.Text = "Full screen";
             this.cbVNCFullscreen.CheckedChanged += new System.EventHandler(this.cbVNCFullscreen_CheckedChanged);
             // 
-            // lSep14
+            // laVNCSeparator1
             // 
-            this.lSep14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laVNCSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep14.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep14.Location = new System.Drawing.Point(2, 17);
-            this.lSep14.Name = "lSep14";
-            this.lSep14.Size = new System.Drawing.Size(283, 2);
-            this.lSep14.TabIndex = 1;
+            this.laVNCSeparator1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laVNCSeparator1.Location = new System.Drawing.Point(2, 17);
+            this.laVNCSeparator1.Name = "laVNCSeparator1";
+            this.laVNCSeparator1.Size = new System.Drawing.Size(283, 2);
+            this.laVNCSeparator1.TabIndex = 1;
             // 
             // tbVNCPath
             // 
@@ -665,88 +685,113 @@ namespace AutoPuTTY
             this.tbVNCPath.TabIndex = 2;
             this.tbVNCPath.TextChanged += new System.EventHandler(this.tbVNCPath_TextChanged);
             // 
-            // lVNCPath
+            // laVNCPath
             // 
-            this.lVNCPath.AutoSize = true;
-            this.lVNCPath.Location = new System.Drawing.Point(3, 3);
-            this.lVNCPath.Name = "lVNCPath";
-            this.lVNCPath.Size = new System.Drawing.Size(107, 13);
-            this.lVNCPath.TabIndex = 0;
-            this.lVNCPath.Text = "Path (vncviewer.exe)";
+            this.laVNCPath.AutoSize = true;
+            this.laVNCPath.Location = new System.Drawing.Point(3, 3);
+            this.laVNCPath.Name = "laVNCPath";
+            this.laVNCPath.Size = new System.Drawing.Size(107, 13);
+            this.laVNCPath.TabIndex = 0;
+            this.laVNCPath.Text = "Path (vncviewer.exe)";
             // 
-            // bVNCPath
+            // buVNCPath
             // 
-            this.bVNCPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bVNCPath.Location = new System.Drawing.Point(235, 19);
-            this.bVNCPath.Margin = new System.Windows.Forms.Padding(0);
-            this.bVNCPath.Name = "bVNCPath";
-            this.bVNCPath.Size = new System.Drawing.Size(50, 22);
-            this.bVNCPath.TabIndex = 3;
-            this.bVNCPath.Text = "Select";
-            this.bVNCPath.UseCompatibleTextRendering = true;
-            this.bVNCPath.UseVisualStyleBackColor = true;
-            this.bVNCPath.Click += new System.EventHandler(this.bVNCPath_Click);
+            this.buVNCPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buVNCPath.Location = new System.Drawing.Point(235, 19);
+            this.buVNCPath.Margin = new System.Windows.Forms.Padding(0);
+            this.buVNCPath.Name = "buVNCPath";
+            this.buVNCPath.Size = new System.Drawing.Size(50, 22);
+            this.buVNCPath.TabIndex = 3;
+            this.buVNCPath.Text = "Select";
+            this.buVNCPath.UseCompatibleTextRendering = true;
+            this.buVNCPath.UseVisualStyleBackColor = true;
+            this.buVNCPath.Click += new System.EventHandler(this.bVNCPath_Click);
             // 
-            // pOWinSCP
+            // paWinSCP
             // 
-            this.pOWinSCP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.paWinSCP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pOWinSCP.Controls.Add(this.lSep19);
-            this.pOWinSCP.Controls.Add(this.lWSCPOther);
-            this.pOWinSCP.Controls.Add(this.cbWSCPPassive);
-            this.pOWinSCP.Controls.Add(this.lSep18);
-            this.pOWinSCP.Controls.Add(this.cbWSCPKey);
-            this.pOWinSCP.Controls.Add(this.lSep17);
-            this.pOWinSCP.Controls.Add(this.bWSCPKey);
-            this.pOWinSCP.Controls.Add(this.lWSCPPath);
-            this.pOWinSCP.Controls.Add(this.tbWSCPKey);
-            this.pOWinSCP.Controls.Add(this.bWSCPPath);
-            this.pOWinSCP.Controls.Add(this.tbWSCPPath);
-            this.pOWinSCP.Location = new System.Drawing.Point(4, 4);
-            this.pOWinSCP.Name = "pOWinSCP";
-            this.pOWinSCP.Size = new System.Drawing.Size(286, 185);
-            this.pOWinSCP.TabIndex = 0;
-            // 
-            // lSep19
-            // 
-            this.lSep19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep19.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep19.Location = new System.Drawing.Point(2, 95);
-            this.lSep19.Name = "lSep19";
-            this.lSep19.Size = new System.Drawing.Size(283, 2);
-            this.lSep19.TabIndex = 17;
-            // 
-            // lWSCPOther
-            // 
-            this.lWSCPOther.AutoSize = true;
-            this.lWSCPOther.Location = new System.Drawing.Point(3, 81);
-            this.lWSCPOther.Name = "lWSCPOther";
-            this.lWSCPOther.Size = new System.Drawing.Size(33, 13);
-            this.lWSCPOther.TabIndex = 16;
-            this.lWSCPOther.Text = "Other";
+            this.paWinSCP.Controls.Add(this.cbWSCPPassive);
+            this.paWinSCP.Controls.Add(this.cbWSCPUnsecure);
+            this.paWinSCP.Controls.Add(this.cbWSCPAgent);
+            this.paWinSCP.Controls.Add(this.laWSeparator3);
+            this.paWinSCP.Controls.Add(this.laWSCPOther);
+            this.paWinSCP.Controls.Add(this.laWSeparator2);
+            this.paWinSCP.Controls.Add(this.cbWSCPKey);
+            this.paWinSCP.Controls.Add(this.laWSeparator1);
+            this.paWinSCP.Controls.Add(this.buWSCPKey);
+            this.paWinSCP.Controls.Add(this.laWSCPPath);
+            this.paWinSCP.Controls.Add(this.tbWSCPKey);
+            this.paWinSCP.Controls.Add(this.buWSCPPath);
+            this.paWinSCP.Controls.Add(this.tbWSCPPath);
+            this.paWinSCP.Location = new System.Drawing.Point(4, 4);
+            this.paWinSCP.Name = "paWinSCP";
+            this.paWinSCP.Size = new System.Drawing.Size(286, 194);
+            this.paWinSCP.TabIndex = 0;
             // 
             // cbWSCPPassive
             // 
             this.cbWSCPPassive.AutoSize = true;
-            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 97);
+            this.cbWSCPPassive.Location = new System.Drawing.Point(2, 127);
             this.cbWSCPPassive.Name = "cbWSCPPassive";
             this.cbWSCPPassive.Size = new System.Drawing.Size(143, 17);
-            this.cbWSCPPassive.TabIndex = 15;
+            this.cbWSCPPassive.TabIndex = 11;
             this.cbWSCPPassive.Text = "Passive mode (FTP only)";
             this.cbWSCPPassive.UseVisualStyleBackColor = true;
             this.cbWSCPPassive.CheckedChanged += new System.EventHandler(this.cbWSCPPassive_CheckedChanged);
             // 
-            // lSep18
+            // cbWSCPUnsecure
             // 
-            this.lSep18.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbWSCPUnsecure.AutoSize = true;
+            this.cbWSCPUnsecure.Location = new System.Drawing.Point(2, 112);
+            this.cbWSCPUnsecure.Name = "cbWSCPUnsecure";
+            this.cbWSCPUnsecure.Size = new System.Drawing.Size(187, 17);
+            this.cbWSCPUnsecure.TabIndex = 12;
+            this.cbWSCPUnsecure.Text = "Allow unsecured \"jump\" password";
+            this.tooltipOptions.SetToolTip(this.cbWSCPUnsecure, "Jump proxy password will appear in plaintext in the process list");
+            this.cbWSCPUnsecure.UseVisualStyleBackColor = true;
+            this.cbWSCPUnsecure.CheckedChanged += new System.EventHandler(this.cbWSCPUnsecure_CheckedChanged);
+            // 
+            // cbWSCPAgent
+            // 
+            this.cbWSCPAgent.AutoSize = true;
+            this.cbWSCPAgent.Location = new System.Drawing.Point(2, 97);
+            this.cbWSCPAgent.Name = "cbWSCPAgent";
+            this.cbWSCPAgent.Size = new System.Drawing.Size(109, 17);
+            this.cbWSCPAgent.TabIndex = 10;
+            this.cbWSCPAgent.Text = "Agent Forwarding";
+            this.cbWSCPAgent.UseVisualStyleBackColor = true;
+            this.cbWSCPAgent.CheckedChanged += new System.EventHandler(this.cbWSCPAgent_CheckedChanged);
+            // 
+            // laWSeparator3
+            // 
+            this.laWSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep18.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep18.Location = new System.Drawing.Point(2, 56);
-            this.lSep18.Name = "lSep18";
-            this.lSep18.Size = new System.Drawing.Size(283, 2);
-            this.lSep18.TabIndex = 5;
+            this.laWSeparator3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laWSeparator3.Location = new System.Drawing.Point(2, 95);
+            this.laWSeparator3.Name = "laWSeparator3";
+            this.laWSeparator3.Size = new System.Drawing.Size(283, 2);
+            this.laWSeparator3.TabIndex = 9;
+            // 
+            // laWSCPOther
+            // 
+            this.laWSCPOther.AutoSize = true;
+            this.laWSCPOther.Location = new System.Drawing.Point(3, 81);
+            this.laWSCPOther.Name = "laWSCPOther";
+            this.laWSCPOther.Size = new System.Drawing.Size(33, 13);
+            this.laWSCPOther.TabIndex = 8;
+            this.laWSCPOther.Text = "Other";
+            // 
+            // laWSeparator2
+            // 
+            this.laWSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.laWSeparator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laWSeparator2.Location = new System.Drawing.Point(2, 56);
+            this.laWSeparator2.Name = "laWSeparator2";
+            this.laWSeparator2.Size = new System.Drawing.Size(283, 2);
+            this.laWSeparator2.TabIndex = 5;
             // 
             // cbWSCPKey
             // 
@@ -758,38 +803,38 @@ namespace AutoPuTTY
             this.cbWSCPKey.Text = "Private key file for authentication";
             this.cbWSCPKey.CheckedChanged += new System.EventHandler(this.cbWSCPKey_CheckedChanged);
             // 
-            // lSep17
+            // laWSeparator1
             // 
-            this.lSep17.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laWSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep17.Location = new System.Drawing.Point(2, 17);
-            this.lSep17.Name = "lSep17";
-            this.lSep17.Size = new System.Drawing.Size(283, 2);
-            this.lSep17.TabIndex = 1;
+            this.laWSeparator1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laWSeparator1.Location = new System.Drawing.Point(2, 17);
+            this.laWSeparator1.Name = "laWSeparator1";
+            this.laWSeparator1.Size = new System.Drawing.Size(283, 2);
+            this.laWSeparator1.TabIndex = 1;
             // 
-            // bWSCPKey
+            // buWSCPKey
             // 
-            this.bWSCPKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bWSCPKey.Enabled = false;
-            this.bWSCPKey.Location = new System.Drawing.Point(235, 58);
-            this.bWSCPKey.Margin = new System.Windows.Forms.Padding(0);
-            this.bWSCPKey.Name = "bWSCPKey";
-            this.bWSCPKey.Size = new System.Drawing.Size(50, 22);
-            this.bWSCPKey.TabIndex = 7;
-            this.bWSCPKey.Text = "Select";
-            this.bWSCPKey.UseCompatibleTextRendering = true;
-            this.bWSCPKey.UseVisualStyleBackColor = true;
-            this.bWSCPKey.Click += new System.EventHandler(this.bWSCPKey_Click);
+            this.buWSCPKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buWSCPKey.Enabled = false;
+            this.buWSCPKey.Location = new System.Drawing.Point(235, 58);
+            this.buWSCPKey.Margin = new System.Windows.Forms.Padding(0);
+            this.buWSCPKey.Name = "buWSCPKey";
+            this.buWSCPKey.Size = new System.Drawing.Size(50, 22);
+            this.buWSCPKey.TabIndex = 7;
+            this.buWSCPKey.Text = "Select";
+            this.buWSCPKey.UseCompatibleTextRendering = true;
+            this.buWSCPKey.UseVisualStyleBackColor = true;
+            this.buWSCPKey.Click += new System.EventHandler(this.bWSCPKey_Click);
             // 
-            // lWSCPPath
+            // laWSCPPath
             // 
-            this.lWSCPPath.AutoSize = true;
-            this.lWSCPPath.Location = new System.Drawing.Point(3, 3);
-            this.lWSCPPath.Name = "lWSCPPath";
-            this.lWSCPPath.Size = new System.Drawing.Size(91, 13);
-            this.lWSCPPath.TabIndex = 0;
-            this.lWSCPPath.Text = "Path (winscp.exe)";
+            this.laWSCPPath.AutoSize = true;
+            this.laWSCPPath.Location = new System.Drawing.Point(3, 3);
+            this.laWSCPPath.Name = "laWSCPPath";
+            this.laWSCPPath.Size = new System.Drawing.Size(91, 13);
+            this.laWSCPPath.TabIndex = 0;
+            this.laWSCPPath.Text = "Path (winscp.exe)";
             // 
             // tbWSCPKey
             // 
@@ -803,18 +848,18 @@ namespace AutoPuTTY
             this.tbWSCPKey.TabIndex = 6;
             this.tbWSCPKey.TextChanged += new System.EventHandler(this.tbWSCPKey_TextChanged);
             // 
-            // bWSCPPath
+            // buWSCPPath
             // 
-            this.bWSCPPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bWSCPPath.Location = new System.Drawing.Point(235, 19);
-            this.bWSCPPath.Margin = new System.Windows.Forms.Padding(0);
-            this.bWSCPPath.Name = "bWSCPPath";
-            this.bWSCPPath.Size = new System.Drawing.Size(50, 22);
-            this.bWSCPPath.TabIndex = 3;
-            this.bWSCPPath.Text = "Select";
-            this.bWSCPPath.UseCompatibleTextRendering = true;
-            this.bWSCPPath.UseVisualStyleBackColor = true;
-            this.bWSCPPath.Click += new System.EventHandler(this.bWSCPPath_Click);
+            this.buWSCPPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buWSCPPath.Location = new System.Drawing.Point(235, 19);
+            this.buWSCPPath.Margin = new System.Windows.Forms.Padding(0);
+            this.buWSCPPath.Name = "buWSCPPath";
+            this.buWSCPPath.Size = new System.Drawing.Size(50, 22);
+            this.buWSCPPath.TabIndex = 3;
+            this.buWSCPPath.Text = "Select";
+            this.buWSCPPath.UseCompatibleTextRendering = true;
+            this.buWSCPPath.UseVisualStyleBackColor = true;
+            this.buWSCPPath.Click += new System.EventHandler(this.bWSCPPath_Click);
             // 
             // tbWSCPPath
             // 
@@ -827,68 +872,99 @@ namespace AutoPuTTY
             this.tbWSCPPath.TabIndex = 2;
             this.tbWSCPPath.TextChanged += new System.EventHandler(this.tbWSCPPath_TextChanged);
             // 
-            // tabs
+            // taOptions
             // 
-            this.tabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.taOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabs.Controls.Add(this.tabGeneral);
-            this.tabs.Controls.Add(this.tabPuTTY);
-            this.tabs.Controls.Add(this.tabRD);
-            this.tabs.Controls.Add(this.tabVNC);
-            this.tabs.Controls.Add(this.tabWSCP);
-            this.tabs.Location = new System.Drawing.Point(2, 2);
-            this.tabs.Name = "tabs";
-            this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(302, 222);
-            this.tabs.TabIndex = 0;
+            this.taOptions.Controls.Add(this.taGeneral);
+            this.taOptions.Controls.Add(this.taPuTTY);
+            this.taOptions.Controls.Add(this.taRD);
+            this.taOptions.Controls.Add(this.taVNC);
+            this.taOptions.Controls.Add(this.taWSCP);
+            this.taOptions.Location = new System.Drawing.Point(2, 2);
+            this.taOptions.Name = "taOptions";
+            this.taOptions.SelectedIndex = 0;
+            this.taOptions.Size = new System.Drawing.Size(302, 228);
+            this.taOptions.TabIndex = 0;
             // 
-            // tabGeneral
+            // taGeneral
             // 
-            this.tabGeneral.Controls.Add(this.pOGeneral);
-            this.tabGeneral.Location = new System.Drawing.Point(4, 22);
-            this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(294, 196);
-            this.tabGeneral.TabIndex = 0;
-            this.tabGeneral.Text = "General";
-            this.tabGeneral.UseVisualStyleBackColor = true;
+            this.taGeneral.Controls.Add(this.paGeneral);
+            this.taGeneral.Location = new System.Drawing.Point(4, 22);
+            this.taGeneral.Name = "taGeneral";
+            this.taGeneral.Size = new System.Drawing.Size(294, 202);
+            this.taGeneral.TabIndex = 0;
+            this.taGeneral.Text = "General";
+            this.taGeneral.UseVisualStyleBackColor = true;
             // 
-            // pOGeneral
+            // paGeneral
             // 
-            this.pOGeneral.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.paGeneral.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pOGeneral.BackColor = System.Drawing.Color.Transparent;
-            this.pOGeneral.Controls.Add(this.cbGMinimize);
-            this.pOGeneral.Controls.Add(this.cbGPosition);
-            this.pOGeneral.Controls.Add(this.cbGSize);
-            this.pOGeneral.Controls.Add(this.lSep6);
-            this.pOGeneral.Controls.Add(this.lGOther);
-            this.pOGeneral.Controls.Add(this.cbGSkip);
-            this.pOGeneral.Controls.Add(this.cbGReplace);
-            this.pOGeneral.Controls.Add(this.lSep5);
-            this.pOGeneral.Controls.Add(this.lGImport);
-            this.pOGeneral.Controls.Add(this.bGImport);
-            this.pOGeneral.Controls.Add(this.lSep4);
-            this.pOGeneral.Controls.Add(this.slGMulti);
-            this.pOGeneral.Controls.Add(this.cbGMulti);
-            this.pOGeneral.Controls.Add(this.tpGPass);
-            this.pOGeneral.Controls.Add(this.liGImport);
-            this.pOGeneral.Location = new System.Drawing.Point(4, 4);
-            this.pOGeneral.Name = "pOGeneral";
-            this.pOGeneral.Size = new System.Drawing.Size(286, 189);
-            this.pOGeneral.TabIndex = 0;
+            this.paGeneral.BackColor = System.Drawing.Color.Transparent;
+            this.paGeneral.Controls.Add(this.piGImport);
+            this.paGeneral.Controls.Add(this.cbGTooltips);
+            this.paGeneral.Controls.Add(this.cbGMinimize);
+            this.paGeneral.Controls.Add(this.cbGPosition);
+            this.paGeneral.Controls.Add(this.cbGSize);
+            this.paGeneral.Controls.Add(this.cbGHidePassword);
+            this.paGeneral.Controls.Add(this.slGMulti);
+            this.paGeneral.Controls.Add(this.laGSeparator6);
+            this.paGeneral.Controls.Add(this.laGOther);
+            this.paGeneral.Controls.Add(this.cbGSkip);
+            this.paGeneral.Controls.Add(this.cbGReplace);
+            this.paGeneral.Controls.Add(this.laGSeparator5);
+            this.paGeneral.Controls.Add(this.laGImport);
+            this.paGeneral.Controls.Add(this.buGImport);
+            this.paGeneral.Controls.Add(this.laGSeparator4);
+            this.paGeneral.Controls.Add(this.cbGMulti);
+            this.paGeneral.Controls.Add(this.tpGPass);
+            this.paGeneral.Location = new System.Drawing.Point(4, 4);
+            this.paGeneral.Name = "paGeneral";
+            this.paGeneral.Size = new System.Drawing.Size(286, 194);
+            this.paGeneral.TabIndex = 0;
+            // 
+            // piGImport
+            // 
+            this.piGImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.piGImport.BackColor = System.Drawing.Color.Transparent;
+            this.piGImport.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.piGImport.Image = global::AutoPuTTY.Properties.Resources.iconinfo;
+            this.piGImport.Location = new System.Drawing.Point(50, 80);
+            this.piGImport.Margin = new System.Windows.Forms.Padding(0);
+            this.piGImport.Name = "piGImport";
+            this.piGImport.Size = new System.Drawing.Size(22, 15);
+            this.piGImport.TabIndex = 27;
+            this.piGImport.TabStop = false;
+            this.tooltipOptions.SetToolTip(this.piGImport, "Show import list format");
+            this.piGImport.Click += new System.EventHandler(this.liGImport_LinkClicked);
+            // 
+            // cbGTooltips
+            // 
+            this.cbGTooltips.AutoSize = true;
+            this.cbGTooltips.Checked = true;
+            this.cbGTooltips.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGTooltips.Location = new System.Drawing.Point(152, 159);
+            this.cbGTooltips.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGTooltips.Name = "cbGTooltips";
+            this.cbGTooltips.Size = new System.Drawing.Size(89, 17);
+            this.cbGTooltips.TabIndex = 16;
+            this.cbGTooltips.Text = "Show tooltips";
+            this.tooltipOptions.SetToolTip(this.cbGTooltips, "When you really like tooltip info");
+            this.cbGTooltips.CheckedChanged += new System.EventHandler(this.cbGTooltips_CheckedChanged);
             // 
             // cbGMinimize
             // 
             this.cbGMinimize.AutoSize = true;
             this.cbGMinimize.Checked = true;
             this.cbGMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGMinimize.Location = new System.Drawing.Point(2, 174);
+            this.cbGMinimize.Location = new System.Drawing.Point(152, 144);
             this.cbGMinimize.Margin = new System.Windows.Forms.Padding(0);
             this.cbGMinimize.Name = "cbGMinimize";
             this.cbGMinimize.Size = new System.Drawing.Size(133, 17);
-            this.cbGMinimize.TabIndex = 12;
+            this.cbGMinimize.TabIndex = 15;
             this.cbGMinimize.Text = "Minimize to system tray";
             this.cbGMinimize.CheckedChanged += new System.EventHandler(this.cbGMinimize_CheckedChanged);
             // 
@@ -897,7 +973,7 @@ namespace AutoPuTTY
             this.cbGPosition.AutoSize = true;
             this.cbGPosition.Checked = true;
             this.cbGPosition.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGPosition.Location = new System.Drawing.Point(2, 159);
+            this.cbGPosition.Location = new System.Drawing.Point(2, 174);
             this.cbGPosition.Margin = new System.Windows.Forms.Padding(0);
             this.cbGPosition.Name = "cbGPosition";
             this.cbGPosition.Size = new System.Drawing.Size(129, 17);
@@ -910,7 +986,7 @@ namespace AutoPuTTY
             this.cbGSize.AutoSize = true;
             this.cbGSize.Checked = true;
             this.cbGSize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbGSize.Location = new System.Drawing.Point(2, 144);
+            this.cbGSize.Location = new System.Drawing.Point(2, 159);
             this.cbGSize.Margin = new System.Windows.Forms.Padding(0);
             this.cbGSize.Name = "cbGSize";
             this.cbGSize.Size = new System.Drawing.Size(111, 17);
@@ -918,24 +994,54 @@ namespace AutoPuTTY
             this.cbGSize.Text = "Save window size";
             this.cbGSize.CheckedChanged += new System.EventHandler(this.cbGSize_CheckedChanged);
             // 
-            // lSep6
+            // cbGHidePassword
             // 
-            this.lSep6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbGHidePassword.AutoSize = true;
+            this.cbGHidePassword.Checked = true;
+            this.cbGHidePassword.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGHidePassword.Location = new System.Drawing.Point(2, 144);
+            this.cbGHidePassword.Margin = new System.Windows.Forms.Padding(0);
+            this.cbGHidePassword.Name = "cbGHidePassword";
+            this.cbGHidePassword.Size = new System.Drawing.Size(119, 17);
+            this.cbGHidePassword.TabIndex = 12;
+            this.cbGHidePassword.Text = "Auto-hide password";
+            this.tooltipOptions.SetToolTip(this.cbGHidePassword, "Hide host password input when switching selection");
+            this.cbGHidePassword.CheckedChanged += new System.EventHandler(this.cbGHidePassword_CheckedChanged);
+            // 
+            // slGMulti
+            // 
+            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep6.Location = new System.Drawing.Point(2, 142);
-            this.lSep6.Name = "lSep6";
-            this.lSep6.Size = new System.Drawing.Size(283, 2);
-            this.lSep6.TabIndex = 11;
+            this.slGMulti.AutoSize = false;
+            this.slGMulti.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
+            this.slGMulti.Maximum = 40;
+            this.slGMulti.Minimum = 10;
+            this.slGMulti.Name = "slGMulti";
+            this.slGMulti.Size = new System.Drawing.Size(292, 20);
+            this.slGMulti.TabIndex = 3;
+            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.slGMulti.Value = 15;
+            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
             // 
-            // lGOther
+            // laGSeparator6
             // 
-            this.lGOther.AutoSize = true;
-            this.lGOther.Location = new System.Drawing.Point(3, 128);
-            this.lGOther.Name = "lGOther";
-            this.lGOther.Size = new System.Drawing.Size(33, 13);
-            this.lGOther.TabIndex = 10;
-            this.lGOther.Text = "Other";
+            this.laGSeparator6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.laGSeparator6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laGSeparator6.Location = new System.Drawing.Point(2, 142);
+            this.laGSeparator6.Name = "laGSeparator6";
+            this.laGSeparator6.Size = new System.Drawing.Size(283, 2);
+            this.laGSeparator6.TabIndex = 11;
+            // 
+            // laGOther
+            // 
+            this.laGOther.AutoSize = true;
+            this.laGOther.Location = new System.Drawing.Point(3, 128);
+            this.laGOther.Name = "laGOther";
+            this.laGOther.Size = new System.Drawing.Size(33, 13);
+            this.laGOther.TabIndex = 10;
+            this.laGOther.Text = "Other";
             // 
             // cbGSkip
             // 
@@ -957,47 +1063,47 @@ namespace AutoPuTTY
             this.cbGReplace.Text = "Replace duplicates";
             this.cbGReplace.CheckedChanged += new System.EventHandler(this.cbGReplace_CheckedChanged);
             // 
-            // lSep5
+            // laGSeparator5
             // 
-            this.lSep5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laGSeparator5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep5.Location = new System.Drawing.Point(2, 95);
-            this.lSep5.Name = "lSep5";
-            this.lSep5.Size = new System.Drawing.Size(283, 2);
-            this.lSep5.TabIndex = 6;
+            this.laGSeparator5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laGSeparator5.Location = new System.Drawing.Point(2, 95);
+            this.laGSeparator5.Name = "laGSeparator5";
+            this.laGSeparator5.Size = new System.Drawing.Size(283, 2);
+            this.laGSeparator5.TabIndex = 6;
             // 
-            // lGImport
+            // laGImport
             // 
-            this.lGImport.AutoSize = true;
-            this.lGImport.Location = new System.Drawing.Point(3, 81);
-            this.lGImport.Name = "lGImport";
-            this.lGImport.Size = new System.Drawing.Size(51, 13);
-            this.lGImport.TabIndex = 4;
-            this.lGImport.Text = "Import list";
+            this.laGImport.AutoSize = true;
+            this.laGImport.Location = new System.Drawing.Point(3, 81);
+            this.laGImport.Name = "laGImport";
+            this.laGImport.Size = new System.Drawing.Size(51, 13);
+            this.laGImport.TabIndex = 4;
+            this.laGImport.Text = "Import list";
             // 
-            // bGImport
+            // buGImport
             // 
-            this.bGImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bGImport.Location = new System.Drawing.Point(235, 97);
-            this.bGImport.Margin = new System.Windows.Forms.Padding(0);
-            this.bGImport.Name = "bGImport";
-            this.bGImport.Size = new System.Drawing.Size(50, 22);
-            this.bGImport.TabIndex = 9;
-            this.bGImport.Text = "Import";
-            this.bGImport.UseCompatibleTextRendering = true;
-            this.bGImport.UseVisualStyleBackColor = true;
-            this.bGImport.Click += new System.EventHandler(this.bGImport_Click);
+            this.buGImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buGImport.Location = new System.Drawing.Point(235, 97);
+            this.buGImport.Margin = new System.Windows.Forms.Padding(0);
+            this.buGImport.Name = "buGImport";
+            this.buGImport.Size = new System.Drawing.Size(50, 22);
+            this.buGImport.TabIndex = 9;
+            this.buGImport.Text = "Import";
+            this.buGImport.UseCompatibleTextRendering = true;
+            this.buGImport.UseVisualStyleBackColor = true;
+            this.buGImport.Click += new System.EventHandler(this.bGImport_Click);
             // 
-            // lSep4
+            // laGSeparator4
             // 
-            this.lSep4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laGSeparator4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep4.Location = new System.Drawing.Point(2, 56);
-            this.lSep4.Name = "lSep4";
-            this.lSep4.Size = new System.Drawing.Size(283, 2);
-            this.lSep4.TabIndex = 2;
+            this.laGSeparator4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laGSeparator4.Location = new System.Drawing.Point(2, 56);
+            this.laGSeparator4.Name = "laGSeparator4";
+            this.laGSeparator4.Size = new System.Drawing.Size(283, 2);
+            this.laGSeparator4.TabIndex = 2;
             // 
             // cbGMulti
             // 
@@ -1017,9 +1123,9 @@ namespace AutoPuTTY
             this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tpGPass.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 52F));
-            this.tpGPass.Controls.Add(this.pGApply, 2, 0);
+            this.tpGPass.Controls.Add(this.paGApply, 2, 0);
             this.tpGPass.Controls.Add(this.pGPassword, 0, 0);
-            this.tpGPass.Controls.Add(this.pGConfirm, 1, 0);
+            this.tpGPass.Controls.Add(this.paGConfirm, 1, 0);
             this.tpGPass.Location = new System.Drawing.Point(0, 2);
             this.tpGPass.Margin = new System.Windows.Forms.Padding(0);
             this.tpGPass.Name = "tpGPass";
@@ -1028,47 +1134,48 @@ namespace AutoPuTTY
             this.tpGPass.Size = new System.Drawing.Size(286, 39);
             this.tpGPass.TabIndex = 0;
             // 
-            // pGApply
+            // paGApply
             // 
-            this.pGApply.AutoSize = true;
-            this.pGApply.Controls.Add(this.bGPassword);
-            this.pGApply.Controls.Add(this.lSep3);
-            this.pGApply.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pGApply.Location = new System.Drawing.Point(234, 0);
-            this.pGApply.Margin = new System.Windows.Forms.Padding(0);
-            this.pGApply.Name = "pGApply";
-            this.pGApply.Size = new System.Drawing.Size(52, 39);
-            this.pGApply.TabIndex = 2;
+            this.paGApply.AutoSize = true;
+            this.paGApply.Controls.Add(this.buGApply);
+            this.paGApply.Controls.Add(this.laGSeparator3);
+            this.paGApply.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.paGApply.Location = new System.Drawing.Point(234, 0);
+            this.paGApply.Margin = new System.Windows.Forms.Padding(0);
+            this.paGApply.Name = "paGApply";
+            this.paGApply.Size = new System.Drawing.Size(52, 39);
+            this.paGApply.TabIndex = 2;
             // 
-            // bGPassword
+            // buGApply
             // 
-            this.bGPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bGPassword.Enabled = false;
-            this.bGPassword.Location = new System.Drawing.Point(1, 17);
-            this.bGPassword.Margin = new System.Windows.Forms.Padding(0);
-            this.bGPassword.Name = "bGPassword";
-            this.bGPassword.Size = new System.Drawing.Size(50, 22);
-            this.bGPassword.TabIndex = 1;
-            this.bGPassword.Text = "Apply";
-            this.bGPassword.UseCompatibleTextRendering = true;
-            this.bGPassword.UseVisualStyleBackColor = true;
-            this.bGPassword.Click += new System.EventHandler(this.bGPassword_Click);
+            this.buGApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buGApply.Enabled = false;
+            this.buGApply.Location = new System.Drawing.Point(1, 17);
+            this.buGApply.Margin = new System.Windows.Forms.Padding(0);
+            this.buGApply.Name = "buGApply";
+            this.buGApply.Size = new System.Drawing.Size(50, 22);
+            this.buGApply.TabIndex = 1;
+            this.buGApply.Text = "Apply";
+            this.buGApply.UseCompatibleTextRendering = true;
+            this.buGApply.UseVisualStyleBackColor = true;
+            this.buGApply.Click += new System.EventHandler(this.bGPassword_Click);
             // 
-            // lSep3
+            // laGSeparator3
             // 
-            this.lSep3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laGSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep3.Location = new System.Drawing.Point(-2, 15);
-            this.lSep3.Name = "lSep3";
-            this.lSep3.Size = new System.Drawing.Size(53, 2);
-            this.lSep3.TabIndex = 0;
+            this.laGSeparator3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laGSeparator3.Location = new System.Drawing.Point(-2, 15);
+            this.laGSeparator3.Name = "laGSeparator3";
+            this.laGSeparator3.Size = new System.Drawing.Size(53, 2);
+            this.laGSeparator3.TabIndex = 0;
             // 
             // pGPassword
             // 
-            this.pGPassword.Controls.Add(this.lSep1);
-            this.pGPassword.Controls.Add(this.cbGPassword);
+            this.pGPassword.Controls.Add(this.labelGPassword);
+            this.pGPassword.Controls.Add(this.laGSeparator1);
             this.pGPassword.Controls.Add(this.tbGPassword);
+            this.pGPassword.Controls.Add(this.cbGPassword);
             this.pGPassword.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pGPassword.Location = new System.Drawing.Point(0, 0);
             this.pGPassword.Margin = new System.Windows.Forms.Padding(0);
@@ -1076,27 +1183,25 @@ namespace AutoPuTTY
             this.pGPassword.Size = new System.Drawing.Size(117, 39);
             this.pGPassword.TabIndex = 0;
             // 
-            // lSep1
+            // labelGPassword
             // 
-            this.lSep1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.labelGPassword.AutoSize = true;
+            this.labelGPassword.Location = new System.Drawing.Point(3, 1);
+            this.labelGPassword.Name = "labelGPassword";
+            this.labelGPassword.Size = new System.Drawing.Size(53, 13);
+            this.labelGPassword.TabIndex = 3;
+            this.labelGPassword.Text = "Password";
+            this.tooltipOptions.SetToolTip(this.labelGPassword, "Ask for a password on startup and crypt your login list with it");
+            // 
+            // laGSeparator1
+            // 
+            this.laGSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep1.Location = new System.Drawing.Point(2, 15);
-            this.lSep1.Name = "lSep1";
-            this.lSep1.Size = new System.Drawing.Size(119, 2);
-            this.lSep1.TabIndex = 1;
-            // 
-            // cbGPassword
-            // 
-            this.cbGPassword.AutoSize = true;
-            this.cbGPassword.Location = new System.Drawing.Point(2, 0);
-            this.cbGPassword.Name = "cbGPassword";
-            this.cbGPassword.Size = new System.Drawing.Size(72, 17);
-            this.cbGPassword.TabIndex = 0;
-            this.cbGPassword.Text = "Password";
-            this.toolTipOptions.SetToolTip(this.cbGPassword, "Ask for a password on startup and crypt your login list with it");
-            this.cbGPassword.UseVisualStyleBackColor = true;
-            this.cbGPassword.CheckedChanged += new System.EventHandler(this.cbGPassword_CheckedChanged);
+            this.laGSeparator1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laGSeparator1.Location = new System.Drawing.Point(2, 15);
+            this.laGSeparator1.Name = "laGSeparator1";
+            this.laGSeparator1.Size = new System.Drawing.Size(119, 2);
+            this.laGSeparator1.TabIndex = 1;
             // 
             // tbGPassword
             // 
@@ -1112,17 +1217,29 @@ namespace AutoPuTTY
             this.tbGPassword.GotFocus += new System.EventHandler(this.tbGPassword_GotFocus);
             this.tbGPassword.LostFocus += new System.EventHandler(this.tbGPassword_LostFocus);
             // 
-            // pGConfirm
+            // cbGPassword
             // 
-            this.pGConfirm.Controls.Add(this.tbGConfirm);
-            this.pGConfirm.Controls.Add(this.lSep2);
-            this.pGConfirm.Controls.Add(this.lGConfirm);
-            this.pGConfirm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pGConfirm.Location = new System.Drawing.Point(117, 0);
-            this.pGConfirm.Margin = new System.Windows.Forms.Padding(0);
-            this.pGConfirm.Name = "pGConfirm";
-            this.pGConfirm.Size = new System.Drawing.Size(117, 39);
-            this.pGConfirm.TabIndex = 1;
+            this.cbGPassword.AutoSize = true;
+            this.cbGPassword.Location = new System.Drawing.Point(2, 0);
+            this.cbGPassword.Name = "cbGPassword";
+            this.cbGPassword.Size = new System.Drawing.Size(72, 17);
+            this.cbGPassword.TabIndex = 0;
+            this.cbGPassword.Text = "Password";
+            this.tooltipOptions.SetToolTip(this.cbGPassword, "Ask for a password on startup and crypt your login list with it");
+            this.cbGPassword.UseVisualStyleBackColor = true;
+            this.cbGPassword.CheckedChanged += new System.EventHandler(this.cbGPassword_CheckedChanged);
+            // 
+            // paGConfirm
+            // 
+            this.paGConfirm.Controls.Add(this.tbGConfirm);
+            this.paGConfirm.Controls.Add(this.laGSeparator2);
+            this.paGConfirm.Controls.Add(this.labelGConfirm);
+            this.paGConfirm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.paGConfirm.Location = new System.Drawing.Point(117, 0);
+            this.paGConfirm.Margin = new System.Windows.Forms.Padding(0);
+            this.paGConfirm.Name = "paGConfirm";
+            this.paGConfirm.Size = new System.Drawing.Size(117, 39);
+            this.paGConfirm.TabIndex = 1;
             // 
             // tbGConfirm
             // 
@@ -1138,255 +1255,238 @@ namespace AutoPuTTY
             this.tbGConfirm.GotFocus += new System.EventHandler(this.tbGConfirm_GotFocus);
             this.tbGConfirm.LostFocus += new System.EventHandler(this.tbGConfirm_LostFocus);
             // 
-            // lSep2
+            // laGSeparator2
             // 
-            this.lSep2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.laGSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lSep2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lSep2.Location = new System.Drawing.Point(2, 15);
-            this.lSep2.Name = "lSep2";
-            this.lSep2.Size = new System.Drawing.Size(120, 2);
-            this.lSep2.TabIndex = 1;
+            this.laGSeparator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laGSeparator2.Location = new System.Drawing.Point(2, 15);
+            this.laGSeparator2.Name = "laGSeparator2";
+            this.laGSeparator2.Size = new System.Drawing.Size(119, 2);
+            this.laGSeparator2.TabIndex = 1;
             // 
-            // lGConfirm
+            // labelGConfirm
             // 
-            this.lGConfirm.AutoSize = true;
-            this.lGConfirm.Location = new System.Drawing.Point(3, 1);
-            this.lGConfirm.Name = "lGConfirm";
-            this.lGConfirm.Size = new System.Drawing.Size(65, 13);
-            this.lGConfirm.TabIndex = 0;
-            this.lGConfirm.Text = "Confirmation";
+            this.labelGConfirm.AutoSize = true;
+            this.labelGConfirm.Location = new System.Drawing.Point(3, 1);
+            this.labelGConfirm.Name = "labelGConfirm";
+            this.labelGConfirm.Size = new System.Drawing.Size(65, 13);
+            this.labelGConfirm.TabIndex = 0;
+            this.labelGConfirm.Text = "Confirmation";
             // 
-            // liGImport
+            // taPuTTY
             // 
-            this.liGImport.ActiveLinkColor = System.Drawing.Color.Black;
-            this.liGImport.AutoSize = true;
-            this.liGImport.ForeColor = System.Drawing.Color.White;
-            this.liGImport.LinkColor = System.Drawing.Color.Blue;
-            this.liGImport.Location = new System.Drawing.Point(50, 81);
-            this.liGImport.Margin = new System.Windows.Forms.Padding(0);
-            this.liGImport.Name = "liGImport";
-            this.liGImport.Size = new System.Drawing.Size(19, 13);
-            this.liGImport.TabIndex = 5;
-            this.liGImport.TabStop = true;
-            this.liGImport.Text = "(?)";
-            this.liGImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.liGImport_LinkClicked);
+            this.taPuTTY.Controls.Add(this.panelPuTTY);
+            this.taPuTTY.Location = new System.Drawing.Point(4, 22);
+            this.taPuTTY.Name = "taPuTTY";
+            this.taPuTTY.Size = new System.Drawing.Size(294, 202);
+            this.taPuTTY.TabIndex = 1;
+            this.taPuTTY.Text = "PuTTY";
+            this.taPuTTY.UseVisualStyleBackColor = true;
             // 
-            // tabPuTTY
+            // taRD
             // 
-            this.tabPuTTY.Controls.Add(this.pOPuTTY);
-            this.tabPuTTY.Location = new System.Drawing.Point(4, 22);
-            this.tabPuTTY.Name = "tabPuTTY";
-            this.tabPuTTY.Size = new System.Drawing.Size(294, 196);
-            this.tabPuTTY.TabIndex = 1;
-            this.tabPuTTY.Text = "PuTTY";
-            this.tabPuTTY.UseVisualStyleBackColor = true;
+            this.taRD.Controls.Add(this.panelRD);
+            this.taRD.Location = new System.Drawing.Point(4, 22);
+            this.taRD.Name = "taRD";
+            this.taRD.Size = new System.Drawing.Size(294, 202);
+            this.taRD.TabIndex = 2;
+            this.taRD.Text = "Remote Desktop";
+            this.taRD.UseVisualStyleBackColor = true;
             // 
-            // tabRD
+            // taVNC
             // 
-            this.tabRD.Controls.Add(this.pORD);
-            this.tabRD.Location = new System.Drawing.Point(4, 22);
-            this.tabRD.Name = "tabRD";
-            this.tabRD.Size = new System.Drawing.Size(294, 196);
-            this.tabRD.TabIndex = 2;
-            this.tabRD.Text = "Remote Desktop";
-            this.tabRD.UseVisualStyleBackColor = true;
+            this.taVNC.Controls.Add(this.panelVNC);
+            this.taVNC.Location = new System.Drawing.Point(4, 22);
+            this.taVNC.Name = "taVNC";
+            this.taVNC.Size = new System.Drawing.Size(294, 202);
+            this.taVNC.TabIndex = 3;
+            this.taVNC.Text = "VNC";
+            this.taVNC.UseVisualStyleBackColor = true;
             // 
-            // tabVNC
+            // taWSCP
             // 
-            this.tabVNC.Controls.Add(this.pOVNC);
-            this.tabVNC.Location = new System.Drawing.Point(4, 22);
-            this.tabVNC.Name = "tabVNC";
-            this.tabVNC.Size = new System.Drawing.Size(294, 196);
-            this.tabVNC.TabIndex = 3;
-            this.tabVNC.Text = "VNC";
-            this.tabVNC.UseVisualStyleBackColor = true;
+            this.taWSCP.Controls.Add(this.paWinSCP);
+            this.taWSCP.Location = new System.Drawing.Point(4, 22);
+            this.taWSCP.Name = "taWSCP";
+            this.taWSCP.Size = new System.Drawing.Size(294, 202);
+            this.taWSCP.TabIndex = 4;
+            this.taWSCP.Text = "WinSCP";
+            this.taWSCP.UseVisualStyleBackColor = true;
             // 
-            // tabWSCP
+            // backgroundProgress
             // 
-            this.tabWSCP.Controls.Add(this.pOWinSCP);
-            this.tabWSCP.Location = new System.Drawing.Point(4, 22);
-            this.tabWSCP.Name = "tabWSCP";
-            this.tabWSCP.Size = new System.Drawing.Size(294, 196);
-            this.tabWSCP.TabIndex = 4;
-            this.tabWSCP.Text = "WinSCP";
-            this.tabWSCP.UseVisualStyleBackColor = true;
+            this.backgroundProgress.WorkerReportsProgress = true;
+            this.backgroundProgress.WorkerSupportsCancellation = true;
+            this.backgroundProgress.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwProgress_DoWork);
+            this.backgroundProgress.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwProgress_ProgressChanged);
+            this.backgroundProgress.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwProgress_RunWorkerCompleted);
             // 
-            // bwProgress
+            // buOK
             // 
-            this.bwProgress.WorkerReportsProgress = true;
-            this.bwProgress.WorkerSupportsCancellation = true;
-            this.bwProgress.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwProgress_DoWork);
-            this.bwProgress.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwProgress_ProgressChanged);
-            this.bwProgress.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwProgress_RunWorkerCompleted);
+            this.buOK.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.buOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buOK.Location = new System.Drawing.Point(117, 236);
+            this.buOK.Name = "buOK";
+            this.buOK.Size = new System.Drawing.Size(70, 24);
+            this.buOK.TabIndex = 1;
+            this.buOK.Text = "OK";
+            this.buOK.UseVisualStyleBackColor = true;
             // 
-            // bOK
+            // tooltipOptions
             // 
-            this.bOK.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.bOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.bOK.Location = new System.Drawing.Point(117, 230);
-            this.bOK.Name = "bOK";
-            this.bOK.Size = new System.Drawing.Size(70, 24);
-            this.bOK.TabIndex = 1;
-            this.bOK.Text = "OK";
-            this.bOK.UseVisualStyleBackColor = true;
+            this.tooltipOptions.AutoPopDelay = 5000;
+            this.tooltipOptions.InitialDelay = 200;
+            this.tooltipOptions.ReshowDelay = 100;
             // 
-            // slGMulti
-            // 
-            this.slGMulti.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.slGMulti.AutoSize = false;
-            this.slGMulti.Enabled = false;
-            this.slGMulti.Location = new System.Drawing.Point(-3, 60);
-            this.slGMulti.Margin = new System.Windows.Forms.Padding(0);
-            this.slGMulti.Maximum = 40;
-            this.slGMulti.Minimum = 10;
-            this.slGMulti.Name = "slGMulti";
-            this.slGMulti.Size = new System.Drawing.Size(292, 20);
-            this.slGMulti.TabIndex = 3;
-            this.slGMulti.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.slGMulti.Value = 15;
-            this.slGMulti.Scroll += new System.EventHandler(this.slGMulti_Scroll);
-            // 
-            // formOptions
+            // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(304, 261);
-            this.Controls.Add(this.bOK);
-            this.Controls.Add(this.tabs);
+            this.ClientSize = new System.Drawing.Size(304, 267);
+            this.Controls.Add(this.buOK);
+            this.Controls.Add(this.taOptions);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "formOptions";
+            this.Name = "FormOptions";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
-            this.pOPuTTY.ResumeLayout(false);
-            this.pOPuTTY.PerformLayout();
-            this.pORD.ResumeLayout(false);
-            this.pORD.PerformLayout();
-            this.pOVNC.ResumeLayout(false);
-            this.pOVNC.PerformLayout();
-            this.pOWinSCP.ResumeLayout(false);
-            this.pOWinSCP.PerformLayout();
-            this.tabs.ResumeLayout(false);
-            this.tabGeneral.ResumeLayout(false);
-            this.pOGeneral.ResumeLayout(false);
-            this.pOGeneral.PerformLayout();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormOptions_FormClosing);
+            this.Shown += new System.EventHandler(this.FormOptions_Shown);
+            this.panelPuTTY.ResumeLayout(false);
+            this.panelPuTTY.PerformLayout();
+            this.panelRD.ResumeLayout(false);
+            this.panelRD.PerformLayout();
+            this.panelVNC.ResumeLayout(false);
+            this.panelVNC.PerformLayout();
+            this.paWinSCP.ResumeLayout(false);
+            this.paWinSCP.PerformLayout();
+            this.taOptions.ResumeLayout(false);
+            this.taGeneral.ResumeLayout(false);
+            this.paGeneral.ResumeLayout(false);
+            this.paGeneral.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.piGImport)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
             this.tpGPass.ResumeLayout(false);
             this.tpGPass.PerformLayout();
-            this.pGApply.ResumeLayout(false);
+            this.paGApply.ResumeLayout(false);
             this.pGPassword.ResumeLayout(false);
             this.pGPassword.PerformLayout();
-            this.pGConfirm.ResumeLayout(false);
-            this.pGConfirm.PerformLayout();
-            this.tabPuTTY.ResumeLayout(false);
-            this.tabRD.ResumeLayout(false);
-            this.tabVNC.ResumeLayout(false);
-            this.tabWSCP.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.slGMulti)).EndInit();
+            this.paGConfirm.ResumeLayout(false);
+            this.paGConfirm.PerformLayout();
+            this.taPuTTY.ResumeLayout(false);
+            this.taRD.ResumeLayout(false);
+            this.taVNC.ResumeLayout(false);
+            this.taWSCP.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
-        #endregion
+#endregion
 
-        private System.Windows.Forms.Panel pOPuTTY;
-        public System.Windows.Forms.Button bPuTTYExecute;
-        private System.Windows.Forms.Label lSep8;
+        private System.Windows.Forms.Panel panelPuTTY;
+        public System.Windows.Forms.Button buPuTTYExecute;
+        private System.Windows.Forms.Label laPuTTYSeparator2;
         public System.Windows.Forms.CheckBox cbPuTTYExecute;
         public System.Windows.Forms.TextBox tbPuTTYExecute;
-        private System.Windows.Forms.Label lSep9;
+        private System.Windows.Forms.Label laPuTTYSeparator3;
         public System.Windows.Forms.CheckBox cbPuTTYKey;
-        private System.Windows.Forms.Label lSep7;
-        private System.Windows.Forms.Button bPuTTYKey;
-        private System.Windows.Forms.Label lPuTTYPath;
+        private System.Windows.Forms.Label laPuTTYSeparator1;
+        private System.Windows.Forms.Button buPuTTYKey;
         public System.Windows.Forms.TextBox tbPuTTYKey;
-        private System.Windows.Forms.Button bPuTTYPath;
+        private System.Windows.Forms.Button buPuTTYPath;
         public System.Windows.Forms.TextBox tbPuTTYPath;
-        private System.Windows.Forms.Panel pORD;
-        private System.Windows.Forms.Label lSep13;
-        private System.Windows.Forms.Label lRDOther;
-        private System.Windows.Forms.Label lSep12;
-        private System.Windows.Forms.Label lRDSize;
+        private System.Windows.Forms.Panel panelRD;
+        private System.Windows.Forms.Label laRDSeparator4;
+        private System.Windows.Forms.Label laRDSeparator3;
         public System.Windows.Forms.ComboBox cbRDSize;
-        private System.Windows.Forms.Label lRDKeep;
         public System.Windows.Forms.TextBox tbRDKeep;
-        private System.Windows.Forms.Button bRDKeep;
-        private System.Windows.Forms.Label lSep11;
-        private System.Windows.Forms.Label lSep10;
+        private System.Windows.Forms.Button buRDKeep;
+        private System.Windows.Forms.Label laRDSeparator2;
+        private System.Windows.Forms.Label laRDSeparator1;
         private System.Windows.Forms.TextBox tbRDPath;
         public System.Windows.Forms.CheckBox cbRDDrives;
-        private System.Windows.Forms.Label lRDPath;
-        private System.Windows.Forms.Button bRDPath;
-        private System.Windows.Forms.Panel pOVNC;
-        private System.Windows.Forms.Label lVNCOther;
-        private System.Windows.Forms.Label lSep16;
-        private System.Windows.Forms.Label lVNCFiles;
+        private System.Windows.Forms.Button buRDPath;
+        private System.Windows.Forms.Panel panelVNC;
+        private System.Windows.Forms.Label laVNCSeparator3;
         public System.Windows.Forms.TextBox tbVNCKeep;
-        private System.Windows.Forms.Button bVNCKeep;
-        private System.Windows.Forms.Label lSep15;
+        private System.Windows.Forms.Button buVNCKeep;
+        private System.Windows.Forms.Label laVNCSeparator2;
         public System.Windows.Forms.CheckBox cbVNCViewonly;
         public System.Windows.Forms.CheckBox cbVNCFullscreen;
-        private System.Windows.Forms.Label lSep14;
+        private System.Windows.Forms.Label laVNCSeparator1;
         private System.Windows.Forms.TextBox tbVNCPath;
-        private System.Windows.Forms.Label lVNCPath;
-        private System.Windows.Forms.Button bVNCPath;
-        private System.Windows.Forms.Panel pOWinSCP;
-        private System.Windows.Forms.Label lSep18;
+        private System.Windows.Forms.Button buVNCPath;
+        private System.Windows.Forms.Panel paWinSCP;
+        private System.Windows.Forms.Label laWSeparator2;
         public System.Windows.Forms.CheckBox cbWSCPKey;
-        private System.Windows.Forms.Label lSep17;
-        private System.Windows.Forms.Button bWSCPKey;
-        private System.Windows.Forms.Label lWSCPPath;
+        private System.Windows.Forms.Label laWSeparator1;
+        private System.Windows.Forms.Button buWSCPKey;
         public System.Windows.Forms.TextBox tbWSCPKey;
-        private System.Windows.Forms.Button bWSCPPath;
+        private System.Windows.Forms.Button buWSCPPath;
         private System.Windows.Forms.TextBox tbWSCPPath;
-        private System.Windows.Forms.TabControl tabs;
-        private System.Windows.Forms.TabPage tabPuTTY;
-        private System.Windows.Forms.TabPage tabRD;
-        private System.Windows.Forms.TabPage tabVNC;
-        private System.Windows.Forms.TabPage tabWSCP;
-        private System.Windows.Forms.TabPage tabGeneral;
-        private System.Windows.Forms.Panel pOGeneral;
-        private System.Windows.Forms.LinkLabel liGImport;
+        private System.Windows.Forms.TabControl taOptions;
+        private System.Windows.Forms.TabPage taPuTTY;
+        private System.Windows.Forms.TabPage taRD;
+        private System.Windows.Forms.TabPage taVNC;
+        private System.Windows.Forms.TabPage taWSCP;
+        private System.Windows.Forms.TabPage taGeneral;
+        private System.Windows.Forms.Panel paGeneral;
         public System.Windows.Forms.CheckBox cbGSkip;
         public System.Windows.Forms.CheckBox cbGReplace;
-        private System.Windows.Forms.Label lSep5;
-        private System.Windows.Forms.Label lGImport;
-        private System.Windows.Forms.Button bGImport;
-        private System.Windows.Forms.Label lSep4;
+        private System.Windows.Forms.Label laGSeparator5;
+        private System.Windows.Forms.Button buGImport;
+        private System.Windows.Forms.Label laGSeparator4;
         public System.Windows.Forms.CheckBox cbGMulti;
+        private SingleClickLabel labelGPassword;
         private System.Windows.Forms.CheckBox cbGPassword;
         private System.Windows.Forms.TableLayoutPanel tpGPass;
         private System.Windows.Forms.Panel pGPassword;
-        private System.Windows.Forms.Label lSep1;
+        private System.Windows.Forms.Label laGSeparator1;
         private System.Windows.Forms.TextBox tbGPassword;
-        private System.Windows.Forms.Panel pGConfirm;
+        private System.Windows.Forms.Panel paGConfirm;
         private System.Windows.Forms.TextBox tbGConfirm;
-        private System.Windows.Forms.Label lSep2;
-        private System.Windows.Forms.Label lGConfirm;
-        private System.Windows.Forms.Panel pGApply;
-        private System.Windows.Forms.Button bGPassword;
-        private System.Windows.Forms.Label lSep3;
-        private System.Windows.Forms.Label lSep6;
-        private System.Windows.Forms.Label lGOther;
+        private System.Windows.Forms.Label laGSeparator2;
+        private System.Windows.Forms.Panel paGApply;
+        private System.Windows.Forms.Button buGApply;
+        private System.Windows.Forms.Label laGSeparator3;
+        private System.Windows.Forms.Label laGSeparator6;
         public System.Windows.Forms.CheckBox cbGMinimize;
-        private Fusionbird.FusionToolkit.FusionTrackBar slGMulti;
-        public System.ComponentModel.BackgroundWorker bwProgress;
-        private System.Windows.Forms.Button bOK;
+        public System.ComponentModel.BackgroundWorker backgroundProgress;
+        private System.Windows.Forms.Button buOK;
         public System.Windows.Forms.CheckBox cbRDAdmin;
-        public System.Windows.Forms.CheckBox cbPuTTYForward;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.CheckBox cbPuTTYX11;
+        private System.Windows.Forms.Label laPuTTYSeparator4;
+        private System.Windows.Forms.Label laOther;
         public System.Windows.Forms.CheckBox cbRDSpan;
-        private System.Windows.Forms.Label lSep19;
-        private System.Windows.Forms.Label lWSCPOther;
+        private System.Windows.Forms.Label laWSeparator3;
         public System.Windows.Forms.CheckBox cbWSCPPassive;
         public System.Windows.Forms.CheckBox cbGPosition;
         public System.Windows.Forms.CheckBox cbGSize;
-        private System.Windows.Forms.ToolTip toolTipOptions;
+        private System.Windows.Forms.ToolTip tooltipOptions;
+        private SingleClickLabel laPuTTYPath;
+        private SingleClickLabel laRDOther;
+        private SingleClickLabel laRDSize;
+        private SingleClickLabel laRDKeep;
+        private SingleClickLabel laRDPath;
+        private SingleClickLabel laVNCOther;
+        private SingleClickLabel laVNCFiles;
+        private SingleClickLabel laVNCPath;
+        private SingleClickLabel laWSCPPath;
+        private SingleClickLabel laGImport;
+        private SingleClickLabel labelGConfirm;
+        private SingleClickLabel laGOther;
+        private SingleClickLabel laWSCPOther;
+        public System.Windows.Forms.CheckBox cbGTooltips;
+        public System.Windows.Forms.CheckBox cbPuTTYAgent;
+        public System.Windows.Forms.CheckBox cbWSCPAgent;
+        public System.Windows.Forms.CheckBox cbGHidePassword;
+        private System.Windows.Forms.TrackBar slGMulti;
+        public System.Windows.Forms.CheckBox cbWSCPUnsecure;
+        private System.Windows.Forms.PictureBox piGImport;
     }
 }
 

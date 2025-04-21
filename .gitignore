@@ -1,9 +1,14 @@
-
 _todo_.txt
 AutoPuTTY.4.1.resharper.user
 .vs/*
 bin/*
 obj/*
-putty/Release/*
-putty/x64/*
+NSIS/*.exe
 Resources/PngOptimizer.exe
+putty-0.*/.gitignore
+putty-0.*/.vs
+putty-0.*/CMakeCache.txt
+putty-0.*/x64
+putty-0.*/doc/x64
+putty-0.*/doc/*.sln
+putty-0.*/Release/*
