@@ -34,5 +34,5 @@ using System.Runtime.InteropServices;
 
 public static class Info
 {
-    public const string version = "0.50";
+    public const string version = "0.51";
 }
