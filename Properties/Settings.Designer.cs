@@ -502,17 +502,5 @@ namespace AutoPuTTY.Properties {
                 this["winscppassive"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool winscpunsecure {
-            get {
-                return ((bool)(this["winscpunsecure"]));
-            }
-            set {
-                this["winscpunsecure"] = value;
-            }
-        }
     }
 }

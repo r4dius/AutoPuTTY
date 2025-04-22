@@ -84,12 +84,6 @@ namespace AutoPuTTY
                 tbWSCPKey.Text = Settings.Default.winscpkeyfilepath;
                 cbWSCPAgent.Checked = Settings.Default.winscpagent;
                 cbWSCPPassive.Checked = Settings.Default.winscppassive;
-#if SECURE
-                cbWSCPUnsecure.Hide();
-                cbWSCPPassive.Top = cbWSCPUnsecure.Top;
-#else
-                cbWSCPUnsecure.Checked = Settings.Default.winscpunsecure;
-#endif
             }
 
             tooltipOptions.Active = cbGTooltips.Checked;
@@ -592,6 +586,16 @@ namespace AutoPuTTY
             popup.ShowNear((Control)sender, PopupAlignment.TopCenter);
         }
 
+        private void piGImport_MouseEnter(object sender, EventArgs e)
+        {
+            FormMain.buInfo_MouseEnter(sender, e);
+        }
+
+        private void piGImport_MouseLeave(object sender, EventArgs e)
+        {
+            FormMain.buInfo_MouseLeave(sender, e);
+        }
+
         private void slGMulti_Scroll(object sender, EventArgs e)
         {
             if (!cbGMulti.Checked) return;
@@ -968,12 +972,6 @@ namespace AutoPuTTY
             if (!FirstRead) FormMain.XmlSetConfig("winscp", Settings.Default.winscppath);
         }
 
-        private void cbWSCPUnsecure_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Default.winscpunsecure = cbWSCPUnsecure.Checked;
-            if (!FirstRead) FormMain.XmlSetConfig("winscpunsecure", Settings.Default.winscpunsecure.ToString());
-        }
-
         private void bwProgress_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             object[] Args = (object[])e.Argument;
@@ -1032,11 +1030,6 @@ namespace AutoPuTTY
         {
             Settings.Default.autohidepassword = cbGHidePassword.Checked;
             if (!FirstRead) FormMain.XmlSetConfig("autohidepassword", Settings.Default.autohidepassword.ToString());
-        }
-
-        private void liGImport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
         }
     }
 }

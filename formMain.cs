@@ -86,38 +86,32 @@ namespace AutoPuTTY
             }
             else
             {
+                XmlCreateConfig();
+
                 try
                 {
                     Settings.Default.cfgpath = Path.Combine(cfgpath, Settings.Default.cfgfilepath);
-                    XmlCreateConfig();
+                    XmlSave();
                 }
                 catch (Exception)
                 {
+                }
+
+                try
+                {
                     if (!Directory.Exists(userpath))
                     {
-                        try
-                        {
-                            Directory.CreateDirectory(userpath);
-                        }
-                        catch (Exception)
-                        {
-                            MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
-                            Environment.Exit(-1);
-                        }
+                        Directory.CreateDirectory(userpath);
                     }
-                    else
-                    {
-                        try
-                        {
-                            Settings.Default.cfgpath = Path.Combine(userpath, Settings.Default.cfgfilepath);
-                            XmlSave();
-                        }
-                        catch (Exception)
-                        {
-                            MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
-                            Environment.Exit(-1);
-                        }
-                    }
+
+                    Settings.Default.cfgpath = Path.Combine(userpath, Settings.Default.cfgfilepath);
+                    XmlSave();
+
+                }
+                catch (Exception)
+                {
+                    MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
+                    Environment.Exit(-1);
                 }
             }
 
@@ -1111,19 +1105,27 @@ namespace AutoPuTTY
                                 //SSH Jump
                                 if (ProxyHost != "")
                                 {
-#if SECURE
-                                    Settings.Default.winscpunsecure = false;
-#endif
                                     User = UserFromProxy;
-                                    Proc.StartInfo.Arguments += " Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22") + (Settings.Default.winscpunsecure && ProxyPass != "" ? " TunnelPasswordPlain=\"" + ReplaceSpecial(SpecialCharsWinscp, ProxyPass) + "\"" : "") + (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " /TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
+                                    Proc.StartInfo.Arguments += " Tunnel=1 TunnelHostName=" + ProxyHost + (ProxyUser != "" ? " TunnelUserName=" + ProxyUser : "") + " TunnelPortNumber=" + (ProxyPort != "" ? ProxyPort : "22");
+                                    if (ProxyPass != "")
+                                    {
+                                        ProxyPipe = Guid.NewGuid().ToString("N");
+                                        Proc.StartInfo.Arguments += $" TunnelPasswordPlain=\\\\.\\pipe\\{ProxyPipe}";
+                                    }
+                                    Proc.StartInfo.Arguments += (Settings.Default.winscpkey && Settings.Default.winscpkeyfilepath != "" ? " TunnelPublicKeyFile=\"" + Settings.Default.winscpkeyfilepath + "\"" : "");
                                 }
 
                                 if (WinscpArgs != "") Proc.StartInfo.Arguments += $" {WinscpArgs}";
+
                                 try
                                 {
                                     if (Pipe != "")
                                     {
                                         Task.Run(() => RunNamedPipeServer(Pipe, Pass));
+                                    }
+                                    if (ProxyPass != "")
+                                    {
+                                        Task.Run(() => RunNamedPipeServer(ProxyPipe, ProxyPass));
                                     }
                                     Proc.Start();
                                 }
@@ -1375,7 +1377,6 @@ namespace AutoPuTTY
             XmlElement ListXml = XmlData.CreateElement(string.Empty, "List", string.Empty);
             DataXml.AppendChild(ListXml);
             XmlData.AppendChild(DataXml);
-            XmlSave();
         }
 
         public string XmlGetConfig(string id)
