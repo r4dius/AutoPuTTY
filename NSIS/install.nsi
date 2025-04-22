@@ -10,9 +10,9 @@
 !define PRODUCT_NAME "AutoPuTTY"
 !define PRODUCT_DESCRIPTION "${PRODUCT_NAME}"
 !define COPYRIGHT "Copyright © 2025 r4dius"
-!define PRODUCT_VERSION "0.5.0.0"
-!define SETUP_VERSION 0.5.0.0
-!define AUTOPUTTY_VERSION "0.50"
+!define PRODUCT_VERSION "0.5.1.0"
+!define SETUP_VERSION 0.5.1.0
+!define AUTOPUTTY_VERSION "0.51"
 !define PUTTY_VERSION "0.83"
 
 ;-------------------------------------------------------------------------------
