@@ -28,8 +28,11 @@ namespace AutoPuTTY
         private readonly string _content;
         private const int CornerRadius = 4;  // tweak to your taste
 
-        [DllImport("gdi32.dll", SetLastError = true)]
+        [DllImport("gdi32.dll")]
         public static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
 
         public InfoPopupForm(string content)
         {
@@ -66,7 +69,6 @@ namespace AutoPuTTY
             Region = Region.FromHrgn(roundedRegion);
 
             // Close on focus loss or click
-            Deactivate += (s, e) => Close();
             Click += (s, e) => Close();
             infoLabel.Click += (s, e) => Close();
         }
@@ -143,14 +145,11 @@ namespace AutoPuTTY
             Location = new Point(x, y);
             Show();
 
+            // Close when parentForm gets focus
+            parentForm.Activated += (s, e) => Close();
+
             // Use BeginInvoke to activate the parent form immediately after the popup is closed
-            this.Closed += (s, e) =>
-            {
-                parentForm?.BeginInvoke((Action)(() =>
-                {
-                    parentForm?.Activate();  // Activate the parent form
-                }));
-            };
+            Closed += (s, e) => parentForm?.BeginInvoke((Action)(() => parentForm?.Activate()));
         }
     }
 }
