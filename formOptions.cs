@@ -433,7 +433,7 @@ namespace AutoPuTTY
             {
                 if (!Crypto.VerifyPassword(tbGPassword.Text, Settings.Default.passwordpbk))
                 {
-                    Settings.Default.passwordpbk = Crypto.HashPassword(tbGPassword.Text);
+                    Settings.Default.passwordpbk = FormMain.CryptoVersionString() + Crypto.HashPassword(tbGPassword.Text);
                     FormMain.XmlSetData("Hash", Settings.Default.passwordpbk.ToString());
 
                     if (FormMain.lbServer.Items.Count > 0 || FormMain.lbVault.Items.Count > 0)

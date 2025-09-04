@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 public static class Crypto
 {
@@ -60,11 +61,6 @@ public static class Crypto
         return salt;
     }
 
-    public static string HashPassword(string password, byte[] storedSalt = null)
-    {
-        return HashPassword(password, Parallelism, storedSalt);
-    }
-
     /// <summary>
     /// Hashes a password using Argon2, embedding the salt within the hashed password.
     /// </summary>
@@ -72,8 +68,10 @@ public static class Crypto
     /// <param name="storedSalt">The stored salt (optional, only used for verification).</param>
     /// <param name="parallelism">Thread count</param>
     /// <returns>The hashed password with the salt embedded as a Base64 string.</returns>
-    public static string HashPassword(string password, int parallelism, byte[] storedSalt = null)
+    public static string HashPassword(string password, int parallelism = 0, byte[] storedSalt = null)
     {
+        parallelism = parallelism != 0 ? parallelism : Parallelism;
+
         // Convert the password into bytes
         byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
 
@@ -107,21 +105,13 @@ public static class Crypto
     /// </summary>
     /// <param name="password">The password entered by the user.</param>
     /// <param name="storedHash">The stored hash with the embedded salt.</param>
-    /// <returns>True if the password is correct, false otherwise.</returns>
-    public static bool VerifyPassword(string password, string storedHash)
-    {
-        return VerifyPassword(password, storedHash, Parallelism);
-    }
-
-    /// <summary>
-    /// Verifies the password by comparing it with the stored hash, which contains the salt.
-    /// </summary>
-    /// <param name="password">The password entered by the user.</param>
-    /// <param name="storedHash">The stored hash with the embedded salt.</param>
     /// <param name="parallelism">Threads.</param>
     /// <returns>True if the password is correct, false otherwise.</returns>
-    public static bool VerifyPassword(string password, string storedHash, int parallelism)
+    public static bool VerifyPassword(string password, string storedHash, int parallelism = 0)
     {
+        storedHash = Regex.Replace(storedHash, @"^\$v\d+\$", "");
+        parallelism = parallelism != 0 ? parallelism : Parallelism;
+
         if (password.Trim() == "" || storedHash.Trim() == "") return false;
         // Convert the stored hash from Base64 to byte array
         byte[] hashWithSalt = Convert.FromBase64String(storedHash);
@@ -196,20 +186,11 @@ public static class Crypto
     /// Decrypts a base64-encoded string that was encrypted with the Encrypt method.
     /// </summary>
     /// <param name="encrypted">The base64-encoded string to decrypt.</param>
-    /// <returns>The decrypted string.</returns>
-    public static string Decrypt(string encrypted)
-    {
-        return encrypted.Trim() != "" ? Decrypt(encrypted, Settings.Default.cryptokey, Parallelism) : "";
-    }
-
-    /// <summary>
-    /// Decrypts a base64-encoded string that was encrypted with the Encrypt method.
-    /// </summary>
-    /// <param name="encrypted">The base64-encoded string to decrypt.</param>
     /// <param name="parallelism">Threads.</param>
     /// <returns>The decrypted string.</returns>
-    public static string Decrypt(string encrypted, int parallelism)
+    public static string Decrypt(string encrypted, int parallelism = 0)
     {
+        parallelism = parallelism != 0 ? parallelism : Parallelism;
         return encrypted.Trim() != "" ? Decrypt(encrypted, Settings.Default.cryptokey, parallelism) : "";
     }
 
@@ -219,12 +200,13 @@ public static class Crypto
     /// <param name="encrypted">The base64-encoded string to decrypt.</param>
     /// <param name="password">The password used for key derivation.</param>
     /// <returns>The decrypted string.</returns>
-    public static string Decrypt(string encrypted, string password, int parallelism)
+    public static string Decrypt(string encrypted, string password, int parallelism = 0)
     {
         byte[] cipherData = Convert.FromBase64String(encrypted);
-
         byte[] salt = new byte[SaltSize];
         byte[] iv = new byte[SaltSize];
+        parallelism = parallelism != 0 ? parallelism : Parallelism;
+
         Array.Copy(cipherData, 0, salt, 0, salt.Length);
         Array.Copy(cipherData, salt.Length, iv, 0, iv.Length);
 

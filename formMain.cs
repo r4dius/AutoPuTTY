@@ -67,6 +67,7 @@ namespace AutoPuTTY
         private Image IconEyeHover;
         private Image IconInfoHover;
         private Image IconSwitchHover;
+        private const int CryptoVersion = 2;
 
         public FormMain()
         {
@@ -95,23 +96,22 @@ namespace AutoPuTTY
                 }
                 catch (Exception)
                 {
-                }
-
-                try
-                {
-                    if (!Directory.Exists(userpath))
+                    try
                     {
-                        Directory.CreateDirectory(userpath);
+                        if (!Directory.Exists(userpath))
+                        {
+                            Directory.CreateDirectory(userpath);
+                        }
+
+                        Settings.Default.cfgpath = Path.Combine(userpath, Settings.Default.cfgfilepath);
+                        XmlSave();
+
                     }
-
-                    Settings.Default.cfgpath = Path.Combine(userpath, Settings.Default.cfgfilepath);
-                    XmlSave();
-
-                }
-                catch (Exception)
-                {
-                    MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
-                    Environment.Exit(-1);
+                    catch (Exception)
+                    {
+                        MessageError(this, "No really, I could not find nor write my configuration file :'(\rPlease check your user permissions.");
+                        Environment.Exit(-1);
+                    }
                 }
             }
 
@@ -585,10 +585,15 @@ namespace AutoPuTTY
             PasswordRequest();
         }
 
+        public string CryptoVersionString()
+        {
+            return "$v" + CryptoVersion + "$";
+        }
+
         private void RemoveLegacy()
         {
             string method = "";
-            Settings.Default.passwordpbk = Crypto.HashPassword(Settings.Default.cryptokey);
+            Settings.Default.passwordpbk = CryptoVersionString() + Crypto.HashPassword(Settings.Default.cryptokey);
             if (Settings.Default.password.Trim() != "") {
                 Settings.Default.password = "";
                 method = "password";
@@ -2938,7 +2943,7 @@ namespace AutoPuTTY
 
         private bool VerifyPassword()
         {
-            if (Settings.Default.passwordpbk != "" && !Settings.Default.passwordpbk.StartsWith("$v2$"))
+            if (Settings.Default.passwordpbk != "" && !Settings.Default.passwordpbk.StartsWith(CryptoVersionString()))
             {
                 // We have a random DegreeOfParallelism, try to find it
                 int ProcessorCount = Environment.ProcessorCount;
@@ -2948,8 +2953,13 @@ namespace AutoPuTTY
                 {
                     if (Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk, parallelism))
                     {
-                        // Lucky found hashed Parallelism value
-
+                        // Lucky, found hashed Parallelism value
+                        Settings.Default.cryptokey = tbPassPassword.Text;
+                        Settings.Default.passwordpbk = CryptoVersionString() + Crypto.HashPassword(tbPassPassword.Text);
+                        XmlSetData("Hash", Settings.Default.passwordpbk.ToString());
+                        string decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml, parallelism);
+                        XmlConfig.LoadXml($"<List>{decryptedlist}</List>");
+                        XmlSave();
                         return true;
                     }
                 }
