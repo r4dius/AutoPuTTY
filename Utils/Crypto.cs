@@ -3,12 +3,14 @@ using Konscious.Security.Cryptography;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
 public static class Crypto
 {
     private const int SaltSize = 16; // The size of the salt (16 bytes)
+    private static int Parallelism = 16;
 
     /// <summary>
     /// Generates a random salt.
@@ -31,16 +33,16 @@ public static class Crypto
     /// <param name="salt">Salt value.</param>
     /// <param name="keySize">Length of the key in bytes.</param>
     /// <returns>Derived key as byte array.</returns>
-    private static byte[] DeriveKey(string password, byte[] salt, int keySize)
+    private static byte[] DeriveKey(string password, byte[] salt, int keySize, int parallelism)
     {
         byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
 
         var argon2 = new Argon2id(passwordBytes)
         {
             Salt = salt,
-            DegreeOfParallelism = Environment.ProcessorCount, // Number of threads to use.
-            Iterations = 4,            // The number of iterations.
-            MemorySize = 64 * 1024     // Memory size in kilobytes (this example uses ~64MB).
+            DegreeOfParallelism = parallelism, // Number of threads to use.
+            Iterations = 4,                    // The number of iterations.
+            MemorySize = 64 * 1024             // Memory size in kilobytes (this example uses ~64MB).
         };
 
         return argon2.GetBytes(keySize);
@@ -58,13 +60,19 @@ public static class Crypto
         return salt;
     }
 
+    public static string HashPassword(string password, byte[] storedSalt = null)
+    {
+        return HashPassword(password, Parallelism, storedSalt);
+    }
+
     /// <summary>
     /// Hashes a password using Argon2, embedding the salt within the hashed password.
     /// </summary>
     /// <param name="password">The password to hash.</param>
     /// <param name="storedSalt">The stored salt (optional, only used for verification).</param>
+    /// <param name="parallelism">Thread count</param>
     /// <returns>The hashed password with the salt embedded as a Base64 string.</returns>
-    public static string HashPassword(string password, byte[] storedSalt = null)
+    public static string HashPassword(string password, int parallelism, byte[] storedSalt = null)
     {
         // Convert the password into bytes
         byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
@@ -77,9 +85,9 @@ public static class Crypto
         {
             // Set the parameters (adjust these as needed for security/performance)
             argon2.Salt = salt;
-            argon2.DegreeOfParallelism = Environment.ProcessorCount; // Number of threads
-            argon2.Iterations = 4;                                  // The number of iterations
-            argon2.MemorySize = 128 * 1024;                          // Memory in KB (64MB)
+            argon2.DegreeOfParallelism = parallelism; // Number of threads
+            argon2.Iterations = 4;                    // The number of iterations
+            argon2.MemorySize = 128 * 1024;           // Memory in KB (64MB)
 
             // Get the resulting hash
             byte[] hash = argon2.GetBytes(32); // Generate a 32-byte hash (256 bits)
@@ -102,15 +110,28 @@ public static class Crypto
     /// <returns>True if the password is correct, false otherwise.</returns>
     public static bool VerifyPassword(string password, string storedHash)
     {
+        return VerifyPassword(password, storedHash, Parallelism);
+    }
+
+    /// <summary>
+    /// Verifies the password by comparing it with the stored hash, which contains the salt.
+    /// </summary>
+    /// <param name="password">The password entered by the user.</param>
+    /// <param name="storedHash">The stored hash with the embedded salt.</param>
+    /// <param name="parallelism">Threads.</param>
+    /// <returns>True if the password is correct, false otherwise.</returns>
+    public static bool VerifyPassword(string password, string storedHash, int parallelism)
+    {
         if (password.Trim() == "" || storedHash.Trim() == "") return false;
         // Convert the stored hash from Base64 to byte array
         byte[] hashWithSalt = Convert.FromBase64String(storedHash);
+        string hashedPassword = "";
 
         // Extract the salt from the stored hash
         byte[] salt = ExtractSalt(hashWithSalt);
 
         // Hash the password with the extracted salt
-        string hashedPassword = HashPassword(password, salt);
+        hashedPassword = HashPassword(password, parallelism, salt);
 
         // Compare the computed hash with the stored hash
         return storedHash == hashedPassword;
@@ -149,7 +170,7 @@ public static class Crypto
             }
 
             int keySizeBytes = aes.KeySize / 8;
-            byte[] key = DeriveKey(password, salt, keySizeBytes);
+            byte[] key = DeriveKey(password, salt, keySizeBytes, Parallelism);
             aes.Key = key;
 
             using (var ms = new MemoryStream())
@@ -178,7 +199,18 @@ public static class Crypto
     /// <returns>The decrypted string.</returns>
     public static string Decrypt(string encrypted)
     {
-        return encrypted.Trim() != "" ? Decrypt(encrypted, Settings.Default.cryptokey) : "";
+        return encrypted.Trim() != "" ? Decrypt(encrypted, Settings.Default.cryptokey, Parallelism) : "";
+    }
+
+    /// <summary>
+    /// Decrypts a base64-encoded string that was encrypted with the Encrypt method.
+    /// </summary>
+    /// <param name="encrypted">The base64-encoded string to decrypt.</param>
+    /// <param name="parallelism">Threads.</param>
+    /// <returns>The decrypted string.</returns>
+    public static string Decrypt(string encrypted, int parallelism)
+    {
+        return encrypted.Trim() != "" ? Decrypt(encrypted, Settings.Default.cryptokey, parallelism) : "";
     }
 
     /// <summary>
@@ -187,7 +219,7 @@ public static class Crypto
     /// <param name="encrypted">The base64-encoded string to decrypt.</param>
     /// <param name="password">The password used for key derivation.</param>
     /// <returns>The decrypted string.</returns>
-    public static string Decrypt(string encrypted, string password)
+    public static string Decrypt(string encrypted, string password, int parallelism)
     {
         byte[] cipherData = Convert.FromBase64String(encrypted);
 
@@ -203,7 +235,7 @@ public static class Crypto
             aes.IV = iv;
 
             int keySizeBytes = aes.KeySize / 8;
-            byte[] key = DeriveKey(password, salt, keySizeBytes);
+            byte[] key = DeriveKey(password, salt, keySizeBytes, parallelism);
             aes.Key = key;
 
             using (var ms = new MemoryStream())

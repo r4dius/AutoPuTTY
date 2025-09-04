@@ -2938,6 +2938,26 @@ namespace AutoPuTTY
 
         private bool VerifyPassword()
         {
+            if (Settings.Default.passwordpbk != "" && !Settings.Default.passwordpbk.StartsWith("$v2$"))
+            {
+                // We have a random DegreeOfParallelism, try to find it
+                int ProcessorCount = Environment.ProcessorCount;
+                int[] TryParallelism = new[] { ProcessorCount }.Concat(new[] { 1, 2, 4, 6, 8, 10, 12, 16, 24, 32 }.Where(p => p != ProcessorCount)).ToArray();
+
+                foreach (var parallelism in TryParallelism)
+                {
+                    if (Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk, parallelism))
+                    {
+                        // Lucky found hashed Parallelism value
+
+                        return true;
+                    }
+                }
+
+                // No luck
+                return false;
+            }
+
             return (Settings.Default.passwordpbk != "" && Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk)) ||
                    (Settings.Default.passwordmd5 != "" && Legacy.MD5Hash(tbPassPassword.Text) == Settings.Default.passwordmd5) ||
                    (Settings.Default.password != "" && tbPassPassword.Text == Legacy.Decrypt(Settings.Default.password, Settings.Default.cryptolegacypassword));

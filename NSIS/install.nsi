@@ -9,7 +9,7 @@
 ; Constants
 !define PRODUCT_NAME "AutoPuTTY"
 !define PRODUCT_DESCRIPTION "${PRODUCT_NAME}"
-!define COPYRIGHT "Copyright © 2025 r4dius"
+!define COPYRIGHT "Copyright © r4dius 2025"
 !define PRODUCT_VERSION "0.5.1.0"
 !define SETUP_VERSION 0.5.1.0
 !define AUTOPUTTY_VERSION "0.51"
@@ -21,7 +21,7 @@ Name "${PRODUCT_NAME}"
 OutFile "AutoPuTTY installer.exe"
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 InstallDirRegKey HKCU "Software\${PRODUCT_NAME}" ""
-RequestExecutionLevel admin ; user|highest|admin
+RequestExecutionLevel user ; user|highest|admin
 
 ;-------------------------------------------------------------------------------
 ; Version Info
@@ -79,10 +79,20 @@ Section "putty ${PUTTY_VERSION}" putty
 	File "putty.exe"
 SectionEnd
 
-Section "Start Menu Shortcuts"
-  CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
-  CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
-  CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\autoputty.exe"
+Section "Desktop Menu Shortcut"
+    SetShellVarContext all ; Ensure shortcuts go to all users
+	
+    ; Desktop Shortcut
+    CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\autoputty.exe"
+SectionEnd
+
+Section "Start Menu Shortcut"
+    SetShellVarContext all ; Ensure shortcuts go to all users
+
+    ; Start Menu
+	CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
+	CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\autoputty.exe"
+	CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
 SectionEnd
 
 Function .onInit
