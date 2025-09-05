@@ -174,7 +174,7 @@ namespace AutoPuTTY
             MenuItem copypassmenu = new MenuItem
             {
                 Index = i++,
-                Text = "Copy password...\tCtrl+B"
+                Text = "Copy password\tCtrl+B"
             };
             copypassmenu.Click += buCopyPass_Click;
             cmServer.MenuItems.Add(copypassmenu);
@@ -281,9 +281,11 @@ namespace AutoPuTTY
             // check for newer configuration format
             if (XmlGetNode("/Data") != null)
             {
+                Console.WriteLine("1");
                 // if user password, request and reset cryptokey
                 if (Settings.Default.passwordpbk.Trim() != "")
                 {
+                    Console.WriteLine("2");
                     PasswordRequest();
                 }
                 else
@@ -308,7 +310,7 @@ namespace AutoPuTTY
                 }
                 else
                 {
-                    UpgradeCrypto();
+                    UpgradeCryptoOld();
                     StartupDecrypt();
                 }
             }
@@ -545,7 +547,7 @@ namespace AutoPuTTY
         /// <summary>
         /// Upgrade old crypto methods from configuration.
         /// </summary>
-        private void UpgradeCrypto()
+        private void UpgradeCryptoOld()
         {
             XmlDocument NewXmlConfig = new XmlDocument();
             XmlDeclaration XmlDeclaration = NewXmlConfig.CreateXmlDeclaration("1.0", "UTF-8", null);
@@ -2936,7 +2938,7 @@ namespace AutoPuTTY
                         Settings.Default.passwordmd5.Trim() != "")
                     {
                         RemoveLegacy();
-                        UpgradeCrypto();
+                        UpgradeCryptoOld();
                         Startup();
                     }
                     // new crypto
@@ -2967,21 +2969,21 @@ namespace AutoPuTTY
             }
         }
 
-        private bool VerifyPassword()
+        private bool UpgradeCryptoParallel(string password, string stroredHash = null)
         {
-            if (Settings.Default.passwordpbk != "" && !Settings.Default.passwordpbk.StartsWith(CryptoVersionString()))
-            {
-                // We have a random DegreeOfParallelism, try to find it
-                int ProcessorCount = Environment.ProcessorCount;
-                int[] TryParallelism = new[] { ProcessorCount }.Concat(new[] { 1, 2, 4, 6, 8, 10, 12, 16, 24, 32 }.Where(p => p != ProcessorCount)).ToArray();
+            int ProcessorCount = Environment.ProcessorCount;
+            int[] TryParallelism = new[] { ProcessorCount }.Concat(new[] { 1, 2, 4, 6, 8, 10, 12, 16, 24, 32 }.Where(p => p != ProcessorCount)).ToArray();
 
-                foreach (var parallelism in TryParallelism)
+            foreach (var parallelism in TryParallelism)
+            {
+                if (stroredHash != null)
                 {
-                    if (Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk, parallelism))
+                    // Try to match user password Hash
+                    if (Crypto.VerifyPassword(password, stroredHash, parallelism))
                     {
                         // Lucky, found hashed Parallelism value
-                        Settings.Default.cryptokey = tbPassPassword.Text;
-                        Settings.Default.passwordpbk = CryptoVersionString() + Crypto.HashPassword(tbPassPassword.Text);
+                        Settings.Default.cryptokey = password;
+                        Settings.Default.passwordpbk = CryptoVersionString() + Crypto.HashPassword(password);
                         XmlSetData("Hash", Settings.Default.passwordpbk.ToString());
                         string decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml, parallelism);
                         XmlConfig.LoadXml($"<List>{decryptedlist}</List>");
@@ -2989,9 +2991,18 @@ namespace AutoPuTTY
                         return true;
                     }
                 }
+            }
 
-                // No luck
-                return false;
+            // No luck
+            return false;
+        }
+
+        private bool VerifyPassword()
+        {
+            if (Settings.Default.passwordpbk != "" && !Settings.Default.passwordpbk.StartsWith(CryptoVersionString()))
+            {
+                // We have a random DegreeOfParallelism, try to find it
+                return UpgradeCryptoParallel(tbPassPassword.Text, Settings.Default.passwordpbk);
             }
 
             return (Settings.Default.passwordpbk != "" && Crypto.VerifyPassword(tbPassPassword.Text, Settings.Default.passwordpbk)) ||
