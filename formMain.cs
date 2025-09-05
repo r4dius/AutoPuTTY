@@ -164,6 +164,22 @@ namespace AutoPuTTY
             }
             sepmenu.Index++;
             cmServer.MenuItems.Add(sepmenu.CloneMenu());
+            MenuItem copynamemenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Copy name\tCtrl+C"
+            };
+            copynamemenu.Click += buCopyName_Click;
+            cmServer.MenuItems.Add(copynamemenu);
+            MenuItem copypassmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Copy password...\tCtrl+B"
+            };
+            copypassmenu.Click += buCopyPass_Click;
+            cmServer.MenuItems.Add(copypassmenu);
+            sepmenu.Index++;
+            cmServer.MenuItems.Add(sepmenu.CloneMenu());
             MenuItem deletemenu = new MenuItem
             {
                 Index = i++,
@@ -2301,6 +2317,16 @@ namespace AutoPuTTY
             {
                 Connect("-1");
             }
+            else if (e.KeyChar == (char)3)
+            {
+                if (tlLeftServer.Visible) buCopyName_Click(this, EventArgs.Empty);
+                else buCopyVaultName_Click(this, EventArgs.Empty);
+            }
+            else if (e.KeyChar == (char)2)
+            {
+                if (tlLeftServer.Visible) buCopyPass_Click(this, EventArgs.Empty);
+                else buCopyVaultPass_Click(this, EventArgs.Empty);
+            }
             else if (Key.Length == 1)
             {
                 if (UnixTime - OldUnixTime < 1000)
@@ -3358,17 +3384,20 @@ namespace AutoPuTTY
 
         private void buCopyName_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbName.Text);
+            string value = tbName.Text;
+            if (value != "") System.Windows.Clipboard.SetText(value);
         }
 
         private void buCopyHost_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbHost.Text);
+            string value = tbHost.Text;
+            if (value != "") System.Windows.Clipboard.SetText(value);
         }
 
         private void buCopyUser_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbUser.Text);
+            string value = tbUser.Text;
+            if (value != "") System.Windows.Clipboard.SetText(value);
         }
 
         private void buCopyPass_Click(object sender, EventArgs e)
@@ -3379,12 +3408,14 @@ namespace AutoPuTTY
                 {
                     IDictionary<string, string> vault = new Dictionary<string, string>();
                     vault = XmlGetVault(cbVault.SelectedItem.ToString());
-                    System.Windows.Clipboard.SetText(Legacy.Decrypt(vault["Password"]));
+                    string value = Legacy.Decrypt(vault["Password"]);
+                    if (value != "") System.Windows.Clipboard.SetText(value);
                 }
             }
             else
             {
-                System.Windows.Clipboard.SetText(tbPass.Text);
+                string value = tbPass.Text;
+                if (value != "") System.Windows.Clipboard.SetText(value);
             }
         }
 
@@ -3394,18 +3425,21 @@ namespace AutoPuTTY
             {
                 IDictionary<string, string> vault = new Dictionary<string, string>();
                 vault = XmlGetVault(cbVault.SelectedItem.ToString());
-                System.Windows.Clipboard.SetText(Legacy.Decrypt(vault["Password"]));
+                string value = Legacy.Decrypt(vault["Password"]);
+                if (value != "") System.Windows.Clipboard.SetText(value);
             }
         }
 
         private void buCopyVaultName_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbVaultName.Text);
+            string value = tbVaultName.Text;
+            if (value != "") System.Windows.Clipboard.SetText(value);
         }
 
         private void buCopyVaultPass_Click(object sender, EventArgs e)
         {
-            System.Windows.Clipboard.SetText(tbVaultPass.Text);
+            string value  = tbVaultPass.Text;
+            if (value != "") System.Windows.Clipboard.SetText(value);
         }
 
         private void buCopy_EnabledChanged(object sender, EventArgs e)
