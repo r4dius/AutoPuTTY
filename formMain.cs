@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -281,15 +282,22 @@ namespace AutoPuTTY
             // check for newer configuration format
             if (XmlGetNode("/Data") != null)
             {
-                Console.WriteLine("1");
                 // if user password, request and reset cryptokey
                 if (Settings.Default.passwordpbk.Trim() != "")
                 {
-                    Console.WriteLine("2");
                     PasswordRequest();
                 }
                 else
                 {
+                    if (!XmlGetNode("/Data/List").InnerXml.StartsWith(CryptoVersionString()))
+                    {
+                        if(!UpgradeCryptoParallel(Settings.Default.cryptokey))
+                        {
+                            MessageError(this, "\"" + Settings.Default.cfgpath + "\" file is corrupt, delete it and try again.");
+                            Environment.Exit(-1);
+                        }
+
+                    }
                     StartupDecrypt();
                 }
             }
@@ -2973,24 +2981,48 @@ namespace AutoPuTTY
         {
             int ProcessorCount = Environment.ProcessorCount;
             int[] TryParallelism = new[] { ProcessorCount }.Concat(new[] { 1, 2, 4, 6, 8, 10, 12, 16, 24, 32 }.Where(p => p != ProcessorCount)).ToArray();
+            int FoundParallelism = 0;
+            string decryptedlist = "";
 
             foreach (var parallelism in TryParallelism)
             {
+                // If user password, use hash
                 if (stroredHash != null)
                 {
                     // Try to match user password Hash
                     if (Crypto.VerifyPassword(password, stroredHash, parallelism))
                     {
-                        // Lucky, found hashed Parallelism value
-                        Settings.Default.cryptokey = password;
-                        Settings.Default.passwordpbk = CryptoVersionString() + Crypto.HashPassword(password);
-                        XmlSetData("Hash", Settings.Default.passwordpbk.ToString());
-                        string decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml, parallelism);
-                        XmlConfig.LoadXml($"<List>{decryptedlist}</List>");
-                        XmlSave();
-                        return true;
+                        FoundParallelism = parallelism;
+                        decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml, password, parallelism);
+                        break;
                     }
                 }
+                else // Default password, no hash
+                {
+                    try
+                    {
+                        decryptedlist = Crypto.Decrypt(XmlGetNode("/Data/List").InnerXml, parallelism);
+                        FoundParallelism = parallelism;
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+
+            if (FoundParallelism > 0)
+            {
+                // Lucky, found hashed Parallelism value
+                if (stroredHash != null)
+                {
+                    Settings.Default.cryptokey = password;
+                    Settings.Default.passwordpbk = CryptoVersionString() + Crypto.HashPassword(password);
+                    XmlSetData("Hash", Settings.Default.passwordpbk.ToString());
+                }
+                XmlConfig.LoadXml($"<List>{decryptedlist}</List>");
+                XmlSave();
+                return true;
             }
 
             // No luck
@@ -3545,7 +3577,7 @@ namespace AutoPuTTY
             XmlNode ListNode = XmlConfig.SelectSingleNode("/List");
             if (ListNode == null) return;
             Debug.WriteLine("list" + ListNode.InnerXml);
-            string encryptedlist = Crypto.Encrypt(ListNode.InnerXml);
+            string encryptedlist = CryptoVersionString() + Crypto.Encrypt(ListNode.InnerXml);
             XmlDocument XmlNewList = new XmlDocument();
             XmlNewList.LoadXml($"<ListNew>{encryptedlist}</ListNew>");
             ListNode = XmlData.SelectSingleNode("/Data/List");

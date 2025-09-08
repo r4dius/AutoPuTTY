@@ -190,6 +190,7 @@ public static class Crypto
     /// <returns>The decrypted string.</returns>
     public static string Decrypt(string encrypted, int parallelism = 0)
     {
+        encrypted = Regex.Replace(encrypted, @"^\$v\d+\$", "");
         parallelism = parallelism != 0 ? parallelism : Parallelism;
         return encrypted.Trim() != "" ? Decrypt(encrypted, Settings.Default.cryptokey, parallelism) : "";
     }
