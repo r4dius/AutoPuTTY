@@ -125,6 +125,12 @@ namespace AutoPuTTY
             */
 
             laAboutVersion.Text = "v" + Info.version;
+#if SECURE
+            laAboutS.Visible = true;
+            laAboutS.BringToFront();
+            laPassS.Visible = true;
+            laPassS.BringToFront();
+#endif
             UpdateReset();
 
             SwitchSearch("server", false);
@@ -525,12 +531,7 @@ namespace AutoPuTTY
 
             lbServer.MultiColumn = Settings.Default.multicolumn;
             lbServer.ColumnWidth = Settings.Default.multicolumnwidth * 10;
-#if SECURE
-            laAboutS.Visible = true;
-            laAboutS.BringToFront();
-            laPassS.Visible = true;
-            laPassS.BringToFront();
-#endif
+
             PasswordRequired = false;
 #if SECURE
             BeginInvoke(new Action(() =>
