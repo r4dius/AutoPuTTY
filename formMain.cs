@@ -168,10 +168,24 @@ namespace AutoPuTTY
             MenuItem copynamemenu = new MenuItem
             {
                 Index = i++,
-                Text = "Copy name\tCtrl+C"
+                Text = "Copy name\tCtrl+X"
             };
             copynamemenu.Click += buCopyName_Click;
             cmServer.MenuItems.Add(copynamemenu);
+            MenuItem copyhostmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Copy hostname\tCtrl+C"
+            };
+            copyhostmenu.Click += buCopyHost_Click;
+            cmServer.MenuItems.Add(copyhostmenu);
+            MenuItem copyusermenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Copy username\tCtrl+V"
+            };
+            copyusermenu.Click += buCopyUser_Click;
+            cmServer.MenuItems.Add(copyusermenu);
             MenuItem copypassmenu = new MenuItem
             {
                 Index = i++,
@@ -213,6 +227,22 @@ namespace AutoPuTTY
             lockmenu.Click += meLock;
             cmServer.MenuItems.Add(lockmenu);
 
+            MenuItem copyvaultnamemenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Copy vault name\tCtrl+X"
+            };
+            copyvaultnamemenu.Click += buCopyVaultName_Click;
+            cmVault.MenuItems.Add(copyvaultnamemenu);
+            MenuItem copyvaultpassmenu = new MenuItem
+            {
+                Index = i++,
+                Text = "Copy password\tCtrl+B"
+            };
+            copyvaultpassmenu.Click += buCopyVaultPass_Click;
+            cmVault.MenuItems.Add(copyvaultpassmenu);
+            sepmenu.Index++;
+            cmVault.MenuItems.Add(sepmenu.CloneMenu());
             MenuItem deletevaultmenu = new MenuItem
             {
                 Index = i++,
@@ -289,6 +319,7 @@ namespace AutoPuTTY
                 }
                 else
                 {
+                    // Fix for configuration retro compatibility
                     if (!XmlGetNode("/Data/List").InnerXml.StartsWith(CryptoVersionString()))
                     {
                         if(!UpgradeCryptoParallel(Settings.Default.cryptokey))
@@ -496,7 +527,9 @@ namespace AutoPuTTY
             lbServer.ColumnWidth = Settings.Default.multicolumnwidth * 10;
 #if SECURE
             laAboutS.Visible = true;
+            laAboutS.BringToFront();
             laPassS.Visible = true;
+            laPassS.BringToFront();
 #endif
             PasswordRequired = false;
 #if SECURE
@@ -2327,15 +2360,23 @@ namespace AutoPuTTY
             {
                 Connect("-1");
             }
-            else if (e.KeyChar == (char)3)
-            {
-                if (tlLeftServer.Visible) buCopyName_Click(this, EventArgs.Empty);
-                else buCopyVaultName_Click(this, EventArgs.Empty);
-            }
-            else if (e.KeyChar == (char)2)
+            else if (e.KeyChar == (char)2) // ctrl + b
             {
                 if (tlLeftServer.Visible) buCopyPass_Click(this, EventArgs.Empty);
                 else buCopyVaultPass_Click(this, EventArgs.Empty);
+            }
+            else if (e.KeyChar == (char)3) // ctrl + c
+            {
+                if (tlLeftServer.Visible) buCopyHost_Click(this, EventArgs.Empty);
+            }
+            else if (e.KeyChar == (char)22) // ctrl + v
+            {
+                if (tlLeftServer.Visible) buCopyUser_Click(this, EventArgs.Empty);
+            }
+            else if (e.KeyChar == (char)24) // ctrl + x
+            {
+                if (tlLeftServer.Visible) buCopyName_Click(this, EventArgs.Empty);
+                else buCopyVaultName_Click(this, EventArgs.Empty);
             }
             else if (Key.Length == 1)
             {
@@ -3031,6 +3072,7 @@ namespace AutoPuTTY
 
         private bool VerifyPassword()
         {
+            // Fix for configuration retro compatibility
             if (Settings.Default.passwordpbk != "" && !Settings.Default.passwordpbk.StartsWith(CryptoVersionString()))
             {
                 // We have a random DegreeOfParallelism, try to find it
