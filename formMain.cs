@@ -7,7 +7,6 @@ using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -52,7 +51,6 @@ namespace AutoPuTTY
         private bool IndexChanged;
         private bool FilterServer;
         private bool FilterVault;
-        //private bool Locked;
         private bool SelectAll;
         private bool Remove;
         private double UnixTime;
@@ -127,9 +125,7 @@ namespace AutoPuTTY
             laAboutVersion.Text = "v" + Info.version;
 #if SECURE
             laAboutS.Visible = true;
-            laAboutS.BringToFront();
             laPassS.Visible = true;
-            laPassS.BringToFront();
 #endif
             UpdateReset();
 
@@ -330,7 +326,8 @@ namespace AutoPuTTY
                     {
                         if(!UpgradeCryptoParallel(Settings.Default.cryptokey))
                         {
-                            MessageError(this, "\"" + Settings.Default.cfgpath + "\" file is corrupt, delete it and try again.");
+                            MessageError(this, "\"" + Settings.Default.cfgpath + "\" file may be corrupt.\n" +
+                                "If it was created on another computer, try running this same version of AutoPuTTY there.");
                             Environment.Exit(-1);
                         }
 
@@ -3022,7 +3019,8 @@ namespace AutoPuTTY
         private bool UpgradeCryptoParallel(string password, string stroredHash = null)
         {
             int ProcessorCount = Environment.ProcessorCount;
-            int[] TryParallelism = new[] { ProcessorCount }.Concat(new[] { 1, 2, 4, 6, 8, 10, 12, 16, 24, 32 }.Where(p => p != ProcessorCount)).ToArray();
+            // Try common cpu threads count, then brute force, up to 32
+            int[] TryParallelism = new[] { ProcessorCount }.Concat(new[] { 8, 12, 16, 4, 24, 20, 32, 6, 10, 14, 18, 1, 2, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31 }.Where(p => p != ProcessorCount)).ToArray();
             int FoundParallelism = 0;
             string decryptedlist = "";
 
