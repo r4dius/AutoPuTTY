@@ -327,7 +327,7 @@ namespace AutoPuTTY
                         if(!UpgradeCryptoParallel(Settings.Default.cryptokey))
                         {
                             MessageError(this, "\"" + Settings.Default.cfgpath + "\" file may be corrupt.\n" +
-                                "If it was created on another computer, try running this same version of AutoPuTTY there.");
+                                "If it was created on another computer, try running this version of AutoPuTTY there.");
                             Environment.Exit(-1);
                         }
 
