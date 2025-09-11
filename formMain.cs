@@ -140,86 +140,31 @@ namespace AutoPuTTY
                 cbType.Items.Add(type);
             }
 
+            cmsServer.Items.Add(new ToolStripMenuItem("Connect", null, (s, e) => lbServer_DoubleClick(s, e)) { ShortcutKeyDisplayString = "Enter" });
+            cmsServer.Items.Add(new ToolStripSeparator());
+            foreach (string type in Types)
+            {
+                cmsServer.Items.Add(new ToolStripMenuItem(type, null, delegate { Connect(Array.IndexOf(TypeList, type).ToString()); }));
+            }
+            cmsServer.Items.Add(new ToolStripSeparator());
+            cmsServer.Items.Add(new ToolStripMenuItem("Copy name", null, (s, e) => buCopyName_Click(s, e)) { ShortcutKeyDisplayString = "Ctrl+X" });
+            cmsServer.Items.Add(new ToolStripMenuItem("Copy hostname", null, (s, e) => buCopyHost_Click(s, e)) { ShortcutKeyDisplayString = "Ctrl+C" });
+            cmsServer.Items.Add(new ToolStripMenuItem("Copy username", null, (s, e) => buCopyUser_Click(s, e)) { ShortcutKeyDisplayString = "Ctrl+V" });
+            cmsServer.Items.Add(new ToolStripMenuItem("Copy password", null, (s, e) => buCopyPass_Click(s, e)) { ShortcutKeyDisplayString = "Ctrl+B" });
+            cmsServer.Items.Add(new ToolStripSeparator());
+            cmsServer.Items.Add(new ToolStripMenuItem("Delete...", null, (s, e) => meDeleteServer(s, e)) { ShortcutKeyDisplayString = "Del" });
+            cmsServer.Items.Add(new ToolStripMenuItem("Search...", null, (s, e) => SwitchServerSearchShow(s, e)) { ShortcutKeyDisplayString = "Ctrl+F" });
+            cmsServer.Items.Add(new ToolStripSeparator());
+            cmsServer.Items.Add(new ToolStripMenuItem("Switch to vault", null, (s, e) => buVault_Click(s, e)) { ShortcutKeyDisplayString = "Ctrl+S" });
+            cmsServer.Items.Add(new ToolStripSeparator());
+            cmsServer.Items.Add(new ToolStripMenuItem("Lock", null, (s, e) => meLock(s, e)) { ShortcutKeyDisplayString = "Ctrl+L" });
+
             int i = 0;
             MenuItem sepmenu = new MenuItem
             {
                 Text = "-",
             };
-            MenuItem connectmenu = new MenuItem
-            {
-                Index = i,
-                Text = "Connect\tEnter"
-            };
-            connectmenu.Click += lbServer_DoubleClick;
-            cmServer.MenuItems.Add(connectmenu);
-            sepmenu.Index++;
-            cmServer.MenuItems.Add(sepmenu.CloneMenu());
-            foreach (string type in Types)
-            {
-                MenuItem listmenu = new MenuItem
-                {
-                    Index = i++,
-                    Text = type
-                };
-                string _type = Array.IndexOf(TypeList, type).ToString();
-                listmenu.Click += delegate { Connect(_type); };
-                cmServer.MenuItems.Add(listmenu);
-            }
-            sepmenu.Index++;
-            cmServer.MenuItems.Add(sepmenu.CloneMenu());
-            MenuItem copynamemenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Copy name\tCtrl+X"
-            };
-            copynamemenu.Click += buCopyName_Click;
-            cmServer.MenuItems.Add(copynamemenu);
-            MenuItem copyhostmenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Copy hostname\tCtrl+C"
-            };
-            copyhostmenu.Click += buCopyHost_Click;
-            cmServer.MenuItems.Add(copyhostmenu);
-            MenuItem copyusermenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Copy username\tCtrl+V"
-            };
-            copyusermenu.Click += buCopyUser_Click;
-            cmServer.MenuItems.Add(copyusermenu);
-            MenuItem copypassmenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Copy password\tCtrl+B"
-            };
-            copypassmenu.Click += buCopyPass_Click;
-            cmServer.MenuItems.Add(copypassmenu);
-            sepmenu.Index++;
-            cmServer.MenuItems.Add(sepmenu.CloneMenu());
-            MenuItem deletemenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Delete...\tDel"
-            };
-            deletemenu.Click += meDeleteServer;
-            cmServer.MenuItems.Add(deletemenu);
-            MenuItem searchmenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Search...\tCtrl+F"
-            };
-            searchmenu.Click += SwitchServerSearchShow;
-            cmServer.MenuItems.Add(searchmenu);
-            sepmenu.Index++;
-            cmServer.MenuItems.Add(sepmenu.CloneMenu());
-            MenuItem switchmenu = new MenuItem
-            {
-                Index = i++,
-                Text = "Switch to vault\tCtrl+S"
-            };
-            switchmenu.Click += buVault_Click;
-            cmServer.MenuItems.Add(switchmenu);
+
             MenuItem lockmenu = new MenuItem
             {
                 Index = i++,
@@ -227,7 +172,6 @@ namespace AutoPuTTY
                 Visible = false
             };
             lockmenu.Click += meLock;
-            cmServer.MenuItems.Add(lockmenu);
 
             MenuItem copyvaultnamemenu = new MenuItem
             {
@@ -698,8 +642,8 @@ namespace AutoPuTTY
                 }
             }
             // right click menu
-            count = cmServer.MenuItems.Count;
-            cmServer.MenuItems[count - 1].Visible = enable;
+            count = cmsServer.Items.Count;
+            cmsServer.Items[count - 1].Visible = enable;
             count = cmVault.MenuItems.Count;
             cmVault.MenuItems[count - 1].Visible = enable;
         }
@@ -2070,7 +2014,7 @@ namespace AutoPuTTY
         {
             ListBox List = (ListBox)sender;
 
-            ContextMenu Menu = List.Name == "lbVault" ? cmVault : cmServer;
+            ContextMenuStrip Menu = List.Name == "lbVault" ? cmsVault : cmsServer;
 
             if (List.Items.Count > 0)
             {
@@ -2121,15 +2065,15 @@ namespace AutoPuTTY
             Menu.Show(this, PointToClient(MousePosition));
         }
 
-        private void contextMenu_Enable(ContextMenu menu, bool status)
+        private void contextMenu_Enable(ContextMenuStrip menu, bool status)
         {
-            for (int i = 0; i < menu.MenuItems.Count; i++)
+            for (int i = 0; i < menu.Items.Count; i++)
             {
-                if (!menu.MenuItems[i].Text.StartsWith("Lock") &&
-                    !menu.MenuItems[i].Text.StartsWith("Search") &&
-                    !menu.MenuItems[i].Text.StartsWith("Switch"))
+                if (!menu.Items[i].Text.StartsWith("Lock") &&
+                    !menu.Items[i].Text.StartsWith("Search") &&
+                    !menu.Items[i].Text.StartsWith("Switch"))
                 {
-                    menu.MenuItems[i].Enabled = status;
+                    menu.Items[i].Enabled = status;
                 }
             }
         }

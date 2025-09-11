@@ -33,22 +33,6 @@ namespace AutoPuTTY
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.paConfig = new System.Windows.Forms.Panel();
-            this.paVault = new System.Windows.Forms.Panel();
-            this.buVaultEye = new System.Windows.Forms.PictureBox();
-            this.buVaultOptions = new System.Windows.Forms.Button();
-            this.buCopyVaultPass = new System.Windows.Forms.PictureBox();
-            this.buVaultBack = new System.Windows.Forms.Button();
-            this.buVaultDelete = new System.Windows.Forms.Button();
-            this.buVaultAdd = new System.Windows.Forms.Button();
-            this.laVaultSeparator3 = new System.Windows.Forms.Label();
-            this.laVaultSeparator2 = new System.Windows.Forms.Label();
-            this.tbVaultPass = new System.Windows.Forms.TextBox();
-            this.laVaultSeparator1 = new System.Windows.Forms.Label();
-            this.tbVaultName = new System.Windows.Forms.TextBox();
-            this.buVaultModify = new System.Windows.Forms.Button();
-            this.buCopyVaultName = new System.Windows.Forms.PictureBox();
-            this.buVaultPriv = new System.Windows.Forms.Button();
-            this.tbVaultPriv = new System.Windows.Forms.TextBox();
             this.paServer = new System.Windows.Forms.Panel();
             this.piUser = new System.Windows.Forms.PictureBox();
             this.buCopyName = new System.Windows.Forms.PictureBox();
@@ -76,6 +60,22 @@ namespace AutoPuTTY
             this.buCopyVault = new System.Windows.Forms.PictureBox();
             this.tbPass = new System.Windows.Forms.TextBox();
             this.cbVault = new System.Windows.Forms.ComboBox();
+            this.paVault = new System.Windows.Forms.Panel();
+            this.buVaultEye = new System.Windows.Forms.PictureBox();
+            this.buVaultOptions = new System.Windows.Forms.Button();
+            this.buCopyVaultPass = new System.Windows.Forms.PictureBox();
+            this.buVaultBack = new System.Windows.Forms.Button();
+            this.buVaultDelete = new System.Windows.Forms.Button();
+            this.buVaultAdd = new System.Windows.Forms.Button();
+            this.laVaultSeparator3 = new System.Windows.Forms.Label();
+            this.laVaultSeparator2 = new System.Windows.Forms.Label();
+            this.tbVaultPass = new System.Windows.Forms.TextBox();
+            this.laVaultSeparator1 = new System.Windows.Forms.Label();
+            this.tbVaultName = new System.Windows.Forms.TextBox();
+            this.buVaultModify = new System.Windows.Forms.Button();
+            this.buCopyVaultName = new System.Windows.Forms.PictureBox();
+            this.buVaultPriv = new System.Windows.Forms.Button();
+            this.tbVaultPriv = new System.Windows.Forms.TextBox();
             this.noIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmSystray = new System.Windows.Forms.ContextMenu();
             this.miRestore = new System.Windows.Forms.MenuItem();
@@ -122,16 +122,18 @@ namespace AutoPuTTY
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cmVault = new System.Windows.Forms.ContextMenu();
             this.backgroundProgress = new System.ComponentModel.BackgroundWorker();
-            this.laVaultPriv = new AutoPuTTY.SingleClickLabel();
-            this.laVaultPass = new AutoPuTTY.SingleClickLabel();
-            this.laVaultName = new AutoPuTTY.SingleClickLabel();
-            this.laUsedBy = new AutoPuTTY.SingleClickLabel();
+            this.cmsServer = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsVault = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.liPass = new AutoPuTTY.NoFocusLinkLabel();
             this.laPriv = new AutoPuTTY.SingleClickLabel();
             this.laName = new AutoPuTTY.SingleClickLabel();
             this.laType = new AutoPuTTY.SingleClickLabel();
             this.laHost = new AutoPuTTY.SingleClickLabel();
             this.laUser = new AutoPuTTY.SingleClickLabel();
+            this.laVaultPriv = new AutoPuTTY.SingleClickLabel();
+            this.laVaultPass = new AutoPuTTY.SingleClickLabel();
+            this.laVaultName = new AutoPuTTY.SingleClickLabel();
+            this.laUsedBy = new AutoPuTTY.SingleClickLabel();
             this.laServerResults = new AutoPuTTY.SingleClickLabel();
             this.laVaultResults = new AutoPuTTY.SingleClickLabel();
             this.laAboutS = new AutoPuTTY.SingleClickLabel();
@@ -143,10 +145,6 @@ namespace AutoPuTTY
             this.laPassMessage = new AutoPuTTY.SingleClickLabel();
             this.laPassName = new AutoPuTTY.SingleClickLabel();
             this.paConfig.SuspendLayout();
-            this.paVault.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.buVaultEye)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buCopyVaultPass)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buCopyVaultName)).BeginInit();
             this.paServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyName)).BeginInit();
@@ -155,6 +153,10 @@ namespace AutoPuTTY
             ((System.ComponentModel.ISupportInitialize)(this.buCopyPass)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.buEye)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyVault)).BeginInit();
+            this.paVault.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buVaultEye)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buCopyVaultPass)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buCopyVaultName)).BeginInit();
             this.tlMain.SuspendLayout();
             this.paLeft.SuspendLayout();
             this.tlLeftServer.SuspendLayout();
@@ -189,239 +191,6 @@ namespace AutoPuTTY
             this.paConfig.Name = "paConfig";
             this.paConfig.Size = new System.Drawing.Size(152, 267);
             this.paConfig.TabIndex = 1;
-            // 
-            // paVault
-            // 
-            this.paVault.Controls.Add(this.buVaultEye);
-            this.paVault.Controls.Add(this.buVaultOptions);
-            this.paVault.Controls.Add(this.buCopyVaultPass);
-            this.paVault.Controls.Add(this.buVaultBack);
-            this.paVault.Controls.Add(this.buVaultDelete);
-            this.paVault.Controls.Add(this.buVaultAdd);
-            this.paVault.Controls.Add(this.laVaultSeparator3);
-            this.paVault.Controls.Add(this.laVaultPriv);
-            this.paVault.Controls.Add(this.laVaultSeparator2);
-            this.paVault.Controls.Add(this.tbVaultPass);
-            this.paVault.Controls.Add(this.laVaultPass);
-            this.paVault.Controls.Add(this.laVaultSeparator1);
-            this.paVault.Controls.Add(this.tbVaultName);
-            this.paVault.Controls.Add(this.laVaultName);
-            this.paVault.Controls.Add(this.buVaultModify);
-            this.paVault.Controls.Add(this.buCopyVaultName);
-            this.paVault.Controls.Add(this.buVaultPriv);
-            this.paVault.Controls.Add(this.tbVaultPriv);
-            this.paVault.Controls.Add(this.laUsedBy);
-            this.paVault.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.paVault.Enabled = false;
-            this.paVault.Location = new System.Drawing.Point(0, 0);
-            this.paVault.Name = "paVault";
-            this.paVault.Size = new System.Drawing.Size(152, 267);
-            this.paVault.TabIndex = 23;
-            this.paVault.Visible = false;
-            // 
-            // buVaultEye
-            // 
-            this.buVaultEye.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buVaultEye.BackColor = System.Drawing.Color.Transparent;
-            this.buVaultEye.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buVaultEye.Image = global::AutoPuTTY.Properties.Resources.iconeyeshow;
-            this.buVaultEye.Location = new System.Drawing.Point(106, 41);
-            this.buVaultEye.Margin = new System.Windows.Forms.Padding(0);
-            this.buVaultEye.Name = "buVaultEye";
-            this.buVaultEye.Size = new System.Drawing.Size(22, 15);
-            this.buVaultEye.TabIndex = 27;
-            this.buVaultEye.TabStop = false;
-            this.ttMain.SetToolTip(this.buVaultEye, "Show password");
-            this.buVaultEye.Click += new System.EventHandler(this.buVaultEye_Click);
-            this.buVaultEye.MouseEnter += new System.EventHandler(this.buVaultEye_MouseEnter);
-            this.buVaultEye.MouseLeave += new System.EventHandler(this.buVaultEye_MouseLeave);
-            // 
-            // buVaultOptions
-            // 
-            this.buVaultOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buVaultOptions.Image = global::AutoPuTTY.Properties.Resources.iconoptions;
-            this.buVaultOptions.Location = new System.Drawing.Point(121, 236);
-            this.buVaultOptions.Margin = new System.Windows.Forms.Padding(0);
-            this.buVaultOptions.Name = "buVaultOptions";
-            this.buVaultOptions.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.buVaultOptions.Size = new System.Drawing.Size(30, 30);
-            this.buVaultOptions.TabIndex = 15;
-            this.ttMain.SetToolTip(this.buVaultOptions, "Options");
-            this.buVaultOptions.UseCompatibleTextRendering = true;
-            this.buVaultOptions.UseVisualStyleBackColor = true;
-            this.buVaultOptions.Click += new System.EventHandler(this.buOptions_Click);
-            // 
-            // buCopyVaultPass
-            // 
-            this.buCopyVaultPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buCopyVaultPass.BackColor = System.Drawing.Color.Transparent;
-            this.buCopyVaultPass.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buCopyVaultPass.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
-            this.buCopyVaultPass.Location = new System.Drawing.Point(128, 41);
-            this.buCopyVaultPass.Margin = new System.Windows.Forms.Padding(0);
-            this.buCopyVaultPass.Name = "buCopyVaultPass";
-            this.buCopyVaultPass.Size = new System.Drawing.Size(22, 15);
-            this.buCopyVaultPass.TabIndex = 17;
-            this.buCopyVaultPass.TabStop = false;
-            this.ttMain.SetToolTip(this.buCopyVaultPass, "Copy password to clipboard");
-            this.buCopyVaultPass.EnabledChanged += new System.EventHandler(this.buCopy_EnabledChanged);
-            this.buCopyVaultPass.Click += new System.EventHandler(this.buCopyVaultPass_Click);
-            this.buCopyVaultPass.MouseEnter += new System.EventHandler(this.buCopy_MouseEnter);
-            this.buCopyVaultPass.MouseLeave += new System.EventHandler(this.buCopy_MouseLeave);
-            // 
-            // buVaultBack
-            // 
-            this.buVaultBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buVaultBack.Image = global::AutoPuTTY.Properties.Resources.iconback;
-            this.buVaultBack.Location = new System.Drawing.Point(91, 236);
-            this.buVaultBack.Margin = new System.Windows.Forms.Padding(0);
-            this.buVaultBack.Name = "buVaultBack";
-            this.buVaultBack.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.buVaultBack.Size = new System.Drawing.Size(30, 30);
-            this.buVaultBack.TabIndex = 14;
-            this.ttMain.SetToolTip(this.buVaultBack, "Switch to server list");
-            this.buVaultBack.UseCompatibleTextRendering = true;
-            this.buVaultBack.UseVisualStyleBackColor = true;
-            this.buVaultBack.Click += new System.EventHandler(this.buVaultBack_Click);
-            // 
-            // buVaultDelete
-            // 
-            this.buVaultDelete.Enabled = false;
-            this.buVaultDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buVaultDelete.Image = global::AutoPuTTY.Properties.Resources.icondelete;
-            this.buVaultDelete.Location = new System.Drawing.Point(61, 236);
-            this.buVaultDelete.Margin = new System.Windows.Forms.Padding(0);
-            this.buVaultDelete.Name = "buVaultDelete";
-            this.buVaultDelete.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.buVaultDelete.Size = new System.Drawing.Size(30, 30);
-            this.buVaultDelete.TabIndex = 13;
-            this.ttMain.SetToolTip(this.buVaultDelete, "Delete");
-            this.buVaultDelete.UseCompatibleTextRendering = true;
-            this.buVaultDelete.UseVisualStyleBackColor = true;
-            this.buVaultDelete.Click += new System.EventHandler(this.buVaultDelete_Click);
-            // 
-            // buVaultAdd
-            // 
-            this.buVaultAdd.Enabled = false;
-            this.buVaultAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buVaultAdd.Image = global::AutoPuTTY.Properties.Resources.iconadd;
-            this.buVaultAdd.Location = new System.Drawing.Point(31, 236);
-            this.buVaultAdd.Margin = new System.Windows.Forms.Padding(0);
-            this.buVaultAdd.Name = "buVaultAdd";
-            this.buVaultAdd.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.buVaultAdd.Size = new System.Drawing.Size(30, 30);
-            this.buVaultAdd.TabIndex = 12;
-            this.ttMain.SetToolTip(this.buVaultAdd, "Add");
-            this.buVaultAdd.UseCompatibleTextRendering = true;
-            this.buVaultAdd.UseVisualStyleBackColor = true;
-            this.buVaultAdd.Click += new System.EventHandler(this.buVaultAdd_Click);
-            // 
-            // laVaultSeparator3
-            // 
-            this.laVaultSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.laVaultSeparator3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.laVaultSeparator3.Location = new System.Drawing.Point(2, 95);
-            this.laVaultSeparator3.Margin = new System.Windows.Forms.Padding(0);
-            this.laVaultSeparator3.Name = "laVaultSeparator3";
-            this.laVaultSeparator3.Size = new System.Drawing.Size(148, 2);
-            this.laVaultSeparator3.TabIndex = 7;
-            // 
-            // laVaultSeparator2
-            // 
-            this.laVaultSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.laVaultSeparator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.laVaultSeparator2.Location = new System.Drawing.Point(2, 56);
-            this.laVaultSeparator2.Margin = new System.Windows.Forms.Padding(0);
-            this.laVaultSeparator2.Name = "laVaultSeparator2";
-            this.laVaultSeparator2.Size = new System.Drawing.Size(148, 2);
-            this.laVaultSeparator2.TabIndex = 4;
-            // 
-            // tbVaultPass
-            // 
-            this.tbVaultPass.Location = new System.Drawing.Point(2, 59);
-            this.tbVaultPass.Name = "tbVaultPass";
-            this.tbVaultPass.PasswordChar = '●';
-            this.tbVaultPass.Size = new System.Drawing.Size(148, 20);
-            this.tbVaultPass.TabIndex = 5;
-            this.tbVaultPass.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
-            // 
-            // laVaultSeparator1
-            // 
-            this.laVaultSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.laVaultSeparator1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.laVaultSeparator1.Location = new System.Drawing.Point(2, 17);
-            this.laVaultSeparator1.Margin = new System.Windows.Forms.Padding(0);
-            this.laVaultSeparator1.Name = "laVaultSeparator1";
-            this.laVaultSeparator1.Size = new System.Drawing.Size(148, 2);
-            this.laVaultSeparator1.TabIndex = 1;
-            // 
-            // tbVaultName
-            // 
-            this.tbVaultName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbVaultName.Location = new System.Drawing.Point(2, 20);
-            this.tbVaultName.Name = "tbVaultName";
-            this.tbVaultName.Size = new System.Drawing.Size(148, 20);
-            this.tbVaultName.TabIndex = 2;
-            this.tbVaultName.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
-            // 
-            // buVaultModify
-            // 
-            this.buVaultModify.Enabled = false;
-            this.buVaultModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buVaultModify.Image = global::AutoPuTTY.Properties.Resources.iconmodify;
-            this.buVaultModify.Location = new System.Drawing.Point(1, 236);
-            this.buVaultModify.Margin = new System.Windows.Forms.Padding(0);
-            this.buVaultModify.Name = "buVaultModify";
-            this.buVaultModify.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
-            this.buVaultModify.Size = new System.Drawing.Size(30, 30);
-            this.buVaultModify.TabIndex = 11;
-            this.ttMain.SetToolTip(this.buVaultModify, "Modify");
-            this.buVaultModify.UseCompatibleTextRendering = true;
-            this.buVaultModify.UseVisualStyleBackColor = true;
-            this.buVaultModify.Click += new System.EventHandler(this.buVaultModify_Click);
-            // 
-            // buCopyVaultName
-            // 
-            this.buCopyVaultName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buCopyVaultName.BackColor = System.Drawing.Color.Transparent;
-            this.buCopyVaultName.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buCopyVaultName.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
-            this.buCopyVaultName.Location = new System.Drawing.Point(128, 2);
-            this.buCopyVaultName.Margin = new System.Windows.Forms.Padding(0);
-            this.buCopyVaultName.Name = "buCopyVaultName";
-            this.buCopyVaultName.Size = new System.Drawing.Size(22, 15);
-            this.buCopyVaultName.TabIndex = 16;
-            this.buCopyVaultName.TabStop = false;
-            this.ttMain.SetToolTip(this.buCopyVaultName, "Copy name to clipboard");
-            this.buCopyVaultName.EnabledChanged += new System.EventHandler(this.buCopy_EnabledChanged);
-            this.buCopyVaultName.Click += new System.EventHandler(this.buCopyVaultName_Click);
-            this.buCopyVaultName.MouseEnter += new System.EventHandler(this.buCopy_MouseEnter);
-            this.buCopyVaultName.MouseLeave += new System.EventHandler(this.buCopy_MouseLeave);
-            // 
-            // buVaultPriv
-            // 
-            this.buVaultPriv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buVaultPriv.Location = new System.Drawing.Point(121, 97);
-            this.buVaultPriv.Margin = new System.Windows.Forms.Padding(0);
-            this.buVaultPriv.Name = "buVaultPriv";
-            this.buVaultPriv.Size = new System.Drawing.Size(30, 22);
-            this.buVaultPriv.TabIndex = 9;
-            this.buVaultPriv.Text = "...";
-            this.buVaultPriv.UseCompatibleTextRendering = true;
-            this.buVaultPriv.UseVisualStyleBackColor = true;
-            this.buVaultPriv.Click += new System.EventHandler(this.buVaultPriv_Click);
-            // 
-            // tbVaultPriv
-            // 
-            this.tbVaultPriv.Location = new System.Drawing.Point(2, 98);
-            this.tbVaultPriv.Name = "tbVaultPriv";
-            this.tbVaultPriv.Size = new System.Drawing.Size(118, 20);
-            this.tbVaultPriv.TabIndex = 8;
-            this.tbVaultPriv.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
             // 
             // paServer
             // 
@@ -826,6 +595,239 @@ namespace AutoPuTTY
             this.cbVault.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox_DrawItem);
             this.cbVault.SelectedIndexChanged += new System.EventHandler(this.cbVault_IndexChanged);
             this.cbVault.EnabledChanged += new System.EventHandler(this.tbServer_TextChanged);
+            // 
+            // paVault
+            // 
+            this.paVault.Controls.Add(this.buVaultEye);
+            this.paVault.Controls.Add(this.buVaultOptions);
+            this.paVault.Controls.Add(this.buCopyVaultPass);
+            this.paVault.Controls.Add(this.buVaultBack);
+            this.paVault.Controls.Add(this.buVaultDelete);
+            this.paVault.Controls.Add(this.buVaultAdd);
+            this.paVault.Controls.Add(this.laVaultSeparator3);
+            this.paVault.Controls.Add(this.laVaultPriv);
+            this.paVault.Controls.Add(this.laVaultSeparator2);
+            this.paVault.Controls.Add(this.tbVaultPass);
+            this.paVault.Controls.Add(this.laVaultPass);
+            this.paVault.Controls.Add(this.laVaultSeparator1);
+            this.paVault.Controls.Add(this.tbVaultName);
+            this.paVault.Controls.Add(this.laVaultName);
+            this.paVault.Controls.Add(this.buVaultModify);
+            this.paVault.Controls.Add(this.buCopyVaultName);
+            this.paVault.Controls.Add(this.buVaultPriv);
+            this.paVault.Controls.Add(this.tbVaultPriv);
+            this.paVault.Controls.Add(this.laUsedBy);
+            this.paVault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.paVault.Enabled = false;
+            this.paVault.Location = new System.Drawing.Point(0, 0);
+            this.paVault.Name = "paVault";
+            this.paVault.Size = new System.Drawing.Size(152, 267);
+            this.paVault.TabIndex = 23;
+            this.paVault.Visible = false;
+            // 
+            // buVaultEye
+            // 
+            this.buVaultEye.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buVaultEye.BackColor = System.Drawing.Color.Transparent;
+            this.buVaultEye.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buVaultEye.Image = global::AutoPuTTY.Properties.Resources.iconeyeshow;
+            this.buVaultEye.Location = new System.Drawing.Point(106, 41);
+            this.buVaultEye.Margin = new System.Windows.Forms.Padding(0);
+            this.buVaultEye.Name = "buVaultEye";
+            this.buVaultEye.Size = new System.Drawing.Size(22, 15);
+            this.buVaultEye.TabIndex = 27;
+            this.buVaultEye.TabStop = false;
+            this.ttMain.SetToolTip(this.buVaultEye, "Show password");
+            this.buVaultEye.Click += new System.EventHandler(this.buVaultEye_Click);
+            this.buVaultEye.MouseEnter += new System.EventHandler(this.buVaultEye_MouseEnter);
+            this.buVaultEye.MouseLeave += new System.EventHandler(this.buVaultEye_MouseLeave);
+            // 
+            // buVaultOptions
+            // 
+            this.buVaultOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buVaultOptions.Image = global::AutoPuTTY.Properties.Resources.iconoptions;
+            this.buVaultOptions.Location = new System.Drawing.Point(121, 236);
+            this.buVaultOptions.Margin = new System.Windows.Forms.Padding(0);
+            this.buVaultOptions.Name = "buVaultOptions";
+            this.buVaultOptions.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.buVaultOptions.Size = new System.Drawing.Size(30, 30);
+            this.buVaultOptions.TabIndex = 15;
+            this.ttMain.SetToolTip(this.buVaultOptions, "Options");
+            this.buVaultOptions.UseCompatibleTextRendering = true;
+            this.buVaultOptions.UseVisualStyleBackColor = true;
+            this.buVaultOptions.Click += new System.EventHandler(this.buOptions_Click);
+            // 
+            // buCopyVaultPass
+            // 
+            this.buCopyVaultPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buCopyVaultPass.BackColor = System.Drawing.Color.Transparent;
+            this.buCopyVaultPass.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buCopyVaultPass.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
+            this.buCopyVaultPass.Location = new System.Drawing.Point(128, 41);
+            this.buCopyVaultPass.Margin = new System.Windows.Forms.Padding(0);
+            this.buCopyVaultPass.Name = "buCopyVaultPass";
+            this.buCopyVaultPass.Size = new System.Drawing.Size(22, 15);
+            this.buCopyVaultPass.TabIndex = 17;
+            this.buCopyVaultPass.TabStop = false;
+            this.ttMain.SetToolTip(this.buCopyVaultPass, "Copy password to clipboard");
+            this.buCopyVaultPass.EnabledChanged += new System.EventHandler(this.buCopy_EnabledChanged);
+            this.buCopyVaultPass.Click += new System.EventHandler(this.buCopyVaultPass_Click);
+            this.buCopyVaultPass.MouseEnter += new System.EventHandler(this.buCopy_MouseEnter);
+            this.buCopyVaultPass.MouseLeave += new System.EventHandler(this.buCopy_MouseLeave);
+            // 
+            // buVaultBack
+            // 
+            this.buVaultBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buVaultBack.Image = global::AutoPuTTY.Properties.Resources.iconback;
+            this.buVaultBack.Location = new System.Drawing.Point(91, 236);
+            this.buVaultBack.Margin = new System.Windows.Forms.Padding(0);
+            this.buVaultBack.Name = "buVaultBack";
+            this.buVaultBack.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.buVaultBack.Size = new System.Drawing.Size(30, 30);
+            this.buVaultBack.TabIndex = 14;
+            this.ttMain.SetToolTip(this.buVaultBack, "Switch to server list");
+            this.buVaultBack.UseCompatibleTextRendering = true;
+            this.buVaultBack.UseVisualStyleBackColor = true;
+            this.buVaultBack.Click += new System.EventHandler(this.buVaultBack_Click);
+            // 
+            // buVaultDelete
+            // 
+            this.buVaultDelete.Enabled = false;
+            this.buVaultDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buVaultDelete.Image = global::AutoPuTTY.Properties.Resources.icondelete;
+            this.buVaultDelete.Location = new System.Drawing.Point(61, 236);
+            this.buVaultDelete.Margin = new System.Windows.Forms.Padding(0);
+            this.buVaultDelete.Name = "buVaultDelete";
+            this.buVaultDelete.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.buVaultDelete.Size = new System.Drawing.Size(30, 30);
+            this.buVaultDelete.TabIndex = 13;
+            this.ttMain.SetToolTip(this.buVaultDelete, "Delete");
+            this.buVaultDelete.UseCompatibleTextRendering = true;
+            this.buVaultDelete.UseVisualStyleBackColor = true;
+            this.buVaultDelete.Click += new System.EventHandler(this.buVaultDelete_Click);
+            // 
+            // buVaultAdd
+            // 
+            this.buVaultAdd.Enabled = false;
+            this.buVaultAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buVaultAdd.Image = global::AutoPuTTY.Properties.Resources.iconadd;
+            this.buVaultAdd.Location = new System.Drawing.Point(31, 236);
+            this.buVaultAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.buVaultAdd.Name = "buVaultAdd";
+            this.buVaultAdd.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.buVaultAdd.Size = new System.Drawing.Size(30, 30);
+            this.buVaultAdd.TabIndex = 12;
+            this.ttMain.SetToolTip(this.buVaultAdd, "Add");
+            this.buVaultAdd.UseCompatibleTextRendering = true;
+            this.buVaultAdd.UseVisualStyleBackColor = true;
+            this.buVaultAdd.Click += new System.EventHandler(this.buVaultAdd_Click);
+            // 
+            // laVaultSeparator3
+            // 
+            this.laVaultSeparator3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.laVaultSeparator3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laVaultSeparator3.Location = new System.Drawing.Point(2, 95);
+            this.laVaultSeparator3.Margin = new System.Windows.Forms.Padding(0);
+            this.laVaultSeparator3.Name = "laVaultSeparator3";
+            this.laVaultSeparator3.Size = new System.Drawing.Size(148, 2);
+            this.laVaultSeparator3.TabIndex = 7;
+            // 
+            // laVaultSeparator2
+            // 
+            this.laVaultSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.laVaultSeparator2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laVaultSeparator2.Location = new System.Drawing.Point(2, 56);
+            this.laVaultSeparator2.Margin = new System.Windows.Forms.Padding(0);
+            this.laVaultSeparator2.Name = "laVaultSeparator2";
+            this.laVaultSeparator2.Size = new System.Drawing.Size(148, 2);
+            this.laVaultSeparator2.TabIndex = 4;
+            // 
+            // tbVaultPass
+            // 
+            this.tbVaultPass.Location = new System.Drawing.Point(2, 59);
+            this.tbVaultPass.Name = "tbVaultPass";
+            this.tbVaultPass.PasswordChar = '●';
+            this.tbVaultPass.Size = new System.Drawing.Size(148, 20);
+            this.tbVaultPass.TabIndex = 5;
+            this.tbVaultPass.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
+            // 
+            // laVaultSeparator1
+            // 
+            this.laVaultSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.laVaultSeparator1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.laVaultSeparator1.Location = new System.Drawing.Point(2, 17);
+            this.laVaultSeparator1.Margin = new System.Windows.Forms.Padding(0);
+            this.laVaultSeparator1.Name = "laVaultSeparator1";
+            this.laVaultSeparator1.Size = new System.Drawing.Size(148, 2);
+            this.laVaultSeparator1.TabIndex = 1;
+            // 
+            // tbVaultName
+            // 
+            this.tbVaultName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbVaultName.Location = new System.Drawing.Point(2, 20);
+            this.tbVaultName.Name = "tbVaultName";
+            this.tbVaultName.Size = new System.Drawing.Size(148, 20);
+            this.tbVaultName.TabIndex = 2;
+            this.tbVaultName.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
+            // 
+            // buVaultModify
+            // 
+            this.buVaultModify.Enabled = false;
+            this.buVaultModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buVaultModify.Image = global::AutoPuTTY.Properties.Resources.iconmodify;
+            this.buVaultModify.Location = new System.Drawing.Point(1, 236);
+            this.buVaultModify.Margin = new System.Windows.Forms.Padding(0);
+            this.buVaultModify.Name = "buVaultModify";
+            this.buVaultModify.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.buVaultModify.Size = new System.Drawing.Size(30, 30);
+            this.buVaultModify.TabIndex = 11;
+            this.ttMain.SetToolTip(this.buVaultModify, "Modify");
+            this.buVaultModify.UseCompatibleTextRendering = true;
+            this.buVaultModify.UseVisualStyleBackColor = true;
+            this.buVaultModify.Click += new System.EventHandler(this.buVaultModify_Click);
+            // 
+            // buCopyVaultName
+            // 
+            this.buCopyVaultName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buCopyVaultName.BackColor = System.Drawing.Color.Transparent;
+            this.buCopyVaultName.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buCopyVaultName.Image = global::AutoPuTTY.Properties.Resources.iconcopy;
+            this.buCopyVaultName.Location = new System.Drawing.Point(128, 2);
+            this.buCopyVaultName.Margin = new System.Windows.Forms.Padding(0);
+            this.buCopyVaultName.Name = "buCopyVaultName";
+            this.buCopyVaultName.Size = new System.Drawing.Size(22, 15);
+            this.buCopyVaultName.TabIndex = 16;
+            this.buCopyVaultName.TabStop = false;
+            this.ttMain.SetToolTip(this.buCopyVaultName, "Copy name to clipboard");
+            this.buCopyVaultName.EnabledChanged += new System.EventHandler(this.buCopy_EnabledChanged);
+            this.buCopyVaultName.Click += new System.EventHandler(this.buCopyVaultName_Click);
+            this.buCopyVaultName.MouseEnter += new System.EventHandler(this.buCopy_MouseEnter);
+            this.buCopyVaultName.MouseLeave += new System.EventHandler(this.buCopy_MouseLeave);
+            // 
+            // buVaultPriv
+            // 
+            this.buVaultPriv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buVaultPriv.Location = new System.Drawing.Point(121, 97);
+            this.buVaultPriv.Margin = new System.Windows.Forms.Padding(0);
+            this.buVaultPriv.Name = "buVaultPriv";
+            this.buVaultPriv.Size = new System.Drawing.Size(30, 22);
+            this.buVaultPriv.TabIndex = 9;
+            this.buVaultPriv.Text = "...";
+            this.buVaultPriv.UseCompatibleTextRendering = true;
+            this.buVaultPriv.UseVisualStyleBackColor = true;
+            this.buVaultPriv.Click += new System.EventHandler(this.buVaultPriv_Click);
+            // 
+            // tbVaultPriv
+            // 
+            this.tbVaultPriv.Location = new System.Drawing.Point(2, 98);
+            this.tbVaultPriv.Name = "tbVaultPriv";
+            this.tbVaultPriv.Size = new System.Drawing.Size(118, 20);
+            this.tbVaultPriv.TabIndex = 8;
+            this.tbVaultPriv.TextChanged += new System.EventHandler(this.tbVaultName_TextChanged);
             // 
             // noIcon
             // 
@@ -1435,44 +1437,17 @@ namespace AutoPuTTY
             this.backgroundProgress.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwProgress_ProgressChanged);
             this.backgroundProgress.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwProgress_RunWorkerCompleted);
             // 
-            // laVaultPriv
+            // cmsServer
             // 
-            this.laVaultPriv.AutoSize = true;
-            this.laVaultPriv.Location = new System.Drawing.Point(3, 81);
-            this.laVaultPriv.Name = "laVaultPriv";
-            this.laVaultPriv.Size = new System.Drawing.Size(60, 13);
-            this.laVaultPriv.TabIndex = 6;
-            this.laVaultPriv.Text = "Private key";
-            this.ttMain.SetToolTip(this.laVaultPriv, "Copy path to clipboard");
+            this.cmsServer.AllowMerge = false;
+            this.cmsServer.Name = "cmsServer";
+            this.cmsServer.ShowItemToolTips = false;
+            this.cmsServer.Size = new System.Drawing.Size(181, 26);
             // 
-            // laVaultPass
+            // cmsVault
             // 
-            this.laVaultPass.AutoSize = true;
-            this.laVaultPass.Location = new System.Drawing.Point(3, 42);
-            this.laVaultPass.Name = "laVaultPass";
-            this.laVaultPass.Size = new System.Drawing.Size(53, 13);
-            this.laVaultPass.TabIndex = 3;
-            this.laVaultPass.Text = "Password";
-            // 
-            // laVaultName
-            // 
-            this.laVaultName.AutoSize = true;
-            this.laVaultName.Location = new System.Drawing.Point(3, 3);
-            this.laVaultName.Name = "laVaultName";
-            this.laVaultName.Size = new System.Drawing.Size(60, 13);
-            this.laVaultName.TabIndex = 0;
-            this.laVaultName.Text = "Vault name";
-            // 
-            // laUsedBy
-            // 
-            this.laUsedBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.laUsedBy.Location = new System.Drawing.Point(25, 124);
-            this.laUsedBy.Name = "laUsedBy";
-            this.laUsedBy.Size = new System.Drawing.Size(124, 13);
-            this.laUsedBy.TabIndex = 10;
-            this.laUsedBy.Text = "Used by # servers";
-            this.laUsedBy.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.laUsedBy.Visible = false;
+            this.cmsVault.Name = "cmsServer";
+            this.cmsVault.Size = new System.Drawing.Size(61, 4);
             // 
             // liPass
             // 
@@ -1488,6 +1463,7 @@ namespace AutoPuTTY
             this.liPass.Padding = new System.Windows.Forms.Padding(0, 0, 19, 0);
             this.liPass.Size = new System.Drawing.Size(72, 13);
             this.liPass.TabIndex = 9;
+            this.liPass.TabStop = true;
             this.liPass.Text = "Password";
             this.ttMain.SetToolTip(this.liPass, "Switch to vault");
             this.liPass.VisitedLinkColor = System.Drawing.Color.Black;
@@ -1539,6 +1515,45 @@ namespace AutoPuTTY
             this.laUser.Size = new System.Drawing.Size(55, 13);
             this.laUser.TabIndex = 6;
             this.laUser.Text = "Username";
+            // 
+            // laVaultPriv
+            // 
+            this.laVaultPriv.AutoSize = true;
+            this.laVaultPriv.Location = new System.Drawing.Point(3, 81);
+            this.laVaultPriv.Name = "laVaultPriv";
+            this.laVaultPriv.Size = new System.Drawing.Size(60, 13);
+            this.laVaultPriv.TabIndex = 6;
+            this.laVaultPriv.Text = "Private key";
+            this.ttMain.SetToolTip(this.laVaultPriv, "Copy path to clipboard");
+            // 
+            // laVaultPass
+            // 
+            this.laVaultPass.AutoSize = true;
+            this.laVaultPass.Location = new System.Drawing.Point(3, 42);
+            this.laVaultPass.Name = "laVaultPass";
+            this.laVaultPass.Size = new System.Drawing.Size(53, 13);
+            this.laVaultPass.TabIndex = 3;
+            this.laVaultPass.Text = "Password";
+            // 
+            // laVaultName
+            // 
+            this.laVaultName.AutoSize = true;
+            this.laVaultName.Location = new System.Drawing.Point(3, 3);
+            this.laVaultName.Name = "laVaultName";
+            this.laVaultName.Size = new System.Drawing.Size(60, 13);
+            this.laVaultName.TabIndex = 0;
+            this.laVaultName.Text = "Vault name";
+            // 
+            // laUsedBy
+            // 
+            this.laUsedBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.laUsedBy.Location = new System.Drawing.Point(25, 124);
+            this.laUsedBy.Name = "laUsedBy";
+            this.laUsedBy.Size = new System.Drawing.Size(124, 13);
+            this.laUsedBy.TabIndex = 10;
+            this.laUsedBy.Text = "Used by # servers";
+            this.laUsedBy.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.laUsedBy.Visible = false;
             // 
             // laServerResults
             // 
@@ -1692,11 +1707,6 @@ namespace AutoPuTTY
             this.Move += new System.EventHandler(this.mainForm_Move);
             this.Resize += new System.EventHandler(this.mainForm_Resize);
             this.paConfig.ResumeLayout(false);
-            this.paVault.ResumeLayout(false);
-            this.paVault.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.buVaultEye)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buCopyVaultPass)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buCopyVaultName)).EndInit();
             this.paServer.ResumeLayout(false);
             this.paServer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.piUser)).EndInit();
@@ -1706,6 +1716,11 @@ namespace AutoPuTTY
             ((System.ComponentModel.ISupportInitialize)(this.buCopyPass)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.buEye)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.buCopyVault)).EndInit();
+            this.paVault.ResumeLayout(false);
+            this.paVault.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buVaultEye)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buCopyVaultPass)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buCopyVaultName)).EndInit();
             this.tlMain.ResumeLayout(false);
             this.paLeft.ResumeLayout(false);
             this.tlLeftServer.ResumeLayout(false);
@@ -1850,6 +1865,8 @@ namespace AutoPuTTY
         private Panel paPassBack;
         private PictureBox piUser;
         private PictureBox buVaultEye;
+        private ContextMenuStrip cmsServer;
+        private ContextMenuStrip cmsVault;
     }
 }
 
