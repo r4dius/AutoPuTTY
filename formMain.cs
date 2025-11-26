@@ -115,6 +115,8 @@ namespace AutoPuTTY
             }
 
             InitializeComponent();
+            //RegisterFocusEvents(this);
+
             /*
             DoubleBuffered = true;
             tlMain.GetType().GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(tlMain, true, null);
@@ -3049,36 +3051,6 @@ namespace AutoPuTTY
 
         #endregion
 
-        private void laPass_Click(object sender, EventArgs e)
-        {
-            Label label = (Label)sender;
-            if (label.Text == "Password")
-            {
-                SwitchPassword(true);
-                tbServer_TextChanged(cbVault, e);
-            }
-            else
-            {
-                SwitchPassword(false);
-                tbServer_TextChanged(tbPass, e);
-            }
-        }
-
-        private void liPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Label label = (Label)sender;
-            if (label.Text == "Password")
-            {
-                SwitchPassword(true);
-                tbServer_TextChanged(cbVault, e);
-            }
-            else
-            {
-                SwitchPassword(false);
-                tbServer_TextChanged(tbPass, e);
-            }
-        }
-
         private void SwitchPassword(bool state)
         {
             liPass.Text = state ? "Vault" : "Password";
@@ -3413,19 +3385,19 @@ namespace AutoPuTTY
         private void buCopyName_Click(object sender, EventArgs e)
         {
             string value = tbName.Text;
-            if (value != "") System.Windows.Clipboard.SetText(value);
+            if (value != "") TrySetClipboard(value);
         }
 
         private void buCopyHost_Click(object sender, EventArgs e)
         {
             string value = tbHost.Text;
-            if (value != "") System.Windows.Clipboard.SetText(value);
+            if (value != "") TrySetClipboard(value);
         }
 
         private void buCopyUser_Click(object sender, EventArgs e)
         {
             string value = tbUser.Text;
-            if (value != "") System.Windows.Clipboard.SetText(value);
+            if (value != "") TrySetClipboard(value);
         }
 
         private void buCopyPass_Click(object sender, EventArgs e)
@@ -3437,13 +3409,13 @@ namespace AutoPuTTY
                     IDictionary<string, string> vault = new Dictionary<string, string>();
                     vault = XmlGetVault(cbVault.SelectedItem.ToString());
                     string value = Legacy.Decrypt(vault["Password"]);
-                    if (value != "") System.Windows.Clipboard.SetText(value);
+                    if (value != "") TrySetClipboard(value);
                 }
             }
             else
             {
                 string value = tbPass.Text;
-                if (value != "") System.Windows.Clipboard.SetText(value);
+                if (value != "") TrySetClipboard(value);
             }
         }
 
@@ -3454,20 +3426,20 @@ namespace AutoPuTTY
                 IDictionary<string, string> vault = new Dictionary<string, string>();
                 vault = XmlGetVault(cbVault.SelectedItem.ToString());
                 string value = Legacy.Decrypt(vault["Password"]);
-                if (value != "") System.Windows.Clipboard.SetText(value);
+                if (value != "") TrySetClipboard(value);
             }
         }
 
         private void buCopyVaultName_Click(object sender, EventArgs e)
         {
             string value = tbVaultName.Text;
-            if (value != "") System.Windows.Clipboard.SetText(value);
+            if (value != "") TrySetClipboard(value);
         }
 
         private void buCopyVaultPass_Click(object sender, EventArgs e)
         {
             string value  = tbVaultPass.Text;
-            if (value != "") System.Windows.Clipboard.SetText(value);
+            if (value != "") TrySetClipboard(value);
         }
 
         private void buCopy_EnabledChanged(object sender, EventArgs e)
@@ -3771,5 +3743,82 @@ namespace AutoPuTTY
                 "If the port is not provided, it will default to 22.");
             popup.ShowNear((Control)sender, PopupAlignment.TopCenter);
         }
+
+        public bool TrySetClipboard(string value)
+        {
+            try
+            {
+                System.Windows.Clipboard.SetText(value);
+                return true;
+            }
+            catch
+            {
+                MessageError(this, "Failed to copy to clipboard. The clipboard may be locked or unavailable.");
+                return false;
+            }
+        }
+
+        private void HandlePassLink(object sender)
+        {
+            Label label = (Label)sender;
+            if (label.Text == "Password")
+            {
+                SwitchPassword(true);
+                tbServer_TextChanged(cbVault, EventArgs.Empty);
+            }
+            else
+            {
+                SwitchPassword(false);
+                tbServer_TextChanged(tbPass, EventArgs.Empty);
+            }
+        }
+
+        private void liPass_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                HandlePassLink(sender);
+            }
+        }
+
+        private void liPass_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Space)
+            {
+                HandlePassLink(sender);
+                e.IsInputKey = true; // tells control this key is for us
+            }
+        }
+
+        private void liPass_Enter(object sender, EventArgs e)
+        {
+            NoFocusLinkLabel link = sender as NoFocusLinkLabel;
+            if (link == null) return;
+
+            link.BackColor = Color.LightGray;
+        }
+
+        private void liPass_Leave(object sender, EventArgs e)
+        {
+            NoFocusLinkLabel link = sender as NoFocusLinkLabel;
+            if (link == null) return;
+
+            link.BackColor = SystemColors.Control;
+        }
+
+        /*
+        private void RegisterFocusEvents(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                c.Enter += (s, e) =>
+                {
+                    Console.WriteLine($"Focused: {c.GetType().Name} - {c.Name}");
+                };
+
+                if (c.Controls.Count > 0)
+                    RegisterFocusEvents(c);
+            }
+        }*/
     }
 }
