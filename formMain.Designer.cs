@@ -1437,7 +1437,7 @@ namespace AutoPuTTY
             // 
             // liPass
             // 
-            this.liPass.ActiveLinkColor = System.Drawing.Color.Black;
+            this.liPass.ActiveLinkColor = System.Drawing.Color.DimGray;
             this.liPass.AutoSize = true;
             this.liPass.Cursor = System.Windows.Forms.Cursors.Hand;
             this.liPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

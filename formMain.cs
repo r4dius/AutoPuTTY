@@ -1878,6 +1878,7 @@ namespace AutoPuTTY
             NoFocusLinkLabel icon = (NoFocusLinkLabel)sender;
             if (!icon.Enabled) return;
             icon.Image = IconSwitchHover;
+            liPass.LinkColor = Color.DimGray;
         }
 
         public void buSwitch_MouseLeave(object sender, EventArgs e)
@@ -1885,6 +1886,7 @@ namespace AutoPuTTY
             NoFocusLinkLabel icon = (NoFocusLinkLabel)sender;
             if (!icon.Enabled) return;
             icon.Image = Resources.iconswitch;
+            liPass.LinkColor = Color.Black;
         }
 
         private void buDelete_Click(object sender, EventArgs e)
@@ -3866,7 +3868,7 @@ namespace AutoPuTTY
             NoFocusLinkLabel link = sender as NoFocusLinkLabel;
             if (link == null) return;
 
-            link.BackColor = Color.LightGray;
+            link.BackColor = Color.Gainsboro;
         }
 
         private void liPass_Leave(object sender, EventArgs e)
