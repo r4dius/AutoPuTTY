@@ -1,4 +1,5 @@
 ﻿using AutoPuTTY.Properties;
+using SimpleJson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -709,8 +710,6 @@ namespace AutoPuTTY
         private async void UpdateCheck()
         {
             string Url = "https://api.github.com/repos/r4dius/AutoPuTTY/releases/latest";
-            double Version = Convert.ToDouble(Info.version);
-            double Tag;
 
             liAboutUpdate.Text = "checking for update";
             UpdateVersionPosition();
@@ -723,22 +722,32 @@ namespace AutoPuTTY
 
                     HttpResponseMessage Response = await Client.GetAsync(Url);
                     Response.EnsureSuccessStatusCode();
-                    string Data = await Response.Content.ReadAsStringAsync();
-                    if (Data != null)
-                    {
-                        dynamic Json = SimpleJson.SimpleJson.DeserializeObject(Data);
-                        Tag = Convert.ToDouble(Json.tag_name);
 
-                        laAboutVersion.AutoSize = true;
-                        if (Tag > Version)
-                        {
-                            UpdateLink = Json.html_url;
-                            liAboutUpdate.Text = "update available v" + Tag;
-                        }
-                        else
-                        {
-                            liAboutUpdate.Text = "no update available";
-                        }
+                    string data = await Response.Content.ReadAsStringAsync();
+
+                    var jsonObject = SimpleJson.SimpleJson.DeserializeObject(data) as JsonObject;
+                    if (jsonObject == null)
+                    {
+                        liAboutUpdate.Text = "couldn't check for update";
+                        return;
+                    }
+
+                    string tagString = jsonObject["tag_name"].ToString();
+                    if (tagString.StartsWith("v")) tagString = tagString.Substring(1);
+
+                    Version currentVersion = new Version(Info.version);
+                    //currentVersion = new Version("0.40");
+                    Version latestVersion = new Version(tagString);
+
+                    laAboutVersion.AutoSize = true;
+                    if (latestVersion > currentVersion)
+                    {
+                        UpdateLink = jsonObject["html_url"].ToString();
+                        liAboutUpdate.Text = "update available v" + tagString;
+                    }
+                    else
+                    {
+                        liAboutUpdate.Text = "no update available";
                     }
                 }
                 catch (Exception)
